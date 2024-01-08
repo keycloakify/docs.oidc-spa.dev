@@ -3,7 +3,7 @@
 {% hint style="info" %}
 In this guide, we assume that you have an OIDC-enabled authentication server in place, such as Keycloak.&#x20;
 
-If you have not yet set up such a server, please refer to [our guide for instructions on how to provision and configure a Keycloak server](../usage-with-keycloak.md).
+If you have not yet set up such a server, please refer to [our guide for instructions on how to provision and configure a Keycloak server](usage-with-keycloak.md).
 {% endhint %}
 
 Let's install oidc-spa in your project: &#x20;

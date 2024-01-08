@@ -5,7 +5,7 @@
 * [Overview](README.md)
 * [Installation](getting-started/installation.md)
 * [Quick Start](getting-started/quick-start.md)
-* [Comparison](getting-started/comparison.md)
+* [🔑 Usage with Keycloak](getting-started/usage-with-keycloak.md)
 
 ## Examples
 
@@ -18,4 +18,3 @@
 * [React](api-reference/react/README.md)
   * [createOidcProvider](api-reference/react/createoidcprovider.md)
   * [createUseOidc](api-reference/react/createuseoidc.md)
-* [🔑 Usage with Keycloak](usage-with-keycloak.md)
