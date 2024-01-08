@@ -14,7 +14,7 @@
 
 ## API Reference
 
-* [createOidc](api-reference/createoidc.md)
-* [React](api-reference/react/README.md)
-  * [createOidcProvider](api-reference/react/createoidcprovider.md)
-  * [createUseOidc](api-reference/react/createuseoidc.md)
+* [Vanilla API](api-reference/vanilla-api.md)
+* [React API](api-reference/react-api/README.md)
+  * [createOidcProvider](api-reference/react-api/createoidcprovider.md)
+  * [createUseOidc](api-reference/react-api/createuseoidc.md)

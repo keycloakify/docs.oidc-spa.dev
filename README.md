@@ -1,13 +1,14 @@
 # Overview
 
-An OIDC client tailored for Single Page Applications, particularly suitable for [Vite](https://vitejs.dev/) projects.&#x20;
+An OIDC client tailored for Single Page Applications, particularly suitable for [Vite](https://vitejs.dev/) projects.\
+This library is intended for scenarios such as integrating your application with Keycloak.
 
-* Path based type inference&#x20;
-* Minimal API surface&#x20;
-* Good but optional React integration.
-* &#x20;Documentation and project example : End to end solution for authenticating your App.&#x20;
-* We don't assume you are an OIDC expert.&#x20;
-* Easy to setup. It does not requires you to create special /login /logout route.
+* 🎓 Accessible to all skill levels; no need to be an OIDC expert.
+* 🛠️ Easy to set up; eliminates the need for creating special /login /logout routes.
+* 🎛️ Minimal API surface for ease of use.
+* ✨ Robust yet optional React integration.
+* 📖 Comprehensive documentation and project examples: End-to-end solutions for authenticating your app.
+* 🧠 Best in class type safety: Enhanced API response types based on usage context.
 
 ### Comarison with alternatives
 
