@@ -2,7 +2,7 @@
 description: Let's get your App authenticated!
 ---
 
-# Quick Start
+# 🏁 Quick Start
 
 {% hint style="info" %}
 In this guide, we assume that you have an OIDC-enabled authentication server in place, such as Keycloak.&#x20;
