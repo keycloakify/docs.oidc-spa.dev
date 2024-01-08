@@ -7,10 +7,10 @@
 * [Quick Start](getting-started/quick-start.md)
 * [🔑 Usage with Keycloak](getting-started/usage-with-keycloak.md)
 
-## Examples
+## Example setups
 
-* [React Router](examples/react-router.md)
-* [Tanstack Router](examples/tanstack-router.md)
+* [React Router](example-setups/react-router.md)
+* [Tanstack Router](example-setups/tanstack-router.md)
 
 ## API Reference
 

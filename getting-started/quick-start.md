@@ -105,8 +105,8 @@ if (!oidc.isUserLoggedIn) {
 This piece of code should give you the necessary information to understand how oidc-spa can be used inside your react components.  \
 To go further you can refer to the examples setup to see how to integrate oidc-spa with your routing library: &#x20;
 
-* [react-router-dom example setup](../examples/react-router.md)
-* [@tanstack/react-router example setup](../examples/tanstack-router.md)
+* [react-router-dom example setup](../example-setups/react-router.md)
+* [@tanstack/react-router example setup](../example-setups/tanstack-router.md)
 
 ```tsx
 import { createOidcProvider, createUseOidc } from "oidc-spa/react";
