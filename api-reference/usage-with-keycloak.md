@@ -44,6 +44,8 @@ Choosing Keycloak as a Service through a cloud IAM provider can offload the comp
 
 ### Configuring your Keycloak server
 
+Let's configure your Keycloak server with good default for an SPA.&#x20;
+
 Connect to the admin panel of your Keycloak server (we assumes it's https://auth.my-domain.net/auth)
 
 * Create a realm called "myrealm" (or something else), go to **Realm settings**
@@ -53,7 +55,7 @@ Connect to the admin panel of your Keycloak server (we assumes it's https://auth
      1. _User registration_: **On**
      2. _Forgot password_: **On**
      3. _Remember me_: **On**
-  3. On the tab **email,** we give an example with \*\*\*\* [AWS SES](https://aws.amazon.com/ses/), if you don't have a SMTP server at hand you can skip this by going to **Authentication** (on the left panel) -> Tab **Required Actions** -> Uncheck "set as default action" **Verify Email**. Be aware that with email verification disable, anyone will be able to sign up to your service.
+  3. On the tab **email,** we give an example with [AWS SES](https://aws.amazon.com/ses/), if you don't have a SMTP server at hand you can skip this by going to **Authentication** (on the left panel) -> Tab **Required Actions** -> Uncheck "set as default action" **Verify Email**. Be aware that with email verification disable, anyone will be able to sign up to your service.
      1. _From_: **noreply@my-domain.net**
      2. _Host_: **email-smtp.us-east-2.amazonaws.com**
      3. _Port_: **465**
@@ -67,11 +69,11 @@ Connect to the admin panel of your Keycloak server (we assumes it's https://auth
   5. On the tab **Localization**
      1. _Internationalization_: **Enabled**
      2. _Supported locales_: \<Select the languages you wish to support>
-  6. On the tab **Token**
+  6. On the tab **Sessions**
      1. SSO Session Idle: 14 days - This setting and the following two are so that when the user click "remember me" when he logs in, he doesn't have to login again for the next two weeks.
      2. SSO Session Idle Remember Me: 14 days
      3. SSO Session Max Remember Me: 14 days
-*   Create a client called "myclient" (or something else)
+*   Create a new OpenID Connect client called "myclient" (or something else) by accessing Clients -> Create Client
 
     1. _Root URL_: **https://your-domain.net** (or something else, your app does not need to be on the&#x20;
 
@@ -81,6 +83,7 @@ Connect to the admin panel of your Keycloak server (we assumes it's https://auth
     2. _Web origins_: **\***
     3. Login theme: keycloak (or your theme if you have one)
 * (OPTIONAL) In **Authentication** (on the left panel) -> Tab **Required Actions** enable and set as default action **Therms and Conditions.** (You can use Keycloakify to specify your therme and condition, see next section)
+* (OPTIONAL) On the left pannel you can go to identity provider to enable login via Google, GitHub, Instagram, ect...&#x20;
 
 
 
