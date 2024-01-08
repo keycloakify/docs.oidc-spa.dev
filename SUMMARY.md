@@ -18,4 +18,4 @@
 * [React](api-reference/react/README.md)
   * [createOidcProvider](api-reference/react/createoidcprovider.md)
   * [createUseOidc](api-reference/react/createuseoidc.md)
-* [🔑 Usage with Keycloak](api-reference/usage-with-keycloak.md)
+* [🔑 Usage with Keycloak](usage-with-keycloak.md)
