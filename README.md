@@ -1,4 +1,4 @@
-# Overview
+# ⭐ Overview
 
 An OIDC client tailored for Single Page Applications, particularly suitable for [Vite](https://vitejs.dev/) projects.\
 This library is intended for scenarios such as integrating your application with Keycloak.
@@ -10,7 +10,7 @@ This library is intended for scenarios such as integrating your application with
 * 📖 Comprehensive documentation and project examples: End-to-end solutions for authenticating your app.
 * 🧠 Best in class type safety: Enhanced API response types based on usage context.
 
-### Comarison with alternatives
+### Compared to alternatives
 
 #### [oidc-client-ts](https://github.com/authts/oidc-client-ts)
 
