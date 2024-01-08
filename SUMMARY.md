@@ -9,8 +9,8 @@
 
 ## Example setups
 
-* [React Router](example-setups/react-router.md)
-* [Tanstack Router](example-setups/tanstack-router.md)
+* [React Router](examples/react-router.md)
+* [Tanstack Router](examples/tanstack-router.md)
 
 ## API Reference
 

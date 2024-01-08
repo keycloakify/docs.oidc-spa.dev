@@ -10,8 +10,12 @@ In this guide, we assume that you have an OIDC-enabled authentication server in 
 If you have not yet set up such a server, please refer to [our guide for instructions on how to provision and configure a Keycloak server](usage-with-keycloak.md).
 {% endhint %}
 
-### Usage without involving UI Framework
+In the realm of web development, there are two prevailing philosophies. One camp of developers advocates for a strict separation of concerns, maintaining a clear distinction between the core logic of their application and their UI components. Conversely, others prefer to embed the logic of their application directly within their components, minimizing the conceptual gap between related elements.
 
+Regardless of your preference, we've got you covered. In addition to the base API, we offer a React Context/Hook API designed for seamless integration within your component body, ensuring flexibility and ease of use no matter your development style.
+
+{% tabs %}
+{% tab title="Usage without involving UI Framework" %}
 If you are coding in vanilla or implementing the OIDC-SPA library in an application with a strict separation of concerns between your core logic and UI components, follow these steps:
 
 <pre class="language-typescript"><code class="lang-typescript">// Import the necessary functions from oidc-spa library
@@ -99,14 +103,14 @@ if (!oidc.isUserLoggedIn) {
     oidc.logout({ redirectTo: "home" });
 }
 </code></pre>
+{% endtab %}
 
-### Usage with React
-
+{% tab title="Usage with React" %}
 This piece of code should give you the necessary information to understand how oidc-spa can be used inside your react components.  \
 To go further you can refer to the examples setup to see how to integrate oidc-spa with your routing library: &#x20;
 
-* [react-router-dom example setup](../example-setups/react-router.md)
-* [@tanstack/react-router example setup](../example-setups/tanstack-router.md)
+* [react-router-dom example setup](../examples/react-router.md)
+* [@tanstack/react-router example setup](../examples/tanstack-router.md)
 
 ```tsx
 import { createOidcProvider, createUseOidc } from "oidc-spa/react";
@@ -222,6 +226,8 @@ function App() {
     );
 }
 ```
+{% endtab %}
+{% endtabs %}
 
 ### Refreshing token
 
