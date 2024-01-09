@@ -59,7 +59,7 @@ if (!oidc.isUserLoggedIn) {
           * doesCurrentHrefRequiresAuth determines the behavior when a user 
           * gives up on loggin in and navigate back.
           * When it happens we don't want to send him back to a page that
-          * can be accessed without authentication.
+          * can't be accessed without authentication.
           *
           * If you are calling login() as a result of the user clicking
           * on a 'login' button (like here) you should set 
@@ -204,7 +204,7 @@ function App() {
                * doesCurrentHrefRequiresAuth determines the behavior when a user 
                * gives up on loggin in and navigate back.
                * When it happens we don't want to send him back to a page that
-               * can be accessed without authentication.
+               * can't be accessed without authentication.
                *
                * If you are calling login() as a result of the user clicking
                * on a 'login' button (like here) you should set 
