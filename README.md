@@ -1,14 +1,20 @@
+---
+description: A solution to implement user authentication in your webapplication
+---
+
 # ⭐ Overview
 
 An OIDC client tailored for Single Page Applications, particularly suitable for [Vite](https://vitejs.dev/) projects.\
-This library is intended for scenarios such as integrating your application with Keycloak.
+This library is intended for scenarios such as integrating your application with [Keycloak](https://www.keycloak.org/). &#x20;
+
+In straightforward terms, this library is ideal for those seeking to enable user login/registration in their web application. When used in conjunction with Keycloak (for example), it enables you to offer a modern and secure authentication experience with minimal coding effort. This includes options for signing in via Google, X, GitHub, or other social media platforms. We provide comprehensive guidance from beginning to end.
 
 * 🎓 Accessible to all skill levels; no need to be an OIDC expert.
-* 🛠️ Easy to set up; eliminates the need for creating special /login /logout routes.
+* 🛠️ Easy to set up; eliminates the need for creating special `/login` `/logout` routes.
 * 🎛️ Minimal API surface for ease of use.
 * ✨ Robust yet optional React integration.
 * 📖 Comprehensive documentation and project examples: End-to-end solutions for authenticating your app.
-* 🧠 Best in class type safety: Enhanced API response types based on usage context.
+* ✅ Best in class type safety: Enhanced API response types based on usage context.
 
 ### Compared to alternatives
 
@@ -25,4 +31,20 @@ Additionally, we provide adapters for React and starter projects for integration
 
 #### [keycloak-js](https://www.npmjs.com/package/keycloak-js)
 
-Beside the fact that this lib only works with Keycloak [it is also likely to be deprecated](https://www.keycloak.org/2023/03/adapter-deprecation-update).
+Beside the fact that this lib only works with Keycloak [it is also likely to be deprecated](https://www.keycloak.org/2023/03/adapter-deprecation-update). &#x20;
+
+### Notable project using the library
+
+Onyxia:&#x20;
+
+* [Source code](https://github.com/InseeFrLab/onyxia)
+* [Public instance](https://datalab.sspcloud.fr)
+
+<figure><img src="https://user-images.githubusercontent.com/6702424/231314534-2eeb1ab5-5460-4caa-b78d-55afd400c9fc.png" alt=""><figcaption></figcaption></figure>
+
+The French Interministerial Base of Free Software:&#x20;
+
+* [Source code](https://github.com/codegouvfr/sill-web/)
+* [Deployment of the website](https://sill-preprod.lab.sspcloud.fr/)
+
+<figure><img src="https://github.com/garronej/i18nifty/assets/6702424/aa06cc30-b2bd-4c8b-b435-2f875f53175b" alt=""><figcaption></figcaption></figure>
