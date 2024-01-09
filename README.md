@@ -1,6 +1,5 @@
 ---
 description: A solution to implement user authentication in your webapplication
-layout: landing
 ---
 
 # ⭐ Overview
