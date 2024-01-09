@@ -3,8 +3,8 @@
 ## Getting started
 
 * [⭐ Overview](README.md)
-* [Installation](getting-started/installation.md)
-* [🏁 Quick Start](getting-started/quick-start.md)
+* [🔩 Installation](getting-started/installation.md)
+* [👨🔧 Usage](getting-started/usage.md)
 * [🔑 Usage with Keycloak](getting-started/usage-with-keycloak.md)
 
 ## Example setups

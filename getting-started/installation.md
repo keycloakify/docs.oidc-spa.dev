@@ -1,4 +1,4 @@
-# Installation
+# 🔩 Installation
 
 Let's install oidc-spa in your project: &#x20;
 
