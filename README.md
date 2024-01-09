@@ -40,11 +40,11 @@ Onyxia:&#x20;
 * [Source code](https://github.com/InseeFrLab/onyxia)
 * [Public instance](https://datalab.sspcloud.fr)
 
-<figure><img src="https://user-images.githubusercontent.com/6702424/231314534-2eeb1ab5-5460-4caa-b78d-55afd400c9fc.png" alt=""><figcaption></figcaption></figure>
+{% embed url="https://www.youtube.com/watch?v=FvpNfVrxBFM" %}
 
 The French Interministerial Base of Free Software:&#x20;
 
 * [Source code](https://github.com/codegouvfr/sill-web/)
 * [Deployment of the website](https://sill-preprod.lab.sspcloud.fr/)
 
-<figure><img src="https://github.com/garronej/i18nifty/assets/6702424/aa06cc30-b2bd-4c8b-b435-2f875f53175b" alt=""><figcaption></figcaption></figure>
+{% embed url="https://www.youtube.com/watch?v=AT3CvmY_Y7M" %}
