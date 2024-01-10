@@ -11,11 +11,11 @@ description: >-
 
 `params`: An object containing the following properties:
 
-* `issuerUri : string` The URI of the OpenID Connect issuer.
+* `issuerUri: string` The URI of the OpenID Connect issuer.
 * `clientId: string` The client ID assigned to your application.
 * `transformUrlBeforeRedirect?: (url:string) => string`  (Optional), A function that transforms the string URL before redirection.
 * `getExtraQueryParams?: () => Record<string,string>` (Optional), A function that returns extra query parameters.
-* `publicUrl? : string`  (Optional), The public URL of your application, useful when your app is not hosted at the origin of the domain.
+* `publicUrl?: string`  (Optional), The public URL of your application, useful when your app is not hosted at the origin of the domain.
 
 
 
@@ -42,9 +42,9 @@ Represents a logged-in state.
     ```
 * `subscribeToTokensChange` A function to subscribe to token changes.
   * Params&#x20;
-    * `onTokenChange() => void` A function to execute when token changes
+    * `onTokenChange: () => void` A function to execute when token changes
   * Returns
-    * `unsubscribe() => void`
+    * `unsubscribe: () => void`
 * `logout` A function to log out.
   * Params
     * `redirectTo: "home" | "current page"` to be redirected after logout to home or current page
