@@ -9,7 +9,7 @@ description: Let's spin up a Keycloak server and configure it for your webapp!
 If you already have access to a Keycloak server you can skip this section. &#x20;
 
 {% tabs %}
-{% tab title="I spin my own Keycloak server" %}
+{% tab title="I deploy Keycloak myself" %}
 Follow one of the following guides: &#x20;
 
 {% embed url="https://www.keycloak.org/getting-started/getting-started-zip" %}
@@ -33,7 +33,7 @@ Get started with Keycloak on Podman
 {% endembed %}
 {% endtab %}
 
-{% tab title="I use Keycloak a Keyclaok as a service Provider" %}
+{% tab title="Managed Keycloak instance" %}
 Don't want to deploy and maintain a own Keycloak server yourself?&#x20;
 
 Choosing Keycloak as a Service through a cloud IAM provider can offload the complexities of management and maintenance. It ensures that your system is always up-to-date with the latest security patches and features without the direct overhead of server upkeep. This is especially beneficial for teams prioritizing development and innovation over infrastructure management, offering robust support and service level agreements to guarantee smooth operation. &#x20;
