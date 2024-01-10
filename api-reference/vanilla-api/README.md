@@ -1,2 +1,2 @@
-# createOidc
+# 🍦 Vanilla API
 
