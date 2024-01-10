@@ -1,11 +1,11 @@
 ---
 description: >-
-  The createOidc function is a function that assists in creating an OpenID
+  The createOidc() function is a function that assists in creating an OpenID
   Connect (OIDC) client, which can be utilized in your application for
   authentication purposes.
 ---
 
-# createOidc function
+# createOidc()
 
 ### Parameters
 
