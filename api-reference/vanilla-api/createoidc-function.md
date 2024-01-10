@@ -7,7 +7,7 @@ description: >-
 
 # createOidc function
 
-#### Parameters
+### Parameters
 
 `params`: An object containing the following properties:
 
