@@ -1,2 +1,0 @@
-# 🍦 Vanilla API
-
