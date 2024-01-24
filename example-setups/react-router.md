@@ -11,5 +11,5 @@ Source code
 {% endembed %}
 
 {% embed url="https://example-tanstack-router.oidc-spa.dev/" %}
-Deployment
+App live
 {% endembed %}
