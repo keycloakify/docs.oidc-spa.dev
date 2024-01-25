@@ -18,91 +18,95 @@ Regardless of your preference, we've got you covered. In addition to the base AP
 {% tab title="Usage without involving UI Framework" %}
 If you are coding in vanilla or implementing the OIDC-SPA library in an application with a strict separation of concerns between your core logic and UI components, follow these steps:
 
-<pre class="language-typescript"><code class="lang-typescript">// Import the necessary functions from oidc-spa library
-<strong>import { createOidc, decodeJwt } from "oidc-spa";
-</strong>
-// Initialize OIDC client with configuration options
+```typescript
+import { createOidc } from "oidc-spa";
+
 const oidc = await createOidc({
     issuerUri: "https://auth.your-domain.net/auth/realms/myrealm",
     clientId: "myclient",
     /**
-     * Optional, you can modify the url before redirection to the identity 
-     * server. Alternatively you can use: 
-     * getExtraQueryParams: ()=> ({ ui_locales: "fr" })
+     * - `your-app.com/${publicUrl}/silent-sso.html` must serve the file `silent-sso.html`
+     *   that you have created in the setup process.  
+     * - `your-app.com/${publicUrl}/` must be the homepage of your webapp.
+     * 
+     * Vite:  `publicUrl: import.meta.env.BASE_URL`
+     * CRA:   `publicUrl: process.env.PUBLIC_URL`
+     * Other: `publicUrl: "/"` (Usually)
      */
-    transformUrlBeforeRedirect: url => `${url}&#x26;ui_locales=fr`
-    /**
-     * This parameter have to be provided if your App is not hosted at the 
-     * origin of the domain.
-     * For example if your site is accessed by navigating to 
-     * https://www.example.com you don't have to provide this parameter.
-     * On the other end if your site is accessed by navigating to 
-     * https://www.example.com/my-app
-     * Then you want to set publicUrl to `/my-app` 
-     * (or `https://www.example.com/my-app`).
-     
-     * If you are using Vite: `publicUrl: import.meta.env.BASE_URL`
-     * If you using Create React App: `publicUrl: process.env.PUBLIC_URL`
-     *
-     * Be mindful that `${window.location.origin}${publicUrl}/silent-sso.html` 
-     * must return the `silent-sso.html` that you have created in the previous
-     * step.
-     */
-    //publicUrl: import.meta.env.BASE_URL
+    publicUrl: "/"
 });
 
 if (!oidc.isUserLoggedIn) {
+    // The user is not logged in.
+
+    // We can call login() to redirect the user to the login/register page.
     // This return a promise that never resolve. 
-    // The user will be redirected to the identity server.
     oidc.login({
          /** 
-          * doesCurrentHrefRequiresAuth determines the behavior when a user 
-          * gives up on loggin in and navigate back.
-          * When it happens we don't want to send him back to a page that
-          * can't be accessed without authentication.
-          *
-          * If you are calling login() as a result of the user clicking
-          * on a 'login' button (like here) you should set 
-          * doesCurrentHrefRequiresAuth to false.
-          *
-          * When you are calling login because your user navigated to a path 
-          * that requires authentication you should set 
-          * doesCurrentHrefRequiresAuth to true
+          * If you are calling login() in the callback of a click event
+          * set this to false.  
           */
          doesCurrentHrefRequiresAuth: false
-         /** Optionally, you can add some extra parameter 
-          *  to be added on the login url.
+         /** 
+          * Optionally, you can add some extra parameter 
+          * to be added on the login url.
           */
-         //extraQueryParams: { kc_idp_hint: "google" }
+         //extraQueryParams: { kc_idp_hint: "google", kc_locale: "fr" }
     });
+
 } else {
+    // The user is logged in.
+
     const {
         // The accessToken is what you'll use as a Bearer token to 
         // authenticate to your APIs
         accessToken,
-        // You can parse the idToken as a JWT to get some information 
-        // about the user.
-        idToken
+        decodedIdToken
     } = oidc.getTokens();
 
-    // NOTE: In most application you do not need to look into the JWT of the 
-    // idToken on the frontend, you usually obtain the user info by querying 
-    // a GET /user endpoint with a authorization header like 
-    // `Bearer &#x3C;accessToken>`.
-    const user = decodeJwt(idToken) as {
-        // Use https://jwt.io/ to tell what's in your idToken
-        sub: string;
-        preferred_username: string;
-    };
-
-    console.log(`Hello ${user.preferred_username}`);
+    fetch("https://api.your-domain.net/orders", {
+        headers: {
+            Authorization: `Bearer ${accessToken}`
+        }
+    })
+     .then(response => response.json())
+     .then(orders => console.log(orders));
 
     // To call when the user click on logout.
     // You can also redirect to a custom url with 
     // { redirectTo: "specific url", url: `${location.origin}/bye` }
     oidc.logout({ redirectTo: "home" });
+
+    // In most webapp you do not need to look into the JWT on the frontend side.  
+    // You usually obtain the user info by querying a GET /user endpoint.
+    // However if you need to access the decodedIdToken you can do:
+    console.log(`Hello ${decodedIdToken.preferred_username}`);
+
+    // Note that in this example the decodedIdToken is not typed.  
+    // What is inside the idToken is defined by the OIDC server you are using.  
+    // If you want to specify the type of the decodedIdToken you can do:
+    //
+    // type DecodedIdToken = {
+    //    sub: string;
+    //    preferred_username: string;
+    //    // ...
+    // };
+    //
+    // export const { useOidc } = createUseOidc<DecodedIdToken>(...)
+    //
+    // If you want the shape of the decodedIdToken to be validated at runtime
+    // you can provide a validator function using zod for example:
+    //
+    // export const { useOidc } = createUseOidc<DecodedIdToken>({
+    //    ...
+    //    decodedIdTokenSchema: z.object({
+    //        sub: z.string(),
+    //        preferred_username: z.string()
+    //    })
+    // })
+
 }
-</code></pre>
+```
 {% endtab %}
 
 {% tab title="Usage with React" %}
@@ -113,77 +117,30 @@ To go further you can refer to the examples setup to see how to integrate oidc-s
 * [@tanstack/react-router example setup](../example-setups/tanstack-router.md)
 
 ```tsx
-import { createOidcProvider, createUseOidc } from "oidc-spa/react";
-import { z } from "zod";
+import { createReactOidc } from "oidc-spa/react";
 
-const { OidcProvider } = createOidcProvider({
+export const { OidcProvider, useOidc } = createReactOidc({
     issuerUri: "https://auth.your-domain.net/auth/realms/myrealm",
     clientId: "myclient",
     /**
-     * Optional, you can modify the url before redirection to the identity 
-     * server. Alternatively you can use: 
-     * getExtraQueryParams: ()=> ({ ui_locales: "fr" })
+     * - `your-app.com/${publicUrl}silent-sso.html` must serve the file 
+     *   that you have created in the setup process.  
+     * - `your-app.com/${publicUrl}` must be the homepage of your webapp.
+     * 
+     * Vite:  `publicUrl: import.meta.env.BASE_URL`
+     * CRA:   `publicUrl: process.env.PUBLIC_URL`
+     * Other: `publicUrl: "/"` (Usually)
      */
-    transformUrlBeforeRedirect: url => `${url}&ui_locales=fr`
-    /**
-     * This parameter have to be provided if your App is not hosted at the 
-     * origin of the domain.
-     * For example if your site is accessed by navigating to 
-     * https://www.example.com you don't have to provide this parameter.
-     * On the other end if your site is accessed by navigating to 
-     * https://www.example.com/my-app
-     * Then you want to set publicUrl to `/my-app` 
-     * (or `https://www.example.com/my-app`).
-     
-     * If you are using Vite: `publicUrl: import.meta.env.BASE_URL`
-     * If you using Create React App: `publicUrl: process.env.PUBLIC_URL`
-     *
-     * Be mindful that `${window.location.origin}${publicUrl}/silent-sso.html` 
-     * must return the `silent-sso.html` that you have created in the previous
-     * step.
-     */
-    //publicUrl: import.meta.env.BASE_URL
+    publicUrl: import.meta.env.BASE_URL
 });
 
-const { useOidc } = createUseOidc({
-    /**
-     * This parameter is optional.
-     * It allows you to validate the shape of the idToken so that you
-     * can trust that oidcTokens.decodedIdToken is of the expected shape
-     * when the user is logged in.
-     * What is actually inside the idToken is defined by the OIDC server
-     * you are using.
-     * If you are not sure, you can copy the content of oidcTokens.idToken
-     * and paste it on https://jwt.io/ to see what is inside.
-     *
-     * The usage of zod here is just an example, you can use any other schema
-     * validation library or write your own validation function.
-     *
-     * If you want to specify the type of the decodedIdToken but do not care
-     * about validating the shape of the decoded idToken at runtime you can
-     * call `createUseOidc<DecodedIdToken>()` without passing any parameter.
-     *
-     * Note however that in most webapp you do not need to look into the JWT
-     * of the idToken on the frontend side, you usually obtain the user info
-     * by querying a GET /user endpoint with a authorization header
-     * like `Bearer <accessToken>`.
-     * If you don't use the decodedIdToken just do:
-     * `export const { useOidc } = createUseOidc()`
-     */
-    decodedIdTokenSchema: z.object({
-        sub: z.string(),
-        preferred_username: z.string()
-    })
-});
-
-ReactDOM.render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
     <OidcProvider
         // Optional, it's usually so fast that a fallback is really not required.
         fallback={<>Checking authentication ⌛️</>}
     >
         <App />
-    </OidcProvider>,
-    document.getElementById("root")
+    </OidcProvider>
 );
 
 function App() {
@@ -193,6 +150,10 @@ function App() {
     return (
         isUserLoggedIn ? (
             <>
+                {/* 
+                Note: The decodedIdToken can be typed and validated with zod
+                See: Example project 
+                */}
                 <span>Hello {oidcTokens.decodedIdToken.preferred_username}</span>
                 <button onClick={() => logout({ redirectTo: "home" })}>
                   Logout
@@ -200,30 +161,63 @@ function App() {
             </>
         ) : (
             <button onClick={() => login({ 
-              /** 
-               * doesCurrentHrefRequiresAuth determines the behavior when a user 
-               * gives up on loggin in and navigate back.
-               * When it happens we don't want to send him back to a page that
-               * can't be accessed without authentication.
-               *
-               * If you are calling login() as a result of the user clicking
-               * on a 'login' button (like here) you should set 
-               * doesCurrentHrefRequiresAuth to false.
-               *
-               * When you are calling login because your user navigated to a path 
-               * that requires authentication you should set 
-               * doesCurrentHrefRequiresAuth to true
-               */
-              doesCurrentHrefRequiresAuth: false
-              /** Optionally, you can add some extra parameter 
-               *  to be added on the login url.
-               */
-              //extraQueryParams: { kc_idp_hint: "google" }
+                /** 
+                 * If you are calling login() in the callback of a click event
+                 * (like here) set this to false.  
+                 */
+                doesCurrentHrefRequiresAuth: false
+                /** 
+                 * Optionally, you can add some extra parameter 
+                 * to be added on the login url.
+                 */
+                //extraQueryParams: { kc_idp_hint: "google", kc_locale: "fr" }
             })} >
               Login
             </button>
         )
     );
+}
+
+import { useEffect, useState } from "react";
+
+type Order = {
+  id: number;
+  name: string;
+};
+
+function OrderHistory(){
+
+    const { oidcTokens } = useOidc({ assertUserLoggedIn: true });
+
+    const [orders, setOrders] = useState<Order[] | undefined>(undefined);
+
+    useEffect(
+        ()=> {
+
+            fetch("https://api.your-domain.net/orders", {
+                headers: {
+                    Authorization: `Bearer ${oidcTokens.accessToken}`
+                }
+            })
+            .then(response => response.json())
+            .then(orders => setOrders(orders));
+
+        },
+        []
+    );
+
+    if(orders === undefined){
+        return <>Loading orders ⌛️</>
+    }
+
+    return (
+        <ul>
+            {orders.map(order => (
+                <li key={order.id}>{order.name}</li>
+            ))}
+        </ul>
+    );
+
 }
 ```
 {% endtab %}
