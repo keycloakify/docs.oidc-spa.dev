@@ -152,7 +152,7 @@ function App() {
             <>
                 {/* 
                 Note: The decodedIdToken can be typed and validated with zod
-                See: Example project 
+                See: https://github.com/keycloakify/oidc-spa/blob/fddac99d2b49669a376f9a0b998a8954174d195e/examples/tanstack-router/src/oidc.tsx#L17-L43
                 */}
                 <span>Hello {oidcTokens.decodedIdToken.preferred_username}</span>
                 <button onClick={() => logout({ redirectTo: "home" })}>
