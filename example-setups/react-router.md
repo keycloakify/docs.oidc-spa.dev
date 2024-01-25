@@ -10,6 +10,5 @@ Playground
 Source code
 {% endembed %}
 
-{% embed url="https://example-tanstack-router.oidc-spa.dev/" %}
-App live
-{% endembed %}
+The App is live here: [https://example-tanstack-router.oidc-spa.dev/](https://example-tanstack-router.oidc-spa.dev/)
+
