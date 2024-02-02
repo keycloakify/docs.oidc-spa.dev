@@ -227,7 +227,36 @@ function OrderHistory(){
 
 The token refresh is handled automatically for you, however you can manually trigger a token refresh with `oidc.renewTokens()`.(or `const { renewTokens } = useOidc({ assertUserLoggedIn: true }`);&#x20;
 
-### What happens if the OIDC server is down?
+### Error managment
 
-If the OIDC server is down or misconfigured an error get printed in the console, everything continues as normal with the user unauthenticated. If the user tries to login an alert saying that authentication is not available at the moment is displayed and nothing happens.\
-This enable your the part of your app that do not requires authentication to remain up even when your identities server is facing issues.
+What happens if the OIDC server is down, or if the server indicates that your client configuration is not valid? By default, the system behaves as if the user were not authenticated.&#x20;
+
+This allows the user to access parts of the application that do not require authentication. When the user clicks on the login button (triggering the `login()` function), a browser alert is displayed, indicating that authentication is currently unavailable, and no further action is taken.&#x20;
+
+You can customize this behavior. An `initializationError` object is present on the OIDC object if an error occurred.
+
+{% tabs %}
+{% tab title="Vanilla API" %}
+```typescript
+import { createOidc } from "oidc-spa";
+
+const oidc = await createOidc(...);
+
+if( !oidc.isUserLoggedIn && oidc.initializationError){
+    oidc.initializationError.type // <- This can be "server down", "bad configuration" or "unknown" 
+}
+```
+{% endtab %}
+
+{% tab title="React API" %}
+```typescript
+const { initializationError } = useOidc();
+
+if( oidc.initializationError){
+    oidc.initializationError.type // <- This can be "server down", "bad configuration" or "unknown" 
+}
+```
+{% endtab %}
+{% endtabs %}
+
+Please note that due to browser security policies, it is impossible to distinguish whether the network is very slow or down, or if the OIDC server has rejected the configuration. Consequently, one might encounter a "bad configuration" error on a slow 3G network, for example. However, it's important to know that the timeout duration is automatically adjusted based on the speed of the internet connection, which should prevent this issue from occurring.
