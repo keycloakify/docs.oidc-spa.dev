@@ -242,19 +242,41 @@ import { createOidc } from "oidc-spa";
 
 const oidc = await createOidc(...);
 
-if( !oidc.isUserLoggedIn && oidc.initializationError){
+if( !oidc.isUserLoggedIn && oidc.initializationError ){
     oidc.initializationError.type // <- This can be "server down", "bad configuration" or "unknown" 
+
+    const handleLoginClick = ()=> {
+    
+        if( oidc.initializationError ){
+            alert(`Can't login now, try again later ${oidc.initializationError.message}`);
+            return;
+        }
+        
+        oidc.login(...);
+    
+    };
 }
 ```
 {% endtab %}
 
 {% tab title="React API" %}
-```typescript
-const { initializationError } = useOidc();
+```tsx
+const { login, initializationError } = useOidc();
 
 if( oidc.initializationError){
     oidc.initializationError.type // <- This can be "server down", "bad configuration" or "unknown" 
 }
+
+<button onClick={()=> {
+
+    if( oidc.initializationError ){
+        alert(`Can't login now, try again later ${oidc.initializationError.message}`);
+        return;
+    }
+        
+    oidc.login(...);
+
+}}>Login</button>
 ```
 {% endtab %}
 {% endtabs %}
