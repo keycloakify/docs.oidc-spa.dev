@@ -91,7 +91,7 @@ Connect to the admin panel of your Keycloak server (we assumes it's https://auth
 Now the parameter that you will have to provide to oidc-spa are:&#x20;
 
 ```
-    issuerUri: "https://auth.your-domain.net/auth/realms/myrealm",
+    issuerUri: "https://auth.your-domain.net/realms/myrealm",
     clientId: "myclient"
 ```
 
