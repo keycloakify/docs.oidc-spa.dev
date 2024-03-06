@@ -78,9 +78,8 @@ if (!oidc.isUserLoggedIn) {
     // { redirectTo: "specific url", url: `${location.origin}/bye` }
     oidc.logout({ redirectTo: "home" });
 
-    // In most webapp you do not need to look into the JWT on the frontend side.  
-    // You usually obtain the user info by querying a GET /user endpoint.
-    // However if you need to access the decodedIdToken you can do:
+    // If you are wondering why ther's a decodedIdToken and not a
+    // decodedAccessToken read this: 
     console.log(`Hello ${decodedIdToken.preferred_username}`);
 
     // Note that in this example the decodedIdToken is not typed.  
