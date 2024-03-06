@@ -2,7 +2,7 @@
 description: Let's get your App authenticated!
 ---
 
-# 👨🔧 Usage
+# 👨‍🔧 Usage
 
 {% hint style="info" %}
 In this guide, we assume that you have an OIDC-enabled authentication server in place, such as Keycloak.&#x20;
@@ -49,7 +49,8 @@ if (!oidc.isUserLoggedIn) {
          doesCurrentHrefRequiresAuth: false
          /** 
           * Optionally, you can add some extra parameter 
-          * to be added on the login url.
+          * to be added on the login url.  
+          * (This can also be a parameter of createOidc)
           */
          //extraQueryParams: { kc_idp_hint: "google", kc_locale: "fr" }
     });
@@ -169,6 +170,7 @@ function App() {
                 /** 
                  * Optionally, you can add some extra parameter 
                  * to be added on the login url.
+                 * (Can also be a parameter of createReactOidc)
                  */
                 //extraQueryParams: { kc_idp_hint: "google", kc_locale: "fr" }
             })} >
