@@ -2,7 +2,7 @@
 description: Let's get your App authenticated!
 ---
 
-# 👨‍🔧 Usage
+# 👨‍🔧 Basic Usage
 
 {% hint style="info" %}
 In this guide, we assume that you have an OIDC-enabled authentication server in place, such as Keycloak.&#x20;
@@ -225,62 +225,6 @@ function OrderHistory(){
 {% endtab %}
 {% endtabs %}
 
-### Refreshing token
+###
 
-The token refresh is handled automatically for you, however you can manually trigger a token refresh with `oidc.renewTokens()`.(or `const { renewTokens } = useOidc({ assertUserLoggedIn: true }`);&#x20;
-
-### Error managment
-
-What happens if the OIDC server is down, or if the server indicates that your client configuration is not valid? By default, the system behaves as if the user were not authenticated.&#x20;
-
-This allows the user to access parts of the application that do not require authentication. When the user clicks on the login button (triggering the `login()` function), a browser alert is displayed, indicating that authentication is currently unavailable, and no further action is taken.&#x20;
-
-You can customize this behavior. An `initializationError` object is present on the OIDC object if an error occurred.
-
-{% tabs %}
-{% tab title="Vanilla API" %}
-```typescript
-import { createOidc } from "oidc-spa";
-
-const oidc = await createOidc(...);
-
-if( !oidc.isUserLoggedIn && oidc.initializationError ){
-    oidc.initializationError.type // <- This can be "server down", "bad configuration" or "unknown" 
-
-    const handleLoginClick = ()=> {
-    
-        if( oidc.initializationError ){
-            alert(`Can't login now, try again later ${oidc.initializationError.message}`);
-            return;
-        }
-        
-        oidc.login(...);
-    
-    };
-}
-```
-{% endtab %}
-
-{% tab title="React API" %}
-```tsx
-const { login, initializationError } = useOidc();
-
-if( oidc.initializationError){
-    oidc.initializationError.type // <- This can be "server down", "bad configuration" or "unknown" 
-}
-
-<button onClick={()=> {
-
-    if( oidc.initializationError ){
-        alert(`Can't login now, try again later ${oidc.initializationError.message}`);
-        return;
-    }
-        
-    oidc.login(...);
-
-}}>Login</button>
-```
-{% endtab %}
-{% endtabs %}
-
-Please note that due to browser security policies, it is impossible to distinguish whether the network is very slow or down, or if the OIDC server has rejected the configuration. Consequently, one might encounter a "bad configuration" error on a slow 3G network, for example. However, it's important to know that the timeout duration is automatically adjusted based on the speed of the internet connection, which should prevent this issue from occurring.
+###

@@ -4,7 +4,9 @@
 
 * [⭐ Overview](README.md)
 * [🔩 Installation](getting-started/installation.md)
-* [👨‍🔧 Usage](getting-started/usage.md)
+* [👨‍🔧 Basic Usage](getting-started/usage.md)
+* [🔁 Token renewal and auto logout](getting-started/token-renewal-and-auto-logout.md)
+* [❗ Error management](getting-started/error-management.md)
 * [🔑 Keycloak Configuration](getting-started/usage-with-keycloak.md)
 
 ## Example setups
