@@ -1,7 +1,7 @@
 ---
 description: >-
   Automatically logging out your user after a set period of inactivity on your
-  app (they dont move the mouse or press key on the keyboard for a while)
+  app (they dont move the mouse or press any key on the keyboard for a while)
 ---
 
 # ⏲️ Auto Logout
