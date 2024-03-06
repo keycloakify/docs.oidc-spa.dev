@@ -47,6 +47,8 @@ Note that this parameter is marked as unsafe because what happens if the user cl
 
 ### Displaying a coutdown timer before auto logout
 
+{% embed url="https://youtu.be/GeZaZIr-d68" %}
+
 {% tabs %}
 {% tab title="Vanilla API" %}
 ```typescript
