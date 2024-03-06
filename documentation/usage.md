@@ -78,8 +78,8 @@ if (!oidc.isUserLoggedIn) {
     // { redirectTo: "specific url", url: `${location.origin}/bye` }
     oidc.logout({ redirectTo: "home" });
 
-    // If you are wondering why ther's a decodedIdToken and not a
-    // decodedAccessToken read this: 
+    // If you are wondering why ther's a decodedIdToken and no
+    // decodedAccessToken read this: https://docs.oidc-spa.dev/resources/jwt-of-the-access-token
     console.log(`Hello ${decodedIdToken.preferred_username}`);
 
     // Note that in this example the decodedIdToken is not typed.  
@@ -153,6 +153,9 @@ function App() {
                 {/* 
                 Note: The decodedIdToken can be typed and validated with zod
                 See: https://github.com/keycloakify/oidc-spa/blob/fddac99d2b49669a376f9a0b998a8954174d195e/examples/tanstack-router/src/oidc.tsx#L17-L43
+                
+                If you are wondering why ther's a decodedIdToken and no
+                decodedAccessToken read this: https://docs.oidc-spa.dev/resources/jwt-of-the-access-token
                 */}
                 <span>Hello {oidcTokens.decodedIdToken.preferred_username}</span>
                 <button onClick={() => logout({ redirectTo: "home" })}>
