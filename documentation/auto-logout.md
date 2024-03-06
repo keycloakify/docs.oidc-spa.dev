@@ -1,5 +1,69 @@
+---
+description: >-
+  Automatically logging out your user after a set period of inactivity on your
+  app (they dont move the mouse or press key on the keyboard for a while)
+---
+
 # ⏲️ Auto Logout
 
-Enforcing that your user be automatically logged out after a set period of inactivity is a policy that is enforced on the identity server. &#x20;
+### Configuring auto logout policy
+
+This is a policy that is enforced on the identity server. &#x20;
+
+The auto logout is defined by the lifespan of the refresh token.
 
 For example, if you're using Keycloak and you want you want an auto disconnect after 10 minutes of inactivity you would set the SSO Session Idle to 10 minutes. See [Keycloak configuratio guide](../resources/usage-with-keycloak.md).
+
+&#x20;If you can't configure your identity provider you can still enforce auto logout like so: &#x20;
+
+{% tabs %}
+{% tab title="Vanilla API" %}
+```typescript
+import { createOidc } from "oidc-spa";
+
+const oidc = await createOidc({
+  // ...
+  __unsafe_ssoSessionIdleSeconds: 10 * 60 // 10 minutes
+});
+```
+{% endtab %}
+
+{% tab title="React API" %}
+```typescript
+import { createReactOidc } from "oidc-spa/react";
+
+export const {
+    OidcProvider,
+    useOidc
+} = createReactOidc({
+    // ...
+    __unsafe_ssoSessionIdleSeconds: 10 * 60 // Ten minutes
+});
+```
+{% endtab %}
+{% endtabs %}
+
+Note that this parameter is marked as unsafe because what happens if the user closes the tab? He will be able to return a while back and still be logged in. oidc-spa can't enforce a security policy when it's not running. Only the identity server can.  &#x20;
+
+### Displaying a coutdown timer before auto logout
+
+{% tabs %}
+{% tab title="Vanilla API" %}
+```typescript
+const { unsubscribeFromAutoLogoutCountdown } = oidc.subscribeToAutoLogoutCountdown(
+  ({ secondsLeft }) => {
+    if( secondsLeft === undefined ){
+      console.log("Countdown reset, the user moved");
+      return;
+    }
+    console.log(`${secondsLeft} before auto logout`)
+  }
+);
+```
+{% endtab %}
+
+{% tab title="React API" %}
+{% embed url="https://github.com/keycloakify/oidc-spa/blob/main/examples/tanstack-router/src/router/AutoLogoutCountdown.tsx" %}
+{% endtab %}
+{% endtabs %}
+
