@@ -60,6 +60,9 @@ const { unsubscribeFromAutoLogoutCountdown } = oidc.subscribeToAutoLogoutCountdo
       console.log("Countdown reset, the user moved");
       return;
     }
+    if( secondsLeft > 60 ){
+      return;
+    }
     console.log(`${secondsLeft} before auto logout`)
   }
 );
@@ -68,6 +71,8 @@ const { unsubscribeFromAutoLogoutCountdown } = oidc.subscribeToAutoLogoutCountdo
 
 {% tab title="React API" %}
 {% embed url="https://github.com/keycloakify/oidc-spa/blob/main/examples/tanstack-router/src/router/AutoLogoutCountdown.tsx" %}
+Example implementation of a 60 seconds countdown before autologout.
+{% endembed %}
 {% endtab %}
 {% endtabs %}
 
