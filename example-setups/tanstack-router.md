@@ -1,11 +1,22 @@
-# Tanstack Router
+---
+description: Vite + TypeScript + React + Tanstack Router
+---
 
-{% embed url="https://stackblitz.com/github/keycloakify/oidc-spa/tree/main/examples/tanstack-router?embed=1&file=README.md" %}
-Playground
-{% endembed %}
+# 🛣️ TanStack Router
+
+The example setup is live here: [https://example-tanstack-router.oidc-spa.dev/](https://example-tanstack-router.oidc-spa.dev/)
+
+Run it locally with: &#x20;
+
+```bash
+git clone https://github.com/keycloakify/oidc-spa
+mv oidc-spa/examples/tanstack-router oidc-spa-tanstack-router
+rm -rf oidc-spa
+cd oidc-spa-tanstack-router
+yarn
+yarn dev
+```
 
 {% embed url="https://github.com/keycloakify/oidc-spa/tree/main/examples/tanstack-router" %}
 Source code
 {% endembed %}
-
-The App is live here: [https://example-tanstack-router.oidc-spa.dev/](https://example-tanstack-router.oidc-spa.dev/)

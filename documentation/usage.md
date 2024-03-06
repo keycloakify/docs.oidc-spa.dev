@@ -7,7 +7,7 @@ description: Let's get your App authenticated!
 {% hint style="info" %}
 In this guide, we assume that you have an OIDC-enabled authentication server in place, such as Keycloak.&#x20;
 
-If you have not yet set up such a server, please refer to [our guide for instructions on how to provision and configure a Keycloak server](usage-with-keycloak.md).
+If you have not yet set up such a server, please refer to [our guide for instructions on how to provision and configure a Keycloak server](../resources/usage-with-keycloak.md).
 {% endhint %}
 
 In the realm of web development, there are two prevailing philosophies. One camp of developers advocates for a strict separation of concerns, maintaining a clear distinction between the core logic of their application and their UI components. Conversely, others prefer to embed the logic of their application directly within their components, minimizing the conceptual gap between related elements.

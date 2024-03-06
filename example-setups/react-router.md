@@ -1,14 +1,19 @@
-# React Router
+# 🛤️ React Router
 
+The example setup is live here: [https://example-tanstack-router.oidc-spa.dev/](https://example-tanstack-router.oidc-spa.dev/)
 
+Run it locally with: &#x20;
 
-{% embed url="https://stackblitz.com/github/keycloakify/oidc-spa/tree/main/examples/react-router?embed=1&file=src%2Foidc.tsx" %}
-Playground
-{% endembed %}
+```bash
+git clone https://github.com/keycloakify/oidc-spa
+mv oidc-spa/examples/react-router oidc-spa-react-router
+rm -rf oidc-spa
+cd oidc-spa-react-router
+yarn
+yarn dev
+```
 
 {% embed url="https://github.com/keycloakify/oidc-spa/tree/main/examples/react-router" %}
 Source code
 {% endembed %}
-
-The App is live here: [https://example-tanstack-router.oidc-spa.dev/](https://example-tanstack-router.oidc-spa.dev/)
 
