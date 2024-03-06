@@ -2,7 +2,7 @@
 description: Let's spin up a Keycloak server and configure it for your webapp!
 ---
 
-# 🔑 Usage with Keycloak
+# 🔑 Keycloak Configuration
 
 ### Provisioning a Keycloak server
 
@@ -63,16 +63,15 @@ Connect to the admin panel of your Keycloak server (we assumes it's https://auth
      5. _Username_: **\*\*\*\*\*\*\*\*\*\*\*\*\*\***
      6. _Password_: **\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\***
      7. When clicking "save" you'll be asked for a test email, you have to provide one that correspond **to a pre-existing user** or you will get a silent error and the credentials won't be saved.
-  4. On the tab Themes
-     1. _Login theme_: keycloak (see next section to see how to create a theme for your app)
-     2. _Email theme_: keycloak
+  4. On the tab Themes. See [Keycloakify](https://www.keycloakify.dev/) for creating a Keycloak theme that match your webapp.
   5. On the tab **Localization**
      1. _Internationalization_: **Enabled**
      2. _Supported locales_: \<Select the languages you wish to support>
   6. On the tab **Sessions**
-     1. SSO Session Idle: 14 days - This setting and the following two are so that when the user click "remember me" when he logs in, he doesn't have to login again for the next two weeks.
-     2. SSO Session Idle Remember Me: 14 days
-     3. SSO Session Max Remember Me: 14 days
+     1. SSO Session Idle: **14 days** - This is where you configure the auto logout policy. If you want your user to be automatically loged out after **30 minutes**, set it here.
+     2. SSO Session Max: **14 days**
+     3. SSO Session Idle Remember Me: **14 days**
+     4. SSO Session Max Remember Me: **14 days** - Same but for when user have checked "Remember me when loging in"
 *   Create a new OpenID Connect client called "myclient" (or something else) by accessing Clients -> Create Client
 
     1. _Root URL_: **https://your-domain.net** (or something else, your app does not need to be on the&#x20;
@@ -85,8 +84,6 @@ Connect to the admin panel of your Keycloak server (we assumes it's https://auth
 * (OPTIONAL) In **Authentication** (on the left panel) -> Tab **Required Actions** enable and set as default action **Therms and Conditions.** (You can use Keycloakify to specify your therme and condition, see next section)
 * (OPTIONAL) On the left pannel you can go to identity provider to enable login via Google, GitHub, Instagram, ect...&#x20;
 
-
-
 {% hint style="success" %}
 Now the parameter that you will have to provide to oidc-spa are:&#x20;
 
@@ -98,9 +95,4 @@ Now the parameter that you will have to provide to oidc-spa are:&#x20;
 Replace `your-domain.net`, `myrealm` and `myclient` by what you actually used in the configuration process.
 {% endhint %}
 
-### Customizing the login and register page&#x20;
-
-By default, Keycloak comes with very generic login and register pages, you might want to customize them to match the design system of your App.  \
-We've createad a lib that let you create Keycloak theme using React!   &#x20;
-
-{% embed url="https://www.keycloakify.dev/" %}
+###
