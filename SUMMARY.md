@@ -15,6 +15,6 @@
 
 ## Resources
 
-* [🔑 Keycloak Configuration](resources/usage-with-keycloak.md)
+* [🔑 Keycloak Configuration Guide](resources/usage-with-keycloak.md)
 * [🍪 End of third-party cookies](resources/end-of-third-party-cookies.md)
 * [🗝️ JWT Of the Access Token](resources/jwt-of-the-access-token.md)
