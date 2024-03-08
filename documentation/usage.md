@@ -15,7 +15,7 @@ In the realm of web development, there are two prevailing philosophies. One camp
 Regardless of your preference, we've got you covered. In addition to the base API, we offer a React Context/Hook API designed for seamless integration within your component body, ensuring flexibility and ease of use no matter your development style.
 
 {% tabs %}
-{% tab title="Usage without involving UI Framework" %}
+{% tab title="Vanilla API" %}
 If you are coding in vanilla or implementing the OIDC-SPA library in an application with a strict separation of concerns between your core logic and UI components, follow these steps:
 
 ```typescript
@@ -109,7 +109,7 @@ if (!oidc.isUserLoggedIn) {
 ```
 {% endtab %}
 
-{% tab title="Usage with React" %}
+{% tab title="React API" %}
 This piece of code should give you the necessary information to understand how oidc-spa can be used inside your react components.  \
 To go further you can refer to the examples setup to see how to integrate oidc-spa with your routing library: &#x20;
 
