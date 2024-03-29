@@ -1,6 +1,6 @@
 # 🔩 Installation
 
-Let's install oidc-spa in your project: &#x20;
+Let's install [oidc-spa](https://github.com/keycloakify/oidc-spa) in your project: &#x20;
 
 {% tabs %}
 {% tab title="npm" %}
