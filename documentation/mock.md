@@ -8,7 +8,31 @@ This approach is useful when building an app where user authentication is a feat
 
 {% tabs %}
 {% tab title="Vanilla API" %}
+<pre class="language-typescript"><code class="lang-typescript">import { createOidc } from "oidc-spa";
+<strong>import { createMockOidc } from "oidc-spa/mock";
+</strong>import { z } from "zod";
 
+const decodedIdTokenSchema = z.object({
+    sub: z.string(),
+    preferred_username: z.string()
+});
+
+const oidc = !import.meta.env.VITE_OIDC_ISSUER
+<strong>    ? createMockOidc({
+</strong><strong>          isUserInitiallyLoggedIn: false,
+</strong><strong>          mockedTokens: {
+</strong><strong>              decodedIdToken: {
+</strong><strong>                  sub: "123",
+</strong><strong>                  preferred_username: "john doe"
+</strong><strong>              } satisfies z.infer&#x3C;typeof decodedIdTokenSchema>
+</strong><strong>          }
+</strong><strong>      })
+</strong>    : await createOidc({
+          issuerUri: import.meta.env.VITE_OIDC_ISSUER,
+          clientId: import.meta.env.VITE_OIDC_CLIENT_ID,
+          publicUrl: import.meta.env.BASE_URL
+      });
+</code></pre>
 {% endtab %}
 
 {% tab title="React API" %}
