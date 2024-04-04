@@ -6,6 +6,7 @@
 * [👨‍🔧 Basic Usage](documentation/usage.md)
 * [⏲️ Auto Logout](documentation/auto-logout.md)
 * [❗ Error management](documentation/error-management.md)
+* [🎭 Mock](documentation/mock.md)
 * [🔁 Tokens renewal](documentation/tokens-renewal.md)
 
 ## Example setups
