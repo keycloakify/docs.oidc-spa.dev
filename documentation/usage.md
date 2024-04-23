@@ -220,7 +220,3 @@ function OrderHistory(){
 ```
 {% endtab %}
 {% endtabs %}
-
-###
-
-###
