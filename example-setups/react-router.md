@@ -1,6 +1,6 @@
 # 🛤️ React Router
 
-The example setup is live here: [https://example-tanstack-router.oidc-spa.dev/](https://example-tanstack-router.oidc-spa.dev/)
+The example setup is live here: [https://example-react-router.oidc-spa.dev/](https://example-react-router.oidc-spa.dev/)
 
 Run it locally with: &#x20;
 
