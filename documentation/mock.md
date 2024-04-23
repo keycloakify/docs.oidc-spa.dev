@@ -45,29 +45,24 @@ const decodedIdTokenSchema = z.object({
     preferred_username: z.string()
 });
 
-export const { OidcProvider, useOidc, prOidc } = (() => {
-<strong>    if (!import.meta.env.VITE_OIDC_ISSUER) {
-</strong><strong>
-</strong><strong>        const decodedIdToken: z.infer&#x3C;typeof decodedIdTokenSchema> = {
-</strong><strong>            sub: "123",
-</strong><strong>            preferred_username: "john doe"
-</strong><strong>        };
-</strong><strong>
-</strong><strong>        return createMockReactOidc({
+export const { OidcProvider, useOidc, prOidc } =
+    !import.meta.env.VITE_OIDC_ISSUER ?
+<strong>       createMockReactOidc({
 </strong><strong>            isUserInitiallyLoggedIn: false,
 </strong><strong>            mockedTokens: {
-</strong><strong>                decodedIdToken
+</strong><strong>                decodedIdToken: {
+</strong><strong>                    sub: "123",
+</strong><strong>                    preferred_username: "john doe"
+</strong><strong>                } satisfies z.infer&#x3C;typeof decodedIdTokenSchema>
 </strong><strong>            }
-</strong><strong>        });
-</strong><strong>    }
-</strong>
-    return createReactOidc({
-        issuerUri: import.meta.env.VITE_OIDC_ISSUER,
-        clientId: import.meta.env.VITE_OIDC_CLIENT_ID,
-        publicUrl: import.meta.env.BASE_URL,
-        decodedIdTokenSchema
-    });
-})();
+</strong><strong>        }) :
+</strong>        createReactOidc({
+            issuerUri: import.meta.env.VITE_OIDC_ISSUER,
+            clientId: import.meta.env.VITE_OIDC_CLIENT_ID,
+            publicUrl: import.meta.env.BASE_URL,
+            decodedIdTokenSchema
+        })
+
 
 </code></pre>
 {% endtab %}
