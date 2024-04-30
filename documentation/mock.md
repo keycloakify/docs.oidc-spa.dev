@@ -39,7 +39,7 @@ const oidc = !import.meta.env.VITE_OIDC_ISSUER
 {% endtab %}
 
 {% tab title="React API" %}
-<pre class="language-typescript"><code class="lang-typescript">import { createReactOidc } from "oidc-spa/react";
+<pre class="language-typescript" data-title="src/oidc.ts"><code class="lang-typescript">import { createReactOidc } from "oidc-spa/react";
 <strong>import { createMockReactOidc } from "oidc-spa/mock/react";
 </strong>import { z } from "zod";
 
