@@ -24,6 +24,9 @@ import { createOidc } from "oidc-spa";
 const oidc = await createOidc({
   // ...
   __unsafe_ssoSessionIdleSeconds: 10 * 60 // 10 minutes
+  //autoLogoutParams: { redirectTo: "current page" } // Default
+  //autoLogoutParams: { redirectTo: "home" }
+  //autoLogoutParams: { redirectTo: "specific url", url: "/a-page" }
 });
 ```
 {% endtab %}
@@ -38,6 +41,9 @@ export const {
 } = createReactOidc({
     // ...
     __unsafe_ssoSessionIdleSeconds: 10 * 60 // Ten minutes
+    //autoLogoutParams: { redirectTo: "current page" } // Default
+    //autoLogoutParams: { redirectTo: "home" }
+    //autoLogoutParams: { redirectTo: "specific url", url: "/a-page" }
 });
 ```
 {% endtab %}

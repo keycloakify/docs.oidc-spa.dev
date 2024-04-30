@@ -17,9 +17,12 @@ const decodedIdTokenSchema = z.object({
     preferred_username: z.string()
 });
 
+const publicUrl= import.meta.env.BASE_URL;
+
 const oidc = !import.meta.env.VITE_OIDC_ISSUER
 <strong>    ? createMockOidc({
 </strong><strong>          isUserInitiallyLoggedIn: false,
+</strong><strong>          publicUrl,
 </strong><strong>          mockedTokens: {
 </strong><strong>              decodedIdToken: {
 </strong><strong>                  sub: "123",
@@ -30,13 +33,13 @@ const oidc = !import.meta.env.VITE_OIDC_ISSUER
 </strong>    : await createOidc({
           issuerUri: import.meta.env.VITE_OIDC_ISSUER,
           clientId: import.meta.env.VITE_OIDC_CLIENT_ID,
-          publicUrl: import.meta.env.BASE_URL
+          publicUrl
       });
 </code></pre>
 {% endtab %}
 
 {% tab title="React API" %}
-<pre class="language-typescript" data-title="src/oidc.ts"><code class="lang-typescript">import { createReactOidc } from "oidc-spa/react";
+<pre class="language-typescript"><code class="lang-typescript">import { createReactOidc } from "oidc-spa/react";
 <strong>import { createMockReactOidc } from "oidc-spa/mock/react";
 </strong>import { z } from "zod";
 
@@ -45,10 +48,13 @@ const decodedIdTokenSchema = z.object({
     preferred_username: z.string()
 });
 
+const publicUrl = import.meta.env.BASE_URL;
+
 export const { OidcProvider, useOidc, prOidc } =
     !import.meta.env.VITE_OIDC_ISSUER ?
-<strong>       createMockReactOidc({
+<strong>        createMockReactOidc({
 </strong><strong>            isUserInitiallyLoggedIn: false,
+</strong><strong>            publicUrl,
 </strong><strong>            mockedTokens: {
 </strong><strong>                decodedIdToken: {
 </strong><strong>                    sub: "123",
@@ -59,11 +65,9 @@ export const { OidcProvider, useOidc, prOidc } =
 </strong>        createReactOidc({
             issuerUri: import.meta.env.VITE_OIDC_ISSUER,
             clientId: import.meta.env.VITE_OIDC_CLIENT_ID,
-            publicUrl: import.meta.env.BASE_URL,
+            publicUrl,
             decodedIdTokenSchema
-        })
-
-
+        });
 </code></pre>
 {% endtab %}
 {% endtabs %}
