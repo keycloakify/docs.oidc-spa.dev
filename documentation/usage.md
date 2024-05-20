@@ -16,7 +16,7 @@ If you have not yet set up such a server, please refer to [our guide for instruc
 import { createOidc } from "oidc-spa";
 
 const oidc = await createOidc({
-    issuerUri: "https://auth.your-domain.net/auth/realms/myrealm",
+    issuerUri: "https://auth.your-domain.net/realms/myrealm",
     clientId: "myclient",
     /**
      * - `your-app.com/${publicUrl}/silent-sso.html` must serve the file `silent-sso.html`
@@ -114,7 +114,7 @@ To go further you can refer to the examples setup to see how to integrate oidc-s
 import { createReactOidc } from "oidc-spa/react";
 
 export const { OidcProvider, useOidc } = createReactOidc({
-    issuerUri: "https://auth.your-domain.net/auth/realms/myrealm",
+    issuerUri: "https://auth.your-domain.net/realms/myrealm",
     clientId: "myclient",
     /**
      * - `your-app.com/${publicUrl}silent-sso.html` must serve the file 
