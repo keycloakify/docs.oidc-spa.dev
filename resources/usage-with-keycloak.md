@@ -2,7 +2,7 @@
 description: Let's spin up a Keycloak server and configure it for your webapp!
 ---
 
-# 🔑 Keycloak Configuration
+# 🔑 Keycloak Configuration Guide
 
 ### Provisioning a Keycloak server
 
@@ -92,7 +92,7 @@ Now the parameter that you will have to provide to oidc-spa are:&#x20;
     clientId: "myclient"
 ```
 
-Replace `your-domain.net`, `myrealm` and `myclient` by what you actually used in the configuration process.
+Replace `your-domain.net`, `myrealm` and `myclient` by what you actually used in the configuration process.\
+(On older Keycloak the issuerUri will be "https://auth.your-domain.net/**auth**/realms/myrealm")
 {% endhint %}
 
-###
