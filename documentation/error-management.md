@@ -59,7 +59,7 @@ function LoginButton() {
         console.warn("OIDC initialization error");
         switch (initializationError.type) {
             case "bad configuration":
-                console.warn("The identity server and/or the client are misconfigured");
+                console.warn("The identity server and/or the client is misconfigured");
                 break;
             case "server down":
                 console.warn("The identity server is down");
