@@ -1,5 +1,9 @@
 # 🔩 Installation
 
+{% hint style="success" %}
+If you're having issues don't hesitate to [reach out on Discord](https://discord.gg/mJdYJSdcm4)!
+{% endhint %}
+
 Let's install [oidc-spa](https://github.com/keycloakify/oidc-spa) in your project: &#x20;
 
 {% tabs %}
