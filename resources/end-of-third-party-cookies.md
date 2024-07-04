@@ -33,3 +33,8 @@ Conex resources: &#x20;
 
 {% embed url="https://github.com/keycloak/keycloak/issues/26128#issuecomment-1887443632" %}
 
+## Google reCaptcha
+
+reCaptcha is not directly related to oidc-spa since the cookie it sets is on the thegister page (so outside of your app). Anyway, since it's a connex concern: &#x20;
+
+{% embed url="https://docs.keycloakify.dev/faq-and-help/google-recaptcha-and-end-of-third-party-cookies" %}
