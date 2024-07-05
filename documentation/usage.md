@@ -43,6 +43,11 @@ if (!oidc.isUserLoggedIn) {
           * (This can also be a parameter of createOidc)
           */
          //extraQueryParams: { kc_idp_hint: "google", kc_locale: "fr" }
+         /**
+          * You can allso set where to redirect the user after 
+          * successful login
+          */
+          // successRedirectUrl: "/dashboard"
     });
 
 } else {
@@ -137,9 +142,7 @@ function App() {
         isUserLoggedIn ? (
             <>
                 {/* 
-                Note: The decodedIdToken can be typed and validated with zod
-                See: https://github.com/keycloakify/oidc-spa/blob/fddac99d2b49669a376f9a0b998a8954174d195e/examples/tanstack-router/src/oidc.tsx#L17-L43
-                
+                Note: The decodedIdToken can be typed and validated with zod See: https://github.com/keycloakify/oidc-spa/blob/fddac99d2b49669a376f9a0b998a8954174d195e/examples/tanstack-router/src/oidc.tsx#L17-L43
                 If you are wondering why ther's a decodedIdToken and no
                 decodedAccessToken read this: https://docs.oidc-spa.dev/resources/jwt-of-the-access-token
                 */}
@@ -151,7 +154,7 @@ function App() {
         ) : (
             <button onClick={() => login({ 
                 /** 
-                 * If you are calling login() in the callback of a click event
+                 * If you are calling login() in the callback of a button click
                  * (like here) set this to false.  
                  */
                 doesCurrentHrefRequiresAuth: false
@@ -161,6 +164,11 @@ function App() {
                  * (Can also be a parameter of createReactOidc)
                  */
                 //extraQueryParams: { kc_idp_hint: "google", kc_locale: "fr" }
+                /**
+                 * You can allso set where to redirect the user after 
+                 * successful login
+                 /
+                // successRedirectUrl: "/dashboard"
             })} >
               Login
             </button>
