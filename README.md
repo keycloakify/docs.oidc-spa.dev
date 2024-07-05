@@ -1,8 +1,6 @@
 # 🔩 Installation
 
-{% hint style="success" %}
 If you're having issues don't hesitate to [reach out on Discord](https://discord.gg/mJdYJSdcm4)!
-{% endhint %}
 
 Let's install [oidc-spa](https://github.com/keycloakify/oidc-spa) in your project: &#x20;
 
@@ -45,3 +43,16 @@ Create the following file in your public directory: &#x20;
 </html>
 ```
 {% endcode %}
+
+<details>
+
+<summary>Doing without the silent-sso.html file</summary>
+
+If for some reasons it's not fesable or practical for you to rely on the `silent-sso.html` file it's ok, it will work without it. &#x20;
+
+Just make sure to&#x20;
+
+* Set `publicUrl` to `undefined` when initializing oidc-spa.
+* Don't use `logout({ redirectTo: "home" })` but explicitely tell where you want your users to be redirected after logout using `logout({ redirectTo: "specific url", url: "/my-home" })` or use `logout({ redirectTo: "current page" })`.
+
+</details>

@@ -19,15 +19,11 @@ const oidc = await createOidc({
     issuerUri: "https://auth.your-domain.net/realms/myrealm",
     clientId: "myclient",
     /**
-     * - `your-app.com/${publicUrl}/silent-sso.html` must serve the file `silent-sso.html`
-     *   that you have created in the setup process.  
-     * - `your-app.com/${publicUrl}/` must be the homepage of your webapp.
-     * 
      * Vite:  `publicUrl: import.meta.env.BASE_URL`
      * CRA:   `publicUrl: process.env.PUBLIC_URL`
      * Other: `publicUrl: "/"` (Usually)
      */
-    publicUrl: "/"
+    publicUrl: import.meta.env.BASE_URL
 });
 
 if (!oidc.isUserLoggedIn) {
@@ -117,10 +113,6 @@ export const { OidcProvider, useOidc } = createReactOidc({
     issuerUri: "https://auth.your-domain.net/realms/myrealm",
     clientId: "myclient",
     /**
-     * - `your-app.com/${publicUrl}silent-sso.html` must serve the file 
-     *   that you have created in the setup process.  
-     * - `your-app.com/${publicUrl}` must be the homepage of your webapp.
-     * 
      * Vite:  `publicUrl: import.meta.env.BASE_URL`
      * CRA:   `publicUrl: process.env.PUBLIC_URL`
      * Other: `publicUrl: "/"` (Usually)
