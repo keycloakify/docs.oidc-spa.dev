@@ -10,13 +10,11 @@ Run it locally with: &#x20;
 
 ```bash
 git clone https://github.com/keycloakify/oidc-spa
-mv oidc-spa/examples/tanstack-router oidc-spa-tanstack-router
+mv oidc-spa/examples/tanstack-router-file-based oidc-spa-tanstack-router
 rm -rf oidc-spa
 cd oidc-spa-tanstack-router
 yarn
 yarn dev
 ```
 
-{% embed url="https://github.com/keycloakify/oidc-spa/tree/main/examples/tanstack-router" %}
-Source code
-{% endembed %}
+{% embed url="https://github.com/keycloakify/oidc-spa/tree/main/examples/tanstack-router-file-based" %}
