@@ -47,7 +47,7 @@ if (!oidc.isUserLoggedIn) {
           * You can allso set where to redirect the user after 
           * successful login
           */
-          // successRedirectUrl: "/dashboard"
+          // redirectUrl: "/dashboard"
     });
 
 } else {
@@ -168,7 +168,7 @@ function App() {
                  * You can allso set where to redirect the user after 
                  * successful login
                  /
-                // successRedirectUrl: "/dashboard"
+                // redirectUrl: "/dashboard"
             })} >
               Login
             </button>
