@@ -167,7 +167,7 @@ function App() {
                 /**
                  * You can allso set where to redirect the user after 
                  * successful login
-                 /
+                 */
                 // redirectUrl: "/dashboard"
             })} >
               Login
