@@ -2,7 +2,7 @@
 
 {% hint style="warning" %}
 This feature has not been released yet. \
-It's available in 4.9.0-rc.1
+It's available in 4.9.0-rc.0
 {% endhint %}
 
 If there is no pages of your app that can be accessed without being logged it you can make oidc-spa automatically redirect your users to the login pages when they are not authenticated. &#x20;
