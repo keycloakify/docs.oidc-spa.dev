@@ -8,6 +8,7 @@
 * [❗ Error management](documentation/error-management.md)
 * [🎭 Mock](documentation/mock.md)
 * [🔁 Tokens renewal](documentation/tokens-renewal.md)
+* [🛡️ Authentication required on every pages](documentation/authentication-required-on-every-pages.md)
 
 ## Example setups
 
