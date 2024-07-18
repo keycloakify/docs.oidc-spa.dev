@@ -2,7 +2,7 @@
 
 What happens if the OIDC server is down, or if the server indicates that your client configuration is not valid?&#x20;
 
-By default, the system behaves as if the user were not authenticated.&#x20;
+By default, [if you don't have `isAuthRequiredOnEveryPages` set to `true`](#user-content-fn-1)[^1], when there is an error with the OIDC initialization your website will load with the user unauthenticated. &#x20;
 
 This allows the user to access parts of the application that do not require authentication. When the user clicks on the login button (triggering the `login()` function), a browser alert is displayed, indicating that authentication is currently unavailable, and no further action is taken.&#x20;
 
@@ -101,3 +101,5 @@ Please note that due to browser security policies, it is impossible to distingui
 Consequently, one might encounter an error of type `"bad configuration"` on a slow 3G network, for example. &#x20;
 
 However, the timeout duration is automatically adjusted based on the speed of the internet connection of the user, which should prevent this issue from occurring. &#x20;
+
+[^1]: If you do, the error management is a bit different since we can't let the user navigates on the pages that do not requires authentication because every pages requires authentication. In concequence you have to provide an error fallback component. [See Authentication required on every pages](authentication-required-on-every-pages.md).
