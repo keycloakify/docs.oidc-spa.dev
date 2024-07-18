@@ -17,7 +17,7 @@ try{
 const oidc = await createOidc({
     // ...
    isAuthRequiredOnEveryPages: true,
-   // Optional, default location.href (here)
+   // Optional, the default value is: location.href (here)
    // postLoginRedirectUrl: "/dashboard"
 });
 
@@ -41,7 +41,7 @@ export const {
 } = createReactOidc({
    // ...
    isAuthRequiredOnEveryPages: true,
-   // Optional, default location.href (here)
+   // Optional, the default value is: location.href (here)
    // postLoginRedirectUrl: "/dashboard"
 });
 ```
