@@ -2,12 +2,12 @@
 description: Friend of the project
 ---
 
-# ⭐ Sponsor
+# ⭐ Sponsors
 
 {% embed url="https://www.zone2.tech/services/keycloak-consulting" %}
 Keycloak Consulting Services - Your partner in Keycloak deployment, configuration, and extension development .
 {% endembed %}
 
-{% embed url="https://www.cloud-iam.com/" %}
-Keycloak as a Service provider.
+{% embed url="https://cloud-iam.com/?mtm_campaign=keycloakify-deal&mtm_source=keycloakify-web-site" %}
+Keycloak as a Service. Use code 'keycloakify5' at checkout for a 5% discount.
 {% endembed %}

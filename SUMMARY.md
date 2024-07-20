@@ -24,4 +24,4 @@
 
 ***
 
-* [⭐ Sponsor](sponsor.md)
+* [⭐ Sponsors](sponsors.md)
