@@ -21,3 +21,7 @@
 * [🍪 End of third-party cookies](resources/end-of-third-party-cookies.md)
 * [🗝️ JWT Of the Access Token](resources/jwt-of-the-access-token.md)
 * [💬 Discord Server](resources/discord-server.md)
+
+***
+
+* [⭐ Sponsor](sponsor.md)
