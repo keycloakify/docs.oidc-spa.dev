@@ -1,5 +1,11 @@
 # 🔩 Installation
 
+{% hint style="info" %}
+Before starting: This is **not** a library for Next.js projects. &#x20;
+
+If you are using Next the closer alternative is to use [NextAuth.js](https://next-auth.js.org/) (with [the Keycloak adapter](https://next-auth.js.org/providers/keycloak) if you are using Keycloak). &#x20;
+{% endhint %}
+
 If you're having issues don't hesitate to [reach out on Discord](https://discord.gg/mJdYJSdcm4)!
 
 Let's install [oidc-spa](https://github.com/keycloakify/oidc-spa) in your project: &#x20;
