@@ -1,4 +1,4 @@
-# ❗ Error management
+# ❗ Error Management
 
 What happens if the OIDC server is down, or if the server indicates that your client configuration is not valid?&#x20;
 
@@ -102,4 +102,4 @@ Consequently, one might encounter an error of type `"bad configuration"` on a sl
 
 However, the timeout duration is automatically adjusted based on the speed of the internet connection of the user, which should prevent this issue from occurring. &#x20;
 
-[^1]: If you do, the error management is a bit different since we can't let the user navigates on the pages that do not requires authentication because every pages requires authentication. In concequence you have to provide an error fallback component. [See Authentication required on every pages](enforce-authentication-globally.md).
+[^1]: If you do, the error management is a bit different since we can't let the user navigates on the pages that do not requires authentication because every pages requires authentication. In concequence you have to provide an error fallback component. [See Authentication required on every pages](globally-enforce-authentication.md).

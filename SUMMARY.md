@@ -5,10 +5,10 @@
 * [🔩 Installation](README.md)
 * [👨‍🔧 Basic Usage](documentation/usage.md)
 * [⏲️ Auto Logout](documentation/auto-logout.md)
-* [❗ Error management](documentation/error-management.md)
+* [❗ Error Management](documentation/error-management.md)
 * [🎭 Mock](documentation/mock.md)
-* [🔁 Tokens renewal](documentation/tokens-renewal.md)
-* [🛡️ Enforce Authentication Globally](documentation/enforce-authentication-globally.md)
+* [🔁 Tokens Renewal](documentation/tokens-renewal.md)
+* [🛡️ Globally Enforce Authentication](documentation/globally-enforce-authentication.md)
 
 ## Example setups
 
