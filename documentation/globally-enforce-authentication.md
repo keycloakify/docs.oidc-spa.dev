@@ -1,8 +1,8 @@
-# 🛡️ Enforce Authentication Globally
+# 🛡️ Globally Enforce Authentication
 
 If there is no part of your app that can be accessed without being logged it you can make oidc-spa automatically redirect your users to the login pages when they are not authenticated. &#x20;
 
-Note that in this mode you don't have to check `isUserLoggedIn` or `useOidc({ assertUserLoggedIn: true })`.
+Note that in this mode you don't have to check `isUserLoggedIn` (you know it's true), or `useOidc({ assertUserLoggedIn: true })`(you know that's the case).
 
 {% tabs %}
 {% tab title="Vanilla API" %}
