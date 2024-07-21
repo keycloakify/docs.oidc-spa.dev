@@ -1,6 +1,6 @@
-# 🛡️ Authentication required on every pages
+# 🛡️ Enforce Authentication Globally
 
-If there is no pages of your app that can be accessed without being logged it you can make oidc-spa automatically redirect your users to the login pages when they are not authenticated. &#x20;
+If there is no part of your app that can be accessed without being logged it you can make oidc-spa automatically redirect your users to the login pages when they are not authenticated. &#x20;
 
 Note that in this mode you don't have to check `isUserLoggedIn` or `useOidc({ assertUserLoggedIn: true })`.
 
@@ -13,7 +13,7 @@ try{
 
 const oidc = await createOidc({
     // ...
-   isAuthRequiredOnEveryPages: true,
+   isAuthGloballyRequired: true,
    // Optional, the default value is: location.href (here)
    // postLoginRedirectUrl: "/dashboard"
 });
@@ -37,7 +37,7 @@ export const {
     prOidc
 } = createReactOidc({
    // ...
-   isAuthRequiredOnEveryPages: true,
+   isAuthGloballyRequired: true,
    // Optional, the default value is: location.href (here)
    // postLoginRedirectUrl: "/dashboard"
 });
