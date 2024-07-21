@@ -50,7 +50,7 @@ import { OidcProvider } from "oidc";
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
         <OidcProvider 
-            ErrorFallback={({ oidcInitializationError })=>(
+            ErrorFallback={({ initializationError })=>(
                 <h1 style={{ color: "red" }}>
                     An error occurred while initializing the OIDC client:
                     {initializationError.message}
