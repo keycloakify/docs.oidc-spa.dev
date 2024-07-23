@@ -1,9 +1,10 @@
 # 🔩 Installation
 
 {% hint style="info" %}
-Before starting: This is **not** a library for Next.js projects. &#x20;
+Before starting: Oidc-spa does **not** yet support Next.js projects. &#x20;
 
-If you are using Next the closer alternative is to use [NextAuth.js](https://next-auth.js.org/) (with [the Keycloak adapter](https://next-auth.js.org/providers/keycloak) if you are using Keycloak). &#x20;
+If you are using Next the closer alternative is to use [NextAuth.js](https://next-auth.js.org/) (with [the Keycloak adapter](https://next-auth.js.org/providers/keycloak) if you are using Keycloak).  \
+You can refer to [the phase two guide](https://phasetwo.io/docs/securing-applications/next/).
 {% endhint %}
 
 If you're having issues don't hesitate to [reach out on Discord](https://discord.gg/mJdYJSdcm4)!
