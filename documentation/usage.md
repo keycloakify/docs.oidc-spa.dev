@@ -70,7 +70,7 @@ if (!oidc.isUserLoggedIn) {
 
     // To call when the user click on logout.
     // You can also redirect to a custom url with 
-    // { redirectTo: "specific url", url: `${location.origin}/bye` }
+    // { redirectTo: "specific url", url: "/bye" }
     oidc.logout({ redirectTo: "home" });
 
     // If you are wondering why ther's a decodedIdToken and no
