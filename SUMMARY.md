@@ -9,6 +9,7 @@
 * [🎭 Mock](documentation/mock.md)
 * [🔁 Tokens Renewal](documentation/tokens-renewal.md)
 * [🛡️ Globally Enforce Authentication](documentation/globally-enforce-authentication.md)
+* [🔐 Update password](documentation/update-password.md)
 
 ## Example setups
 
