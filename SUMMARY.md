@@ -4,6 +4,7 @@
 
 * [🔩 Installation](README.md)
 * [👨‍🔧 Basic Usage](documentation/usage.md)
+* [🔌 REST API Client](documentation/rest-api-client.md)
 * [⏲️ Auto Logout](documentation/auto-logout.md)
 * [❗ Error Management](documentation/error-management.md)
 * [🎭 Mock](documentation/mock.md)

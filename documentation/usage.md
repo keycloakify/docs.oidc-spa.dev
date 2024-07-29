@@ -115,6 +115,7 @@ To go further you can refer to the examples setup to see how to integrate oidc-s
 import { createReactOidc } from "oidc-spa/react";
 
 export const { OidcProvider, useOidc } = createReactOidc({
+    // NOTE: If you don't have the params right away see note below.
     issuerUri: "https://auth.your-domain.net/realms/myrealm",
     clientId: "myclient",
     /**
@@ -218,5 +219,26 @@ function OrderHistory(){
 
 }
 ```
+
+If you get your OIDC parameters from an API you can passes a promise that resolves to the params to `createReactOidc`:
+
+```typescript
+const { /* ... */ } = createReactOidc((async ()=> {
+
+    const { 
+        issuerUri, 
+        clientId 
+    } = await axios.get("/oidc-params").then(r => r.data);
+
+    return {
+        issuerUri,
+        clientId,
+        publicUrl: import.meta.env.BASE_URL
+    };
+    
+})());
+```
+
+Even if you are using the React API, you can still access the Vanilla API,&#x20;
 {% endtab %}
 {% endtabs %}
