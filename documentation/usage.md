@@ -238,7 +238,5 @@ const { /* ... */ } = createReactOidc((async ()=> {
     
 })());
 ```
-
-Even if you are using the React API, you can still access the Vanilla API,&#x20;
 {% endtab %}
 {% endtabs %}
