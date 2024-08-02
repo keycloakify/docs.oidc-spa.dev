@@ -57,14 +57,14 @@ Initialize the React adapter of oidc-spa and expose the prOidc object, a promise
 export const { 
     OidcProvider, 
     useOidc,
-<strong>    prOidc
+<strong>    getOidc
 </strong>} = createReactOidc(/* ... */);
 </code></pre>
 
 Create a REST API Client that adds the OIDC Access Token as Autorization header to every HTTP request:
 
 <pre class="language-typescript" data-title="src/api.ts"><code class="lang-typescript">import axios from "axios";
-<strong>import { prOidc } from "oidc";
+<strong>import { getOidc } from "oidc";
 </strong>
 type Api = {
     getTodos: () => Promise&#x3C;{ id: number; title: string; }[]>;
@@ -75,7 +75,7 @@ const axiosInstance = axios.create({ baseURL: import.meta.env.API_URL });
 
 axiosInstance.interceptors.request.use(async config => {
 
-<strong>    const oidc= await prOidc;
+<strong>    const oidc= await getOidc();
 </strong><strong>
 </strong><strong>    if( !oidc.isUserLoggedIn ){
 </strong><strong>        throw new Error("We made a logic error: The user should be logged in at this point");
