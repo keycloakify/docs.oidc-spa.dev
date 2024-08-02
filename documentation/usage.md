@@ -114,7 +114,7 @@ To go further you can refer to the examples setup to see how to integrate oidc-s
 ```tsx
 import { createReactOidc } from "oidc-spa/react";
 
-export const { OidcProvider, useOidc } = createReactOidc({
+export const { OidcProvider, useOidc, getOidc } = createReactOidc({
     // NOTE: If you don't have the params right away see note below.
     issuerUri: "https://auth.your-domain.net/realms/myrealm",
     clientId: "myclient",
@@ -220,10 +220,14 @@ function OrderHistory(){
 }
 ```
 
-If you get your OIDC parameters from an API you can passes a promise that resolves to the params to `createReactOidc`:
+If you get your OIDC parameters from an API you can passes an assync function that returns the oidc parameters. This function gets called when `<OidcProvider />` is first mounted or when `getOidc()` is first called.
 
 ```typescript
-const { /* ... */ } = createReactOidc((async ()=> {
+export const { 
+  OidcProvide, 
+  useOidc, 
+  getOidc 
+} = createReactOidc(async ()=> {
 
     const { 
         issuerUri, 
@@ -236,7 +240,7 @@ const { /* ... */ } = createReactOidc((async ()=> {
         publicUrl: import.meta.env.BASE_URL
     };
     
-})());
+});
 ```
 {% endtab %}
 {% endtabs %}
