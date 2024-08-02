@@ -1,10 +1,10 @@
-# 🔐 Update password
+# 🔐 User Account Management
 
 {% hint style="info" %}
-This is a feature specific to Keycloak
+This section is Keycloak specific
 {% endhint %}
 
-When your user is logged in, you can provide a link to redirect to Keycloak so they can change their password. &#x20;
+When your user is logged in, you can provide a link to redirect to Keycloak so they can change their password and accout informations.
 
 {% tabs %}
 {% tab title="Vanilla API" %}
@@ -15,8 +15,12 @@ const oidc = await createOidc({ ... });
 
 if( oidc.isUserLoggedIn ){
    oidc.goToAuthServer({
-      extraQueryParams: { "kc_action": "UPDATE_PASSWORD" }
+      extraQueryParams: { 
+          kc_action: "UPDATE_PASSWORD" 
+          //kc_action: "UPDATE_PROFILE"
+      }
    });
+
 }
 ```
 {% endtab %}
@@ -32,11 +36,15 @@ function ProtectedPage() {
         <button
             onClick={() =>
                 goToAuthServer({
-                    extraQueryParams: { "kc_action": "UPDATE_PASSWORD" }
+                    extraQueryParams: { 
+                        kc_action: "UPDATE_PASSWORD",
+                        // kc_action: "UPDATE_PROFILE"
+                    }
                 })
             }
         >
             Change password
+            {/* Update my Account informations */}
         </button>
     );
 }
