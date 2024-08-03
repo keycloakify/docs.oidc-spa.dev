@@ -252,10 +252,18 @@ import { getUserTodoStore } from "./todo";
 
 ## Comprehensive example
 
+If you're looking for a comprehensive Backend+Frontend example you can refer to Insee's project&#x20;
 
+{% embed url="https://youtu.be/33VijFArY9s" %}
 
-If you're looking for a comprehensive Backend+Frontend example you can refer to Insee's project starter:
+The app is live here:
 
 {% embed url="https://vite-insee-starter.demo-domain.ovh/" %}
-The starter App live
-{% endembed %}
+
+The frontend (Vite project):
+
+{% embed url="https://github.com/InseeFrLab/vite-insee-starter" %}
+
+The backend (Node TODO App REST API):
+
+{% embed url="https://github.com/InseeFrLab/todo-rest-api" %}
