@@ -197,7 +197,7 @@ export async function createDecodeAccessToken() {
         
         if( 
           requiredRole !== undefined &&
-          !decodedAccessToken.ream_access.roles(requiredRole)
+          !decodedAccessToken.ream_access.roles.includes(requiredRole)
         ){
             throw new HTTPException(401);
         }
