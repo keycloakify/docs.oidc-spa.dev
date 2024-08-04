@@ -160,14 +160,20 @@ export async function createDecodeAccessToken() {
         issuerUri: oidcIssuerUri,
         decodedAccessTokenSchema: z.object({
             sub: z.string(),
+            realm_access: z.object({
+                roles: z.array(z.string())
+            })
             // Some other info you might want to read from the accessToken, example:
             // preferred_username: z.string()
         })
     });
 
-    function decodeAccessToken(params: { authorizationHeaderValue: string | undefined; }) {
+    function decodeAccessToken(params: { 
+        authorizationHeaderValue: string | undefined; 
+        requiredRole?: string;
+    }) {
 
-        const { authorizationHeaderValue } = params;
+        const { authorizationHeaderValue, requiredRole } = params;
 
         if( authorizationHeaderValue === undefined ){
             throw new HTTPException(401);
@@ -186,8 +192,17 @@ export async function createDecodeAccessToken() {
                     throw new HTTPException(401);
             }
         }
+        
+        const { decodedAccessToken } = result;
+        
+        if( 
+          requiredRole !== undefined &&
+          !decodedAccessToken.ream_access.roles(requiredRole)
+        ){
+            throw new HTTPException(401);
+        }
 
-        return result.decodedAccessToken;
+        return decodedAccessToken;
 
     }
 
