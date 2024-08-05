@@ -1,5 +1,10 @@
 # 🔩 Installation
 
+{% hint style="danger" %}
+The latest version of oidc-spa have a bugs, the token isn't refreshed automatically.  \
+Releasing a new version in a few minuts.
+{% endhint %}
+
 {% hint style="info" %}
 Before starting be aware that oidc-spa does **not** yet support Next.js projects. &#x20;
 
