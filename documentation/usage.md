@@ -42,7 +42,7 @@ if (!oidc.isUserLoggedIn) {
           * to be added on the login url.  
           * (Can also be a parameter of createOidc `extraQueryParams: ()=> ({ ui_locales: "fr" })`)
           */
-         //extraQueryParams: ()=> ({ kc_idp_hint: "google", ui_locales: "fr" })
+         //extraQueryParams: { kc_idp_hint: "google", ui_locales: "fr" }
          /**
           * You can allso set where to redirect the user after 
           * successful login
