@@ -40,9 +40,9 @@ if (!oidc.isUserLoggedIn) {
          /** 
           * Optionally, you can add some extra parameter 
           * to be added on the login url.  
-          * (This can also be a parameter of createOidc)
+          * (Can also be a parameter of createOidc `extraQueryParams: ()=> ({ ui_locales: "fr" })`)
           */
-         //extraQueryParams: { kc_idp_hint: "google", kc_locale: "fr" }
+         //extraQueryParams: ()=> ({ kc_idp_hint: "google", ui_locales: "fr" })
          /**
           * You can allso set where to redirect the user after 
           * successful login
@@ -153,9 +153,9 @@ function App() {
                 /** 
                  * Optionally, you can add some extra parameter 
                  * to be added on the login url.
-                 * (Can also be a parameter of createReactOidc)
+                 * (Can also be a parameter of createReactOidc `extraQueryParams: ()=> ({ ui_locales: "fr" })`)
                  */
-                //extraQueryParams: { kc_idp_hint: "google", kc_locale: "fr" }
+                //extraQueryParams: { kc_idp_hint: "google", ui_locales: "fr" }
                 /**
                  * You can allso set where to redirect the user after 
                  * successful login
