@@ -51,7 +51,8 @@ if (!oidc.isUserLoggedIn) {
           
           /**
            * Keycloak: You can also send the users directly to the register page
-           * see: https://github.com/keycloakify/oidc-spa/blob/14a3777601c50fa69d1221495d77668e97443119/examples/tanstack-router-file-based/src/components/Header.tsx#L54-L66 
+           * see: https://github.com/keycloakify/oidc-spa/blob/14a3777601c50fa69d1221495d77668e97443119/examples/tanstack-router-file-based/src/components/Header.tsx#L54-L66
+           */ 
     });
 
 } else {
