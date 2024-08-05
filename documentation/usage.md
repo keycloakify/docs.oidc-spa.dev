@@ -81,22 +81,13 @@ if (!oidc.isUserLoggedIn) {
     // What is inside the idToken is defined by the OIDC server you are using.  
     // If you want to specify the type of the decodedIdToken you can do:
     //
-    // type DecodedIdToken = {
-    //    sub: string;
-    //    preferred_username: string;
-    //    // ...
-    // };
-    //
-    // export const { useOidc } = createUseOidc<DecodedIdToken>(...)
-    //
-    // If you want the shape of the decodedIdToken to be validated at runtime
-    // you can provide a validator function using zod for example:
-    //
-    // export const { useOidc } = createUseOidc<DecodedIdToken>({
+    // import { z } from "zod";
+    // export const { useOidc } = createUseOidc({
     //    ...
     //    decodedIdTokenSchema: z.object({
     //        sub: z.string(),
-    //        preferred_username: z.string()
+    //        preferred_username: z.string(),
+    //        // ... other properties
     //    })
     // })
 
