@@ -83,6 +83,12 @@ Connect to the admin panel of your Keycloak server (we assumes it's https://auth
     3. Login theme: keycloak (or your theme if you have one)
 * (OPTIONAL) In **Authentication** (on the left panel) -> Tab **Required Actions** enable and set as default action **Therms and Conditions.** (You can use Keycloakify to specify your therme and condition, see next section)
 * (OPTIONAL) On the left pannel you can go to identity provider to enable login via Google, GitHub, Instagram, ect...&#x20;
+*   (OPTIONAL) Enable your user to delete their own account (see [user account managment](../documentation/user-account-management.md))
+
+    1. In the left bar navigate to **Autentication** -> **Required Action** -> "**Delete Account**" Enabled: **On**
+    2. In the left bar navigate to **Realm Setting** -> **User Registration** -> **Default Roles** -> **Assign Role** -> **Filter by client** -> select **Delete Account** and click on assign.
+
+
 
 {% hint style="success" %}
 Now the parameter that you will have to provide to oidc-spa are:&#x20;
