@@ -70,8 +70,8 @@ Connect to the admin panel of your Keycloak server (we assumes it's https://auth
   6. On the tab **Sessions**
      1. SSO Session Idle: **14 days** - This is where you configure the auto logout policy. If you want your user to be automatically loged out after **30 minutes**, set it here.
      2. SSO Session Max: **14 days**
-     3. SSO Session Idle Remember Me: **14 days**
-     4. SSO Session Max Remember Me: **14 days** - Same but for when user have checked "Remember me when loging in"
+     3. SSO Session Idle Remember Me: **365 days** - Same than SSO Session Idle but when the user have checked "Remember me" when login in. If you have enaled "remeber me" and you want this option to make sens you must set it to a value that is greater than SSO Session Idle. If you have set SSO Session Idle to something short because you want to implement an auto logout policy you probably want to go in Realm -> login and disable "Remember me"
+     4. SSO Session Max Remember Me: **365 days** - Same note here.
 *   Create a new OpenID Connect client called "myclient" (or something else) by accessing Clients -> Create Client
 
     1. _Root URL_: **https://your-domain.net** (or something else, your app does not need to be on the&#x20;
