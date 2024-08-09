@@ -25,7 +25,7 @@
 * [🗝️ JWT Of the Access Token](resources/jwt-of-the-access-token.md)
 * [💬 Discord Server](resources/discord-server.md)
 * [⬆️ Migration Guides](resources/migration-guides.md)
-* [v4 -> v5](resources/v4-greater-than-v5.md)
+* [⬆️ v4 -> v5](resources/v4-greater-than-v5.md)
 
 ***
 
