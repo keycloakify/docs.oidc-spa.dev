@@ -54,7 +54,7 @@ Connect to the admin panel of your Keycloak server (we assumes it's https://auth
   2. On the tab **login**
      1. _User registration_: **On**
      2. _Forgot password_: **On**
-     3. _Remember me_: **On**
+     3. _Remember me_: **On**, or **Off** if you want to implement [auto logout](../documentation/auto-logout.md).
   3. On the tab **email,** we give an example with [AWS SES](https://aws.amazon.com/ses/), if you don't have a SMTP server at hand you can skip this by going to **Authentication** (on the left panel) -> Tab **Required Actions** -> Uncheck "set as default action" **Verify Email**. Be aware that with email verification disable, anyone will be able to sign up to your service.
      1. _From_: **noreply@my-domain.net**
      2. _Host_: **email-smtp.us-east-2.amazonaws.com**
