@@ -68,7 +68,7 @@ Connect to the admin panel of your Keycloak server (we assumes it's https://auth
      1. _Internationalization_: **Enabled**
      2. _Supported locales_: \<Select the languages you wish to support>
   6. On the tab **Sessions**
-     1. SSO Session Idle: **14 days** - This is where you configure the [auto logout](../documentation/auto-logout.md) policy. If you want your user to be automatically loged out after **30 minutes**, set it here.
+     1. SSO Session Idle: **14 days** - This is where you configure the [auto logout](../documentation/auto-logout.md) policy. This parameter defines the lifespawn of the refresh token. If you want your user to be automatically loged out after **30 minutes** of inactivity, Inacivity meaning they are not actively interacting with your app by scrolling, moving the mouse or typing, then you want to set this to **30 minutes**.
      2. SSO Session Max: **14 days** - Even if you implement [auto logout](../documentation/auto-logout.md) you want to leave this to at least one day. Indeed as long as your users are actively interacting with your app they should remain logged in**.**
      3. SSO Session Idle Remember Me: **365 days** - Same than SSO Session Idle but when the user have checked "Remember me" when login in. If you have enaled "remeber me" and you want this option to make sens you must set it to a value that is greater than SSO Session Idle. If you have set SSO Session Idle to something short because you want to implement an auto logout policy you probably want to go in Realm -> login and disable "Remember me"
      4. SSO Session Max Remember Me: **365 days** - Same note here.
