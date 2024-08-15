@@ -77,7 +77,7 @@ function ProtectedPage() {
                     {(()=>{
                         switch(backFromAuthServer.result.kc_action_status){
                             case "success":
-                                return "Password sucessfully updated";
+                                return "Password successfully updated";
                             case "cancelled":
                                 return "Password unchanged";
                         }
