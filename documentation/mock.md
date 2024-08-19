@@ -20,7 +20,7 @@ const decodedIdTokenSchema = z.object({
 const publicUrl= import.meta.env.BASE_URL;
 
 const oidc = !import.meta.env.VITE_OIDC_ISSUER
-<strong>    ? createMockOidc({
+<strong>    ? await createMockOidc({
 </strong><strong>          isUserInitiallyLoggedIn: false,
 </strong><strong>          publicUrl,
 </strong><strong>          mockedTokens: {
