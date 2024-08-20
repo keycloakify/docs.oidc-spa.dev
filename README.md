@@ -66,5 +66,5 @@ Just make sure to&#x20;
 </details>
 
 [^1]: Yes .htm and not .html.  \
-    Some web server such as serve will rewrite /silent-sso.html to /silent-sso and serve the index.html of your distribution.  \
-    Using the .htm extention prevend any potential issue.
+    Some web server such as [serve](https://github.com/vercel/serve#readme) will rewrite `/silent-sso.html` to `/silent-sso` and serve the `index.html` of your distribution.  \
+    Using the `.htm` extention prevend any potential issue.
