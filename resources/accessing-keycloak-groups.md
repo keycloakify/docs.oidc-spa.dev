@@ -1,3 +1,3 @@
 # 👥 Accessing Keycloak Groups
 
-{% embed url="https://youtu.be/6hLDmbXB43M" %}
+{% embed url="https://www.youtube.com/watch?v=0zXr9ELHtiU" %}
