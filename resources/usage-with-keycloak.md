@@ -81,7 +81,7 @@ Connect to the admin panel of your Keycloak server (we assumes it's https://auth
     1. _Valid redirect URIs_: **https://onyxia.my-domain.net/\*, http://localhost\* (for testing in local)**
     2. _Web origins_: **\***
     3. Login theme: keycloak (or your theme if you have one)
-* (OPTIONAL) In **Authentication** (on the left panel) -> Tab **Required Actions** enable and set as default action **Therms and Conditions.** (You can use Keycloakify to specify your therme and condition, see next section)
+* (OPTIONAL) In **Authentication** (on the left panel) -> Tab **Required Actions** enable and set as default action **Terms and Conditions.** (You can use Keycloakify to specify your terms and conditions, see next section)
 * (OPTIONAL) On the left pannel you can go to identity provider to enable login via Google, GitHub, Instagram, ect...&#x20;
 *   (OPTIONAL) Enable your user to delete their own account (see [user account managment](../documentation/user-account-management.md))
 
