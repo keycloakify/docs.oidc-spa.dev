@@ -37,7 +37,7 @@ bun add oidc-spa
 {% endtab %}
 {% endtabs %}
 
-Create the silent-soo.htm[^1] file in your public directory: &#x20;
+Create the silent-sso.htm[^1] file in your public directory: &#x20;
 
 {% code title="public/silent-sso.htm" %}
 ```html
