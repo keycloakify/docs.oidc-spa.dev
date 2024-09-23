@@ -10,7 +10,11 @@ import { createOidc } from "oidc-spa";
 const oidc = await createOidc({ ... });
 
 if( oidc.isUserLoggedIn ){
-   oidc.renewToken();
+   oidc.renewToken(
+      // Optionally you can pass extra params that will be added 
+      // to the body of the POST request to the /token endpoint.
+      // { electedCustomer: "customer123" }
+   );
 }
 ```
 {% endtab %}
