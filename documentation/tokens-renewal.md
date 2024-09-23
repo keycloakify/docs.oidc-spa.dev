@@ -12,7 +12,7 @@ const oidc = await createOidc({ ... });
 if( oidc.isUserLoggedIn ){
    oidc.renewToken(
       // Optionally you can pass extra params that will be added 
-      // to the body of the POST request to the /token endpoint.
+      // to the body of the POST request to the openid-connect/token endpoint.
       // { electedCustomer: "customer123" }
    );
 }
