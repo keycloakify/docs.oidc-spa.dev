@@ -13,7 +13,7 @@ if( oidc.isUserLoggedIn ){
    oidc.renewToken(
       // Optionally you can pass extra params that will be added 
       // to the body of the POST request to the openid-connect/token endpoint.
-      // { electedCustomer: "customer123" }
+      // { extraTokenParams: { electedCustomer: "customer123" } }
    );
 }
 ```
@@ -29,7 +29,11 @@ function MyComponent(){
   const { renewTokens } = useOidc({ assertUserLoggedIn: true });
   
   useEffect(()=> {
-      renewTokens();
+      renewTokens(
+        // Optionally you can pass extra params that will be added 
+        // to the body of the POST request to the openid-connect/token endpoint.
+        // { extraTokenParams: { electedCustomer: "customer123" } }
+      );
   }, []);
   
   return <>...</>;
