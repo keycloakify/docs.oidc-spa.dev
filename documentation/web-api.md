@@ -129,7 +129,7 @@ function UserTodos(){
 </code></pre>
 
 {% hint style="info" %}
-This example is purposefully very basic to minimize noise but in your App you should consider using [tRPC](https://trpc.io/) (if you have JS backend) and [TanStack Query](https://tanstack.com/query/v3).
+This example is purposefully very basic to minimize noise but in your App you might want to consider using solutions like [tRPC](https://trpc.io/) (if you have JS backend) and [TanStack Query](https://tanstack.com/query/v3).
 {% endhint %}
 {% endtab %}
 {% endtabs %}
