@@ -33,7 +33,7 @@ axiosInstance.interceptors.request.use(async config => {
 <strong>    const oidc= await prOidc;
 </strong><strong>
 </strong><strong>    if( !oidc.isUserLoggedIn ){
-</strong><strong>        throw new Error("We made a logic error: The user should be logged in at this point");
+</strong><strong>        throw new Error("We made a logic error: If the user isn't logged in we shouldn't be making request to an API endpoint that requires authentication");
 </strong><strong>    }
 </strong><strong>    
 </strong><strong>    config.headers.Authorization = `Bearer ${oidc.getTokens().accessToken}`;

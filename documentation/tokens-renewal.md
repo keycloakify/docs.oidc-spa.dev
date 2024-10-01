@@ -14,6 +14,8 @@ if( oidc.isUserLoggedIn ){
       // Optionally you can pass extra params that will be added 
       // to the body of the POST request to the openid-connect/token endpoint.
       // { extraTokenParams: { electedCustomer: "customer123" } }
+      // This parameter can also be provided as parameter to the createOidc
+      // function. See: https://github.com/keycloakify/oidc-spa/blob/59b8db7db0b47c84e8f383a86677e88e884887cb/src/oidc.ts#L153-L163
    );
 }
 ```
@@ -33,6 +35,8 @@ function MyComponent(){
         // Optionally you can pass extra params that will be added 
         // to the body of the POST request to the openid-connect/token endpoint.
         // { extraTokenParams: { electedCustomer: "customer123" } }
+        // This parameter can also be provided as parameter to the createReactOidc
+        // function. See: https://github.com/keycloakify/oidc-spa/blob/59b8db7db0b47c84e8f383a86677e88e884887cb/src/oidc.ts#L153-L163
       );
   }, []);
   
