@@ -1,5 +1,5 @@
 ---
-description: Friend of the project
+description: Backers of the project
 ---
 
 # ⭐ Sponsors
