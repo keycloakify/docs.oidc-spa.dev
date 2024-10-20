@@ -12,6 +12,7 @@
 * [🛡️ Globally Enforce Authentication](documentation/globally-enforce-authentication.md)
 * [🔐 User Account Management](documentation/user-account-management.md)
 * [🔄 Doing Something Only When a New Session is Created](documentation/doing-something-only-when-a-new-session-is-created.md)
+* [👨‍🔧 User impersonation](documentation/user-impersonation.md)
 
 ## Example setups
 

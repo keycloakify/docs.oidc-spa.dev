@@ -98,6 +98,8 @@ if (!oidc.isUserLoggedIn) {
 
 }
 ```
+
+
 {% endtab %}
 
 {% tab title="React API" %}
@@ -244,3 +246,5 @@ export const {
 ```
 {% endtab %}
 {% endtabs %}
+
+xx
