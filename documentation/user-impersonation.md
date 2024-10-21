@@ -4,6 +4,8 @@ description: Enable the admin of your application to login as a given user.
 
 # 👨‍🔧 User impersonation
 
+
+
 {% hint style="warning" %}
 User impersonation should ideally be managed by the authentication server.\
 For instance, if you are using Keycloak, you can navigate to the Admin Console, then go to:\
@@ -89,7 +91,7 @@ const obj = {
 // NOTE: An array in case you have more than one oidc client instance in your app.
 const arr = [obj];
 const str = JSON.stringify(arr);
-const b64 = btoa(objStr); // to base64
+const b64 = btoa(str); // to base64
 
 // This is the impersonation url:
 const url = `https://your-app.com?oidc-spa_impersonate=${b64}`
