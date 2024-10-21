@@ -5,24 +5,21 @@ description: Enable the admin of your application to login as a given user.
 # 👨‍🔧 User impersonation
 
 {% hint style="warning" %}
-User impersonation should be handled via the authentication server.  \
-For example if you are using Keycloak, from the Admin Console you can navigate to&#x20;
+User impersonation should ideally be managed by the authentication server.\
+For instance, if you are using Keycloak, you can navigate to the Admin Console, then go to:\
+**Users** -> **Action** -> **Impersonate**.\
+This allows you to access all applications within the realm as the impersonated user.
 
-users -> action -> impersonate
+The workaround described in this documentation is intended for situations where:
 
-This will let you use all the apps authenticated by the selected realm authenticated as a given user.  \
-\
-The approach described in this documentation page is only a workaround in the case where:  \
-&#x20;
-
-* The support team that will impersonate users don't have access to the Keycloak Admin Console.
-* **And** you [can't host your custom admin app under a sub path of the auth server url](#user-content-fn-1)[^1].
+* The support team handling impersonation does not have access to the Keycloak Admin Console.
+* Hosting a custom admin app [under a subpath of the authentication server's URL is not an option](#user-content-fn-1)[^1].
 {% endhint %}
 
-Let's say you have a custom admin app that should enable your support team to impersonate your users.  \
-Keycloakify enable you to to provide a special query parameter when you redirect a member of your support team to your app from your admin app so that authentication for a given user is automatically enabled.  \
-\
-This feature is disabled by default, to enable it: &#x20;
+Imagine you have a custom admin app that allows your support team to impersonate users.\
+With oidc-spa, you can include a special query parameter when redirecting a support team member from your admin app to your main app. This will automatically authenticates the support team member as the impersonated user.
+
+By default, this feature is disabled. To enable it:
 
 {% tabs %}
 {% tab title="Vanilla API" %}
@@ -71,12 +68,11 @@ export const { OidcProvider, useOidc, getOidc } = createReactOidc({
 {% endtab %}
 {% endtabs %}
 
-### Crafting the url for impersonation
+### Crafting the URL for Impersonation
 
-Assuming you have called the Keycloak Admin REST API to optain an access token, id token and a refresh token for a given user session, here is how to can craft the redirection url for impersonation:  \
-\
-(In this snippet we assume that  you have a JavaScript backend but you can adapt it)\
+After using the Keycloak API to obtain an access token, ID token, and refresh token for a user session in exchange for your admin token, you can craft the redirection URL for impersonation as follows:
 
+(For this example, we assume you're using a JavaScript backend, but you can easily adapt it to your environment.)
 
 ```typescript
 
@@ -98,10 +94,6 @@ const b64 = btoa(objStr); // to base64
 // This is the impersonation url:
 const url = `https://your-app.com?oidc-spa_impersonate=${b64}`
 ```
-
-
-
-
 
 [^1]: For example let's say you can be in this situation:\
     \- App: company.com\
