@@ -1,20 +1,20 @@
 # 🔩 Installation
 
 {% hint style="info" %}
-Before starting be aware that oidc-spa does **not** yet support Next.js projects. &#x20;
+Before starting be aware that oidc-spa does **not** yet support Next.js projects.
 
-If you are using Next the closer alternative is to use [NextAuth.js](https://next-auth.js.org/) (with [the Keycloak adapter](https://next-auth.js.org/providers/keycloak) if you are using Keycloak).  \
+If you are using Next the closer alternative is to use [NextAuth.js](https://next-auth.js.org/) (with [the Keycloak adapter](https://next-auth.js.org/providers/keycloak) if you are using Keycloak).\
 You can refer to [the phase two guide](https://phasetwo.io/docs/securing-applications/next/).
 {% endhint %}
 
 If you're having issues don't hesitate to [reach out on Discord](https://discord.gg/mJdYJSdcm4)!
 
-Let's install [oidc-spa](https://github.com/keycloakify/oidc-spa) in your project: &#x20;
+Let's install [oidc-spa](https://github.com/keycloakify/oidc-spa) in your project:
 
 {% tabs %}
 {% tab title="npm" %}
 ```bash
-npm install --save oidc-spa
+npm install oidc-spa
 ```
 {% endtab %}
 
@@ -37,7 +37,7 @@ bun add oidc-spa
 {% endtab %}
 {% endtabs %}
 
-Create the silent-sso.htm[^1] file in your public directory: &#x20;
+Create the silent-sso.htm[^1] file in your public directory:
 
 {% code title="public/silent-sso.htm" %}
 ```html
@@ -56,15 +56,15 @@ Create the silent-sso.htm[^1] file in your public directory: &#x20;
 
 <summary>Doing without the silent-sso.htm file</summary>
 
-If for some reasons it's not fesable or practical for you to rely on the `silent-sso.html` file it's ok, it will work without it. &#x20;
+If for some reasons it's not fesable or practical for you to rely on the `silent-sso.htm` file it's ok, it will work without it.
 
-Just make sure to&#x20;
+Just make sure to
 
 * Set `publicUrl` to `undefined` when initializing oidc-spa.
 * Don't use `logout({ redirectTo: "home" })` but explicitely tell where you want your users to be redirected after logout using `logout({ redirectTo: "specific url", url: "/my-home" })` or use `logout({ redirectTo: "current page" })`.
 
 </details>
 
-[^1]: Yes .htm and not .html.  \
-    Some web server such as [serve](https://github.com/vercel/serve#readme) will rewrite `/silent-sso.html` to `/silent-sso` and serve the `index.html` of your distribution.  \
+[^1]: Yes .htm and not .html.\
+    Some web server such as [serve](https://github.com/vercel/serve#readme) will rewrite `/silent-sso.html` to `/silent-sso` and serve the `index.html` of your distribution.\
     Using the `.htm` extention prevend any potential issue.
