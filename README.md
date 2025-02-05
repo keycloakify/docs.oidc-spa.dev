@@ -2,76 +2,96 @@
 icon: up
 ---
 
-# v5 -> v6
+# v5 → v6
 
-Here are what's new in the v6 of oidc-spa:
+Here’s what’s new in version 6 of `oidc-spa`:
 
-* Real support with any OIDC provider. The problem v5 had was that it forced you to be able to define Valid Redirect URIs with wildchard. Like for example https://my-app.com/dashboard/\*.  \
-  According to the OIDC spec, having wildchard in the context of redirect URIs is not OK and some OIDC Server like Ory Hydra does not allow it as discussed [here](https://github.com/ory/hydra/discussions/2512). In v6 there is only the need to define a single redirect URI: the homepage of your app. Like for example https://my-app.com/dashboard/
-* We stop storing tokens in the local session storage, aligning with the higher security standards.
-* We got rid of the need to rely on a silent-sso.htm file.
-* Mutch better error message: If something's wrong in your setup the quality of the message that exploains what's the cause have been greatly improved.
-* Overall improvement of the API quality.
+- **Full compatibility with any OIDC provider**  
+  In v5, you had to define valid redirect URIs using wildcards, such as `https://my-app.com/dashboard/*`. However, according to the OIDC specification, wildcards in redirect URIs are not allowed. Some OIDC servers, like Ory Hydra, enforce this rule, as discussed [here](https://github.com/ory/hydra/discussions/2512).  
+  In v6, you only need to define a single redirect URI—typically the homepage of your app (e.g., `https://my-app.com/dashboard/`).
 
-## Migration guide
+- **Enhanced security: No more token storage in session storage**  
+  Tokens are no longer stored in session storage, aligning with modern security best practices.
 
-First thing you want to do is remove the public/silent-sso.htm
+- **Eliminated the need for a `silent-sso.htm` file**  
+  The authentication flow no longer requires an external silent SSO mechanism.
+
+- **Improved error messages**  
+  If something is misconfigured, error messages now provide much clearer explanations of the root cause.
+
+- **API refinements**  
+  Several API improvements enhance usability and maintainability.
+
+## Migration Guide
+
+### 1. Remove `public/silent-sso.htm`
+
+The silent SSO file is no longer needed, so it should be deleted from your project.
+
+### 2. Update configuration changes
+
+The following changes have been made to the API:
 
 {% code title="src/oidc.ts" %}
 ```diff
- export const { OidcProvider, useOidc, getOidc } = createReactOidc({
-     issuerUri: "https://auth.your-domain.net/realms/myrealm",
-     clientId: "myclient",
-     // publicUrl renamed to homeUrl
--    publicUrl: import.meta.env.BASE_URL,
-+    homeUrl: import.meta.env.BASE_URL,
-     // isAuthGloballyRequired renamed to autoLogin
--    isAuthGloballyRequired: true,
-+    autoLogin: true,
-     // doEnableDebugLogs renamed to debugLogs
--    doEnableDebugLogs: true,
-+    debugLogs: true,
+export const { OidcProvider, useOidc, getOidc } = createReactOidc({
+    issuerUri: "https://auth.your-domain.net/realms/myrealm",
+    clientId: "myclient",
+    // `publicUrl` has been renamed to `homeUrl`
+-   publicUrl: import.meta.env.BASE_URL,
++   homeUrl: import.meta.env.BASE_URL,
+    // `isAuthGloballyRequired` has been renamed to `autoLogin`
+-   isAuthGloballyRequired: true,
++   autoLogin: true,
+    // `doEnableDebugLogs` has been renamed to `debugLogs`
+-   doEnableDebugLogs: true,
++   debugLogs: true,
+});
 
- });
- 
- createMockReactOidc({
-    // ...
--    publicUrl: import.meta.env.BASE_URL,
-+    homeUrl: import.meta.env.BASE_URL,
- });
+createMockReactOidc({
+   // ...
+-  publicUrl: import.meta.env.BASE_URL,
++  homeUrl: import.meta.env.BASE_URL,
+});
 ```
 {% endcode %}
 
-assertUserLoggedIn is now specified differently: &#x20;
+### 3. Update authentication assertion
+
+The `assertUserLoggedIn` option has been replaced:
 
 ```diff
 -const { oidcTokens } = useOidc({ assertUserLoggedIn: true });
 +const { oidcTokens } = useOidc({ assert: "user logged in" });
 ```
 
-### Error managment
+### 4. Error Management Updates
 
-The OidcInitializationError class has changed. Now it only has a property isAuthServerLikelyDown that is true when it's possible that the server is actually down.  \
-If it's false, the OIDC Server seems to be up but there is something wrong in your client/server configuration. &#x20;
+- `OidcInitializationError` now only includes the `isAuthServerLikelyDown` property, which is `true` if the authentication server is likely down.  
+  If it’s `false`, the OIDC server is reachable, but there is a misconfiguration on the client or server side.
 
-`initializationError.type` have been removed.\
-\
-Learn more: &#x20;
+- The `initializationError.type` property has been **removed**.
 
+🔗 Learn more:  
 {% content-ref url="https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/error-management" %}
 [Error Management](https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/error-management)
 {% endcontent-ref %}
 
-The Keycloak configuration guide has also been improved: &#x20;
+### 5. Keycloak Configuration Improvements
 
+The Keycloak setup guide has been updated for better clarity and ease of use.
+
+🔗 Learn more:  
 {% content-ref url="https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/resources/keycloak-configuration" %}
 [Keycloak Configuration](https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/resources/keycloak-configuration)
 {% endcontent-ref %}
 
-### Session initialization
+### 6. Session Initialization Changes
 
-The authMethod has been removed and isNewBrowserSession is to be used insted. Learn more:
+- The `authMethod` option has been **removed**.
+- The `isNewBrowserSession` property should now be used instead.
 
+🔗 Learn more:  
 {% content-ref url="https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/user-session-initialization" %}
 [User Session Initialization](https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/user-session-initialization)
 {% endcontent-ref %}
