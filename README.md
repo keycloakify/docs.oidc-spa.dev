@@ -87,3 +87,13 @@ The Keycloak setup guide has been updated for better clarity:
 {% content-ref url="https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/user-session-initialization" %}
 [User Session Initialization](https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/user-session-initialization)
 {% endcontent-ref %}
+
+### 7. Impersonation
+
+oidc-spa v5 had built in [impersonation cappability](https://docs.oidc-spa.dev/docs/v5/documentation/user-impersonation).  \
+However, this mechanism was somewhat hard to implement in practice, and could expose your app to vulnerabilities if not implemented correctly.  \
+If you want to implement impersonation, here is an alternative approach for Keycloak: &#x20;
+
+{% embed url="https://github.com/keycloakify/keycloakify-starter/tree/direct_impersonation" %}
+
+If you where using this feature, just reach out to me, I'm open to re-introducing it. &#x20;
