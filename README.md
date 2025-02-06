@@ -12,11 +12,11 @@ Here’s what’s new in version 6 of `oidc-spa`:
 * **Enhanced security: No more token storage in session storage**\
   Tokens are no longer stored in session storage, aligning with modern security best practices.
 * **Eliminated the need for a `silent-sso.htm` file**\
-  The authentication flow no longer requires an external silent SSO mechanism.
+  Making oidc-spa self contained and easyer to setup.
 * **Improved error messages**\
   If something is misconfigured, error messages now provide much clearer explanations of the root cause.
 * **API refinements**\
-  Several API improvements enhance usability and maintainability.
+  Several API improvements aiming at making the library usage more intuitive.
 
 ## Migration Guide
 
@@ -64,10 +64,8 @@ The `assertUserLoggedIn` option has been replaced:
 ### 4. Error Management Updates
 
 * `OidcInitializationError` now only includes the `isAuthServerLikelyDown` property, which is `true` if the authentication server is likely down.\
-  If it’s `false`, the OIDC server is reachable, but there is a misconfiguration on the client or server side.
+  If it’s `false`, the OIDC server is reachable, but there is a client/server missconfiguration.
 * The `initializationError.type` property has been **removed**.
-
-🔗 Learn more:
 
 {% content-ref url="https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/error-management" %}
 [Error Management](https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/error-management)
@@ -75,9 +73,7 @@ The `assertUserLoggedIn` option has been replaced:
 
 ### 5. Keycloak Configuration Improvements
 
-The Keycloak setup guide has been updated for better clarity and ease of use.
-
-🔗 Learn more:
+The Keycloak setup guide has been updated for better clarity:
 
 {% content-ref url="https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/resources/keycloak-configuration" %}
 [Keycloak Configuration](https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/resources/keycloak-configuration)
@@ -87,8 +83,6 @@ The Keycloak setup guide has been updated for better clarity and ease of use.
 
 * The `authMethod` option has been **removed**.
 * The `isNewBrowserSession` property should now be used instead.
-
-🔗 Learn more:
 
 {% content-ref url="https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/user-session-initialization" %}
 [User Session Initialization](https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/user-session-initialization)
