@@ -2,24 +2,20 @@
 icon: up
 ---
 
-# v5 → v6
+# v5 -> v6
 
 Here’s what’s new in version 6 of `oidc-spa`:
 
-- **Full compatibility with any OIDC provider**  
-  In v5, you had to define valid redirect URIs using wildcards, such as `https://my-app.com/dashboard/*`. However, according to the OIDC specification, wildcards in redirect URIs are not allowed. Some OIDC servers, like Ory Hydra, enforce this rule, as discussed [here](https://github.com/ory/hydra/discussions/2512).  
-  In v6, you only need to define a single redirect URI—typically the homepage of your app (e.g., `https://my-app.com/dashboard/`).
-
-- **Enhanced security: No more token storage in session storage**  
+* **Full compatibility with any OIDC provider**\
+  In v5, you had to define valid redirect URIs using wildcards, such as `https://my-app.com/dashboard/*`. However, according to the OIDC specification, wildcards in redirect URIs are not allowed. Some OIDC servers, like Ory Hydra, enforce this rule, as discussed [here](https://github.com/ory/hydra/discussions/2512).\
+  In v6, you only need to define a single redirect URI, the homepage of your app (e.g., `https://my-app.com/dashboard/`).
+* **Enhanced security: No more token storage in session storage**\
   Tokens are no longer stored in session storage, aligning with modern security best practices.
-
-- **Eliminated the need for a `silent-sso.htm` file**  
+* **Eliminated the need for a `silent-sso.htm` file**\
   The authentication flow no longer requires an external silent SSO mechanism.
-
-- **Improved error messages**  
+* **Improved error messages**\
   If something is misconfigured, error messages now provide much clearer explanations of the root cause.
-
-- **API refinements**  
+* **API refinements**\
   Several API improvements enhance usability and maintainability.
 
 ## Migration Guide
@@ -67,12 +63,12 @@ The `assertUserLoggedIn` option has been replaced:
 
 ### 4. Error Management Updates
 
-- `OidcInitializationError` now only includes the `isAuthServerLikelyDown` property, which is `true` if the authentication server is likely down.  
+* `OidcInitializationError` now only includes the `isAuthServerLikelyDown` property, which is `true` if the authentication server is likely down.\
   If it’s `false`, the OIDC server is reachable, but there is a misconfiguration on the client or server side.
+* The `initializationError.type` property has been **removed**.
 
-- The `initializationError.type` property has been **removed**.
+🔗 Learn more:
 
-🔗 Learn more:  
 {% content-ref url="https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/error-management" %}
 [Error Management](https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/error-management)
 {% endcontent-ref %}
@@ -81,17 +77,19 @@ The `assertUserLoggedIn` option has been replaced:
 
 The Keycloak setup guide has been updated for better clarity and ease of use.
 
-🔗 Learn more:  
+🔗 Learn more:
+
 {% content-ref url="https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/resources/keycloak-configuration" %}
 [Keycloak Configuration](https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/resources/keycloak-configuration)
 {% endcontent-ref %}
 
 ### 6. Session Initialization Changes
 
-- The `authMethod` option has been **removed**.
-- The `isNewBrowserSession` property should now be used instead.
+* The `authMethod` option has been **removed**.
+* The `isNewBrowserSession` property should now be used instead.
 
-🔗 Learn more:  
+🔗 Learn more:
+
 {% content-ref url="https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/user-session-initialization" %}
 [User Session Initialization](https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/user-session-initialization)
 {% endcontent-ref %}
