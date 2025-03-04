@@ -61,7 +61,84 @@ The `assertUserLoggedIn` option has been replaced:
 +const { oidcTokens } = useOidc({ assert: "user logged in" });
 ```
 
-### 4. Error Management Updates
+### 4. (OPTIONAL, Recommended) Update your usage of the useOidc hook
+
+{% code title="Before" %}
+```tsx
+
+const { oidcTokens } = useOidc({ assertUserLoggedIn: true });
+
+<span>{oidcTokens.decodedIdToken.preffered_username}</span>
+
+```
+{% endcode %}
+
+{% code title="After" %}
+```tsx
+const { decodedIdToken } = useOidc({ assert: "user logged in" });
+
+<span>{decodedIdToken.preffered_username}</span>
+```
+{% endcode %}
+
+***
+
+{% code title="Before" %}
+```tsx
+const { oidcTokens } = useOidc({ assertUserLoggedIn: true });
+
+useEffect(()=> {
+    fetch(
+        "https://...", 
+        { headers: { "Auhtorization": `Bearer ${oidcToken.accessToken}` }}
+    );
+}, []);
+```
+{% endcode %}
+
+Recomendation is to declare an [fetchWithAuthorization like in the example](https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/usage#react-api), but if you want the direct equivalent:
+
+{% code title="After" %}
+```typescript
+const { tokens } = useOidc({ assert: "user logged in" });
+
+useEffect(()=> {
+    // Token will always be undefined the first render.
+    if( tokens === undefined ) return;
+    fetch(
+        "https://...", 
+        { headers: { "Auhtorization": `Bearer ${tokens.accessToken}` }}
+    );
+}, []);
+```
+{% endcode %}
+
+### 5. (OPTIONAL) Assume getTokens() is an async function
+
+In the next major getTokens() will be async. So if you want to be able to migrate without issue, start assuming it is today:
+
+```diff
+export const fetchWithAuth: typeof fetch = async (
+    input,
+    init
+) => {
+    const oidc = await getOidc();
+
+    if (oidc.isUserLoggedIn) {
+-       const { accessToken } = oidc.getTokens();
++       const { accessToken } = await oidc.getTokens();
+
+        (init ??= {}).headers = {
+            ...init.headers,
+            Authorization: `Bearer ${accessToken}`
+        };
+    }
+
+    return fetch(input, init);
+};
+```
+
+### 6. Error Management Updates
 
 * `OidcInitializationError` now only includes the `isAuthServerLikelyDown` property, which is `true` if the authentication server is likely down.\
   If it’s `false`, the OIDC server is reachable, but there is a client/server missconfiguration.
@@ -71,15 +148,15 @@ The `assertUserLoggedIn` option has been replaced:
 [Error Management](https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/error-management)
 {% endcontent-ref %}
 
-### 5. Keycloak Configuration Improvements
+### 7. Keycloak Configuration Improvements
 
 The Keycloak setup guide has been updated for better clarity:
 
-{% content-ref url="https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/resources/keycloak-configuration" %}
-[Keycloak Configuration](https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/resources/keycloak-configuration)
+{% content-ref url="https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/providers-configuration/keycloak" %}
+[Keycloak](https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/providers-configuration/keycloak)
 {% endcontent-ref %}
 
-### 6. Session Initialization Changes
+### 8. Session Initialization Changes
 
 * The `authMethod` option has been **removed**.
 * The `isNewBrowserSession` property should now be used instead.
@@ -88,7 +165,7 @@ The Keycloak setup guide has been updated for better clarity:
 [User Session Initialization](https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/user-session-initialization)
 {% endcontent-ref %}
 
-### 7. Impersonation
+### 9. Impersonation
 
 oidc-spa v5 had built in [impersonation cappability](https://docs.oidc-spa.dev/docs/v5/documentation/user-impersonation).  \
 However, this mechanism was somewhat hard to implement in practice, and could expose your app to vulnerabilities if not implemented correctly.  \
