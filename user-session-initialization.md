@@ -4,9 +4,12 @@ icon: square-caret-up
 
 # User Session Initialization
 
-In some cases, you might want to perform some operation to initialize the user's session. This could involve calling a special API endpoint or clearing some cached values in the local storage.\
-What you don't want, however, is to run this every time the user refreshes the page.  \
-To help you determine if the session should be initialized, you can leverage the `isNewBrowserSession` property that is available when the user is logged in.
+In some cases, you might want to perform some actions when the user login to your app. &#x20;
+
+It might be clearing some storage values, or calling a specific API endpoint.  \
+If this action is costly. You might want to avoid doing it over and over again each time the user refresh the page. &#x20;
+
+
 
 {% tabs %}
 {% tab title="Vanilla API" %}
@@ -15,13 +18,16 @@ import { createOidc } from "oidc-spa";
 
 const oidc = await createOidc({ /* ... */ });
 
-if (oidc.isUserLoggedIn && oidc.isNewBrowserSession) {
-  // This is a new visit of this user.
-}
-
-if(oidc.isUserLoggedIn && oidc.isNewBrowserSession && oidc.backFromAuthServer ){
-  // This is a new visit AND a new OIDC session has just beeing created.
-  // on the OIDC server.
+if (oidc.isUserLoggedIn) {
+  if( oidc.isNewBrowerSession ){
+     // This is a new visit of the user on your app
+     // or the user signed out and signed in again with
+     // an other identity.
+     
+     await api.onboard(); // (Example)
+  }else{
+     // It was just a page refresh (Ctrl+R)
+  }
 }
 ```
 {% endtab %}
@@ -38,14 +44,15 @@ export const {
 
 getOidc().then(oidc => {
   
-    if (oidc.isUserLoggedIn && oidc.isNewBrowserSession) {
-      // This is a new visit of this user.
-    }
-    
-    if(oidc.isUserLoggedIn && oidc.isNewBrowserSession && oidc.backFromAuthServer ){
-      // This is a new visit AND a new OIDC session has just beeing created.
-      // on the OIDC server.
-    }
+  if( oidc.isNewBrowerSession ){
+     // This is a new visit of the user on your app
+     // or the user signed out and signed in again with
+     // an other identity.
+     
+     await api.onboard(); // (Example)
+  }else{
+     // It was just a page refresh (Ctrl+R)
+  }
 
 });
 ```
@@ -63,21 +70,17 @@ function MyComponent(){
     
     useEffect(()=> {
     
-        // Warning! In dev mode, when React Strict Mode is enabled
-        // this will be called twice!
-        
-        if (isUserLoggedIn && isNewBrowserSession) {
-          // This is a new visit of this user.
-        }
-        
-        if(isUserLoggedIn && isNewBrowserSession && backFromAuthServer ){
-          // This is a new visit AND a new OIDC session has just beeing created.
-          // on the OIDC server.
+        if( oidc.isNewBrowerSession ){
+           // This is a new visit of the user on your app
+           // or the user signed out and signed in again with
+           // an other identity.
+           
+           api.onboard(); // (Example)
+        }else{
+           // It was just a page refresh (Ctrl+R)
         }
     
     }, []);
-
-
 ```
 {% endtab %}
 {% endtabs %}
