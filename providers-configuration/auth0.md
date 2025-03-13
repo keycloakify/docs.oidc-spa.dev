@@ -6,7 +6,7 @@ icon: shield-quartered
 
 This guide explains how to configure Auth0 to obtain the necessary parameters for setting up `oidc-spa`.
 
-{% embed url="https://youtu.be/zPikliLzC84" %}
+{% embed url="https://www.youtube.com/watch?v=zPikliLzC84" %}
 
 ## Creating Your Application
 
