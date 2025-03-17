@@ -6,6 +6,8 @@ icon: plug
 
 The primary usecase for a library like oidc-spa is to use it to authenticate against a REST, tRPC, or Websocket API.
 
+## Client Side
+
 Let's see a very basic REST API example:
 
 {% tabs %}
@@ -58,8 +60,6 @@ export const api: Api = {
 {% endtab %}
 
 {% tab title="React API" %}
-Initialize the React adapter of oidc-spa and expose the prOidc object, a promise of the vanilla OIDC API:
-
 <pre class="language-typescript" data-title="src/oidc.ts"><code class="lang-typescript">import { createReactOidc } from "oidc-spa/react";
 
 export const { 
@@ -72,7 +72,7 @@ export const {
 Create a REST API Client that adds the OIDC Access Token as Autorization header to every HTTP request:
 
 <pre class="language-typescript" data-title="src/api.ts"><code class="lang-typescript">import axios from "axios";
-<strong>import { getOidc } from "oidc";
+<strong>import { getOidc } from "./oidc";
 </strong>
 type Api = {
     getTodos: () => Promise&#x3C;{ id: number; title: string; }[]>;
@@ -144,9 +144,9 @@ This example is purposefully very basic to minimize noise but in your App you mi
 {% endtab %}
 {% endtabs %}
 
-## Backend
+## Server Side
 
-If you're implementing a JavaScript Backend (Node/Deno/webworker) oidc-spa also exposes an utility to help you validate and decode the access token that your client sends in the authorization header.  \
+If you're implementing a JavaScript Backend (Node/Deno/webworker) `oidc-spa` also exposes an utility to help you validate and decode the access token that your client sends in the authorization header.  \
 Granted, this is fully optional feel free to use anything else.  \
 \
 Let's assume we have a Node.js REST API build with Express or Hono.  \
@@ -287,4 +287,3 @@ import { getUserTodoStore } from "./todo";
 {% content-ref url="example-setups/tanstack-router-+-node-rest-api.md" %}
 [tanstack-router-+-node-rest-api.md](example-setups/tanstack-router-+-node-rest-api.md)
 {% endcontent-ref %}
-
