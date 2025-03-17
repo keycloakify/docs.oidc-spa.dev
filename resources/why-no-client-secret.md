@@ -49,7 +49,7 @@ This is where **PKCE** (Proof Key for Code Exchange) comes in. Here’s how it w
 > A user who disables all cookies would not be able to use any website requiring authentication.\
 > Session cookies should not be confused with **tracking cookies** or [**third-party cookies**](end-of-third-party-cookies.md).
 
-### Advantages and Trade-offs of Implementing Token Exchange on the Frontend
+## Advantages and Trade-offs of Implementing Token Exchange on the Frontend
 
 ✅ **No persistent token storage** – There’s no need to store user tokens in a backend database. The OIDC provider itself acts as the session store, meaning you only need to focus on\
 securely deploying your OIDC server (if self-hosting).
