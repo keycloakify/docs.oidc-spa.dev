@@ -15,9 +15,7 @@ The example setup is live here: [https://example-react-router.oidc-spa.dev/](htt
 Run it locally with: &#x20;
 
 ```bash
-git clone https://github.com/keycloakify/oidc-spa
-mv oidc-spa/examples/react-router oidc-spa-react-router
-rm -rf oidc-spa
+npx degit https://github.com/keycloakify/oidc-spa/examples/react-router oidc-spa-react-router
 cd oidc-spa-react-router
 cp .env.local.sample .env.local
 yarn

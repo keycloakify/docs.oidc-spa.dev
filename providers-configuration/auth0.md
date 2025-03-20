@@ -149,9 +149,7 @@ You can enhance user experience by displaying a countdown warning before logout:
 To test your configuration: &#x20;
 
 ```bash
-git clone https://github.com/keycloakify/oidc-spa
-mv oidc-spa/examples/tanstack-router-file-based oidc-spa-tanstack-router
-rm -rf oidc-spa
+npx degit https://github.com/keycloakify/oidc-spa/examples/tanstack-router-file-based oidc-spa-tanstack-router
 cd oidc-spa-tanstack-router
 cp .env.local.sample .env.local
 

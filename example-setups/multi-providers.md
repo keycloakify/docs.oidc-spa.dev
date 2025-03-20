@@ -16,9 +16,7 @@ The example setup is live here: [https://example-multi-providers.oidc-spa.dev/](
 Run it locally with: &#x20;
 
 ```bash
-git clone https://github.com/keycloakify/oidc-spa
-mv oidc-spa/examples/multi-providers oidc-spa-multi-providers
-rm -rf oidc-spa
+npx degit https://github.com/keycloakify/oidc-spa/examples/multi-providers oidc-spa-multi-providers
 cd oidc-spa-multi-providers
 # NOTE: With this example only internat Insee Microsoft account can sign in.
 # You can however signin with your personal Google Account.
