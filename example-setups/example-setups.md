@@ -1,6 +1,6 @@
 ---
-icon: laptop-code
 hidden: true
+icon: laptop-code
 ---
 
 # Example Setups
@@ -15,9 +15,5 @@ hidden: true
 
 {% content-ref url="tanstack-router-+-node-rest-api.md" %}
 [tanstack-router-+-node-rest-api.md](tanstack-router-+-node-rest-api.md)
-{% endcontent-ref %}
-
-{% content-ref url="multi-providers.md" %}
-[multi-providers.md](multi-providers.md)
 {% endcontent-ref %}
 
