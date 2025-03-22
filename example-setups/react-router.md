@@ -43,7 +43,7 @@ export default {
 
 Even in SPA mode, react-router in framwork mode will prerender the app at build time.  \
 So you have to let it know that oidc-spa is meant for the browser by using the .client.ts file extention.\
-So instead of creating an app/oidc.ts file, create an app/oidc.client.ts file.
+So instead of creating an `app/oidc.ts` file, create an `app/oidc.client.ts` file.
 
 ## Setting up the entrypoint
 
