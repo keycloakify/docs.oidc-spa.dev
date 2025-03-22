@@ -1,6 +1,6 @@
 ---
-icon: split
 hidden: true
+icon: split
 ---
 
 # Multi Providers - Login with Google or Microsoft
@@ -13,7 +13,7 @@ Instead of managing multiple authentication providers within your application, c
 
 The example setup is live here: [https://example-multi-providers.oidc-spa.dev/](https://example-multi-providers.oidc-spa.dev)
 
-Run it locally with: &#x20;
+Run it locally with:
 
 ```bash
 npx degit https://github.com/keycloakify/oidc-spa/examples/multi-providers oidc-spa-multi-providers
@@ -26,4 +26,3 @@ yarn dev
 ```
 
 {% embed url="https://github.com/keycloakify/oidc-spa/tree/main/examples/multi-providers" %}
-

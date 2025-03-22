@@ -3,7 +3,7 @@ hidden: true
 icon: laptop-code
 ---
 
-# Example Setups
+# Setup Guides
 
 {% content-ref url="react-router.md" %}
 [react-router.md](react-router.md)

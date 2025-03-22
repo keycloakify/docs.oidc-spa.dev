@@ -132,16 +132,3 @@ yarn dev
 {% embed url="https://github.com/keycloakify/oidc-spa/tree/main/examples/react-router-framework" %}
 {% endtab %}
 {% endtabs %}
-
-
-
-
-
-
-
-
-
-
-
-
-

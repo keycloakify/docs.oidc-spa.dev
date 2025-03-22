@@ -284,6 +284,6 @@ import { getUserTodoStore } from "./todo";
 
 ## Testable example
 
-{% content-ref url="setup-guides/tanstack-router-+-node-rest-api.md" %}
-[tanstack-router-+-node-rest-api.md](setup-guides/tanstack-router-+-node-rest-api.md)
+{% content-ref url="example-setups/tanstack-router-+-node-rest-api.md" %}
+[tanstack-router-+-node-rest-api.md](example-setups/tanstack-router-+-node-rest-api.md)
 {% endcontent-ref %}

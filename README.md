@@ -5,7 +5,7 @@ icon: sign-posts-wrench
 # Installation
 
 {% hint style="info" %}
-Before starting be aware that oidc-spa is not suited for Next.js or any other framwork that involves server side rendering.
+Before starting be aware that oidc-spa is not suited for Next.js.
 
 If you are using Next the closer alternative is to use [NextAuth.js](https://next-auth.js.org/) (with [the Keycloak adapter](https://next-auth.js.org/providers/keycloak) if you are using Keycloak). See [this guide](https://phasetwo.io/docs/securing-applications/next/).
 {% endhint %}
