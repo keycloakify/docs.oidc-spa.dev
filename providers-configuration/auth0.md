@@ -6,7 +6,7 @@ icon: shield-quartered
 
 This guide explains how to configure Auth0 to obtain the necessary parameters for setting up `oidc-spa`.
 
-{% embed url="https://www.youtube.com/watch?v=zPikliLzC84" %}
+{% embed url="https://www.youtube.com/embed/zPikliLzC84?si=_bIUM5lxNwDIZ3eR" %}
 
 ## Creating Your Application
 
@@ -146,7 +146,7 @@ You can enhance user experience by displaying a countdown warning before logout:
 
 ## Testing the Setup
 
-To test your configuration: &#x20;
+To test your configuration:
 
 ```bash
 npx degit https://github.com/keycloakify/oidc-spa/examples/tanstack-router-file-based oidc-spa-tanstack-router
