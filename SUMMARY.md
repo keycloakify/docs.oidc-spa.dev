@@ -11,13 +11,13 @@
 * [User Session Initialization](user-session-initialization.md)
 * [Tokens Renewal](tokens-renewal.md)
 
-## Example setups
+## Setup Guides
 
-* [Example Setups](example-setups/example-setups.md)
-* [React Router](example-setups/react-router.md)
-* [TanStack Router](example-setups/tanstack-router.md)
-* [Full-Stack with Node REST API](example-setups/tanstack-router-+-node-rest-api.md)
-* [Multi Providers - Login with Google or Microsoft](example-setups/multi-providers.md)
+* [Setup Guides](setup-guides/index.md)
+* [React Router](setup-guides/react-router.md)
+* [TanStack Router](setup-guides/tanstack-router.md)
+* [Full-Stack with Node REST API](setup-guides/tanstack-router-+-node-rest-api.md)
+* [Multi Providers - Login with Google or Microsoft](setup-guides/multi-providers.md)
 
 ## Providers Configuration
 

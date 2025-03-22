@@ -100,7 +100,7 @@ if (!oidc.isUserLoggedIn) {
 
 {% tab title="React API" %}
 The way you use **oidc-spa** differs slightly depending on the routing library you’re using (e.g., React Router or TanStack Router).\
-We provide [working examples](example-setups/example-setups.md) for each, but we recommend starting with the fictional example below to understand how the library works in isolation, without any routing-related distractions.
+We provide [working examples](setup-guides/index.md) for each, but we recommend starting with the fictional example below to understand how the library works in isolation, without any routing-related distractions.
 
 Note: In this example, some pages can be accessed without requiring the user to be authenticated.\
 If you're building something like an admin panel or a dashboard where authentication is always required, simply set [`autoLogin: true`](auto-login.md).
@@ -432,8 +432,8 @@ export default Page;
 ```
 {% endcode %}
 
-{% content-ref url="example-setups/example-setups.md" %}
-[example-setups.md](example-setups/example-setups.md)
+{% content-ref url="setup-guides/index.md" %}
+[index.md](setup-guides/index.md)
 {% endcontent-ref %}
 {% endtab %}
 {% endtabs %}

@@ -1,6 +1,6 @@
 ---
-icon: google
 description: Implement "Login with Google"
+icon: google
 ---
 
 # Google OAuth 2.0
@@ -30,7 +30,7 @@ To set up authentication via Google, follow these steps in the **Google Cloud Co
 <figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="warning" %}
-#### Client Secret
+**Client Secret**
 
 Google's OAuth implementation has a significant flaw: **PKCE-based authentication fails unless a client secret is provided**.
 
@@ -40,14 +40,14 @@ That said, **providing the client secret in your frontend code for this specific
 {% endhint %}
 
 {% hint style="warning" %}
-## Subtituing the Access Token by the ID Token
+### Subtituing the Access Token by the ID Token
 
 Google do not issue JWT Access Tokens and there is no way to configure it so it does.
 
-As a result, if you want to implement an API you'll have to call Google's special endpoint to validate the access token and get user infos.  \
+As a result, if you want to implement an API you'll have to call Google's special endpoint to validate the access token and get user infos.\
 You won't be able to implement the standard approach for validating token described in the[ Web API](../web-api.md) section.
 
-Well there is a way to go around this, and that is to ask oidc-spa to substitute the Acess Token by the ID token. &#x20;
+Well there is a way to go around this, and that is to ask oidc-spa to substitute the Acess Token by the ID token.
 
 Be aware that this is a hack, the ID token is not meant to be sent to the API but it works.
 {% endhint %}
