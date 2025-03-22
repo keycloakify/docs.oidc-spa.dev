@@ -1,6 +1,6 @@
 ---
-icon: shield
 description: Enforce authentication everywhere in your app.
+icon: shield
 ---
 
 # Auto Login
@@ -12,6 +12,7 @@ This is similar to wrapping your root component with `withLoginEnforced()`, but 
 * Check `isUserLoggedIn`, as it will always be `true`.
 * (React) Use the assertion `useOidc({ assert: "user logged in" })`, since the user is guaranteed to be logged in.
 * (React) Use `withLoginEnforced`, it is not exposed in this mode since it is always enforced.
+* (React) You don't need to call `enforceLogin()` in your loaders.
 
 {% tabs %}
 {% tab title="Vanilla API" %}

@@ -1,6 +1,6 @@
 ---
-icon: flag-checkered
 description: Let's get your App authenticated!
+icon: flag-checkered
 ---
 
 # Basic Usage
@@ -76,7 +76,7 @@ if (!oidc.isUserLoggedIn) {
         // authenticate to your APIs
         accessToken
     } = await oidc.getTokens_next();
-
+    
     fetch("https://api.your-domain.net/orders", {
         headers: {
             Authorization: `Bearer ${accessToken}`
@@ -99,6 +99,12 @@ if (!oidc.isUserLoggedIn) {
 {% endtab %}
 
 {% tab title="React API" %}
+The way you use **oidc-spa** differs slightly depending on the routing library you’re using (e.g., React Router or TanStack Router).\
+We provide [working examples](example-setups/example-setups.md) for each, but we recommend starting with the fictional example below to understand how the library works in isolation, without any routing-related distractions.
+
+Note: In this example, some pages can be accessed without requiring the user to be authenticated.\
+If you're building something like an admin panel or a dashboard where authentication is always required, simply set [`autoLogin: true`](auto-login.md).
+
 ```
 src/
 ├── components/
@@ -117,7 +123,7 @@ src/
 import { createReactOidc } from "oidc-spa/react";
 import { z } from "zod";
 
-export const { OidcProvider, useOidc, getOidc, withLoginEnforced } =
+export const { OidcProvider, useOidc, getOidc, withLoginEnforced, enforceLogin } =
     createReactOidc(async () => ({
         issuerUri: "https://auth.your-domain.net/realms/myrealm",
         clientId: "myclient",
@@ -144,7 +150,7 @@ export const fetchWithAuth: typeof fetch = async (
     init
 ) => {
     const oidc = await getOidc();
-
+    
     if (oidc.isUserLoggedIn) {
         const { accessToken } = await oidc.getTokens();
 
@@ -295,6 +301,8 @@ type Order = {
 
 // If this component is mounted and the user is not logged in
 // the user will be redirected to the login.  
+// If your routing library support loader you can use enforceLogin
+// instead of withLoginEnforced
 const Page = withLoginEnforced(() => {
     const [orders, setOrders] = useState<Order[] | undefined>(undefined);
 
@@ -423,8 +431,6 @@ const Page = withLoginEnforced(() => {
 export default Page;
 ```
 {% endcode %}
-
-Testable examples:
 
 {% content-ref url="example-setups/example-setups.md" %}
 [example-setups.md](example-setups/example-setups.md)

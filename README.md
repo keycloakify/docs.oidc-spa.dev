@@ -58,7 +58,10 @@ The create a new `main.tsx` file: &#x20;
 ```typescript
 import { oidcEarlyInit } from "oidc-spa/entrypoint";
 
-const { shouldLoadApp } = oidcEarlyInit();
+const { shouldLoadApp } = oidcEarlyInit({
+    freezeFetch: true,
+    freezeXMLHttpRequest: true
+});
 
 if (shouldLoadApp) {
     import("./main.lazy");
@@ -96,7 +99,10 @@ Create a new app/entry.client.tsx file:
 ```tsx
 import { oidcEarlyInit } from "oidc-spa/entrypoint";
 
-const { shouldLoadApp } = oidcEarlyInit();
+const { shouldLoadApp } = oidcEarlyInit({
+    freezeFetch: true,
+    freezeXMLHttpRequest: true
+});
 
 if (shouldLoadApp) {
     import("./entry.client.lazy");
@@ -117,7 +123,10 @@ The create a new `index.tsx` file: &#x20;
 ```typescript
 import { oidcEarlyInit } from "oidc-spa/entrypoint";
 
-const { shouldLoadApp } = oidcEarlyInit();
+const { shouldLoadApp } = oidcEarlyInit({
+    freezeFetch: true,
+    freezeXMLHttpRequest: true
+});
 
 if (shouldLoadApp) {
     import("./index.lazy");
