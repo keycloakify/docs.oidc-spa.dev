@@ -6,7 +6,19 @@ icon: route
 
 {% tabs %}
 {% tab title="Declarative or Data Mode" %}
-I will redact this later
+The example setup is live here: [https://example-react-router.oidc-spa.dev/](https://example-react-router-framework.oidc-spa.dev/)
+
+Run it locally with:
+
+```bash
+npx degit https://github.com/keycloakify/oidc-spa/examples/react-router oidc-spa-react-router
+cd oidc-spa-react-router
+cp .env.local.sample .env.local
+yarn
+yarn dev
+```
+
+{% embed url="https://github.com/keycloakify/oidc-spa/tree/main/examples/react-router" %}
 {% endtab %}
 
 {% tab title="Framwork Mode" %}
@@ -130,5 +142,7 @@ yarn dev
 ```
 
 {% embed url="https://github.com/keycloakify/oidc-spa/tree/main/examples/react-router-framework" %}
+
+s
 {% endtab %}
 {% endtabs %}
