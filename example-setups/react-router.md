@@ -4,65 +4,13 @@ icon: route
 
 # React Router
 
-{% hint style="info" %}
-NOTE: This is a react-router setup in [declarative mode](https://reactrouter.com/start/declarative/installation).\
-For framwork mode, refer to [this issue](https://github.com/keycloakify/oidc-spa/issues/59#issuecomment-2735197918).\
-We will come up with an example soon.
-{% endhint %}
-
-The example setup is live here: [https://example-react-router.oidc-spa.dev/](https://example-react-router.oidc-spa.dev/)
-
-Run it locally with:
-
-```bash
-npx degit https://github.com/keycloakify/oidc-spa/examples/react-router oidc-spa-react-router
-cd oidc-spa-react-router
-cp .env.local.sample .env.local
-yarn
-yarn dev
-```
-
-{% embed url="https://github.com/keycloakify/oidc-spa/tree/main/examples/react-router" %}
-Source code
-{% endembed %}
-
-## Working with loaders
-
-
-
-
-
-\
-If there are some pages of your app that can be browser anonymously and some other that requires authentication the standard way to enforce authentication is to use the withLoginEnforced() higher order component: &#x20;
-
-```tsx
-import { useLoaderData } from "react-router";
-import { fetchWithAuth, enforceLogin } from "../oidc";
-
-export async function clientLoader({ request }: Route.ClientLoaderArgs) {
-    await enforceLogin(request.url);
-
-    return fetchWithAuth("/api/invoices").then(r => r.json());
-}
-
-
-export default function Invoices() {
-  let invoices = useLoaderData<typeof clientLoader>();
-  // ...
-}
-```
-
-
-
-
-
 {% tabs %}
 {% tab title="Declarative or Data Mode" %}
-
+I will redact this later
 {% endtab %}
 
 {% tab title="Framwork Mode" %}
-This is for setting for integrating oidc-spa with react-router in `Framwork Mode`. &#x20;
+This is for setting for integrating oidc-spa with react-router in [`Framwork Mode`](https://reactrouter.com/start/modes). &#x20;
 
 ## Enabling SPA mode
 
@@ -99,9 +47,95 @@ Configure the entrypoint as instructed in the instalation guide (tab React-route
 If your whole app requires user to be authenticated ([autoLogin: true](../auto-login.md)) you can skip this section. &#x20;
 {% endhint %}
 
+The default approach when you want to enforce that the user be logged in when accesing a given route is to wrap the component into withLoginEnforced(), example: &#x20;
 
+{% code title="pages/invoices.tsx" %}
+```tsx
+import { useState, useEffect } from "react";
+import { withLoginEnforced, fetchWithAuth } from "../oidc.client";
+
+const Invoices = withLoginEnforced(
+    () => {
+        const [invoices, setInvoices] = useState<Invoice[] | undefined>(undefined);
+
+        useEffect(() => {
+            fetchWithAuth("/api/invoices")
+                .then(r => r.json())
+                .then(setInvoices);
+        }, []);
+
+        if (invoices === undefined) {
+            return <div>Loading invoices...</div>;
+        }
+
+        return (
+            <div>
+                {invoices.map(invoice => (
+                    <div key={invoice.id}>{invoice.amount}</div>
+                ))}
+            </div>
+        );
+    },
+    {
+        onRedirecting: () => <div>Redirecting to login...</div>
+    }
+);
+
+export default Invoices;
+```
+{% endcode %}
+
+This approach is framwork agnostic and always work however, you might want to use the loaders to doload the data, for that you would use enforceLogin() istead of withLoginEnforced:
+
+<pre class="language-tsx" data-title="pages/invoices.tsx"><code class="lang-tsx"><strong>import { enforceLogin, fetchWithAuth } from "../oidc.client";
+</strong>import type { Route } from "./+types/invoices";
+import { useLoaderData } from "react-router";
+
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+<strong>    await enforceLogin(request.url);
+</strong>    // If we are here, the user is logged in.
+    const invoices = await fetchWithAuth("/api/invoices").then(r => r.json());
+    return invoices;
+}
+
+export function HydrateFallback() {
+    return &#x3C;div>Loading invoices...&#x3C;/div>;
+}
+
+export default function Invoices() {
+    const invoices = useLoaderData&#x3C;typeof clientLoader>();
+
+    return (
+        &#x3C;div>
+            {invoices.map(invoice => (
+                &#x3C;div key={invoice.id}>{invoice.amount}&#x3C;/div>
+            ))}
+        &#x3C;/div>
+    );
+}
+</code></pre>
+
+## Running the example
+
+The example setup is live here: [https://example-react-router-framework.oidc-spa.dev/](https://example-react-router-framework.oidc-spa.dev/)
+
+Run it locally with:
+
+```bash
+npx degit https://github.com/keycloakify/oidc-spa/examples/react-router-framework oidc-spa-react-router
+cd oidc-spa-react-router
+cp .env.local.sample .env.local
+yarn
+yarn dev
+```
+
+{% embed url="https://github.com/keycloakify/oidc-spa/tree/main/examples/react-router-framework" %}
 {% endtab %}
 {% endtabs %}
+
+
+
+
 
 
 
