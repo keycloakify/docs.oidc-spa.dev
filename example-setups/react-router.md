@@ -97,7 +97,7 @@ export default Invoices;
 ```
 {% endcode %}
 
-This approach is framwork agnostic and always work however, you might want to use the loaders to doload the data, for that you would use enforceLogin() istead of withLoginEnforced:
+This approach is framwork agnostic and always works however, you might want to use the loaders to doload the data, for that you would use `enforceLogin()` istead of `withLoginEnforced`:
 
 <pre class="language-tsx" data-title="pages/invoices.tsx"><code class="lang-tsx"><strong>import { enforceLogin, fetchWithAuth } from "../oidc.client";
 </strong>import type { Route } from "./+types/invoices";
