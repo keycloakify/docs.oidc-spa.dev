@@ -26,8 +26,7 @@ This is for setting for integrating oidc-spa with react-router in [`Framwork Mod
 
 ## Enabling SPA mode
 
-\
-We're actively working on making the lib compatible with the server features of the react-router framwork however, as of today you have to enable the SPA mode.
+As of today, to use oidc-spa you need to [enable SPA mode](https://reactrouter.com/how-to/spa).
 
 <pre class="language-typescript" data-title="react-router.config.ts"><code class="lang-typescript">import type { Config } from "@react-router/dev/config";
 
