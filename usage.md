@@ -114,8 +114,7 @@ src/
 │   ├── Account.tsx
 │   ├── Orders.tsx
 ├── App.tsx
-├── oidc.tsx
-└── main.tsx
+└── oidc.tsx
 ```
 
 {% code title="src/oidc.ts" %}
@@ -183,9 +182,9 @@ export default function App() {
             <Header />
             <main>
                 <Suspense>
-                    {route === "home" && <HomePage />}
-                    {route === "orders" && <OrderPage />}
-                    {route === "account" && <AccountPage />}
+                    {route === "/home" && <HomePage />}
+                    {route === "/orders" && <OrderPage />}
+                    {route === "/account" && <AccountPage />}
                 </Suspense>
             </main>
         </OidcProvider>
@@ -204,8 +203,8 @@ export default function Header() {
     return (
         <header>
             <nav>
-                <Link to="home">Home</Link>
-                <Link to="orders">Orders</Link>
+                <Link to="/home">Home</Link>
+                <Link to="/orders">Orders</Link>
             </nav>
             {isUserLoggedIn ? (
                 <AuthButtonsLoggedIn />
@@ -222,7 +221,7 @@ function AuthButtonsLoggedIn() {
     return (
         <div>
             <span>Logged in as {decodedIdToken.preferred_username}</span>
-            <Link to="account">Account</Link>
+            <Link to="/account">Account</Link>
             <button onClick={() => logout({ redirectTo: "home" })}>
                 Logout
             </button>
