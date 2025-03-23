@@ -70,6 +70,10 @@ if (shouldLoadApp) {
 {% endcode %}
 {% endtab %}
 
+{% tab title="TanStack Start" %}
+Comming soon, [follow progress](https://github.com/keycloakify/oidc-spa/issues/43).
+{% endtab %}
+
 {% tab title="React-Router Framwork Mode" %}
 If you already have an `entry.client.tsx` file, rename it to `entry.client.lazy.tsx`
 
