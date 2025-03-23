@@ -41,15 +41,21 @@ export default {
 
 Make sure you create a `app/oidc.client.ts` file, (instead of `app/oidc.ts`).
 
+{% embed url="https://github.com/keycloakify/oidc-spa/blob/main/examples/react-router-framework/app/oidc.client.ts" %}
+Example of oidc.client.ts file
+{% endembed %}
+
 ## Setting up the entrypoint
 
-Configure the entrypoint as instructed in the instalation guide (tab React-router Framwork mode).
+Create thoses two files:
 
-For react-router in framwork mode, it's mendatory.&#x20;
+{% embed url="https://github.com/keycloakify/oidc-spa/blob/main/examples/react-router-framework/app/entry.client.tsx" %}
+app/entry.client.tsx
+{% endembed %}
 
-{% content-ref url="../" %}
-[..](../)
-{% endcontent-ref %}
+{% embed url="https://github.com/keycloakify/oidc-spa/blob/main/examples/react-router-framework/app/entry.client.lazy.tsx" %}
+app/entry.client.lazy.tsx
+{% endembed %}
 
 ## Working with loaders
 

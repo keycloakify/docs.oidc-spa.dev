@@ -75,43 +75,11 @@ Comming soon, [follow progress](https://github.com/keycloakify/oidc-spa/issues/4
 {% endtab %}
 
 {% tab title="React-Router Framwork Mode" %}
-If you already have an `entry.client.tsx` file, rename it to `entry.client.lazy.tsx`
+You can skip this for now. It will be explained in the dedicated setup guide:
 
-```bash
-mv app/entry.client.tsx app/entry.client.lazy.tsx
-```
-
-If you don't, create the file `app/entry.client.tsx`: &#x20;
-
-{% code title="app/entry.client.lazy.tsx" %}
-```tsx
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { HydratedRouter } from "react-router/dom";
-
-ReactDOM.hydrateRoot(
-    document,
-    <React.StrictMode>
-        <HydratedRouter />
-    </React.StrictMode>
-);
-```
-{% endcode %}
-
-Create a new app/entry.client.tsx file:
-
-```tsx
-import { oidcEarlyInit } from "oidc-spa/entrypoint";
-
-const { shouldLoadApp } = oidcEarlyInit({
-    freezeFetch: true,
-    freezeXMLHttpRequest: true
-});
-
-if (shouldLoadApp) {
-    import("./entry.client.lazy");
-}
-```
+{% content-ref url="example-setups/react-router.md" %}
+[react-router.md](example-setups/react-router.md)
+{% endcontent-ref %}
 {% endtab %}
 
 {% tab title="Create-React-App" %}
