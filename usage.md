@@ -268,7 +268,7 @@ export default function Page() {
     const { isUserLoggedIn, decodedIdToken } = useOidc();
 
     return (
-        <h1>Welcome {isUserLoggedIn ? decodedIdToken.name : "stranger"}!</h1>
+        <h1>Welcome {isUserLoggedIn ? decodedIdToken.name : "guest"}!</h1>
     );
 }
 ```
