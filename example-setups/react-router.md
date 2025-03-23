@@ -44,7 +44,9 @@ Make sure you create a `app/oidc.client.ts` file, (instead of `app/oidc.ts`).
 
 ## Setting up the entrypoint
 
-Configure the entrypoint as instructed in the instalation guide (tab React-router Framwork mode):
+Configure the entrypoint as instructed in the instalation guide (tab React-router Framwork mode).
+
+For react-router in framwork mode, it's mendatory.&#x20;
 
 {% content-ref url="../" %}
 [..](../)
@@ -56,7 +58,7 @@ Configure the entrypoint as instructed in the instalation guide (tab React-route
 If your whole app requires user to be authenticated ([autoLogin: true](../auto-login.md)) you can skip this section. &#x20;
 {% endhint %}
 
-The default approach when you want to enforce that the user be logged in when accesing a given route is to wrap the component into withLoginEnforced(), example: &#x20;
+The default approach when you want to enforce that the user be logged in when accesing a given route is to wrap the component into `withLoginEnforced()`, example: &#x20;
 
 {% code title="pages/invoices.tsx" %}
 ```tsx
