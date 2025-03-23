@@ -5,6 +5,10 @@ icon: arrow-progress
 
 # TanStack Router
 
+{% hint style="info" %}
+TanStack Start support is comming soon. [Follow progress](https://github.com/keycloakify/oidc-spa/issues/43).
+{% endhint %}
+
 The example setup is live here: [https://example-tanstack-router.oidc-spa.dev/](https://example-tanstack-router.oidc-spa.dev/)
 
 Run it locally with:

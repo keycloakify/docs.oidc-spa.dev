@@ -26,9 +26,8 @@ This is for setting for integrating oidc-spa with react-router in [`Framwork Mod
 
 ## Enabling SPA mode
 
-oidc-spa, at least for now, is a library for Single Page Applications. Meaning that the distibution of the App must be generated statically and the components cannot be rendered server side. &#x20;
-
-That being said you can use React Router in Framork mode by enabeling the SPA mode. &#x20;
+\
+We're actively working on making the lib compatible with the server features of the react-router framwork however, as of today you have to enable the SPA mode.
 
 <pre class="language-typescript" data-title="react-router.config.ts"><code class="lang-typescript">import type { Config } from "@react-router/dev/config";
 
@@ -41,9 +40,7 @@ export default {
 
 ## oidc.client.ts&#x20;
 
-Even in SPA mode, react-router in framwork mode will prerender the app at build time.  \
-So you have to let it know that oidc-spa is meant for the browser by using the .client.ts file extention.\
-So instead of creating an `app/oidc.ts` file, create an `app/oidc.client.ts` file.
+Make sure you create a `app/oidc.client.ts` file, (instead of `app/oidc.ts`).
 
 ## Setting up the entrypoint
 
