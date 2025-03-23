@@ -165,22 +165,6 @@ export const fetchWithAuth: typeof fetch = async (
 ```
 {% endcode %}
 
-{% code title="src/main.tsx" %}
-```tsx
-import ReactDOM from "react-dom/client";
-import { OidcProvider } from "./oidc";
-import App from "./App";
-
-ReactDOM.createRoot(document.getElementById("root")!).render(
-    <OidcProvider 
-        //fallback={<h1>Checking authentication ⌛️</h1>}
-    >
-        <App />
-    </OidcProvider>
-);
-```
-{% endcode %}
-
 {% code title="src/App.tsx" %}
 ```tsx
 import { Suspense, lazy } from "react";
@@ -193,7 +177,9 @@ export default function App() {
     const route = useRoute();
 
     return (
-        <>
+        <OidcProvider
+          //fallback={<h1>Checking authentication ⌛️</h1>}
+        >
             <Header />
             <main>
                 <Suspense>
@@ -202,7 +188,7 @@ export default function App() {
                     {route === "account" && <AccountPage />}
                 </Suspense>
             </main>
-        </>
+        </OidcProvider>
     );
 }
 ```
