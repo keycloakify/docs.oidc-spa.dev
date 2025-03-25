@@ -107,8 +107,8 @@ This approach is framwork agnostic and always works however, you might want to u
 </strong>import type { Route } from "./+types/invoices";
 import { useLoaderData } from "react-router";
 
-export async function clientLoader({ request }: Route.ClientLoaderArgs) {
-<strong>    await enforceLogin(request.url);
+export async function clientLoader(params: Route.ClientLoaderArgs) {
+<strong>    await enforceLogin(params);
 </strong>    // If we are here, the user is logged in.
     const invoices = await fetchWithAuth("/api/invoices").then(r => r.json());
     return invoices;
