@@ -68,7 +68,7 @@ This introduces a potential risk: **XSS attacks**, where malicious code running 
 
 > **Note:** This is a work in progress—some of these measures are not yet fully implemented, but they are actively being developed.
 
-To fully benefit from these protections, ensure `oidc-spa` is the first JavaScript code that runs on your website by following [this setup](performance-issues.md).
+To fully benefit from these protections, ensure `oidc-spa` is the first JavaScript code that runs on your website by following [this setup](broken-reference).
 
 Security Measures:
 
