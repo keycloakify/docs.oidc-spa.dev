@@ -1,8 +1,8 @@
 ---
-icon: timer
 description: >-
   Automatically logging out your user after a set period of inactivity on your
   app (they dont move the mouse or press any key on the keyboard for a while)
+icon: timer
 ---
 
 # Auto Logout
@@ -27,7 +27,11 @@ import { createOidc } from "oidc-spa";
 
 const oidc = await createOidc({
   // ...
+  // ‼️ WARNING ‼️ Read carfully what's above.
+  // Use idleSessionLifetimeInSeconds if and only if you are using an auth server
+  // that do not let you configure this policy! (e.g. if you're using Keycloak don't use this param) 
   idleSessionLifetimeInSeconds: 300 // 5 minutes
+    
   //autoLogoutParams: { redirectTo: "current page" } // Default
   //autoLogoutParams: { redirectTo: "home" }
   //autoLogoutParams: { redirectTo: "specific url", url: "/a-page" }
