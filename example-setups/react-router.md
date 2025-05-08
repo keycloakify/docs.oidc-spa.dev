@@ -66,44 +66,42 @@ If your whole app requires user to be authenticated ([autoLogin: true](../auto-l
 The default approach when you want to enforce that the user be logged in when accesing a given route is to wrap the component into `withLoginEnforced()`, example: &#x20;
 
 {% code title="pages/invoices.tsx" %}
-
 ```tsx
 import { useState, useEffect } from "react";
 import { withLoginEnforced, fetchWithAuth } from "../oidc.client";
 
 const Invoices = withLoginEnforced(
-  () => {
-    const [invoices, setInvoices] = useState<Invoice[] | undefined>(undefined);
+    () => {
+        const [invoices, setInvoices] = useState<Invoice[] | undefined>(undefined);
 
-    useEffect(() => {
-      fetchWithAuth("/api/invoices")
-        .then((r) => r.json())
-        .then(setInvoices);
-    }, []);
+        useEffect(() => {
+            fetchWithAuth("/api/invoices")
+                .then(r => r.json())
+                .then(setInvoices);
+        }, []);
 
-    if (invoices === undefined) {
-      return <div>Loading invoices...</div>;
+        if (invoices === undefined) {
+            return <div>Loading invoices...</div>;
+        }
+
+        return (
+            <div>
+                {invoices.map(invoice => (
+                    <div key={invoice.id}>{invoice.amount}</div>
+                ))}
+            </div>
+        );
+    },
+    {
+        onRedirecting: () => <div>Redirecting to login...</div>
     }
-
-    return (
-      <div>
-        {invoices.map((invoice) => (
-          <div key={invoice.id}>{invoice.amount}</div>
-        ))}
-      </div>
-    );
-  },
-  {
-    onRedirecting: () => <div>Redirecting to login...</div>,
-  }
 );
 
 export default Invoices;
 ```
-
 {% endcode %}
 
-This approach is framwork agnostic and always works however, you might want to use the loaders to doload the data, for that you would use `enforceLogin()` istead of `withLoginEnforced`:
+This approach is framework agnostic and always works however, you might want to use the loaders to doload the data, for that you would use `enforceLogin()` istead of `withLoginEnforced`:
 
 <pre class="language-tsx" data-title="pages/invoices.tsx"><code class="lang-tsx"><strong>import { enforceLogin, fetchWithAuth } from "../oidc.client";
 </strong>import type { Route } from "./+types/invoices";
