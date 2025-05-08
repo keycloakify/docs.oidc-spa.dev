@@ -21,8 +21,8 @@ yarn dev
 {% embed url="https://github.com/keycloakify/oidc-spa/tree/main/examples/react-router" %}
 {% endtab %}
 
-{% tab title="Framwork Mode" %}
-This is for setting for integrating oidc-spa with react-router in [`Framwork Mode`](https://reactrouter.com/start/modes). &#x20;
+{% tab title="Framework Mode" %}
+This is for setting for integrating oidc-spa with react-router in [`Framework Mode`](https://reactrouter.com/start/modes). &#x20;
 
 ## Enabling SPA mode
 
@@ -66,39 +66,41 @@ If your whole app requires user to be authenticated ([autoLogin: true](../auto-l
 The default approach when you want to enforce that the user be logged in when accesing a given route is to wrap the component into `withLoginEnforced()`, example: &#x20;
 
 {% code title="pages/invoices.tsx" %}
+
 ```tsx
 import { useState, useEffect } from "react";
 import { withLoginEnforced, fetchWithAuth } from "../oidc.client";
 
 const Invoices = withLoginEnforced(
-    () => {
-        const [invoices, setInvoices] = useState<Invoice[] | undefined>(undefined);
+  () => {
+    const [invoices, setInvoices] = useState<Invoice[] | undefined>(undefined);
 
-        useEffect(() => {
-            fetchWithAuth("/api/invoices")
-                .then(r => r.json())
-                .then(setInvoices);
-        }, []);
+    useEffect(() => {
+      fetchWithAuth("/api/invoices")
+        .then((r) => r.json())
+        .then(setInvoices);
+    }, []);
 
-        if (invoices === undefined) {
-            return <div>Loading invoices...</div>;
-        }
-
-        return (
-            <div>
-                {invoices.map(invoice => (
-                    <div key={invoice.id}>{invoice.amount}</div>
-                ))}
-            </div>
-        );
-    },
-    {
-        onRedirecting: () => <div>Redirecting to login...</div>
+    if (invoices === undefined) {
+      return <div>Loading invoices...</div>;
     }
+
+    return (
+      <div>
+        {invoices.map((invoice) => (
+          <div key={invoice.id}>{invoice.amount}</div>
+        ))}
+      </div>
+    );
+  },
+  {
+    onRedirecting: () => <div>Redirecting to login...</div>,
+  }
 );
 
 export default Invoices;
 ```
+
 {% endcode %}
 
 This approach is framwork agnostic and always works however, you might want to use the loaders to doload the data, for that you would use `enforceLogin()` istead of `withLoginEnforced`:

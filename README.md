@@ -16,27 +16,35 @@ If you're having issues don't hesitate to [reach out on Discord](https://discord
 
 {% tabs %}
 {% tab title="npm" %}
+
 ```bash
 npm install oidc-spa
 ```
+
 {% endtab %}
 
 {% tab title="yarn" %}
+
 ```bash
 yarn add oidc-spa
 ```
+
 {% endtab %}
 
 {% tab title="pnpm" %}
+
 ```bash
 pnpm add oidc-spa
 ```
+
 {% endtab %}
 
 {% tab title="bun" %}
+
 ```bash
 bun add oidc-spa
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -55,18 +63,20 @@ mv src/main.tsx src/main.lazy.tsx
 The create a new `main.tsx` file: &#x20;
 
 {% code title="src/main.tsx" %}
+
 ```typescript
 import { oidcEarlyInit } from "oidc-spa/entrypoint";
 
 const { shouldLoadApp } = oidcEarlyInit({
-    freezeFetch: true,
-    freezeXMLHttpRequest: true
+  freezeFetch: true,
+  freezeXMLHttpRequest: true,
 });
 
 if (shouldLoadApp) {
-    import("./main.lazy");
+  import("./main.lazy");
 }
 ```
+
 {% endcode %}
 {% endtab %}
 
@@ -74,7 +84,7 @@ if (shouldLoadApp) {
 Comming soon, [follow progress](https://github.com/keycloakify/oidc-spa/issues/43).
 {% endtab %}
 
-{% tab title="React-Router Framwork Mode" %}
+{% tab title="React-Router Framework Mode" %}
 You can skip this for now. It will be explained in the dedicated setup guide:
 
 {% content-ref url="example-setups/react-router.md" %}
@@ -92,18 +102,20 @@ mv src/index.tsx src/index.lazy.tsx
 The create a new `index.tsx` file: &#x20;
 
 {% code title="src/index.tsx" %}
+
 ```typescript
 import { oidcEarlyInit } from "oidc-spa/entrypoint";
 
 const { shouldLoadApp } = oidcEarlyInit({
-    freezeFetch: true,
-    freezeXMLHttpRequest: true
+  freezeFetch: true,
+  freezeXMLHttpRequest: true,
 });
 
 if (shouldLoadApp) {
-    import("./index.lazy");
+  import("./index.lazy");
 }
 ```
+
 {% endcode %}
 {% endtab %}
 {% endtabs %}
