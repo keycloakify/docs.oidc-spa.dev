@@ -74,7 +74,7 @@ if (shouldLoadApp) {
 Comming soon, [follow progress](https://github.com/keycloakify/oidc-spa/issues/43).
 {% endtab %}
 
-{% tab title="React-Router Framwork Mode" %}
+{% tab title="React-Router Framework Mode" %}
 You can skip this for now. It will be explained in the dedicated setup guide:
 
 {% content-ref url="example-setups/react-router.md" %}

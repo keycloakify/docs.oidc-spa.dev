@@ -21,8 +21,8 @@ yarn dev
 {% embed url="https://github.com/keycloakify/oidc-spa/tree/main/examples/react-router" %}
 {% endtab %}
 
-{% tab title="Framwork Mode" %}
-This is for setting for integrating oidc-spa with react-router in [`Framwork Mode`](https://reactrouter.com/start/modes). &#x20;
+{% tab title="Framework Mode" %}
+This is for setting for integrating oidc-spa with react-router in [`Framework Mode`](https://reactrouter.com/start/modes). &#x20;
 
 ## Enabling SPA mode
 
@@ -101,7 +101,7 @@ export default Invoices;
 ```
 {% endcode %}
 
-This approach is framwork agnostic and always works however, you might want to use the loaders to doload the data, for that you would use `enforceLogin()` istead of `withLoginEnforced`:
+This approach is framework agnostic and always works however, you might want to use the loaders to doload the data, for that you would use `enforceLogin()` istead of `withLoginEnforced`:
 
 <pre class="language-tsx" data-title="pages/invoices.tsx"><code class="lang-tsx"><strong>import { enforceLogin, fetchWithAuth } from "../oidc.client";
 </strong>import type { Route } from "./+types/invoices";
