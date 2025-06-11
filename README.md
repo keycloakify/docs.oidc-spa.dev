@@ -52,7 +52,7 @@ First rename your entry point file from `main.tsx` (or `main.ts`) to `main.lazy.
 mv src/main.tsx src/main.lazy.tsx
 ```
 
-The create a new `main.tsx` file: &#x20;
+Then create a new `main.tsx` file: &#x20;
 
 {% code title="src/main.tsx" %}
 ```typescript
@@ -89,7 +89,7 @@ First rename your entry point file from `main.tsx` (or `main.ts`) to `main.lazy.
 mv src/index.tsx src/index.lazy.tsx
 ```
 
-The create a new `index.tsx` file: &#x20;
+Then create a new `index.tsx` file: &#x20;
 
 {% code title="src/index.tsx" %}
 ```typescript
