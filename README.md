@@ -42,7 +42,7 @@ bun add oidc-spa
 
 ## Editing your App entrypoint
 
-This is optional but recommended for better performances and security.
+This is optional but recommended for [better performances and security](why-oidcearlyinit.md).
 
 {% tabs %}
 {% tab title="Vite" %}
@@ -52,7 +52,7 @@ First rename your entry point file from `main.tsx` (or `main.ts`) to `main.lazy.
 mv src/main.tsx src/main.lazy.tsx
 ```
 
-The create a new `main.tsx` file: &#x20;
+The create a new `main.tsx` file:
 
 {% code title="src/main.tsx" %}
 ```typescript
@@ -89,7 +89,7 @@ First rename your entry point file from `main.tsx` (or `main.ts`) to `main.lazy.
 mv src/index.tsx src/index.lazy.tsx
 ```
 
-The create a new `index.tsx` file: &#x20;
+The create a new `index.tsx` file:
 
 {% code title="src/index.tsx" %}
 ```typescript
