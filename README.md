@@ -42,7 +42,7 @@ bun add oidc-spa
 
 ## Editing your App entrypoint
 
-This is optional but recommended for better performances and security.
+This is optional but recommended for [better performances and security](why-oidcearlyinit.md).
 
 {% tabs %}
 {% tab title="Vite" %}
