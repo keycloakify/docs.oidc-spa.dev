@@ -357,7 +357,7 @@ const Page = withLoginEnforced(() => {
                     onClick={() =>
                         goToAuthServer({
                             extraQueryParams: {
-                                kc_action: "CHANGE_PASSWORD"
+                                kc_action: "UPDATE_PASSWORD"
                             }
                         })
                     }
@@ -365,7 +365,7 @@ const Page = withLoginEnforced(() => {
                     Change My Password
                 </button>
                 {backFromAuthServer?.extraQueryParams.kc_action ===
-                    "CHANGE_PASSWORD" && (
+                    "UPDATE_PASSWORD" && (
                     <span>
                         {backFromAuthServer.result.kc_action_status ===
                         "success"
