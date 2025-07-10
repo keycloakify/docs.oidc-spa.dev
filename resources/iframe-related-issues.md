@@ -1,61 +1,66 @@
-# iframe related issues
+# iframe-related issues
 
-By default, your application that implements oidc-spa will create an iframe to itself to quickly restore use's session across reload and navigations. &#x20;
+By default, applications using **oidc-spa** will create an iframe pointing to themselves in order to quickly restore the user’s session across reloads and navigations.
 
-However iframe have a bad rep, they are known are being an attack vector in some scenario and some system engenneer would rather forbid their usage alltogether than having more nuanced policies. &#x20;
+However, iframes have a bad reputation. They are sometimes considered an attack vector, and certain system engineers may prefer to forbid their usage entirely rather than applying more nuanced policies.
 
-If, when you request your app, you can see in the response headers:
+If your application is served with response headers such as:
 
 `Content-Security-Policy: frame-ancestors "none"`
 
-or&#x20;
+or
 
 `X-Frame-Options: DENY`
 
-Your ops team has completely provided the usage on iframe, your SPA is not even allowed to iframe itself.  \
-\
-In this senario you have two option:
+...then your operations team has completely blocked iframe usage — even your SPA is not allowed to iframe itself.
 
-### Enabling the "noIframe" mode of oidc-spa
+In this scenario, you have two options:
 
-There is an option to tell oidc-spa to do without iframe: &#x20;
+### 1. Enable the `noIframe` mode of oidc-spa
+
+**oidc-spa** provides an option to disable iframe usage:
 
 {% code title="src/oidc.ts" %}
 ```typescript
-
 createReactOidc({
-   //...
-   noIframe: true
-})
+  // ...
+  noIframe: true
+});
 ```
 {% endcode %}
 
-Note however that your app initializatino time will take a little hit. Everything will work but you won't get the best acheivable initialization time. &#x20;
+Note: this may slightly increase the initialization time of your application. Everything will still work as expected, but you won't benefit from the fastest possible startup.
 
-### Change your security policy to allow the usage of iframe in this contex
+### 2. Adjust your security policy to allow iframe usage in this context
 
-If you can, open a ticket to your ops team to soften the security policy regarding iframe.  \
-Instead of using Content-Security-Policy: frame-ancestors 'none' or X-Frame-Options: DENY you could use Content-Security-Policy: frame-ancestors "self".&#x20;
+If possible, request a change in the security policy from your ops team. \
+Instead of strict policies like:
 
-{% code title="ngnix.config" %}
+- `Content-Security-Policy: frame-ancestors 'none'`
+- `X-Frame-Options: DENY`
+
+...you can use a more permissive directive like:
+
+- `Content-Security-Policy: frame-ancestors 'self'`
+
+{% code title="nginx.conf" %}
 ```diff
--add_header X-Frame-Options "DENY"
+-add_header X-Frame-Options "DENY";
 -add_header Content-Security-Policy "frame-ancestors 'none'";
 +add_header Content-Security-Policy "frame-ancestors 'self'";
 ```
 {% endcode %}
 
-&#x20;\
-If you want to only allow the usage of iframe in this very specific context you can create a rule in your reverse proxy like&#x20;
+If you'd like to allow iframe usage only in the specific case where the app is iframing itself with typical OIDC query parameters, you can use conditional logic in your reverse proxy:
 
-{% code title="" overflow="wrap" %}
+{% code title="nginx.conf" overflow="wrap" %}
 ```nginx
 map $query_string $add_content_security_policy {
-    "~*(?=.*\bstate=)(?=.*\bclient_id=)(?=.*\bresponse_type=)(?=.*\bredirect_uri=)" "frame-ancestors 'self'";
-    default "frame-ancestors 'none'";
+  "~*(?=.*\bstate=)(?=.*\bclient_id=)(?=.*\bresponse_type=)(?=.*\bredirect_uri=)" "frame-ancestors 'self'";
+  default "frame-ancestors 'none'";
 }
 add_header Content-Security-Policy $add_content_security_policy;
 ```
 {% endcode %}
 
-So that iframe are only allowed when your app iframes itself and there is the usual oidc query params. \
+This configuration allows iframes only when the request query string includes the expected OIDC parameters — typically when the app is restoring a session by iframing itself.
