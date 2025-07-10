@@ -1,4 +1,8 @@
-# iframe-related issues
+---
+icon: crop-simple
+---
+
+# iframe related issues
 
 By default, applications using **oidc-spa** will create an iframe pointing to themselves in order to quickly restore the user’s session across reloads and navigations.
 
@@ -12,11 +16,11 @@ or
 
 `X-Frame-Options: DENY`
 
-...then your operations team has completely blocked iframe usage — even your SPA is not allowed to iframe itself.
+...then your operations team has completely blocked iframe usage, even your SPA is not allowed to iframe itself.
 
-In this scenario, you have two options:
+In this scenario, you have two options :
 
-### 1. Enable the `noIframe` mode of oidc-spa
+### Option 1: Enable the `noIframe` mode of oidc-spa
 
 **oidc-spa** provides an option to disable iframe usage:
 
@@ -29,19 +33,19 @@ createReactOidc({
 ```
 {% endcode %}
 
-Note: this may slightly increase the initialization time of your application. Everything will still work as expected, but you won't benefit from the fastest possible startup.
+Note: this will slightly increase the initialization time of your application. Everything will still work as expected, but you won't have the fastest possible startup.
 
-### 2. Adjust your security policy to allow iframe usage in this context
+### Option 2: Adjust your security policy to allow iframe usage in this context
 
-If possible, request a change in the security policy from your ops team. \
+If possible, request a change in the security policy from your ops team.\
 Instead of strict policies like:
 
-- `Content-Security-Policy: frame-ancestors 'none'`
-- `X-Frame-Options: DENY`
+* `Content-Security-Policy: frame-ancestors 'none'`
+* `X-Frame-Options: DENY`
 
 ...you can use a more permissive directive like:
 
-- `Content-Security-Policy: frame-ancestors 'self'`
+* `Content-Security-Policy: frame-ancestors 'self'`
 
 {% code title="nginx.conf" %}
 ```diff
@@ -63,4 +67,4 @@ add_header Content-Security-Policy $add_content_security_policy;
 ```
 {% endcode %}
 
-This configuration allows iframes only when the request query string includes the expected OIDC parameters — typically when the app is restoring a session by iframing itself.
+This configuration allows iframes only when the request query string includes the expected OIDC parameters, typically when the app is restoring a session by iframing itself.
