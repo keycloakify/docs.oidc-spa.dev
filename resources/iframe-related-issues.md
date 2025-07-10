@@ -35,6 +35,11 @@ createReactOidc({
 
 Note: this will slightly increase the initialization time of your application. Everything will still work as expected, but you won't have the fastest possible startup.
 
+Here you have a comparison of the session resoration process with iframe and without iframe under poor network condition (the auth server is slow to respond).\
+As you can see, with no iframe there is two consecutive page reload when with ifram everthing is done in the background. &#x20;
+
+{% embed url="https://youtu.be/55sZ7XSWh4Q" %}
+
 ### Option 2: Adjust your security policy to allow iframe usage in this context
 
 If possible, request a change in the security policy from your ops team.\
