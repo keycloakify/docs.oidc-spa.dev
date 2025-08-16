@@ -75,7 +75,7 @@ if (!oidc.isUserLoggedIn) {
         // The accessToken is what you'll use as a Bearer token to 
         // authenticate to your APIs
         accessToken
-    } = await oidc.getTokens_next();
+    } = await oidc.getTokens();
     
     fetch("https://api.your-domain.net/orders", {
         headers: {
