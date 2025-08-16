@@ -2,46 +2,54 @@
 icon: up
 ---
 
-# v6 -> v7
+# v6 → v7 Migration Guide
 
-The main change brougt by this major version is a better management token renewal.  \
-The tokens are now renewer much less agressively.  \
-Before we oidc-spa would make sure that there's a valid access\_token at all time in caches. This was problematic for config with short access token ttl (like 20s) oidc-spa will constently hit the OIDC server, even when the tab is not focussed, over and over, in the background.  \
-Now we get a new token only when and if we need one.  \
-We only automatically refresh the tokens when the refresh token is about to expire so that we keep the session active on the oidc server.  \
-The inactivity of the user is tracked locally by oidc-spa, the server can't relyably tell if the user is inactive just because he hasn't sent a request in a while, he could just be taking some time to fill a form. &#x20;
+The main change in this major release is **improved token renewal management**.  
+Tokens are now refreshed far less aggressively:
 
-\
-To make this change possible one big API change had to be made: The getTokens() method is now async. &#x20;
+- **Before**: `oidc-spa` would always try to keep a valid `access_token` in cache.  
+  With short-lived tokens (e.g. 20s TTL), this caused constant requests to the OIDC server, even when the tab was inactive.  
+- **Now**: a new token is only requested **when needed**.  
+- Automatic refresh happens only when the **refresh token is close to expiring**, ensuring the session remains active on the OIDC server.  
+- User inactivity is tracked **locally** by `oidc-spa`. The server cannot reliably infer inactivity just because no requests were sent (the user might just be filling a form).
+
+---
+
+## Breaking API Change: `getTokens()` is now async
+
+To support this new behavior, the `getTokens()` method has become asynchronous:
 
 ```diff
 -const tokens = oidc.getTokens();
 +const tokens = await oidc.getTokens();
 ```
 
-And since we had to make this change we took the opportunity to do a few other wellcome API adjustment.  \
-\
-The tokens are no longer accessible in your react components.  You can no longer write: &#x20;
+---
+
+## Token Access in React Components
+
+Tokens are no longer directly accessible inside React components. For example, this is no longer valid:
 
 ```diff
 -const { tokens } = useOidc({ assert: "user logged in" });
 -console.log(tokens!.accessToken);
 ```
 
-There is no alternative for this since the tokens really do not bellong in the UI rendering world.  \
-In the UI, what you might need is the information about the user, those informations are available in the decodedIdToken, which is still available via the react hook: &#x20;
+There is **no direct replacement** for this, because tokens do not belong in the rendering layer.  
+
+What you usually need in the UI is **user information**, which remains available via the decoded ID token:
 
 ```tsx
-function HeaderButtonLoggedIn(){
+function HeaderButtonLoggedIn() {
     const { decodedIdToken } = useOidc({ assert: "user logged in" });
-    
     return <div>Hello {decodedIdToken.name}</div>;
 }
 ```
 
-But the access token, no, it has nothing to do in a React component, it should be opaque to your SPA code and only be used as an authorization Bearer, example of valid usage:
+The `access_token` should be treated as **opaque**, used only when making authorized API calls.  
+Here is an example of correct usage:
 
-{% code title="Custom fetch function that auto add the Authorization header." %}
+{% code title="Custom fetch function that automatically adds the Authorization header" %}
 ```typescript
 export const fetchWithAuth: typeof fetch = async (input, init) => {
     const oidc = await getOidc();
@@ -51,7 +59,7 @@ export const fetchWithAuth: typeof fetch = async (input, init) => {
 
         (init ??= {}).headers = {
             ...init.headers,
-            Authorization: `Bearer ${accessToken}`
+            Authorization: `Bearer ${accessToken}`,
         };
     }
 
@@ -60,13 +68,15 @@ export const fetchWithAuth: typeof fetch = async (input, init) => {
 ```
 {% endcode %}
 
-If you really need to have the access token in your react component there is a custom hook example here: [https://github.com/keycloakify/oidc-spa/blob/d1eede4e0cec6b475a3dbc2b4677b6a02326c05d/examples/tanstack-router-file-based/src/routes/protected.tsx#L120-L174](https://github.com/keycloakify/oidc-spa/blob/d1eede4e0cec6b475a3dbc2b4677b6a02326c05d/examples/tanstack-router-file-based/src/routes/protected.tsx#L120-L174)
+If you truly need to expose the `access_token` inside a React component, see this custom hook example:  
+[Example on GitHub](https://github.com/keycloakify/oidc-spa/blob/d1eede4e0cec6b475a3dbc2b4677b6a02326c05d/examples/tanstack-router-file-based/src/routes/protected.tsx#L120-L174)
 
+---
 
+## Other API Changes
 
-Other minor API changes: &#x20;
-
-\_\_unsafe\_ssoSessionIdleSeconds was renamed idleSessionLifetimeInSeconds
+- `__unsafe_ssoSessionIdleSeconds` was renamed to `idleSessionLifetimeInSeconds`.
+- `transformUrlBeforeRedirect` now receives a structured object as parameter.
 
 ```diff
  createReactOidc({
@@ -75,12 +85,12 @@ Other minor API changes: &#x20;
 
 -    transformUrlBeforeRedirect: url => `${url}&ui_locale=fr`,
 +    transformUrlBeforeRedirect: ({ authorizationUrl, isSilent }) => {
-+        if(isSilent){
-+           return authorizationUrl;
++        if (isSilent) {
++            return authorizationUrl;
 +        }
-+        return `${url}&ui_locale=fr`;
++        return `${authorizationUrl}&ui_locale=fr`;
 +    }
  })
 ```
 
-\
+---
