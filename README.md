@@ -2,131 +2,52 @@
 icon: up
 ---
 
-# v5 -> v6
+# v6 -> v7
 
-Here’s what’s new in version 6 of `oidc-spa`:
+The main change brougt by this major version is a better management token renewal.  \
+The tokens are now renewer much less agressively.  \
+Before we oidc-spa would make sure that there's a valid access\_token at all time in caches. This was problematic for config with short access token ttl (like 20s) oidc-spa will constently hit the OIDC server, even when the tab is not focussed, over and over, in the background.  \
+Now we get a new token only when and if we need one.  \
+We only automatically refresh the tokens when the refresh token is about to expire so that we keep the session active on the oidc server.  \
+The inactivity of the user is tracked locally by oidc-spa, the server can't relyably tell if the user is inactive just because he hasn't sent a request in a while, he could just be taking some time to fill a form. &#x20;
 
-* **Full compatibility with any OIDC provider**\
-  In v5, you had to define valid redirect URIs using wildcards, such as `https://my-app.com/dashboard/*`. However, according to the OIDC specification, wildcards in redirect URIs are not allowed. Some OIDC servers, like Ory Hydra, enforce this rule, as discussed [here](https://github.com/ory/hydra/discussions/2512).\
-  In v6, you only need to define a single redirect URI, the homepage of your app (e.g., `https://my-app.com/dashboard/`).
-* **Enhanced security: No more token storage in session storage**\
-  Tokens are no longer stored in session storage, aligning with modern security best practices.
-* **Eliminated the need for a `silent-sso.htm` file**\
-  Making oidc-spa self contained and easyer to setup.
-* **Improved error messages**\
-  If something is misconfigured, error messages now provide much clearer explanations of the root cause.
-* **API refinements**\
-  Several API improvements aiming at making the library usage more intuitive.
-
-## Migration Guide
-
-### 1. Remove `public/silent-sso.htm`
-
-The silent SSO file is no longer needed, so it should be deleted from your project.
-
-### 2. Update configuration changes
-
-The following changes have been made to the API:
-
-{% code title="src/oidc.ts" %}
-```diff
-export const { OidcProvider, useOidc, getOidc } = createReactOidc({
-    issuerUri: "https://auth.your-domain.net/realms/myrealm",
-    clientId: "myclient",
-    // `publicUrl` has been renamed to `homeUrl`
--   publicUrl: import.meta.env.BASE_URL,
-+   homeUrl: import.meta.env.BASE_URL,
-    // `isAuthGloballyRequired` has been renamed to `autoLogin`
--   isAuthGloballyRequired: true,
-+   autoLogin: true,
-    // `doEnableDebugLogs` has been renamed to `debugLogs`
--   doEnableDebugLogs: true,
-+   debugLogs: true,
-});
-
-createMockReactOidc({
-   // ...
--  publicUrl: import.meta.env.BASE_URL,
-+  homeUrl: import.meta.env.BASE_URL,
-});
-```
-{% endcode %}
-
-### 3. Update authentication assertion
-
-The `assertUserLoggedIn` option has been replaced:
+\
+To make this change possible one big API change had to be made: The getTokens() method is now async. &#x20;
 
 ```diff
--const { oidcTokens } = useOidc({ assertUserLoggedIn: true });
-+const { oidcTokens } = useOidc({ assert: "user logged in" });
+-const tokens = oidc.getTokens();
++const tokens = await oidc.getTokens();
 ```
 
-### 4. (OPTIONAL, Recommended) Update your usage of the useOidc hook
+And since we had to make this change we took the opportunity to do a few other wellcome API adjustment.  \
+\
+The tokens are no longer accessible in your react components.  You can no longer write: &#x20;
 
-{% code title="Before" %}
+```diff
+-const { tokens } = useOidc({ assert: "user logged in" });
+-console.log(tokens!.accessToken);
+```
+
+There is no alternative for this since the tokens really do not bellong in the UI rendering world.  \
+In the UI, what you might need is the information about the user, those informations are available in the decodedIdToken, which is still available via the react hook: &#x20;
+
 ```tsx
-
-const { oidcTokens } = useOidc({ assertUserLoggedIn: true });
-
-<span>{oidcTokens.decodedIdToken.preffered_username}</span>
-
+function HeaderButtonLoggedIn(){
+    const { decodedIdToken } = useOidc({ assert: "user logged in" });
+    
+    return <div>Hello {decodedIdToken.name}</div>;
+}
 ```
-{% endcode %}
 
-{% code title="After" %}
-```tsx
-const { decodedIdToken } = useOidc({ assert: "user logged in" });
+But the access token, no, it has nothing to do in a React component, it should be opaque to your SPA code and only be used as an authorization Bearer, example of valid usage:
 
-<span>{decodedIdToken.preffered_username}</span>
-```
-{% endcode %}
-
-***
-
-{% code title="Before" %}
-```tsx
-const { oidcTokens } = useOidc({ assertUserLoggedIn: true });
-
-useEffect(()=> {
-    fetch(
-        "https://...", 
-        { headers: { "Auhtorization": `Bearer ${oidcToken.accessToken}` }}
-    );
-}, []);
-```
-{% endcode %}
-
-Recomendation is to declare an [fetchWithAuthorization like in the example](https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/usage#react-api), but if you want the direct equivalent:
-
-{% code title="After" %}
+{% code title="Custom fetch function that auto add the Authorization header." %}
 ```typescript
-const { tokens } = useOidc({ assert: "user logged in" });
-
-useEffect(()=> {
-    // Token will always be undefined the first render.
-    if( tokens === undefined ) return;
-    fetch(
-        "https://...", 
-        { headers: { "Auhtorization": `Bearer ${tokens.accessToken}` }}
-    );
-}, []);
-```
-{% endcode %}
-
-### 5. (OPTIONAL) Assume getTokens() is an async function
-
-In the next major getTokens() will be async. So if you want to be able to migrate without issue, start assuming it is today:
-
-```diff
-export const fetchWithAuth: typeof fetch = async (
-    input,
-    init
-) => {
+export const fetchWithAuth: typeof fetch = async (input, init) => {
     const oidc = await getOidc();
 
     if (oidc.isUserLoggedIn) {
--       const { accessToken } = oidc.getTokens();
-+       const { accessToken } = await oidc.getTokens();
+        const { accessToken } = await oidc.getTokens();
 
         (init ??= {}).headers = {
             ...init.headers,
@@ -137,40 +58,29 @@ export const fetchWithAuth: typeof fetch = async (
     return fetch(input, init);
 };
 ```
+{% endcode %}
 
-### 6. Error Management Updates
+If you really need to have the access token in your react component there is a custom hook example here: [https://github.com/keycloakify/oidc-spa/blob/d1eede4e0cec6b475a3dbc2b4677b6a02326c05d/examples/tanstack-router-file-based/src/routes/protected.tsx#L120-L174](https://github.com/keycloakify/oidc-spa/blob/d1eede4e0cec6b475a3dbc2b4677b6a02326c05d/examples/tanstack-router-file-based/src/routes/protected.tsx#L120-L174)
 
-* `OidcInitializationError` now only includes the `isAuthServerLikelyDown` property, which is `true` if the authentication server is likely down.\
-  If it’s `false`, the OIDC server is reachable, but there is a client/server missconfiguration.
-* The `initializationError.type` property has been **removed**.
 
-{% content-ref url="https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/error-management" %}
-[Error Management](https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/error-management)
-{% endcontent-ref %}
 
-### 7. Keycloak Configuration Improvements
+Other minor API changes: &#x20;
 
-The Keycloak setup guide has been updated for better clarity:
+\_\_unsafe\_ssoSessionIdleSeconds was renamed idleSessionLifetimeInSeconds
 
-{% content-ref url="https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/providers-configuration/keycloak" %}
-[Keycloak](https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/providers-configuration/keycloak)
-{% endcontent-ref %}
+```diff
+ createReactOidc({
+-    __unsafe_ssoSessionIdleSeconds: 60 * 10,
++    idleSessionLifetimeInSeconds: 60 * 10,
 
-### 8. Session Initialization Changes
+-    transformUrlBeforeRedirect: url => `${url}&ui_locale=fr`,
++    transformUrlBeforeRedirect: ({ authorizationUrl, isSilent }) => {
++        if(isSilent){
++           return authorizationUrl;
++        }
++        return `${url}&ui_locale=fr`;
++    }
+ })
+```
 
-* The `authMethod` option has been **removed**.
-* The `isNewBrowserSession` property should now be used instead.
-
-{% content-ref url="https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/user-session-initialization" %}
-[User Session Initialization](https://app.gitbook.com/s/u20Nc4nUTlX9s50rXkBi/user-session-initialization)
-{% endcontent-ref %}
-
-### 9. Impersonation
-
-oidc-spa v5 had built in [impersonation cappability](https://docs.oidc-spa.dev/docs/v5/documentation/user-impersonation).  \
-However, this mechanism was somewhat hard to implement in practice, and could expose your app to vulnerabilities if not implemented correctly.  \
-If you want to implement impersonation, here is an alternative approach for Keycloak: &#x20;
-
-{% embed url="https://github.com/keycloakify/keycloakify-starter/tree/direct_impersonation" %}
-
-If you where using this feature, just reach out to me, I'm open to re-introducing it. &#x20;
+\
