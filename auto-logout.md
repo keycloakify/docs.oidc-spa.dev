@@ -82,9 +82,9 @@ const { unsubscribeFromAutoLogoutCountdown } = oidc.subscribeToAutoLogoutCountdo
 {% endtab %}
 
 {% tab title="React API" %}
-{% embed url="https://github.com/keycloakify/oidc-spa/blob/main/examples/tanstack-router/src/router/AutoLogoutCountdown.tsx" %}
 Example implementation of a 60 seconds countdown before auto logout.
-{% endembed %}
+
+{% embed url="https://github.com/keycloakify/oidc-spa/blob/v6/examples/tanstack-router/src/router/AutoLogoutCountdown.tsx" %}
 {% endtab %}
 {% endtabs %}
 
