@@ -47,11 +47,15 @@ export const {
     OidcProvider,
     useOidc
 } = createReactOidc({
-    // ...
-    __unsafe_ssoSessionIdleSeconds: 300 // 5 minuts
-    //autoLogoutParams: { redirectTo: "current page" } // Default
-    //autoLogoutParams: { redirectTo: "home" }
-    //autoLogoutParams: { redirectTo: "specific url", url: "/a-page" }
+  // ...
+  // ‼️ WARNING ‼️ Read carfully what's above.
+  // Use idleSessionLifetimeInSeconds if and only if you are using an auth server
+  // that do not let you configure this policy! (e.g. if you're using Keycloak don't use this param) 
+  idleSessionLifetimeInSeconds: 300 // 5 minutes
+    
+  //autoLogoutParams: { redirectTo: "current page" } // Default
+  //autoLogoutParams: { redirectTo: "home" }
+  //autoLogoutParams: { redirectTo: "specific url", url: "/a-page" }
 });
 ```
 {% endtab %}
@@ -82,9 +86,48 @@ const { unsubscribeFromAutoLogoutCountdown } = oidc.subscribeToAutoLogoutCountdo
 {% endtab %}
 
 {% tab title="React API" %}
-{% embed url="https://github.com/keycloakify/oidc-spa/blob/main/examples/tanstack-router/src/router/AutoLogoutCountdown.tsx" %}
-Example implementation of a 60 seconds countdown before auto logout.
-{% endembed %}
+You can have a component like this one mounted at all time:
+
+```tsx
+import { useOidc } from "../oidc";
+
+export function AutoLogoutWarningOverlay() {
+    const { useAutoLogoutWarningCountdown } = useOidc();
+    const { secondsLeft } = useAutoLogoutWarningCountdown({ 
+        // How many seconds before auto logout do we start
+        // displaying the overlay.
+        warningDurationSeconds: 45 
+    });
+
+    if (secondsLeft === undefined) {
+        return null;
+    }
+
+    return (
+        <div
+            // Full screen overlay, blurred background
+            style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: "rgba(0,0,0,0.5)",
+                backdropFilter: "blur(10px)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                zIndex: 1000
+            }}
+        >
+            <div>
+                <p>Are you still there?</p>
+                <p>You will be logged out in {secondsLeft}</p>
+            </div>
+        </div>
+    );
+}
+```
 {% endtab %}
 {% endtabs %}
 
