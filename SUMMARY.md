@@ -25,6 +25,7 @@
 * [Keycloak](providers-configuration/keycloak.md)
 * [Auth0](providers-configuration/auth0.md)
 * [Microsoft Entra ID](providers-configuration/microsoft-entra-id.md)
+* [Clerk](providers-configuration/clerk.md)
 * [Google OAuth 2.0](providers-configuration/google-oauth.md)
 * [Other OIDC Provider](providers-configuration/other.md)
 
