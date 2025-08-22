@@ -24,6 +24,10 @@ yarn dev
 {% tab title="Framework Mode" %}
 This is for setting for integrating oidc-spa with react-router in [`Framework Mode`](https://reactrouter.com/start/modes).
 
+{% hint style="info" %}
+You might experience some annoying glitches in **dev mode**, but there is **no known issue in production**.
+{% endhint %}
+
 ### Enabling SPA mode
 
 As of today, to use oidc-spa you need to [enable SPA mode](https://reactrouter.com/how-to/spa).
@@ -31,11 +35,11 @@ As of today, to use oidc-spa you need to [enable SPA mode](https://reactrouter.c
 <pre class="language-typescript" data-title="react-router.config.ts"><code class="lang-typescript">import type { Config } from "@react-router/dev/config";
 
 export default {
-    // Config options...
-    // Server-side render by default, to enable SPA mode set this to `false`
 <strong>    ssr: false
 </strong>} satisfies Config;
 </code></pre>
+
+NOTE: You can still server side render part of you app at build time even in SPA mode.  Refer to [this comments](https://github.com/keycloakify/oidc-spa/blob/8ce6def4fa90455434e56b5054ce4da3d1623253/examples/react-router-framework/app/root.tsx#L21-L51) for mor info.
 
 ### oidc.client.ts
 
