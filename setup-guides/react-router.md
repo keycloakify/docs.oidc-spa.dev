@@ -131,6 +131,10 @@ export default function Invoices() {
 }
 </code></pre>
 
+{% hint style="info" %}
+If you want to SSG render part of your app [read this](https://github.com/keycloakify/oidc-spa/issues/59#issuecomment-2749660048).
+{% endhint %}
+
 ### Running the example
 
 The example setup is live here: [https://example-react-router-framework.oidc-spa.dev/](https://example-react-router-framework.oidc-spa.dev/)
