@@ -39,8 +39,6 @@ export default {
 </strong>} satisfies Config;
 </code></pre>
 
-NOTE: You can still server side render part of you app at build time even in SPA mode.  Refer to [this comments](https://github.com/keycloakify/oidc-spa/blob/8ce6def4fa90455434e56b5054ce4da3d1623253/examples/react-router-framework/app/root.tsx#L21-L51) for mor info.
-
 ### oidc.client.ts
 
 Make sure you create a `app/oidc.client.ts` file, (instead of `app/oidc.ts`).
