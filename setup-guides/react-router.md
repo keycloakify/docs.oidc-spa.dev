@@ -24,10 +24,6 @@ yarn dev
 {% tab title="Framework Mode" %}
 This is for setting for integrating oidc-spa with react-router in [`Framework Mode`](https://reactrouter.com/start/modes).
 
-{% hint style="info" %}
-You might experience some annoying glitches in **dev mode**, but there is **no known issue in production**.
-{% endhint %}
-
 ### Enabling SPA mode
 
 As of today, to use oidc-spa you need to [enable SPA mode](https://reactrouter.com/how-to/spa).
@@ -37,6 +33,27 @@ As of today, to use oidc-spa you need to [enable SPA mode](https://reactrouter.c
 export default {
 <strong>    ssr: false
 </strong>} satisfies Config;
+</code></pre>
+
+### (Optional) Improve dev mode by pre-optimizing dependencies
+
+In dev mode, listing your dependencies in `optimizeDeps.include` can prevent annoying glitches that forces you to reload your page manually.
+
+<pre class="language-typescript" data-title="vite.config.ts"><code class="lang-typescript">import { reactRouter } from "@react-router/dev/vite";
+import { defineConfig } from "vite";
+
+export default defineConfig({
+    plugins: [reactRouter()],
+<strong>    optimizeDeps: {
+</strong><strong>        include: [
+</strong><strong>            "oidc-spa/react",
+</strong><strong>            "oidc-spa/entrypoint",
+</strong><strong>            "oidc-spa/tools/parseKeycloakIssuerUri",
+</strong><strong>            "oidc-spa/tools/decodeJwt",
+</strong><strong>            "zod"
+</strong><strong>        ]
+</strong><strong>    }
+</strong>});
 </code></pre>
 
 ### oidc.client.ts
@@ -59,57 +76,18 @@ app/entry.client.tsx
 app/entry.client.lazy.tsx
 {% endembed %}
 
-### Working with loaders
+### Protecting pages and using the Page Loaders
 
-{% hint style="success" %}
-If your whole app requires user to be authenticated ([autoLogin: true](../auto-login.md)) you can skip this section.
-{% endhint %}
-
-The default approach when you want to enforce that the user be logged in when accesing a given route is to wrap the component into `withLoginEnforced()`, example:
-
-{% code title="pages/invoices.tsx" %}
-```tsx
-import { useState, useEffect } from "react";
-import { withLoginEnforced, fetchWithAuth } from "../oidc.client";
-
-const Invoices = withLoginEnforced(
-    () => {
-        const [invoices, setInvoices] = useState<Invoice[] | undefined>(undefined);
-
-        useEffect(() => {
-            fetchWithAuth("/api/invoices")
-                .then(r => r.json())
-                .then(setInvoices);
-        }, []);
-
-        if (invoices === undefined) {
-            return <div>Loading invoices...</div>;
-        }
-
-        return (
-            <div>
-                {invoices.map(invoice => (
-                    <div key={invoice.id}>{invoice.amount}</div>
-                ))}
-            </div>
-        );
-    },
-    {
-        onRedirecting: () => <div>Redirecting to login...</div>
-    }
-);
-
-export default Invoices;
-```
-{% endcode %}
-
-This approach is framework agnostic and always works however, you might want to use the loaders to doload the data, for that you would use `enforceLogin()` istead of `withLoginEnforced`:
+Let's say we have an invoice page and you want this page to be accessible only when the user is logged in.  \
+You also want to fetch the API to get the invoces of the user.  \
+This is how you would implement it: &#x20;
 
 <pre class="language-tsx" data-title="pages/invoices.tsx"><code class="lang-tsx"><strong>import { enforceLogin, fetchWithAuth } from "../oidc.client";
 </strong>import type { Route } from "./+types/invoices";
 import { useLoaderData } from "react-router";
 
 export async function clientLoader(params: Route.ClientLoaderArgs) {
+    // If you have `autoLogin: true` this isn't nessesary.  
 <strong>    await enforceLogin(params);
 </strong>    // If we are here, the user is logged in.
     const invoices = await fetchWithAuth("/api/invoices").then(r => r.json());
