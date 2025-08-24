@@ -64,6 +64,8 @@ const { shouldLoadApp } = oidcEarlyInit({
 });
 
 if (shouldLoadApp) {
+    // Note: Deferring the main app import adds a few milliseconds to cold start,
+    // but dramatically speeds up auth. Overall, it's a net win.
     import("./main.lazy");
 }
 ```
@@ -101,6 +103,8 @@ const { shouldLoadApp } = oidcEarlyInit({
 });
 
 if (shouldLoadApp) {
+    // Note: Deferring the main app import adds a few milliseconds to cold start,
+    // but dramatically speeds up auth. Overall, it's a net win.
     import("./index.lazy");
 }
 ```
