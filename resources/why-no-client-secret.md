@@ -73,8 +73,8 @@ To fully benefit from these protections, ensure `oidc-spa` is the first JavaScri
 Security Measures:
 
 * **No persistent token storage** – Tokens are never stored in `localStorage` or `sessionStorage`. Instead, they are kept in scoped variables that are inaccessible to the global scope.
-* **Preventing `fetch` and** `XMLHttpRequest` **monkey patching** – APIs that caries access tokens are frozen to prevent malicious code from overriding it and capturing tokens.
-* **(WIP) Securing silent sign-in responses** – Even if an attacker intercepts the authorization response from a silent sign-in performed in an iframe, it will be asymmetrically encrypted, making it unusable.
+* **Preventing `fetch`,** `XMLHttpRequest` and `WebSocker` **monkey patching** – APIs that caries access tokens are frozen to prevent malicious code from overriding it and capturing tokens.
+* **Securing silent sign-in responses** – Even if an attacker intercepts the authorization response from a silent sign-in performed in an iframe, it will be asymmetrically encrypted, making it unusable.
 * **Secure transfer of the authorization response after front-channel login** – The authorization response, which is temporarily stored in session storage during the redirect process, will be cleared and moved to memory before any other code runs.
 
 ## Opinionated Conclusion
