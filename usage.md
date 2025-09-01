@@ -177,6 +177,7 @@ export default function App() {
 
     return (
         <OidcProvider
+          // Why arent't the initialization params provided here? See: https://youtu.be/c91NGmdj2aA
           //fallback={<h1>Checking authentication ⌛️</h1>}
         >
             <Header />
