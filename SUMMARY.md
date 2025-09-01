@@ -9,6 +9,7 @@
 * [Mock](mock.md)
 * [User Account Management](user-account-management.md)
 * [User Session Initialization](user-session-initialization.md)
+* [Migration from keycloak-js](migration-from-keycloak-js.md)
 * [Tokens Renewal](tokens-renewal.md)
 
 ## Setup Guides
