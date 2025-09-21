@@ -44,7 +44,7 @@ bun add oidc-spa
 
 To protect tokens against supply-chain attacks and XSS, oidc-spa must run some initialization code _before any other JavaScript in your app_.
 
-This design provides much stronger security guarantees than any other adapter, and it also delivers unmatched login performance. More details [here](resources/why-no-client-secret.md).
+This design provides much stronger security guarantees than any other adapter, and it also delivers unmatched login performance. More details [here](why-oidcearlyinit.md).
 
 {% tabs %}
 {% tab title="Vite" %}
