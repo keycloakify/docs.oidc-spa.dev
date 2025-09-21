@@ -42,7 +42,9 @@ bun add oidc-spa
 
 ## Editing your App entrypoint
 
-This is optional but recommended for [better performances and security](why-oidcearlyinit.md).
+To protect tokens against supply-chain attacks and XSS, oidc-spa must run some initialization code _before any other JavaScript in your app_.
+
+This design provides much stronger security guarantees than any other adapter, and it also delivers unmatched login performance. More details [here](resources/why-no-client-secret.md).
 
 {% tabs %}
 {% tab title="Vite" %}
