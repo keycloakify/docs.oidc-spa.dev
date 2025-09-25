@@ -87,6 +87,36 @@ You can skip this for now. It will be explained in the dedicated setup guide:
 {% endcontent-ref %}
 {% endtab %}
 
+{% tab title="Angular" %}
+> WARNING: The Angular adapter is still subject to changes!
+
+First rename your entry point file from `main.ts` to `main.lazy.ts`
+
+```bash
+mv src/main.tsx src/main.lazy.tsx
+```
+
+Then create a new `main.ts` file:
+
+{% code title="main.ts" %}
+```typescript
+import { oidcEarlyInit } from "oidc-spa/entrypoint";
+
+const { shouldLoadApp } = oidcEarlyInit({
+    freezeFetch: true,
+    freezeXMLHttpRequest: true,
+    freezeWebSocket: true
+});
+
+if (shouldLoadApp) {
+    // Note: Deferring the main app import adds a few milliseconds to cold start,
+    // but dramatically speeds up auth. Overall, it's a net win.
+    import("./main.lazy");
+}
+```
+{% endcode %}
+{% endtab %}
+
 {% tab title="Create-React-App" %}
 First rename your entry point file from `main.tsx` (or `main.ts`) to `main.lazy.tsx`
 

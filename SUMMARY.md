@@ -16,6 +16,7 @@
 * [Setup Guides](setup-guides/example-setups.md)
 * [React Router](setup-guides/react-router.md)
 * [TanStack Router](setup-guides/tanstack-router.md)
+* [Angular](setup-guides/angular.md)
 * [Full-Stack with Node REST API](setup-guides/tanstack-router-+-node-rest-api.md)
 * [Multi Providers - Login with Google or Microsoft](setup-guides/multi-providers.md)
 
