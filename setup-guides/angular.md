@@ -18,3 +18,5 @@ cd oidc-spa-angular
 npm install
 npm run start
 ```
+
+{% embed url="https://github.com/keycloakify/oidc-spa/tree/main/examples/angular" %}
