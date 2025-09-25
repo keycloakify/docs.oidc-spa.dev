@@ -8,7 +8,7 @@ icon: angular
 The Angular API is still subject to change
 {% endhint %}
 
-The example setup is live here: [https://example-angular.oidc-spa.dev/](https://example-react-router-framework.oidc-spa.dev/)
+The example setup is live here: [https://example-angular.oidc-spa.dev](https://example-angular.oidc-spa.dev/)
 
 Run it locally with:
 
