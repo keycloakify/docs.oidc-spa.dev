@@ -23,8 +23,11 @@ const decodedIdTokenSchema = z.object({
     preferred_username: z.string()
 });
 
+const autoLogin = false;
+
 const oidc = !import.meta.env.VITE_OIDC_ISSUER
 <strong>    ? await createMockOidc({
+</strong><strong>          // NOTE: If autoLogin is set to true this option must be removed
 </strong><strong>          isUserInitiallyLoggedIn: false,
 </strong><strong>          // This is only so we know where to redirect when 
 </strong><strong>          // you call `logout({ redirectTo: "home" })`
@@ -34,13 +37,15 @@ const oidc = !import.meta.env.VITE_OIDC_ISSUER
 </strong><strong>                  sub: "123",
 </strong><strong>                  preferred_username: "john doe"
 </strong><strong>              } satisfies z.infer&#x3C;typeof decodedIdTokenSchema>
-</strong><strong>          }
+</strong><strong>          },
+</strong><strong>          autoLogin
 </strong><strong>      })
 </strong>    : await createOidc({
           issuerUri: import.meta.env.VITE_OIDC_ISSUER,
           clientId: import.meta.env.VITE_OIDC_CLIENT_ID,
           homeUrl: import.meta.env.BASE_URL,
-          decodedIdTokenSchema
+          decodedIdTokenSchema,
+          autoLogin
       });
 </code></pre>
 {% endtab %}
@@ -56,10 +61,12 @@ const decodedIdTokenSchema = z.object({
 });
 
 const publicUrl = import.meta.env.BASE_URL;
+const autoLogin = false;
 
 export const { OidcProvider, useOidc, getOidc } =
     !import.meta.env.VITE_OIDC_ISSUER ?
 <strong>        createMockReactOidc({
+</strong><strong>            // NOTE: If autoLogin is set to true this option must be removed
 </strong><strong>            isUserInitiallyLoggedIn: false,
 </strong><strong>            // This is only so we know where to redirect when 
 </strong><strong>            // you call `logout({ redirectTo: "home" })`
@@ -69,13 +76,15 @@ export const { OidcProvider, useOidc, getOidc } =
 </strong><strong>                    sub: "123",
 </strong><strong>                    preferred_username: "john doe"
 </strong><strong>                } satisfies z.infer&#x3C;typeof decodedIdTokenSchema>
-</strong><strong>            }
+</strong><strong>            },
+</strong><strong>            autoLogin
 </strong><strong>        }) :
 </strong>        createReactOidc({
             issuerUri: import.meta.env.VITE_OIDC_ISSUER,
             clientId: import.meta.env.VITE_OIDC_CLIENT_ID,
             homeUrl: import.meta.env.BASE_URL,
-            decodedIdTokenSchema
+            decodedIdTokenSchema,
+            autoLogin
         });
 </code></pre>
 {% endtab %}
