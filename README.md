@@ -79,7 +79,7 @@ if (shouldLoadApp) {
 Comming soon, [follow progress](https://github.com/keycloakify/oidc-spa/issues/43).
 {% endtab %}
 
-{% tab title="React-Router Framework Mode" %}
+{% tab title="React-Router Framework" %}
 You can skip this for now. It will be explained in the dedicated setup guide:
 
 {% content-ref url="setup-guides/react-router.md" %}
@@ -117,7 +117,11 @@ if (shouldLoadApp) {
 {% endcode %}
 {% endtab %}
 
-{% tab title="Create-React-App" %}
+{% tab title="CRA" %}
+{% hint style="warning" %}
+Create React App is deprecated. Consider using Vite instead.
+{% endhint %}
+
 First rename your entry point file from `main.tsx` (or `main.ts`) to `main.lazy.tsx`
 
 ```bash

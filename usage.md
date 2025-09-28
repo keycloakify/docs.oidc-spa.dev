@@ -424,4 +424,243 @@ Now that you got the idea you can follow up with the specific setup guides for d
 [example-setups.md](setup-guides/example-setups.md)
 {% endcontent-ref %}
 {% endtab %}
+
+{% tab title="Angular API" %}
+oidc-spa provides features no other adapter does, like support for multiple OIDC clients, mock mode for tests or degraded environments, and rendering pages even before OIDC initializes.\
+It also covers common needs like auto-login, dynamic config fetch, and role-based access.
+
+Here we’ll just look at the minimal Hello World setup, for more advanced instruction see:
+
+[angular.md](setup-guides/angular.md "mention")
+
+Here is the directory structure:
+
+```
+src/
+└── app/
+    ├── pages/
+    │   ├── protected.ts
+    │   └── public.ts
+    ├── services/
+    │   ├── oidc.service.ts
+    │   └── todo.service.ts
+    ├── app.config.ts
+    ├── app.html
+    ├── app.routes.ts
+    ├── app.ts
+    ├── index.html
+    ├── main.lazy.ts
+    └── main.ts
+```
+
+{% code title="app/services/oidc.service.ts" %}
+```typescript
+import { Injectable } from '@angular/core';
+import { AbstractOidcService } from 'oidc-spa/angular';
+
+// Declare what info about the user you expect the server to provide.
+export type DecodedIdToken = {
+  name: string;
+  realm_access?: {
+    roles: string[];
+  }
+};
+
+@Injectable({ providedIn: 'root' })
+export class Oidc extends AbstractOidcService<DecodedIdToken> {}
+```
+{% endcode %}
+
+<pre class="language-typescript" data-title="app/app.config.ts"><code class="lang-typescript">import {
+  ApplicationConfig,
+  provideBrowserGlobalErrorListeners,
+  provideZonelessChangeDetection,
+} from '@angular/core';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideRouter } from '@angular/router';
+import { routes } from './app.routes';
+import { todoApiInterceptor } from './services/todo.service';
+<strong>import { Oidc } from './services/oidc.service';
+</strong>
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideBrowserGlobalErrorListeners(),
+    provideZonelessChangeDetection(),
+    provideHttpClient(withInterceptors([todoApiInterceptor])),
+    provideRouter(routes),
+<strong>    Oidc.provide({
+</strong><strong>      issuerUri: 'https://cloud-iam.oidc-spa.dev/realms/oidc-spa',
+</strong><strong>      clientId: 'example-angular',
+</strong><strong>    }),
+</strong>  ],
+};
+</code></pre>
+
+<pre class="language-typescript" data-title="app/app.ts"><code class="lang-typescript">import { Component, inject } from '@angular/core';
+import { RouterLink, RouterOutlet } from '@angular/router';
+<strong>import { Oidc } from './services/oidc.service';
+</strong><strong>// oidc-spa is provider agnostic. Keycloak specific features are exported as utils 
+</strong><strong>import { createKeycloakUtils } from 'oidc-spa/keycloak';
+</strong>
+
+@Component({
+  selector: 'app-root',
+  imports: [RouterOutlet, RouterLink],
+  templateUrl: './app.html',
+})
+export class App {
+<strong>  oidc = inject(Oidc);
+</strong><strong>  keycloakUtils = createKeycloakUtils({ issuerUri: this.oidc.issuerUri });
+</strong>}
+</code></pre>
+
+{% code title="app/app.html" %}
+```html
+<header>
+      <span>My App</span>
+      <div>
+            <a routerLink="/">Home</a>
+            <a routerLink="/protected">My protected page</a>
+      </div>
+      @if (oidc.isUserLoggedIn) {
+      <div>
+            <span>Hello {{ oidc.$decodedIdToken().name }}</span>
+            <button (click)="oidc.logout({ redirectTo: 'home' })">Logout</button>
+      </div>
+      } @else {
+      <div>
+            <button (click)="oidc.login()">
+                  Login
+            </button>
+            <button (click)="oidc.login({ transformUrlBeforeRedirect: keycloakUtils.transformUrlBeforeRedirectForRegister })">
+                  Register
+            </button>
+      </div>
+      }
+</header>
+
+<router-outlet />
+
+@if (oidc.$secondsLeftBeforeAutoLogout() ) {
+<!-- Full screen overlay, blurred background -->
+<!-- By default start when the user will be auto logged out in 45 seconds -->
+<div [style]="{
+      position: 'fixed',
+      width: '100vw',
+      height: '100vh'
+    }">
+      <p>Are you still there?</p>
+      <p>You will be logged out in {{ oidc.$secondsLeftBeforeAutoLogout() }}</p>
+</div>
+```
+{% endcode %}
+
+<pre class="language-typescript" data-title="app/app.routes.ts"><code class="lang-typescript">import { Routes } from '@angular/router';
+<strong>import { Oidc } from './services/oidc.service';
+</strong>
+export const routes: Routes = [
+  { path: '', loadComponent: () => import('./pages/public').then((c) => c.Public) },
+  {
+    path: 'protected',
+    loadComponent: () => import('./pages/protected').then((c) => c.Protected),
+<strong>    canActivate: [Oidc.enforceLoginGuard()],
+</strong>  },
+  { path: '**', redirectTo: '' },
+];
+</code></pre>
+
+<pre class="language-typescript" data-title="app/services/todo.service.ts"><code class="lang-typescript">import { HttpClient, HttpInterceptorFn } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { from, switchMap } from 'rxjs';
+import { Oidc } from '../services/oidc.service';
+
+export interface Todo {
+  userId: number;
+  id: number;
+  title: string;
+  completed: boolean;
+}
+
+<strong>// NOTE: Here we assume that the API require a Authorization header.
+</strong>const TODO_API_URL = 'https://jsonplaceholder.typicode.com/todos';
+
+<strong>// This is injected in app.config.ts to add the access token to every
+</strong><strong>// request made to the API.
+</strong>export const todoApiInterceptor: HttpInterceptorFn = (req, next) => {
+  const oidc = inject(Oidc);
+
+  if (!req.url.startsWith(TODO_API_URL)) {
+    return next(req);
+  }
+
+  return from(oidc.getAccessToken()).pipe(
+    switchMap(({ isUserLoggedIn, accessToken }) => {
+      if (!isUserLoggedIn) {
+        throw new Error("Assertion Error: Call to the TODO API while the user isn't logged in.");
+      }
+
+      return next(
+        req.clone({
+          setHeaders: { Authorization: `Bearer ${accessToken}` },
+        })
+      );
+    })
+  );
+};
+
+@Injectable({ providedIn: 'root' })
+export class TodoService {
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = TODO_API_URL;
+
+  getTodos() {
+    return this.http.get&#x3C;Todo[]>(this.apiUrl, {
+      params: { _limit: 5 },
+    });
+  }
+}
+</code></pre>
+
+{% code title="" %}
+```typescript
+import { AsyncPipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { Oidc } from '../services/oidc.service';
+import { TodoService } from '../services/todo.service';
+
+@Component({
+  selector: 'app-protected',
+  imports: [AsyncPipe],
+  template: `
+    <section>
+      <p>
+        Todos fetched with <code>Authorization: Bearer [access_token]</code> in the request's
+        headers:
+      </p>
+      @if (todos$ | async; as todos) {
+      <ul>
+        @for (todo of todos; track todo.id) {
+        <li>
+          <strong>#{{ todo.id }}</strong>
+          {{ todo.title }}
+          <span>({{ todo.completed ? 'done' : 'pending' }})</span>
+        </li>
+        }
+      </ul>
+      } @else {
+      <p>Loading todos...</p>
+      }
+    </section>
+  `,
+})
+export class Protected {
+  oidc = inject(Oidc);
+  private readonly todoService = inject(TodoService);
+  readonly todos$ = this.todoService.getTodos();
+}
+
+```
+{% endcode %}
+{% endtab %}
 {% endtabs %}
+
