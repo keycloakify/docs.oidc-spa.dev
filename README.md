@@ -88,8 +88,6 @@ You can skip this for now. It will be explained in the dedicated setup guide:
 {% endtab %}
 
 {% tab title="Angular" %}
-> WARNING: The Angular adapter is still subject to changes!
-
 First rename your entry point file from `main.ts` to `main.lazy.ts`
 
 ```bash
