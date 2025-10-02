@@ -4,12 +4,86 @@ icon: arrows-rotate-reverse
 
 # Tokens Renewal
 
-`oidc-spa` completely abstracts away the concern of refreshing tokens; you don’t need to handle it yourself.
+Nearly all OpenID Connect adapters, including `keycloak-js`, implement token renewal incorrectly.\
+With `oidc-spa`, you never have to worry about this. Token lifecycle management is fully abstracted away, as it should be.
 
-However, it still provides a `renewTokens()` function for a couple of rare but valid edge cases:
+***
 
-* **Force update after custom requests**: If you send a custom request to your OIDC server (e.g., Keycloak) that you know has changed some claims in the `id_token` or `access_token`, you can call `renewTokens()` to ensure you’re working with the latest values.
-* **Custom parameters to the token endpoint**: If your OIDC server’s token endpoint accepts special parameters, `renewTokens()` lets you trigger a refresh that including custom parameters (there is also the `extraTokenParams` option that you can provide to `createOidc`.).
+**The Problem With Access Token Refresh Loops**
+
+Access tokens are meant to be **short-lived** (typically \~5 minutes, but sometimes as little as 20 seconds for high-security apps).\
+Many adapters try to **keep an access token “always fresh” in cache**, which leads to:
+
+* Constant background refreshes
+* Heavy load on your auth server
+* Wasteful duplication when multiple tabs are open
+
+This is unnecessary. You don’t need a valid access token cached at all times.
+
+***
+
+**The Correct Approach (What `oidc-spa` Does)**
+
+Whenever you need to make an authenticated request, just **ask `oidc-spa` for a token**:
+
+```ts
+const oidc = await getOidc();
+
+if (!oidc.isUserLoggedIn) {
+    throw Error("Logical error in our application flow");
+}
+
+const { accessToken } = await oidc.getTokens();
+headers.set("Authorization", `Bearer ${accessToken}`);
+```
+
+* If a valid token is cached, you’ll get it.
+* If it’s expired, `oidc-spa` silently refreshes it using the refresh token.\
+
+
+So the correct approaches when you need an access token are:
+
+* via an interceptor that injects it into requests, or
+* with a wrapper around `fetch()` that awaits `oidc.getAccessToken()`.
+
+Example: [interceptor pattern](https://github.com/InseeFrLab/onyxia/blob/2f7bad234099719debc15ecdaba30dba116ffef9/web/src/core/adapters/onyxiaApi/onyxiaApi.ts#L34-L84)\
+Example: [custom fetch](https://github.com/keycloakify/oidc-spa/blob/a1aae19e2b5a874159fbdfecaaf00be814bb4c6a/examples/tanstack-router-file-based/src/oidc.tsx#L64-L76)
+
+Behind the scenes, `oidc-spa` ensures the session **never expires prematurely** by refreshing **at least once before the refresh token itself expires**.\
+This prevents the backend from destroying the session simply because the user wasn’t making authenticated requests (e.g., they’re filling out a form or browsing content).
+
+At the same time, `oidc-spa` tracks **actual user activity** (keyboard, mouse, touch). If the user is truly idle beyond the refresh token lifespan, they’re logged out as expected.
+
+This is the **only correct model**. There aren’t “multiple valid strategies.”\
+It shouldn’t be configurable, because there is nothing to configure.
+
+***
+
+**Why Other Adapters Get It Wrong**
+
+Adapters like `keycloak-js` expose the access token synchronously (`keycloak.token`).\
+To keep that contract, they’re forced to **brute-force the server with background refreshes,** otherwise, you might read an expired token.
+
+That’s why they give you knobs to “configure auto-renewal.” In reality, this pushes responsibility onto you for something the adapter should handle internally.
+
+On top of that the fresh loop does not even guarenty you'll never read an expired token, for example, when the computer wakes up from sleep to an expired token, the token can be expired and the adapter would have had no time to refresh it.  \
+\
+The Keycloak team is well aware of the design flaw of keycloak-js and keep it as is because changing the API would cause too much distruption. However, when they use keycloak-js internally for their app, like the Admin Console. [They apply the same strategy as oidc-spa](https://github.com/keycloak/keycloak/blob/f53e5ebdac5ca40bc5a232bb71b3cdd59670e1ee/js/apps/admin-ui/src/admin-client.ts#L29-L38). &#x20;
+
+***
+
+**Why `oidc-spa` Still Exposes `renewTokens()`**
+
+There are two legitimate edge cases:
+
+1. **After custom requests**: If you make a request to your OIDC server that changes claims in the `id_token` or `access_token`, call `renewTokens()` to ensure you have the latest values. (This is a very rare usecase, usually the user info are updated outside of your app, if you're not sure, you can safely assume your not doing any of those request). &#x20;
+2. **Custom token parameters**: If your OIDC server supports extra token endpoint params, you can trigger a refresh with them. (`extraTokenParams` is also available at `createOidc()` time.)
+
+Outside of these rare cases, you never need to call `renewTokens()` manually.
+
+***
+
+👉 With `oidc-spa`, token renewal is **always correct, efficient, and invisible to you**.
 
 {% tabs %}
 {% tab title="Vanilla API" %}
