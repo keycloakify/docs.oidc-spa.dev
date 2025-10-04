@@ -1,4 +1,5 @@
 ---
+hidden: true
 icon: angular
 ---
 
@@ -35,7 +36,30 @@ As a result you must do two things, the first one is to declare that you have re
 <pre class="language-typescript"><code class="lang-typescript">@Injectable({ providedIn: 'root' })
 export class Oidc extends AbstractOidcService&#x3C;DecodedIdToken> {
   override providerAwaitsInitialization = false;
+  // see: https://docs.oidc-spa.dev/release-notes/reading-decodedaccesstoken-within-shouldinjectaccesstoken
 <strong>  override allowDecodedIdTokenAccessInShouldInjectAccessToken = true;
 </strong>}
 </code></pre>
 
+Then you must make sure that every requests that depend on this rule are delayed after oidc.prInitialized has resolved, like for example by doing:
+
+```typescript
+@Injectable({ providedIn: 'root' })
+export class TodoService {
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = TODO_API_URL;
+  private readonly oidc = inject(Oidc);
+
+  getPublicAndAdminTodos(): Observable<Todo[]> {
+    return from(this.oidc.prInitialized).pipe(
+      switchMap(() =>
+        this.http.get<Todo[]>(`${this.apiUrl}/todos`, {
+          params: { _limit: 5 },
+          context: new HttpContext().set(INCLUDE_ACCESS_TOKEN_IF_ADMIN, true),
+        })
+      )
+    );
+  }
+```
+
+Sorry for the inconvegnience.
