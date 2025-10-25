@@ -60,24 +60,23 @@ bun add oidc-spa zod
 
 Add the plugin to your `vite.config.ts`:
 
-```typescript
-import { defineConfig } from "vite";
+<pre class="language-typescript"><code class="lang-typescript">import { defineConfig } from "vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 import tailwindcss from "@tailwindcss/vite";
-import { oidcSpa } from "oidc-spa/vite-plugin";
-
+<strong>import { oidcSpa } from "oidc-spa/vite-plugin";
+</strong>
 export default defineConfig({
   plugins: [
     viteTsConfigPaths({ projects: ["./tsconfig.json"] }),
     tailwindcss(),
     tanstackStart(),
-    oidcSpa(),
-    viteReact(),
+<strong>    oidcSpa(),
+</strong>    viteReact(),
   ],
 });
-```
+</code></pre>
 
 ***
 
