@@ -14,10 +14,11 @@ npm run dev
 # You can edit the .env file to test other providers.
 ```
 
-Live example:  
+Live example:
+
 {% embed url="https://example-tanstack-start.oidc-spa.dev/" %}
 
----
+***
 
 ## Step-by-step setup
 
@@ -49,11 +50,11 @@ bun add oidc-spa zod
 {% endtab %}
 {% endtabs %}
 
-> **Note:**  
-> [Zod](https://zod.dev/) is optional but highly recommended.  
+> **Note:**\
+> [Zod](https://zod.dev/) is optional but highly recommended.\
 > Writing validators manually is error-prone, and skipping validation means losing early guarantees about what your auth server provides.
 
----
+***
 
 ### 2. Configure Vite
 
@@ -78,7 +79,7 @@ export default defineConfig({
 });
 ```
 
----
+***
 
 ### 3. Provide your OIDC environment variables
 
@@ -90,16 +91,16 @@ OIDC_CLIENT_ID=example-tanstack-start
 ```
 {% endcode %}
 
-You can use our preconfigured Keycloak, Auth0, or Google OAuth test accounts —  
+You can use our preconfigured Keycloak, Auth0, or Google OAuth test accounts —\
 see [this sample file](https://github.com/keycloakify/oidc-spa/blob/main/examples/tanstack-start/.env.sample).
 
 For your own configuration, refer to:
 
 {% content-ref url="../providers-configuration/provider-configuration.md" %}
-[Provider configuration guide](../providers-configuration/provider-configuration.md)
+[provider-configuration.md](../providers-configuration/provider-configuration.md)
 {% endcontent-ref %}
 
----
+***
 
 ### 4. Bootstrapping the OIDC API
 
@@ -181,24 +182,26 @@ export const fetchWithAuth: typeof fetch = async (input, init) => {
 ```
 {% endcode %}
 
----
+***
 
 ### 5. Add Header Auth Buttons
 
-<figure><img src="../.gitbook/assets/image (5).png" alt="Auth button example" width="262"></figure>
-<figure><img src="../.gitbook/assets/image (4).png" alt="User avatar example" width="196"></figure>
+<figure><img src="../.gitbook/assets/image (5).png" alt="Auth button example" width="262"><figcaption></figcaption></figure>
 
-Code reference:  
+<figure><img src="../.gitbook/assets/image (4).png" alt="User avatar example" width="196"><figcaption></figcaption></figure>
+
+Code reference:
+
 {% embed url="https://github.com/keycloakify/oidc-spa/blob/e73f63a6cb70753110c0d2caab37b0f8a63926e0/examples/tanstack-start/src/components/Header.tsx#L10-L98" %}
 
-Redirecting users directly to the registration page varies by provider —  
+Redirecting users directly to the registration page varies by provider —\
 see [this Auth0 example](https://github.com/keycloakify/oidc-spa/blob/e73f63a6cb70753110c0d2caab37b0f8a63926e0/examples/tanstack-router-file-based/src/components/Header.tsx#L98-L110).
 
----
+***
 
 ## Making authenticated requests
 
-Enforcing authentication on routes and server functions:  
+Enforcing authentication on routes and server functions:\
 ([source](https://github.com/keycloakify/oidc-spa/blob/main/examples/tanstack-start/src/routes/demo/start.server-funcs.tsx))
 
 ```tsx
@@ -279,8 +282,14 @@ function Home() {
 }
 ```
 
-Authenticate an API:  
+Authenticate an API:
+
 {% embed url="https://github.com/keycloakify/oidc-spa/blob/main/examples/tanstack-start/src/routes/demo/api.todos.ts" %}
 
-Calling an authenticated API:  
+Calling an authenticated API:
+
 {% embed url="https://github.com/keycloakify/oidc-spa/blob/main/examples/tanstack-start/src/routes/demo/start.api-request.tsx" %}
+
+Auto Logout overlay:
+
+{% embed url="https://github.com/keycloakify/oidc-spa/blob/main/examples/tanstack-start/src/components/AutoLogoutWarningOverlay.tsx" %}
