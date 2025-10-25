@@ -8,19 +8,20 @@ icon: umbrella-beach
 npx gitpick keycloakify/oidc-spa/tree/main/examples/tanstack-start start-oidc
 cd start-oidc
 npm install
-npm dev
+npm run dev
 
-# By default the example runs agains Keycloak, you can edit the .env file
-# to test with other providers.
+# By default, the example runs against Keycloak.
+# You can edit the .env file to test other providers.
 ```
 
-The example is live here:&#x20;
-
+Live example:  
 {% embed url="https://example-tanstack-start.oidc-spa.dev/" %}
 
-## Step by Step setup
+---
 
-### Install the lib
+## Step-by-step setup
+
+### 1. Install dependencies
 
 {% tabs %}
 {% tab title="npm" %}
@@ -48,31 +49,38 @@ bun add oidc-spa zod
 {% endtab %}
 {% endtabs %}
 
-NOTE: [Zod](https://zod.dev/) is optional but recommended as it's cumbersome and error prone to have to write validators manually and not using validator at all makes you loose the ability to check early that the server is providing the information you expect about the user early. &#x20;
+> **Note:**  
+> [Zod](https://zod.dev/) is optional but highly recommended.  
+> Writing validators manually is error-prone, and skipping validation means losing early guarantees about what your auth server provides.
 
-### Setup the Vite Plugin
+---
 
-<pre class="language-typescript" data-title="vite.config.ts"><code class="lang-typescript">import { defineConfig } from "vite";
+### 2. Configure Vite
+
+Add the plugin to your `vite.config.ts`:
+
+```typescript
+import { defineConfig } from "vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 import tailwindcss from "@tailwindcss/vite";
-<strong>import { oidcSpa } from "oidc-spa/vite-plugin";
-</strong>
-const config = defineConfig({
-    plugins: [
-        viteTsConfigPaths({ projects: ["./tsconfig.json"] }),
-        tailwindcss(),
-        tanstackStart(),
-<strong>        oidcSpa(),
-</strong>        viteReact()
-    ]
+import { oidcSpa } from "oidc-spa/vite-plugin";
+
+export default defineConfig({
+  plugins: [
+    viteTsConfigPaths({ projects: ["./tsconfig.json"] }),
+    tailwindcss(),
+    tanstackStart(),
+    oidcSpa(),
+    viteReact(),
+  ],
 });
+```
 
-export default config;
-</code></pre>
+---
 
-### Provide the env required to connect to your auth server
+### 3. Provide your OIDC environment variables
 
 {% code title=".env" %}
 ```properties
@@ -82,18 +90,20 @@ OIDC_CLIENT_ID=example-tanstack-start
 ```
 {% endcode %}
 
-Feel free to use our Keycloak, Auth0, Google OAuth account to test, you have [some sample here](https://github.com/keycloakify/oidc-spa/blob/main/examples/tanstack-start/.env.sample).
+You can use our preconfigured Keycloak, Auth0, or Google OAuth test accounts —  
+see [this sample file](https://github.com/keycloakify/oidc-spa/blob/main/examples/tanstack-start/.env.sample).
 
-And then refer to our guide to get your own configs:\
-
+For your own configuration, refer to:
 
 {% content-ref url="../providers-configuration/provider-configuration.md" %}
-[provider-configuration.md](../providers-configuration/provider-configuration.md)
+[Provider configuration guide](../providers-configuration/provider-configuration.md)
 {% endcontent-ref %}
 
-### Bootstraping the API
+---
 
-Create the folloing file.
+### 4. Bootstrapping the OIDC API
+
+Create the following file:
 
 {% code title="src/oidc.ts" %}
 ```typescript
@@ -101,195 +111,176 @@ import { oidcSpa } from "oidc-spa/react-tanstack-start";
 import { z } from "zod";
 
 export const {
-    bootstrapOidc,
-    createOidcComponent,
-    getOidc,
-    enforceLogin,
-    oidcFnMiddleware,
-    oidcRequestMiddleware
+  bootstrapOidc,
+  createOidcComponent,
+  getOidc,
+  enforceLogin,
+  oidcFnMiddleware,
+  oidcRequestMiddleware,
 } = oidcSpa
-    .withExpectedDecodedIdTokenShape({
-        // This is the information that you have of the user on the client.
-        // NOTE: This is purely declarative you declare what you'll use among
-        // the information that the auth server provide about the user.
-        // If you're not sure what's available you can open the console
-        // and you'll see the full object.
-        decodedIdTokenSchema: z.object({
-            name: z.string(),
-            picture: z.string().optional(),
-            realm_access: z.object({ roles: z.array(z.string()) }).optional()
-        }),
-        decodedIdToken_mock: {
-            name: "John Doe"
-        }
-    })
-    .withAccessTokenValidation({
-        type: "RFC 9068: JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens",
-        // In oidc-spa, the fronted code is the oidc client. 
-        // The backend (server function, API) is not involved in the auth
-        // process at all. 
-        // It just receive an access_token from the client making API request
-        // or calling server function. 
-        // The Backend is treated as a resource server in the OIDC model.
-        // The access_token, once decoded usually contain the same information
-        // than the decoded id_token, but you'll use different claims.
-        // For example the name and profile pic of the user is not really usefull
-        // on the backend. But we 100% need the user id.
-        accessTokenClaimsSchema: z.object({
-            sub: z.string(), // This is the user id
-            realm_access: z.object({ roles: z.array(z.string()) }).optional()
-        }),
-        accessTokenClaims_mock: {
-            sub: "123"
-        },
-        // NOTE: By default the audience claim of the access token issued by
-        // keycloak is "account" but it depend of the adapter.
-        expectedAudience: (/*{ paramsOfBootstrap, process }*/) => "account",
-    })
-    .finalize();
+  .withExpectedDecodedIdTokenShape({
+    // Client-side view of the user's identity.
+    // You declare what parts of the ID token you plan to use.
+    // (You can inspect the console to see the full object.)
+    decodedIdTokenSchema: z.object({
+      name: z.string(),
+      picture: z.string().optional(),
+      realm_access: z.object({ roles: z.array(z.string()) }).optional(),
+    }),
+    decodedIdToken_mock: {
+      name: "John Doe",
+    },
+  })
+  .withAccessTokenValidation({
+    type: "RFC 9068: JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens",
+    // In oidc-spa, the *frontend* is the OIDC client.
+    // The backend (server functions or APIs) plays the role of a
+    // resource server — it simply validates access tokens received
+    // from the client. It is not part of the authentication flow itself.
+    accessTokenClaimsSchema: z.object({
+      sub: z.string(), // User ID
+      realm_access: z.object({ roles: z.array(z.string()) }).optional(),
+    }),
+    accessTokenClaims_mock: { sub: "123" },
+    expectedAudience: () => "account", // Keycloak default; depends on provider
+  })
+  .finalize();
 
-// Can be call anywhere, even in the body of a React component.
-// All subsequent calls will be safely ignored.
-// The process object is passed as argument so you can retreive the
-// env variable of the server on the client transparently.
-// Don't worry only the vars that you dereference will be pulled.
+// Can be called anywhere (even in React component bodies).
+// Only the first call has an effect — subsequent calls are ignored.
+// The process object allows accessing environment variables from both
+// client and server seamlessly (only the ones you dereference are exposed).
 bootstrapOidc(({ process }) =>
-    process.env.OIDC_USE_MOCK === "true"
-        ? {
-              implementation: "mock",
-              isUserInitiallyLoggedIn: true
-          }
-        : {
-              implementation: "real",
-              issuerUri: process.env.OIDC_ISSUER_URI,
-              clientId: process.env.OIDC_CLIENT_ID,
-              debugLogs: true
-          }
+  process.env.OIDC_USE_MOCK === "true"
+    ? {
+        implementation: "mock",
+        isUserInitiallyLoggedIn: true,
+      }
+    : {
+        implementation: "real",
+        issuerUri: process.env.OIDC_ISSUER_URI,
+        clientId: process.env.OIDC_CLIENT_ID,
+        debugLogs: true,
+      }
 );
 
-// This is the fetch API that automatically attach the access token
-// as authorization header if the user is logged in.
+// A fetch wrapper that automatically adds the Authorization header
+// if the user is logged in.
 export const fetchWithAuth: typeof fetch = async (input, init) => {
-    const oidc = await getOidc();
+  const oidc = await getOidc();
 
-    if (oidc.isUserLoggedIn) {
-        const accessToken = await oidc.getAccessToken();
-        const headers = new Headers(init?.headers);
-        headers.set("Authorization", `Bearer ${accessToken}`);
-        (init ??= {}).headers = headers;
-    }
+  if (oidc.isUserLoggedIn) {
+    const accessToken = await oidc.getAccessToken();
+    const headers = new Headers(init?.headers);
+    headers.set("Authorization", `Bearer ${accessToken}`);
+    (init ??= {}).headers = headers;
+  }
 
-    return fetch(input, init);
+  return fetch(input, init);
 };
 ```
 {% endcode %}
 
-### Create your Header Auth Buttons
+---
 
-<figure><img src="../.gitbook/assets/image (5).png" alt="" width="262"><figcaption></figcaption></figure>
+### 5. Add Header Auth Buttons
 
-<figure><img src="../.gitbook/assets/image (4).png" alt="" width="196"><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (5).png" alt="Auth button example" width="262"></figure>
+<figure><img src="../.gitbook/assets/image (4).png" alt="User avatar example" width="196"></figure>
 
-You can see the code here:
-
+Code reference:  
 {% embed url="https://github.com/keycloakify/oidc-spa/blob/e73f63a6cb70753110c0d2caab37b0f8a63926e0/examples/tanstack-start/src/components/Header.tsx#L10-L98" %}
 
-How to redirect directly to the register pages varis from provider to provider, [example with Auth0](https://github.com/keycloakify/oidc-spa/blob/e73f63a6cb70753110c0d2caab37b0f8a63926e0/examples/tanstack-router-file-based/src/components/Header.tsx#L98-L110).
+Redirecting users directly to the registration page varies by provider —  
+see [this Auth0 example](https://github.com/keycloakify/oidc-spa/blob/e73f63a6cb70753110c0d2caab37b0f8a63926e0/examples/tanstack-router-file-based/src/components/Header.tsx#L98-L110).
 
-## Making authenticated request
+---
 
-Enforcing Auth on a route and using protected server functions ([source here](https://github.com/keycloakify/oidc-spa/blob/main/examples/tanstack-start/src/routes/demo/start.server-funcs.tsx)).
+## Making authenticated requests
 
-<pre class="language-tsx" data-title="examples/tanstack-start/src/routes/demo/start.server-funcs.tsx"><code class="lang-tsx">import { useState } from "react";
+Enforcing authentication on routes and server functions:  
+([source](https://github.com/keycloakify/oidc-spa/blob/main/examples/tanstack-start/src/routes/demo/start.server-funcs.tsx))
+
+```tsx
+import { useState } from "react";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-<strong>import { enforceLogin, oidcFnMiddleware } from "@/oidc";
-</strong>import Spinner from "@/components/Spinner";
-
+import { enforceLogin, oidcFnMiddleware } from "@/oidc";
+import Spinner from "@/components/Spinner";
 import { getTodosStore } from "@/data/todos";
 
 const getTodos = createServerFn({ method: "GET" })
-<strong>    .middleware([oidcFnMiddleware({ assert: "user logged in" })])
-</strong>    .handler(async ({ context: { oidc } }) => {
-        const userId = oidc.accessTokenClaims.sub;
-
-        const todosStore = getTodosStore();
-
-        return await todosStore.readTodos({ userId });
-    });
+  .middleware([oidcFnMiddleware({ assert: "user logged in" })])
+  .handler(async ({ context: { oidc } }) => {
+    const userId = oidc.accessTokenClaims.sub;
+    const todosStore = getTodosStore();
+    return await todosStore.readTodos({ userId });
+  });
 
 const addTodo = createServerFn({ method: "POST" })
-    .inputValidator((d: string) => d)
-<strong>    .middleware([oidcFnMiddleware({ assert: "user logged in" })])
-</strong>    .handler(async ({ data, context: { oidc } }) => {
-        const userId = oidc.accessTokenClaims.sub;
-
-        const todosStore = getTodosStore();
-
-        const todos = await todosStore.readTodos({ userId });
-        todos.push({ id: todos.length + 1, name: data });
-
-        await todosStore.updateTodos({ userId, todos });
-    });
+  .inputValidator((d: string) => d)
+  .middleware([oidcFnMiddleware({ assert: "user logged in" })])
+  .handler(async ({ data, context: { oidc } }) => {
+    const userId = oidc.accessTokenClaims.sub;
+    const todosStore = getTodosStore();
+    const todos = await todosStore.readTodos({ userId });
+    todos.push({ id: todos.length + 1, name: data });
+    await todosStore.updateTodos({ userId, todos });
+  });
 
 export const Route = createFileRoute("/demo/start/server-funcs")({
-<strong>    beforeLoad: enforceLogin,
-</strong>    component: Home,
-    loader: async () => await getTodos(),
-    pendingComponent: () => (
-        &#x3C;div className="flex flex-1 items-center justify-center py-16">
-            &#x3C;Spinner />
-        &#x3C;/div>
-    )
+  beforeLoad: enforceLogin,
+  component: Home,
+  loader: async () => await getTodos(),
+  pendingComponent: () => (
+    <div className="flex flex-1 items-center justify-center py-16">
+      <Spinner />
+    </div>
+  ),
 });
 
 function Home() {
-    const router = useRouter();
-    const todos = Route.useLoaderData();
+  const router = useRouter();
+  const todos = Route.useLoaderData();
+  const [newTodoInputValue, setNewTodoInputValue] = useState("");
 
-    const [newTodoInputValue, setNewTodoInputValue] = useState("");
+  const onAddTodoButtonClick = async () => {
+    await addTodo({ data: newTodoInputValue });
+    setNewTodoInputValue("");
+    router.invalidate();
+  };
 
-    const onAddTodoButtonClick = async () => {
-        await addTodo({ data: newTodoInputValue });
-        setNewTodoInputValue("");
-        router.invalidate();
-    };
-
-    return (
-        &#x3C;div>
-            &#x3C;ul>
-                {todos.map(todo => (
-                    &#x3C;li key={todo.id}>
-                        &#x3C;span className="text-lg text-white">{todo.name}&#x3C;/span>
-                    &#x3C;/li>
-                ))}
-            &#x3C;/ul>
-            &#x3C;div>
-                &#x3C;input
-                    type="text"
-                    value={newTodoInputValue}
-                    onChange={e => setNewTodoInputValue(e.target.value)}
-                    onKeyDown={e => {
-                        if (e.key === "Enter") {
-                            onAddTodoButtonClick();
-                        }
-                    }}
-                    placeholder="Enter a new todo..."
-                />
-                &#x3C;button disabled={newTodoInputValue.trim().length === 0} onClick={onAddTodoButtonClick}>
-                    Add todo
-                &#x3C;/button>
-            &#x3C;/div>
-        &#x3C;/div>
-    );
+  return (
+    <div>
+      <ul>
+        {todos.map(todo => (
+          <li key={todo.id}>
+            <span className="text-lg text-white">{todo.name}</span>
+          </li>
+        ))}
+      </ul>
+      <div>
+        <input
+          type="text"
+          value={newTodoInputValue}
+          onChange={e => setNewTodoInputValue(e.target.value)}
+          onKeyDown={e => e.key === "Enter" && onAddTodoButtonClick()}
+          placeholder="Enter a new todo..."
+        />
+        <button
+          disabled={newTodoInputValue.trim().length === 0}
+          onClick={onAddTodoButtonClick}
+        >
+          Add todo
+        </button>
+      </div>
+    </div>
+  );
 }
-</code></pre>
+```
 
-Authenticate an API.
-
+Authenticate an API:  
 {% embed url="https://github.com/keycloakify/oidc-spa/blob/main/examples/tanstack-start/src/routes/demo/api.todos.ts" %}
 
-Calling an authenticated API:
-
+Calling an authenticated API:  
 {% embed url="https://github.com/keycloakify/oidc-spa/blob/main/examples/tanstack-start/src/routes/demo/start.api-request.tsx" %}
-
