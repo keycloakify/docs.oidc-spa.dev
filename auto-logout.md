@@ -21,7 +21,7 @@ Guide on how to configure it:
 [If your OIDC provider issues a Refresh Token and if this refresh token is a JWT](#user-content-fn-1)[^1] you don't need to configure anything at the app level. Otherwise you need to explicitly set the `idleSessionLifetimeInSeconds` so it matches with how you have configured your server.
 
 {% tabs %}
-{% tab title="Vanilla API" %}
+{% tab title="Framwork Agnositc" %}
 ```typescript
 import { createOidc } from "oidc-spa";
 
@@ -39,7 +39,7 @@ const oidc = await createOidc({
 ```
 {% endtab %}
 
-{% tab title="React API" %}
+{% tab title="React SPA" %}
 ```typescript
 import { createReactOidc } from "oidc-spa/react";
 
@@ -58,6 +58,84 @@ export const {
   //autoLogoutParams: { redirectTo: "specific url", url: "/a-page" }
 });
 ```
+{% endtab %}
+
+{% tab title="TanStack Start" %}
+Mount this component in your \_\_root.tsx
+
+```typescript
+import { createOidcComponent } from "@/oidc";
+
+/** See: https://docs.oidc-spa.dev/auto-logout */
+export const AutoLogoutWarningOverlay = createOidcComponent({
+    component: () => {
+        const { autoLogoutState } = AutoLogoutWarningOverlay.useOidc();
+
+        if (!autoLogoutState.shouldDisplayWarning) {
+            return null;
+        }
+
+        return (
+            <div
+                // Full screen overlay, blurred background
+                style={{
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                    backdropFilter: "blur(10px)",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    zIndex: 1000,
+                    color: "white"
+                }}
+            >
+                <div>
+                    <p>Are you still there?</p>
+                    <p>You will be logged out in {autoLogoutState.secondsLeftBeforeAutoLogout}</p>
+                    {/* NOTE: You can configure how long before autoLogout we start displaying
+                        this warning by providing `startCountdownSecondsBeforeAutoLogout` 
+                        to bootstrapOidc()
+                    */}
+                </div>
+            </div>
+        );
+    }
+});
+```
+{% endtab %}
+
+{% tab title="Angular" %}
+See [example](https://github.com/keycloakify/oidc-spa/blob/main/examples/angular/src/app/app.html).
+
+```html
+@if (oidc.$secondsLeftBeforeAutoLogout() ) {
+<!-- Full screen overlay, blurred background -->
+<div [style]="{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      backdropFilter: 'blur(10px)',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      zIndex: 1000,
+    }">
+      <div>
+            <p>Are you still there?</p>
+            <p>You will be logged out in {{ oidc.$secondsLeftBeforeAutoLogout() }}</p>
+      </div>
+</div>
+}
+```
+
+
 {% endtab %}
 {% endtabs %}
 

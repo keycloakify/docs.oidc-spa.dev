@@ -13,7 +13,7 @@ Find instruction on how to configure your OIDC provider on the following documen
 {% endcontent-ref %}
 
 {% tabs %}
-{% tab title="Vanilla API" %}
+{% tab title="Framwork Agnostic" %}
 ```typescript
 import { createOidc } from "oidc-spa";
 import { z } from "zod";
@@ -98,7 +98,15 @@ if (!oidc.isUserLoggedIn) {
 ```
 {% endtab %}
 
-{% tab title="React API" %}
+{% tab title="TanStack Start" %}
+See:
+
+{% content-ref url="setup-guides/tanstack-start.md" %}
+[tanstack-start.md](setup-guides/tanstack-start.md)
+{% endcontent-ref %}
+{% endtab %}
+
+{% tab title="React SPA" %}
 The way you use **oidc-spa** differs slightly depending on the routing library you’re using (e.g., React Router or TanStack Router).\
 We provide specific [setup guides](setup-guides/example-setups.md) for each, but we recommend starting with the fictional example below to understand how the library works in isolation, without any routing-related distractions.
 
@@ -425,7 +433,7 @@ Now that you got the idea you can follow up with the specific setup guides for d
 {% endcontent-ref %}
 {% endtab %}
 
-{% tab title="Angular API" %}
+{% tab title="Angular" %}
 oidc-spa provides features no other adapter does, like support for multiple OIDC clients, mock mode for tests or degraded environments, and rendering pages even before OIDC initializes.\
 It also covers common needs like auto-login, dynamic config fetch, and role-based access.
 

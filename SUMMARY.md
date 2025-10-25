@@ -14,6 +14,7 @@
 ## Setup Guides
 
 * [Setup Guides](setup-guides/example-setups.md)
+* [TanStack Start](setup-guides/tanstack-start.md)
 * [React Router](setup-guides/react-router.md)
 * [TanStack Router](setup-guides/tanstack-router.md)
 * [Angular](setup-guides/angular.md)

@@ -5,6 +5,10 @@ icon: laptop-code
 
 # Setup Guides
 
+{% content-ref url="tanstack-start.md" %}
+[tanstack-start.md](tanstack-start.md)
+{% endcontent-ref %}
+
 {% content-ref url="react-router.md" %}
 [react-router.md](react-router.md)
 {% endcontent-ref %}

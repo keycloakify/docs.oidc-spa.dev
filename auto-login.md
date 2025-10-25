@@ -15,7 +15,7 @@ This is similar to wrapping your root component with `withLoginEnforced()`, but 
 * (React) You don't need to call `enforceLogin()` in your loaders.
 
 {% tabs %}
-{% tab title="Vanilla API" %}
+{% tab title="Framwork Agnostic API" %}
 ```typescript
 import { createOidc, type OidcInitializationError } from "oidc-spa";
 
@@ -40,7 +40,7 @@ const oidc = await createOidc({
 ```
 {% endtab %}
 
-{% tab title="React API" %}
+{% tab title="React SPA" %}
 {% code title="src/oidc.ts" %}
 ```typescript
 import { createReactOidc } from "oidc-spa/react";
@@ -87,4 +87,13 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 ```
 {% endcode %}
 {% endtab %}
+
+{% tab title="TanStack Start" %}
+Documentation comming soon reach out [on Discord](https://discord.gg/mJdYJSdcm4) if you need this now.
+{% endtab %}
+
+{% tab title="Angular" %}
+Documentation comming soon reach out [on Discord](https://discord.gg/mJdYJSdcm4) if you need this now.
+{% endtab %}
 {% endtabs %}
+

@@ -4,6 +4,10 @@ icon: plug
 
 # Web API
 
+{% hint style="info" %}
+For TanStack Start this doesn't aply. See [guide](setup-guides/tanstack-start.md).
+{% endhint %}
+
 The primary usecase for a library like oidc-spa is to use it to authenticate against a REST, tRPC, or Websocket API.
 
 ## Client Side

@@ -42,12 +42,18 @@ bun add oidc-spa
 
 ## Editing your App entrypoint
 
+{% tabs %}
+{% tab title="TanStack Start" %}
+{% content-ref url="setup-guides/tanstack-start.md" %}
+[tanstack-start.md](setup-guides/tanstack-start.md)
+{% endcontent-ref %}
+{% endtab %}
+
+{% tab title="Vite" %}
 To protect tokens against supply-chain attacks and XSS, oidc-spa must run some initialization code _before any other JavaScript in your app_.
 
 This design provides much stronger security guarantees than any other adapter, and it also delivers unmatched login performance. More details [here](why-oidcearlyinit.md).
 
-{% tabs %}
-{% tab title="Vite" %}
 First rename your entry point file from `main.tsx` (or `main.ts`) to `main.lazy.tsx`
 
 ```bash
@@ -75,10 +81,6 @@ if (shouldLoadApp) {
 {% endcode %}
 {% endtab %}
 
-{% tab title="TanStack Start" %}
-Comming soon, [follow progress](https://github.com/keycloakify/oidc-spa/issues/43).
-{% endtab %}
-
 {% tab title="React-Router Framework" %}
 You can skip this for now. It will be explained in the dedicated setup guide:
 
@@ -88,6 +90,10 @@ You can skip this for now. It will be explained in the dedicated setup guide:
 {% endtab %}
 
 {% tab title="Angular" %}
+To protect tokens against supply-chain attacks and XSS, oidc-spa must run some initialization code _before any other JavaScript in your app_.
+
+This design provides much stronger security guarantees than any other adapter, and it also delivers unmatched login performance. More details [here](why-oidcearlyinit.md).
+
 First rename your entry point file from `main.ts` to `main.lazy.ts`
 
 ```bash
@@ -119,6 +125,10 @@ if (shouldLoadApp) {
 {% hint style="warning" %}
 Create React App is deprecated. Consider using Vite instead.
 {% endhint %}
+
+To protect tokens against supply-chain attacks and XSS, oidc-spa must run some initialization code _before any other JavaScript in your app_.
+
+This design provides much stronger security guarantees than any other adapter, and it also delivers unmatched login performance. More details [here](why-oidcearlyinit.md).
 
 First rename your entry point file from `main.tsx` (or `main.ts`) to `main.lazy.tsx`
 
