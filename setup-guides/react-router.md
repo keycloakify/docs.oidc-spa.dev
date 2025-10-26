@@ -46,6 +46,8 @@ export default {
 
 ### Learning with the Example
 
+{% embed url="https://example-react-router-framework.oidc-spa.dev/" %}
+
 ```bash
 npx gitpick keycloakify/oidc-spa/tree/main/examples/react-router-framework rr-framework-oidc
 cd rr-framework-oidc
