@@ -46,7 +46,7 @@ To validate the token on the backend, ensure that the `aud` claim in the JWT acc
 3. Navigate to **"Manage > App Registrations"**.
 4. Click **"New Registration"**.
 5. Enter **"My App"** as the display name (replace with your actual app name).
-6. Set **Supported Account Type** to **Accounts in this organization**.
+6. Set **Supported Account Type** to [**Accounts in this organization**](#user-content-fn-1)[^1].
 7. Click **Register**.
 8. Click **"Add a Redirect URI"**.
 9. Click **"Add Platform"** > **"Single-Page Application"**.
@@ -129,3 +129,5 @@ cp .env.local.sample .env.local
 yarn
 yarn dev
 ```
+
+[^1]: Only for now. You can change that later if you want to enable pepole to signin with their personal accounts.
