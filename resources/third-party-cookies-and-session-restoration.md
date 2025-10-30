@@ -7,7 +7,7 @@ icon: cookie
 {% hint style="success" %}
 > **You’re safe by default** Even in the worst‑case scenario where your authorization server’s cookies are blocked by the browser, `oidc‑spa` automatically falls back to a near‑seamless full‑page redirect. **No configuration required.**
 >
-> That said, if you want the **best possible user experience** and the **strongest security guarantees** across all environments, it’s worth understanding what’s going on under the hood and configuring your domains and headers accordingly.
+> That said, if you want the **best possible user experience**, it’s worth understanding what’s going on under the hood and configuring your domains and headers accordingly.
 {% endhint %}
 
 This page explains why modern browsers often refuse to send cookies in third‑party contexts, how that impacts silent session restoration in frontend centric auth model, and how to configure your domain and security headers so that `oidc‑spa` can deliver a seamless UX.
@@ -49,12 +49,6 @@ The key is to host your application and your authorization endpoint under the **
   * `https://<tenant>.us.auth0.com/authorize` _(configurable via Auth0 Custom Domains)_
   * `https://accounts.google.com/o/oauth2/v2/auth` _(not configurable)_
 
-> **Checklist**
->
-> * [ ] &#x20;Move the IdP to a subdomain of your app’s parent domain, or
-> * [ ] &#x20;Configure a **custom domain** for your SaaS IdP (Auth0, Entra External ID/B2C, Clerk, etc.), and
-> * [ ] &#x20;Update your OIDC `issuer` and endpoints to use that domain.
-
 ***
 
 ### How `oidc‑spa` restores sessions
@@ -62,7 +56,7 @@ The key is to host your application and your authorization endpoint under the **
 `oidc‑spa` supports two session restoration strategies. You choose (or let the library auto‑choose) using `sessionRestorationMethod`.
 
 ```ts
-bootstrapOidc({
+bootstrapOidc({ // or createOidc({
   // "auto" (default) | "iframe" | "full page redirect"
   sessionRestorationMethod: "auto"
 });
@@ -126,10 +120,16 @@ If changing headers is not possible, set `sessionRestorationMethod: "full page r
 
 ### Local development
 
-When your app runs on `localhost` and your IdP lives on a different domain, the browser treats the IdP as third‑party. Silent restoration with an iframe will fail. You have two options:
+When your app runs on `localhost` and your IdP lives on a different domain, wichis almost always the case unless you run a keycloak locally.&#x20;
 
-1. **Develop with real‑world conditions**: set `sessionRestorationMethod: "iframe"` and add an exception in your browser to allow third‑party cookies for your IdP domain. Remove the exception before shipping.
-2. **Use a dev hostname under your parent domain**: e.g., map `dev.my-company.test` to `127.0.0.1` in `/etc/hosts` and serve your app there so it shares the parent domain with your IdP.
+The browser treats the IdP as third‑party so oidc-spa will fallback to full page redirect. To run your app in devloppement like you would in prod you need to:
+
+1. Set `sessionRestorationMethod: "iframe"` explicitely to force oidc-spa to use iframe.
+2. Allow third party cookies in localhost:
+
+<figure><img src="../.gitbook/assets/image.png" alt="" width="348"><figcaption></figcaption></figure>
+
+
 
 ***
 
@@ -148,7 +148,7 @@ Most managed IdPs let you put their endpoints behind your domain. This is crucia
 
 A short video that shows the UX difference between iframe‑based restoration and a full‑page redirect:
 
-(The video is lowed down so you can perceive the difference)
+(This video was recorded a while ago, performance a **much** better now)
 
 {% embed url="https://www.youtube.com/watch?v=55sZ7XSWh4Q" %}
 

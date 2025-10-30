@@ -4,6 +4,14 @@ icon: arrows-to-circle
 
 # Talking to multiple APIs (with different access tokens)
 
+{% hint style="info" %}
+TL;DR
+
+Most apps only need one access token for their backend API.
+
+The rest of this page explains how to talk to multiple APIs securely (Keycloak-style) using oidc-spa.
+{% endhint %}
+
 With **oidc-spa**, your **frontend application is the OIDC client**. Your **backend** is **only** a resource server that you call by attaching an `Authorization: Bearer <access_token>` header. This is different from models like [NextAuth](https://next-auth.js.org/), where the server component constitutes the application in the OpenID Connect model.
 
 This setup works well as long as your app talks to a **single** resource server.
@@ -167,16 +175,18 @@ That is all you need for multi-API access with per-API tokens.
 
 ### Development and security caveats
 
-The first time you call `createOidc()` you may get a **full page redirect** if silent session restoration via iframe is not available. This is the default on `localhost` with many development servers. If you configure more than one client and iframe session restoration is not possible, oidc-spa will **persist tokens in `sessionStorage`** to avoid redirect loops. This relaxes the default security guarantees.
+The first time you call `createOidc()` you may get a **full page redirect** if silent session restoration via iframe is not available. This is the default on `localhost` in oidc-spa.&#x20;
+
+Also note that, if you configure more than one client **AND** iframe session restoration is not possible, oidc-spa will **persist tokens in `sessionStorage`** to avoid redirect loops. This relaxes the default security guarantees.
 
 To remediate:
 
-* Put your IdP authorization endpoint on the **same parent domain** as your app whenever possible.
-* In development, uncomment `sessionRestorationMethod: "iframe"` and allow third-party cookies in your local server.
+* (For production) Put your IdP authorization endpoint on the **same parent domain** as your app whenever possible.
+* For a better dev experience allow third-party cookies in your local server and explicitely set `sessionRestorationMethod: "iframe"`, by default it's set to `"auto"` mening that it will only use iframe if it knows that cookies won't be blocked, and oidc-spa can't know that in localhost.&#x20;
 
 <figure><img src=".gitbook/assets/image (6).png" alt="" width="348"><figcaption></figcaption></figure>
 
-More info:
+More info and detailed instructions:
 
 {% content-ref url="resources/third-party-cookies-and-session-restoration.md" %}
 [third-party-cookies-and-session-restoration.md](resources/third-party-cookies-and-session-restoration.md)
