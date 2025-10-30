@@ -85,7 +85,7 @@ Below is an example “My Secrets” page that exchanges an OIDC access token fo
 ```typescript
 import { oidcSpa } from "oidc-spa/react-spa";
 
-export const { bootstrapOidc, useOidc, getOidc, enforceLogin } = oidcSpa.finalize();
+export const { bootstrapOidc, useOidc, getOidc, enforceLogin } = oidcSpa.createApi();
 
 bootstrapOidc({
   implementation: "real",

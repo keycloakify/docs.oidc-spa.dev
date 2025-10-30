@@ -144,7 +144,7 @@ export const {
     accessTokenClaims_mock: { sub: "123" },
     expectedAudience: () => "account", // Keycloak default; depends on provider
   })
-  .finalize();
+  .createApi();
 
 // Can be called anywhere (even in React component bodies).
 // Only the first call has an effect — subsequent calls are ignored.
