@@ -73,7 +73,7 @@ bootstrapOidc({ // or createOidc({
 * The app performs a quick top‑level redirect to the authorization endpoint, which always carries IdP cookies.
 * The redirect returns immediately to your app with the information needed to rebuild identity.
 * **Works everywhere** but is a about 30% slower and the url flashes auth response info brievly.
-* **Multiple OIDC clients in one page:** to avoid a redirect loop, the app may need to persist state between reloads (for example, tokens or a minimal session hint) which weakens the “no persistence” posture. Prefer the iframe strategy when you have multiple clients.
+* **Multiple OIDC clients in one page:** to avoid a redirect loop, the app may need to persist state between reloads (for example, tokens or a minimal session hint) which weakens the “no persistence” posture.&#x20;
 
 #### "auto" (default and recommended)
 
