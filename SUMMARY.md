@@ -3,6 +3,7 @@
 * [Installation](README.md)
 * [Basic Usage](usage.md)
 * [Web API](web-api.md)
+* [Talking to different APIs (with different access tokens)](talking-to-different-apis-with-different-access-tokens.md)
 * [Auto Login](auto-login.md)
 * [Auto Logout](auto-logout.md)
 * [Error Management](error-management.md)
