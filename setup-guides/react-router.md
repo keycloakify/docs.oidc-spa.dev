@@ -27,11 +27,11 @@ This is for setting for integrating oidc-spa with react-router in [`Framework Mo
 {% hint style="warning" %}
 IMPORTANT NOTICE:
 
-* React Router "Framework" does not expose the abstractions nessesary to implement a full stack experience. If you want to use it with oidc-spa you need to enable SPA mode.
+* React Router "Framework" does not expose the abstractions nessesary to implement a full stack auth experience. If you want to use it with oidc-spa you need to enable SPA mode.
 * Because React Router Framwork does not expose a true entrypoint you won't benefit from the same security guarenties you get with any other solution. oidc-spa is not any less secure than another client side OIDC client, but it's unique security feature do not apply here.
-* React Router "Framwork" dependencies optimization is wreird, you might get strange errors when navigating to a new page for the first time in dev, it's not on oidc-spa&#x20;
+* React Router "Framwork" dependencies optimization is wreird, you might get strange errors when navigating to a new page for the first time in dev, it's not on oidc-spa 🤷‍♂️
 
-Use TanStack Start if you're picking it by default. You won't regret making the switch.
+TL,DR: React Router is a hard sell compared to SanStack Router/Start.
 {% endhint %}
 
 ### Enabling SPA mode
