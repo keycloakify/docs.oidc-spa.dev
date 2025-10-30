@@ -90,7 +90,7 @@ OIDC_CLIENT_ID=example-tanstack-start
 ```
 {% endcode %}
 
-You can use our preconfigured Keycloak, Auth0, or Google OAuth test accounts —\
+You can use our preconfigured Keycloak, Auth0, or Google OAuth test accounts,\
 see [this sample file](https://github.com/keycloakify/oidc-spa/blob/main/examples/tanstack-start/.env.sample).
 
 For your own configuration, refer to:
