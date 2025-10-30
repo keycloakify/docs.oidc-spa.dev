@@ -26,7 +26,7 @@ Traditional web apps keep a session on your backend. Your browser sends the back
 
 With `oidc‑spa`, your frontend talks directly to the authorization server. When a user revisits your app, `oidc‑spa` first tries to learn whether the user still has a valid session **at the IdP** without prompting for credentials again. It does so by contacting the authorization endpoint silently. If the browser **sends the IdP’s cookies** in that context, the IdP can attest that the user is still signed in and return the data needed to rebuild local identity.
 
-If the browser considers the IdP **third‑party** to your app, it often refuses to attach those cookies in an embedded context. Silent restoration then fails and the app must fall back to a full‑page redirect.
+If the browser considers the IdP **third‑party** to your app, it often refuses to attach those cookies in an embedded context. oidc-spa has to use full‑page redirect in those configurations.
 
 ***
 
