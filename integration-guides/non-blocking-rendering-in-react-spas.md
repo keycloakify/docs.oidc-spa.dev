@@ -2,15 +2,16 @@
 icon: gauge-max
 ---
 
-# Non Blocking Rendering in React SPAs
+# Non-Blocking Rendering in React SPAs
 
-If you are using the idc-spa/react-spa adapter, the official instruction is to wrap your all application within \<OidcInitializationGate /> like:&#x20;
+When using the `oidc-spa/react-spa` adapter, the recommended setup is to wrap your entire application in an `<OidcInitializationGate />`, like so:
 
 <pre class="language-tsx" data-title="src/main.tsx"><code class="lang-tsx">import React from "react";
 import ReactDOM from "react-dom/client";
 import { App } from "./App";
 <strong>import { OidcInitializationGate } from "~/oidc";
 </strong>
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
     &#x3C;React.StrictMode>
 <strong>        &#x3C;OidcInitializationGate>
@@ -20,24 +21,30 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 );
 </code></pre>
 
-However what this does is that it will defer the rendering of your whole app until `boostrapOidc()` has resolved. That is to say, after oidc-spa has contacted the IdP and established wether the user has an active session or not. &#x20;
+By default, this setup **defers rendering your entire app** until `bootstrapOidc()` has completed — in other words, until oidc-spa has contacted your IdP and determined whether the user currently has an active session.
 
-This might very well be what you want. This simplify your mentale model, you don't have to think about wether or not the auth state have been settled yet. You also avoid any potential layout shift.  \
-\
-Now, for optimal performances you might want to start rendering even before the auth state is settled. To acheive result like this:
+This is often the **simplest and safest** choice:  
+- You don’t have to think about whether the auth state has settled.  
+- There’s no risk of layout shifts.  
+- Tests and SSR behave predictably.  
+
+---
+
+However, for **optimal perceived performance**, you can start rendering *before* the authentication state is resolved — letting the page appear instantly, while auth-aware components hydrate a few milliseconds later.
+
+For example:
 
 {% embed url="https://youtu.be/t1qfU_GeTM4?si=xrbRvl9dJQS9xccJ" %}
 
-In this short video we can see that the homepage renders instantly then the auth aware component apears subsequently when auth state is settled.  \
-\
-You can achive this simply by moving the \<OidcInitializationGate /> closer to the components that call useOidc(). In practice it will look a bit like this:
+In this short demo, the homepage renders immediately, and components depending on authentication appear shortly after the session check completes.
+
+You can achieve this simply by moving `<OidcInitializationGate />` closer to the components that call `useOidc()`:
 
 <pre class="language-tsx" data-title="src/components/Header.tsx"><code class="lang-tsx">import { Suspense } from "react";
 import { 
     useOidc, 
 <strong>    OidcInitializationGate 
 </strong>} from "~/oidc";
-
 
 export function Header() {
     return (
@@ -46,13 +53,16 @@ export function Header() {
 <strong>            &#x3C;OidcInitializationGate fallback={&#x3C;Spinner />}>
 </strong>                &#x3C;AuthButtons />
 <strong>            &#x3C;/OidcInitializationGate>
-</strong><strong>            {/* OR */}
-</strong><strong>            {/*
-</strong><strong>            &#x3C;Suspense fallback={&#x3C;Spinner />}>
-</strong>                &#x3C;AuthButtons />
+</strong>
+<strong>            {/* OR */}
+</strong>
+<strong>            {/*
+</strong>            &#x3C;Suspense fallback={&#x3C;Spinner />}>
+                &#x3C;AuthButtons />
             &#x3C;/Suspense>
 <strong>            */}
-</strong>        &#x3C;/header>
+</strong>
+        &#x3C;/header>
     );
 }
 
@@ -67,13 +77,27 @@ function AuthButtons() {
 }
 </code></pre>
 
-You can also use React's built in \<Suspense /> instead of \<OidcInitializationGate />, it's even beter since it will let you have an unified fallback for all the loading opterations. useOidc(), when called while the auth state is not yet settled will throw a promise, that will be caugh by the nearest suspense boundary.
+---
 
-This also mean that you must make sure to wrap every components that uses useOidc into \<OidcInitializationGate /> or \<Suspense /> or your all app will suspend (Don't forget the \<AutoLogoutWarningOverlay />).  \
-\
-Note however that any component protected with enforceLogin or within a component wrapped in withLoginEnforced() will never suspend since those act as authentication gate themselvs.  \
-\
-Last thing to take into consideration is if you use withLoginEnforced() note that component using this HOC can suspend as well. So if you use them you want to wrap them into \<OidcInitializationGate /> or \<Suspense /> as well. Example:
+### Using React’s built-in Suspense
+
+You can use React’s built-in `<Suspense />` instead of `<OidcInitializationGate />`.  
+This is often even better, as it lets you define a unified fallback for all your app’s asynchronous operations.
+
+When called before the auth state is ready, `useOidc()` throws a Promise — which React will catch using the nearest Suspense boundary.
+
+This means you **must** wrap any component that calls `useOidc()` in either `<OidcInitializationGate />` or `<Suspense />`.  
+If you don’t, your entire app will suspend.  
+*(And don’t forget to wrap `<AutoLogoutWarningOverlay />` as well.)*
+
+---
+
+### Components protected with `enforceLogin`
+
+Any component that’s behind `enforceLogin` or wrapped with `withLoginEnforced()` **will not suspend**, because those act as their own authentication gates.  
+However, note that if you use `withLoginEnforced()` directly, the resulting component can still suspend *during its own initialization*, so it’s best to wrap it too.
+
+Example:
 
 <pre class="language-tsx" data-title="src/App.tsx"><code class="lang-tsx">import { lazy, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router";
@@ -105,7 +129,7 @@ export function App() {
 }
 </code></pre>
 
-With all the routes components like:
+With route components like:
 
 {% code title="src/pages/Protected.tsx" %}
 ```tsx
@@ -118,3 +142,16 @@ const Protected = withLoginEnforced(() => {
 export default Protected;
 ```
 {% endcode %}
+
+---
+
+### TL;DR
+
+- `<OidcInitializationGate />` at the root: **simpler mental model**, no layout shift.  
+- `<Suspense />` or `<OidcInitializationGate />` near `useOidc()` calls: **faster perceived load**, better user experience.  
+- `enforceLogin` and `withLoginEnforced()` automatically handle suspension.  
+- Both options are supported — choose based on your desired UX and simplicity.  
+
+---
+
+*(In modern browsers, session restoration typically takes under 300 ms, so even full gating often feels instant.)*
