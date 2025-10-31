@@ -16,7 +16,7 @@ It replaces provider-specific SDKs like keycloak-js, auth0-spa-js, or MSAL.js wi
 
 Unlike server-centric solutions such as NextAuth, oidc-spa makes the frontend the OIDC client.
 
-Your backend becomes a simple resource server, and tokens can be validated offline.
+Your backend becomes a simple resource server, and tokens can be validated offline. oidc-spa [also provide the tools for token validation on the server side](integration-guides/tanstack-router-+-node-rest-api.md).
 
 That means no database, no session store, and enterprise-grade UX out of the box, while scaling naturally to edge runtimes.
 
@@ -27,8 +27,6 @@ It’s infra-light, open-standard, and transparent, built not to lock you in but
 <details>
 
 <summary>But in details? I want to understand the tradeoffs.</summary>
-
-**oidc-spa** is an implementation of an **OpenID Connect client** for web applications, built around the **Authorization Code Flow with PKCE**.
 
 In the modern tech ecosystem, no one “rolls their own auth” anymore, not even OpenAI or Vercel.\
 Authentication has become a **platform concern**. Whether you host your own identity provider like **Keycloak**, or use a service such as **Auth0** or **Microsoft Entra ID**, authentication today means **redirecting users to your auth provider**.
@@ -51,6 +49,9 @@ Some “agnostic” solutions like **NextAuth** exist, but they’re **backend-c
 This makes authentication **tightly coupled to a specific stack** (e.g. Next.js for NextAuth) and **requires maintaining a database**.
 
 These server-side solutions also **hide too much**. You’re left with a “user” object and no clear understanding of what your actual security posture is.
+
+As for solution like oidc-client-ts or react-oidc-context. They are good for what they are but requires month of integration for acheiving what oidc-spa gives you out of the box.  \
+oidc-spa is internally using a vendored version of oidc-client-ts. &#x20;
 
 ***
 

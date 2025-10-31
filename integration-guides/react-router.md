@@ -62,7 +62,7 @@ You're going to be cloning this example:
 
 {% embed url="https://example-react-router-framework.oidc-spa.dev/" %}
 
-React Router v7 has t[hree modes](https://reactrouter.com/start/modes) pick the one for you:&#x20;
+React Router v7 has [three modes](https://reactrouter.com/start/modes) pick the one for you:&#x20;
 
 {% tabs %}
 {% tab title="Declarative Mode" %}
@@ -74,6 +74,8 @@ cp .env.local.sample .env.local
 npm install
 npm run dev
 ```
+
+{% embed url="https://github.com/keycloakify/oidc-spa/tree/main/examples/react-router-declarative" %}
 {% endtab %}
 
 {% tab title="Data Mode" %}
@@ -108,6 +110,8 @@ cp .env.local.sample .env.local
 yarn
 yarn dev
 ```
+
+{% embed url="https://github.com/keycloakify/oidc-spa/tree/main/examples/react-router-framework" %}
 {% endtab %}
 {% endtabs %}
 

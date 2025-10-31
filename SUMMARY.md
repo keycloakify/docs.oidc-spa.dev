@@ -1,8 +1,6 @@
 # Table of contents
 
 * [Getting Started](README.md)
-* [User Account Management](user-account-management.md)
-* [User Session Initialization](user-session-initialization.md)
 
 ## Integration Guides
 
@@ -22,6 +20,8 @@
 * [Error Management](error-management.md)
 * [Talking to multiple APIs (with different access tokens)](talking-to-multiple-apis-with-different-access-tokens.md)
 * [Tokens Renewal](tokens-renewal.md)
+* [User Account Management](features/user-account-management.md)
+* [User Session Initialization](features/user-session-initialization.md)
 
 ## Providers Configuration
 

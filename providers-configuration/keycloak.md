@@ -116,7 +116,7 @@ For apps where users should remain logged in for **weeks or months** (e.g., YouT
 
 By default, Keycloak **does not** allow users to delete their accounts.
 
-If you implement a [delete account button](../user-account-management.md), users will see an **"Action not permitted"** error.
+If you implement a [delete account button](../features/user-account-management.md), users will see an **"Action not permitted"** error.
 
 Enabling Account Deletion:
 
