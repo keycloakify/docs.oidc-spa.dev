@@ -1,26 +1,24 @@
 # Table of contents
 
-* [Installation](README.md)
-* [Basic Usage](usage.md)
-* [Web API](web-api.md)
+* [Getting Started](README.md)
 * [Auto Login](auto-login.md)
 * [Auto Logout](auto-logout.md)
 * [Error Management](error-management.md)
-* [Mock](mock.md)
 * [Talking to multiple APIs (with different access tokens)](talking-to-multiple-apis-with-different-access-tokens.md)
+* [Tokens Renewal](tokens-renewal.md)
 * [User Account Management](user-account-management.md)
 * [User Session Initialization](user-session-initialization.md)
-* [Tokens Renewal](tokens-renewal.md)
 
-## Setup Guides
+## Integration Guides
 
-* [Setup Guides](setup-guides/example-setups.md)
-* [TanStack Start](setup-guides/tanstack-start.md)
-* [React Router](setup-guides/react-router.md)
-* [TanStack Router](setup-guides/tanstack-router.md)
-* [Angular](setup-guides/angular.md)
-* [Full-Stack with Node REST API](setup-guides/tanstack-router-+-node-rest-api.md)
-* [Multi Providers - Login with Google or Microsoft](setup-guides/multi-providers.md)
+* [Integration Guides](integration-guides/example-setups.md)
+* [Framwork Agnostic](integration-guides/usage.md)
+* [TanStack Start](integration-guides/tanstack-start.md)
+* [React Router](integration-guides/react-router.md)
+* [Angular](integration-guides/angular.md)
+* [Creating an API Server](integration-guides/tanstack-router-+-node-rest-api.md)
+* [TanStack Router](integration-guides/tanstack-router.md)
+* [Multi Providers - Login with Google or Microsoft](integration-guides/multi-providers.md)
 
 ## Providers Configuration
 

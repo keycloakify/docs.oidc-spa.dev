@@ -66,8 +66,6 @@ This introduces a potential risk: **XSS attacks**, where malicious code running 
 
 `oidc-spa` implements several security measures to minimize the risk of token theft, even in the event of an XSS attack (malicious JavaScript running in your frontend).
 
-> **Note:** This is a work in progress—some of these measures are not yet fully implemented, but they are actively being developed.
-
 To fully benefit from these protections, ensure `oidc-spa` is the first JavaScript code that runs on your website by following [this setup](broken-reference).
 
 Security Measures:
@@ -76,6 +74,7 @@ Security Measures:
 * **Preventing `fetch`,** `XMLHttpRequest` and `WebSocker` **monkey patching** – APIs that caries access tokens are frozen to prevent malicious code from overriding it and capturing tokens.
 * **Securing silent sign-in responses** – Even if an attacker intercepts the authorization response from a silent sign-in performed in an iframe, it will be asymmetrically encrypted, making it unusable.
 * **Secure transfer of the authorization response after front-channel login** – The authorization response, which is temporarily stored in session storage during the redirect process, will be cleared and moved to memory before any other code runs.
+* Still under devlopement: Protecting against malitious service worker registration.&#x20;
 
 ## Opinionated Conclusion
 

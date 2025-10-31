@@ -4,6 +4,10 @@ icon: umbrella-beach
 
 # TanStack Start
 
+You'll be cloning this example, it's a very lightly modified version of the Starter that you get with `pnpm create @tanstack/start` where we've enabled autnetication for the todo list.
+
+{% embed url="https://example-tanstack-start.oidc-spa.dev/" %}
+
 ```bash
 npx gitpick keycloakify/oidc-spa/tree/main/examples/tanstack-start start-oidc
 cd start-oidc
@@ -13,10 +17,6 @@ npm run dev
 # By default, the example runs against Keycloak.
 # You can edit the .env file to test other providers.
 ```
-
-Live example:
-
-{% embed url="https://example-tanstack-start.oidc-spa.dev/" %}
 
 ***
 

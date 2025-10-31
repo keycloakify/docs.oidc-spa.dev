@@ -1,5 +1,6 @@
 ---
 description: Vite + TypeScript + React + Tanstack Router
+hidden: true
 icon: arrow-progress
 ---
 
