@@ -184,10 +184,10 @@ To remediate:
 * (For production) Put your IdP authorization endpoint on the **same parent domain** as your app whenever possible.
 * For a better dev experience allow third-party cookies in your local server and explicitely set `sessionRestorationMethod: "iframe"`, by default it's set to `"auto"` mening that it will only use iframe if it knows that cookies won't be blocked, and oidc-spa can't know that in localhost.
 
-<figure><img src="../.gitbook/assets/image (6).png" alt="" width="348"><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (6).png" alt="" width="348"><figcaption></figcaption></figure>
 
 More info and detailed instructions:
 
-{% content-ref url="../resources/third-party-cookies-and-session-restoration.md" %}
-[third-party-cookies-and-session-restoration.md](../resources/third-party-cookies-and-session-restoration.md)
+{% content-ref url="resources/third-party-cookies-and-session-restoration.md" %}
+[third-party-cookies-and-session-restoration.md](resources/third-party-cookies-and-session-restoration.md)
 {% endcontent-ref %}

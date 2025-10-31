@@ -4,14 +4,6 @@
 * [User Account Management](user-account-management.md)
 * [User Session Initialization](user-session-initialization.md)
 
-## features
-
-* [Auto Login](features/auto-login.md)
-* [Auto Logout](features/auto-logout.md)
-* [Error Management](features/error-management.md)
-* [Talking to multiple APIs (with different access tokens)](features/talking-to-multiple-apis-with-different-access-tokens.md)
-* [Tokens Renewal](features/tokens-renewal.md)
-
 ## Integration Guides
 
 * [Integration](integration-guides/example-setups.md)
@@ -22,6 +14,14 @@
 * [Creating an API Server](integration-guides/tanstack-router-+-node-rest-api.md)
 * [TanStack Router](integration-guides/tanstack-router.md)
 * [Multi Providers - Login with Google or Microsoft](integration-guides/multi-providers.md)
+
+## features
+
+* [Auto Login](auto-login.md)
+* [Auto Logout](auto-logout.md)
+* [Error Management](error-management.md)
+* [Talking to multiple APIs (with different access tokens)](talking-to-multiple-apis-with-different-access-tokens.md)
+* [Tokens Renewal](tokens-renewal.md)
 
 ## Providers Configuration
 

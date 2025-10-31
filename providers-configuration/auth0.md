@@ -138,8 +138,8 @@ Since Auth0 **does not issue refresh tokens** (or issues non-JWT ones), inform `
 
 You can enhance user experience by displaying a countdown warning before logout:
 
-{% content-ref url="../features/auto-logout.md" %}
-[auto-logout.md](../features/auto-logout.md)
+{% content-ref url="../auto-logout.md" %}
+[auto-logout.md](../auto-logout.md)
 {% endcontent-ref %}
 
 ***
