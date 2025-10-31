@@ -10,6 +10,24 @@ If you're having issues do not hesitate to [reach out on Discord](https://discor
 
 ## What this is
 
+oidc-spa is a framework-agnostic OpenID Connect client for web apps using the Authorization Code Flow with PKCE.
+
+It replaces provider-specific SDKs like keycloak-js, auth0-spa-js, or MSAL.js with one unified API that works with any IdP, Keycloak, Auth0, Entra ID, and more, without vendor lock-in or server dependencies.
+
+Unlike server-centric solutions such as NextAuth, oidc-spa makes the frontend the OIDC client.
+
+Your backend becomes a simple resource server, and tokens can be validated offline.
+
+That means no database, no session store, and enterprise-grade UX out of the box, while scaling naturally to edge runtimes.
+
+oidc-spa exposes real OIDC primitives, ID tokens, access tokens, claims, instead of hiding them behind a “user” object, helping you understand and control your security posture.
+
+It’s infra-light, open-standard, and transparent, built not to lock you in but to empower you.
+
+<details>
+
+<summary>But in details? I want to understand the tradeoffs.</summary>
+
 **oidc-spa** is an implementation of an **OpenID Connect client** for web applications, built around the **Authorization Code Flow with PKCE**.
 
 In the modern tech ecosystem, no one “rolls their own auth” anymore, not even OpenAI or Vercel.\
@@ -92,6 +110,10 @@ Beyond that, everything else scalability, DX, performance, works in your favor.
 If that all sounds good to you…\
 **Let’s get started.**
 
+</details>
+
+***
+
 ## Configuring your IdP
 
 You can skip this for now since all our examples comes with demo Keycloak/Auth0/EntraID/Google accounts that you can freely use for deflopement.\
@@ -100,6 +122,8 @@ Eventually however you'll need to configure your own account/instance.
 {% content-ref url="providers-configuration/provider-configuration.md" %}
 [provider-configuration.md](providers-configuration/provider-configuration.md)
 {% endcontent-ref %}
+
+***
 
 ## Integration
 
