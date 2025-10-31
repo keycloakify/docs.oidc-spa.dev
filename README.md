@@ -158,5 +158,3 @@ If you prefer full control or work in a custom setup, select the Framework-Agnos
 {% endcontent-ref %}
 {% endtab %}
 {% endtabs %}
-
-Once you’ve chosen your integration, you’ll have login, logout, and token handling ready to use in under five minutes.
