@@ -13,6 +13,16 @@
 * [TanStack Router](integration-guides/tanstack-router.md)
 * [Multi Providers - Login with Google or Microsoft](integration-guides/multi-providers.md)
 
+## Providers Configuration
+
+* [Provider configuration](providers-configuration/provider-configuration.md)
+* [Keycloak](providers-configuration/keycloak.md)
+* [Auth0](providers-configuration/auth0.md)
+* [Microsoft Entra ID](providers-configuration/microsoft-entra-id.md)
+* [Clerk](providers-configuration/clerk.md)
+* [Google OAuth 2.0](providers-configuration/google-oauth.md)
+* [Other OIDC Provider](providers-configuration/other.md)
+
 ## features
 
 * [Auto Login](auto-login.md)
@@ -23,16 +33,6 @@
 * [User Account Management](features/user-account-management.md)
 * [User Session Initialization](features/user-session-initialization.md)
 * [Non Blocking Rendering in React SPAs](features/non-blocking-rendering-in-react-spas.md)
-
-## Providers Configuration
-
-* [Provider configuration](providers-configuration/provider-configuration.md)
-* [Keycloak](providers-configuration/keycloak.md)
-* [Auth0](providers-configuration/auth0.md)
-* [Microsoft Entra ID](providers-configuration/microsoft-entra-id.md)
-* [Clerk](providers-configuration/clerk.md)
-* [Google OAuth 2.0](providers-configuration/google-oauth.md)
-* [Other OIDC Provider](providers-configuration/other.md)
 
 ## Resources
 
