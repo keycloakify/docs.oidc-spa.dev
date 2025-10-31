@@ -2,7 +2,7 @@
 icon: gauge-max
 ---
 
-# Non-Blocking Rendering in React SPAs
+# Non Blocking Rendering in React SPAs
 
 When using the `oidc-spa/react-spa` adapter, the recommended setup is to wrap your entire application in an `<OidcInitializationGate />`, like so:
 
@@ -21,16 +21,17 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 );
 </code></pre>
 
-By default, this setup **defers rendering your entire app** until `bootstrapOidc()` has completed — in other words, until oidc-spa has contacted your IdP and determined whether the user currently has an active session.
+By default, this setup **defers rendering your entire app** until `bootstrapOidc()` has resolved, in other words, until oidc-spa has contacted your IdP and determined whether the user currently has an active session.
 
-This is often the **simplest and safest** choice:  
-- You don’t have to think about whether the auth state has settled.  
-- There’s no risk of layout shifts.  
-- Tests and SSR behave predictably.  
+This is often the **simplest and safest** choice:
 
----
+* You don’t have to think about whether the auth state has settled.
+* There’s no risk of layout shifts.
+* Tests and SSR behave predictably (SSR is canceled).
 
-However, for **optimal perceived performance**, you can start rendering *before* the authentication state is resolved — letting the page appear instantly, while auth-aware components hydrate a few milliseconds later.
+***
+
+However, for **optimal performance**, you can start rendering _before_ the authentication state is resolved, letting the page appear instantly, while auth-aware components hydrate a few milliseconds later.
 
 For example:
 
@@ -77,25 +78,25 @@ function AuthButtons() {
 }
 </code></pre>
 
----
+***
 
 ### Using React’s built-in Suspense
 
-You can use React’s built-in `<Suspense />` instead of `<OidcInitializationGate />`.  
+You can use React’s built-in `<Suspense />` instead of `<OidcInitializationGate />`.\
 This is often even better, as it lets you define a unified fallback for all your app’s asynchronous operations.
 
-When called before the auth state is ready, `useOidc()` throws a Promise — which React will catch using the nearest Suspense boundary.
+When called before the auth state is ready, `useOidc()` throws a Promise, which React will catch using the nearest Suspense boundary.
 
-This means you **must** wrap any component that calls `useOidc()` in either `<OidcInitializationGate />` or `<Suspense />`.  
-If you don’t, your entire app will suspend.  
-*(And don’t forget to wrap `<AutoLogoutWarningOverlay />` as well.)*
+This means you **must** wrap any component that calls `useOidc()` in either `<OidcInitializationGate />` or `<Suspense />`.\
+If you don’t, your entire app will suspend.\
+&#xNAN;_(And don’t forget to wrap `<AutoLogoutWarningOverlay />` as well.)_
 
----
+***
 
 ### Components protected with `enforceLogin`
 
-Any component that’s behind `enforceLogin` or wrapped with `withLoginEnforced()` **will not suspend**, because those act as their own authentication gates.  
-However, note that if you use `withLoginEnforced()` directly, the resulting component can still suspend *during its own initialization*, so it’s best to wrap it too.
+Any component that’s behind `enforceLogin()` or wrapped in a  `withLoginEnforced()` component **will not suspend**, because those act as their own authentication gates.\
+However, note that if you use `withLoginEnforced()` directly, the resulting component can still suspend, so you want to wrap them too.
 
 Example:
 
@@ -143,15 +144,15 @@ export default Protected;
 ```
 {% endcode %}
 
----
+***
 
 ### TL;DR
 
-- `<OidcInitializationGate />` at the root: **simpler mental model**, no layout shift.  
-- `<Suspense />` or `<OidcInitializationGate />` near `useOidc()` calls: **faster perceived load**, better user experience.  
-- `enforceLogin` and `withLoginEnforced()` automatically handle suspension.  
-- Both options are supported — choose based on your desired UX and simplicity.  
+* `<OidcInitializationGate />` at the root: **simpler mental model**, no layout shift.
+* `<Suspense />` or `<OidcInitializationGate />` near `useOidc()` calls: **faster perceived load**, better user experience.
+* `enforceLogin` and `withLoginEnforced()` automatically handle suspension but Page component wrapped into `withLoginEnforced()` do suspend themselvs.
+* Both options are supported choose based on your desired UX and simplicity.
 
----
+***
 
-*(In modern browsers, session restoration typically takes under 300 ms, so even full gating often feels instant.)*
+_(In modern browsers, session restoration typically takes under 300 ms, so even full gating often feels instant.)_
