@@ -73,7 +73,7 @@ Example:
 
 For each client, configure **protocol mappers** so the issued access token matches the target API’s expectations.
 
-This limitation means that even if your IdP (Auth0, Clerk...) supports declaring APIs independently, you will still set things up this way to work with oidc-spa today.&#x20;
+This limitation means that even if your IdP (Auth0, Clerk...) supports declaring APIs independently, you will still set things up this way to work with oidc-spa today.
 
 ### Using multiple clients in oidc-spa
 
@@ -175,19 +175,19 @@ That is all you need for multi-API access with per-API tokens.
 
 ### Development and security caveats
 
-The first time you call `createOidc()` you may get a **full page redirect** if silent session restoration via iframe is not available. This is the default on `localhost` in oidc-spa.&#x20;
+The first time you call `createOidc()` you may get a **full page redirect** if silent session restoration via iframe is not available. This is the default on `localhost` in oidc-spa.
 
 Also note that, if you configure more than one client **AND** iframe session restoration is not possible, oidc-spa will **persist tokens in `sessionStorage`** to avoid redirect loops. This relaxes the default security guarantees.
 
 To remediate:
 
 * (For production) Put your IdP authorization endpoint on the **same parent domain** as your app whenever possible.
-* For a better dev experience allow third-party cookies in your local server and explicitely set `sessionRestorationMethod: "iframe"`, by default it's set to `"auto"` mening that it will only use iframe if it knows that cookies won't be blocked, and oidc-spa can't know that in localhost.&#x20;
+* For a better dev experience allow third-party cookies in your local server and explicitely set `sessionRestorationMethod: "iframe"`, by default it's set to `"auto"` mening that it will only use iframe if it knows that cookies won't be blocked, and oidc-spa can't know that in localhost.
 
-<figure><img src=".gitbook/assets/image (6).png" alt="" width="348"><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (6).png" alt="" width="348"><figcaption></figcaption></figure>
 
 More info and detailed instructions:
 
-{% content-ref url="resources/third-party-cookies-and-session-restoration.md" %}
-[third-party-cookies-and-session-restoration.md](resources/third-party-cookies-and-session-restoration.md)
+{% content-ref url="../resources/third-party-cookies-and-session-restoration.md" %}
+[third-party-cookies-and-session-restoration.md](../resources/third-party-cookies-and-session-restoration.md)
 {% endcontent-ref %}

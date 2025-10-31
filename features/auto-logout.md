@@ -15,8 +15,8 @@ In OIDC provider, it is usually referred to as **Idle Session Lifetime**, these 
 
 Guide on how to configure it:
 
-* [Keycloak](providers-configuration/keycloak.md#security-sensitive-apps-banking-admin-panels-etc)
-* [Auth0](providers-configuration/auth0.md#optional-configuring-auto-logout)
+* [Keycloak](../providers-configuration/keycloak.md#security-sensitive-apps-banking-admin-panels-etc)
+* [Auth0](../providers-configuration/auth0.md#optional-configuring-auto-logout)
 
 [If your OIDC provider issues a Refresh Token and if this refresh token is a JWT](#user-content-fn-1)[^1] you don't need to configure anything at the app level. Otherwise you need to explicitly set the `idleSessionLifetimeInSeconds` so it matches with how you have configured your server.
 

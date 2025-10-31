@@ -1,13 +1,16 @@
 # Table of contents
 
 * [Getting Started](README.md)
-* [Auto Login](auto-login.md)
-* [Auto Logout](auto-logout.md)
-* [Error Management](error-management.md)
-* [Talking to multiple APIs (with different access tokens)](talking-to-multiple-apis-with-different-access-tokens.md)
-* [Tokens Renewal](tokens-renewal.md)
 * [User Account Management](user-account-management.md)
 * [User Session Initialization](user-session-initialization.md)
+
+## features
+
+* [Auto Login](features/auto-login.md)
+* [Auto Logout](features/auto-logout.md)
+* [Error Management](features/error-management.md)
+* [Talking to multiple APIs (with different access tokens)](features/talking-to-multiple-apis-with-different-access-tokens.md)
+* [Tokens Renewal](features/tokens-renewal.md)
 
 ## Integration Guides
 
