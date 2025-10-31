@@ -3,18 +3,20 @@ description: Let's get your App authenticated!
 icon: person-snowboarding
 ---
 
-# Framwork Agnostic
+# Framework Agnostic
 
 {% hint style="info" %}
-oidc-spa is framework agnostic indeed BUT it's a client centric library. &#x20;
+oidc-spa is framework-agnostic, but it’s also client-centric.
 
-Meaning that it will integrate seamlessly with any Single Page Application but not with full stack framwork like Next that involve SSR.
+It integrates seamlessly with any Single Page Application, but not with full-stack frameworks that rely on server-side rendering (like Next.js).
 
-The only full stack framework supported is TanStack Start.
+The only full-stack framework currently supported is TanStack Start, which aligns with oidc-spa’s client-first, server capable architecture.
 {% endhint %}
 
 {% hint style="info" %}
-Note that if you are using React but not TanStack not React Router you'll still probably be better served by oidc-spa/react-spa than oidc-spa/core. If it's your case follow the React-Router integration path in "Declarative Mode", you should be able to adapt to your environnement.
+Note that if you’re using **React** but not **TanStack** or **React Router,** you’ll likely still benefit more from `oidc-spa/react-spa` than from `oidc-spa/core`.
+
+In that case, follow the [React Router integration guide in Declarative Mode](../setup-guides/react-router.md#declarative-mode), it should be easy to adapt to your setup.
 {% endhint %}
 
 ## Installation
@@ -53,21 +55,18 @@ This design provides much stronger security guarantees than any other adapter, a
 {% tab title="Vite SPAs" %}
 In Vite apps, this is done through a Vite Plugin (If you'd rather avoid using the Vite plugin checkout the Other SPAs tab).
 
-<pre class="language-typescript" data-title="vite.config.ts"><code class="lang-typescript">import { reactRouter } from "@react-router/dev/vite";
-import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
+<pre class="language-typescript" data-title="vite.config.ts"><code class="lang-typescript">import { defineConfig } from "vite";
 <strong>import { oidcSpa } from "oidc-spa/vite-plugin";
 </strong>
 export default defineConfig({
     plugins: [
-        reactRouter(),
+        // ...
 <strong>        oidcSpa({
 </strong><strong>            freezeFetch: true,
 </strong><strong>            freezeXMLHttpRequest: true,
 </strong><strong>            freezeWebSocket: true
-</strong><strong>        }),
-</strong>        tsconfigPaths()
-    ]
+</strong><strong>        })
+</strong>    ]
 });
 </code></pre>
 {% endtab %}
