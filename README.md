@@ -142,8 +142,8 @@ If you prefer full control or work in a custom setup, select the Framework-Agnos
 {% endtab %}
 
 {% tab title="React-Router" %}
-{% content-ref url="integration-guides/react-router.md" %}
-[react-router.md](integration-guides/react-router.md)
+{% content-ref url="setup-guides/react-router.md" %}
+[react-router.md](setup-guides/react-router.md)
 {% endcontent-ref %}
 {% endtab %}
 

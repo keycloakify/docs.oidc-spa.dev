@@ -3,7 +3,7 @@ hidden: true
 icon: laptop-code
 ---
 
-# Integration Guides
+# Integration
 
 {% content-ref url="usage.md" %}
 [usage.md](usage.md)
@@ -13,8 +13,8 @@ icon: laptop-code
 [tanstack-start.md](tanstack-start.md)
 {% endcontent-ref %}
 
-{% content-ref url="react-router.md" %}
-[react-router.md](react-router.md)
+{% content-ref url="../setup-guides/react-router.md" %}
+[react-router.md](../setup-guides/react-router.md)
 {% endcontent-ref %}
 
 {% content-ref url="angular.md" %}

@@ -61,11 +61,13 @@ export default defineConfig({
 When running the example, you may notice that the page renders immediately, and then the components that depend on authentication (via `useOidc()`) appear a few milliseconds later.\
 This is achieved by placing [**Suspense boundaries**](https://github.com/keycloakify/oidc-spa/blob/ce23b6b164f913de244e952a144e6ddae20d5e8a/examples/react-router-framework/app/components/Header.tsx#L42-L44) around components that call `useOidc()`.
 
-{% embed url="https://youtu.be/tLk81s5JpbQ" %}
+{% embed url="https://youtu.be/t1qfU_GeTM4" %}
 
 It’s important to understand that **this behavior is completely optional**.
 
-If you prefer to avoid layout shifts and would rather render the page only once everything is ready, simply remove the Suspense boundaries.\
+What’s happening is that useOidc() will suspend if it’s called before the OIDC initialization process completes, that is, before oidc-spa has finished checking with the IdP whether the user currently has an active session or not.
+
+If you prefer to avoid layout shifts and would rather render the page only once everything is ready, simply remove the Suspense arount the auth aware components.\
 React will then fall back to the **nearest Suspense boundary** (or [the `HydrateFallback` component](https://github.com/keycloakify/oidc-spa/blob/ce23b6b164f913de244e952a144e6ddae20d5e8a/examples/react-router-framework/app/root.tsx#L40-L42) in framework mode).
 
 Even without any Suspense boundaries at all, everything will still work correctly, React will just wait for the OIDC initialization process to complete before rendering your app.
@@ -139,6 +141,6 @@ If you’re building it in JavaScript or TypeScript (for example, using Express)
 
 You’ll find the full documentation here:
 
-{% content-ref url="tanstack-router-+-node-rest-api.md" %}
-[tanstack-router-+-node-rest-api.md](tanstack-router-+-node-rest-api.md)
+{% content-ref url="../integration-guides/tanstack-router-+-node-rest-api.md" %}
+[tanstack-router-+-node-rest-api.md](../integration-guides/tanstack-router-+-node-rest-api.md)
 {% endcontent-ref %}
