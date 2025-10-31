@@ -12,7 +12,7 @@
 ## Integration Guides
 
 * [Integration](integration-guides/example-setups.md)
-* [Framwork Agnostic](integration-guides/usage.md)
+* [Framework Agnostic](integration-guides/usage.md)
 * [TanStack Start](integration-guides/tanstack-start.md)
 * [React Router](integration-guides/react-router.md)
 * [Angular](integration-guides/angular.md)

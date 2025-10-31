@@ -116,7 +116,7 @@ If that all sounds good to you…\
 
 ## Configuring your IdP
 
-You can skip this for now since all our examples comes with demo Keycloak/Auth0/EntraID/Google accounts that you can freely use for deflopement.\
+You can skip this for now since all our examples comes with demo Keycloak/Auth0/EntraID/Google accounts that you can freely use for development.\
 Eventually however you'll need to configure your own account/instance.
 
 {% content-ref url="providers-configuration/provider-configuration.md" %}
@@ -152,9 +152,11 @@ If you prefer full control or work in a custom setup, select the Framework-Agnos
 {% endcontent-ref %}
 {% endtab %}
 
-{% tab title="Framwork Agnostic" %}
+{% tab title="Framework Agnostic" %}
 {% content-ref url="integration-guides/usage.md" %}
 [usage.md](integration-guides/usage.md)
 {% endcontent-ref %}
 {% endtab %}
 {% endtabs %}
+
+Once you’ve chosen your integration, you’ll have login, logout, and token handling ready to use in under five minutes.
