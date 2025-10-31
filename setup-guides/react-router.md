@@ -56,34 +56,6 @@ export default defineConfig({
 });
 </code></pre>
 
-## Suspense is optional
-
-useOidc() suspends until oidc-spa finishes checking with your IdP whether the user is logged in.
-
-You can wrap auth-aware components in Suspense for faster initial rendering, or simply omit Suspense if you prefer to wait and render everything once it’s ready. Both approaches work fine.
-
-{% embed url="https://youtu.be/t1qfU_GeTM4" %}
-
-> In the above video we can see that thanks to the narrow suspense boundaries the app is able to be rendered before auth state has been established.
-
-<details>
-
-<summary>More details</summary>
-
-When running the example, you may notice that the page renders immediately, and then the components that depend on authentication (via `useOidc()`) appear a few milliseconds later.\
-This is achieved by placing [**Suspense boundaries**](https://github.com/keycloakify/oidc-spa/blob/ce23b6b164f913de244e952a144e6ddae20d5e8a/examples/react-router-framework/app/components/Header.tsx#L42-L44) around components that call `useOidc()`.
-
-It’s important to understand that **this behavior is completely optional**.
-
-What’s happening is that useOidc() will suspend if it’s called before the OIDC initialization process completes, that is, before oidc-spa has finished checking with the IdP whether the user currently has an active session or not.
-
-If you prefer to avoid layout shifts and would rather render the page only once everything is ready, simply remove the Suspense arount the auth aware components.\
-React will then fall back to the **nearest Suspense boundary** (or [the `HydrateFallback` component](https://github.com/keycloakify/oidc-spa/blob/ce23b6b164f913de244e952a144e6ddae20d5e8a/examples/react-router-framework/app/root.tsx#L40-L42) in framework mode).
-
-Even without any Suspense boundaries at all, everything will still work correctly, React will just wait for the OIDC initialization process to complete before rendering your app.
-
-</details>
-
 ## Learning from the example
 
 You're going to be cloning this example:

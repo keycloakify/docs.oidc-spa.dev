@@ -8,7 +8,6 @@
 * [Framework Agnostic](integration-guides/usage.md)
 * [TanStack Start](integration-guides/tanstack-start.md)
 * [React Router](setup-guides/react-router.md)
-* [Non Blocking Rendering in React SPAs](integration-guides/non-blocking-rendering-in-react-spas.md)
 * [Angular](integration-guides/angular.md)
 * [Creating an API Server](integration-guides/tanstack-router-+-node-rest-api.md)
 * [TanStack Router](integration-guides/tanstack-router.md)
@@ -23,6 +22,7 @@
 * [Tokens Renewal](tokens-renewal.md)
 * [User Account Management](features/user-account-management.md)
 * [User Session Initialization](features/user-session-initialization.md)
+* [Non Blocking Rendering in React SPAs](features/non-blocking-rendering-in-react-spas.md)
 
 ## Providers Configuration
 
