@@ -157,12 +157,22 @@ if (!oidc.isUserLoggedIn) {
           * which is usually what you want.
           */
           // redirectUrl: "/dashboard"
-          
-          /**
-           * Keycloak: You can also send the users directly to the register page
-           * see: https://github.com/keycloakify/oidc-spa/blob/14a3777601c50fa69d1221495d77668e97443119/examples/tanstack-router-file-based/src/components/Header.tsx#L54-L66
-           */ 
     });
+    
+    // oidc-spa export keycloak specific tooling:
+    const { isKeycloak, createKeycloakUtils } = await import("oidc-spa/keycloak");
+    
+    // If your IdP is a Keycloak
+    if( isKeycloak({ issuerUri: oidc.issuerUri }) ){
+        const keycloakUtils = createKeycloakUtils({ issuerUri: oidc.params.issuerUri });
+        // Redirect directly to the register page instead of the login page
+        oidc.login({
+            doesCurrentHrefRequiresAuth: false,
+            transformUrlBeforeRedirect: keycloakUtils.transformUrlBeforeRedirectForRegister
+        });
+        
+    }
+    
 
 } else {
     // The user is logged in.
@@ -190,7 +200,13 @@ if (!oidc.isUserLoggedIn) {
     const decodedIdToken = oidc.getDecodedIdToken();
 
     console.log(`Hello ${decodedIdToken.preferred_username}`);
-
+    
+    // Get a link to the account page:
+    const userAccountUrl = keycloakUtils.getAccountUrl({ 
+        clientId: oidc.params.issuerUri,
+        validRedirectUri: oidc.params.validRedirectUri
+    });
+    
 }
 ```
 
