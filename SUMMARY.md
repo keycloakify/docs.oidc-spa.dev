@@ -32,7 +32,7 @@
 * [Tokens Renewal](tokens-renewal.md)
 * [User Account Management](features/user-account-management.md)
 * [User Session Initialization](features/user-session-initialization.md)
-* [Non Blocking Rendering in React SPAs](features/non-blocking-rendering-in-react-spas.md)
+* [Non Blocking Rendering](features/non-blocking-rendering.md)
 
 ## Resources
 

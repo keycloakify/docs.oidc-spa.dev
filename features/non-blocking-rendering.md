@@ -2,7 +2,7 @@
 icon: gauge-max
 ---
 
-# Non Blocking Rendering in React SPAs
+# Non Blocking Rendering
 
 {% tabs %}
 {% tab title="React SPAs" %}
@@ -313,5 +313,10 @@ export class App {
 * Choose based on the UX you want. Both modes are supported.
 
 _(In modern browsers, session restoration usually completes in under \~300 ms, so even full gating often feels instant.)_
+{% endtab %}
+
+{% tab title="TanStack Start" %}
+In TanStack Start, non blocking rendering is enabled by default!\
+It's a condition to levrage SSR at least on marketing pages.
 {% endtab %}
 {% endtabs %}
