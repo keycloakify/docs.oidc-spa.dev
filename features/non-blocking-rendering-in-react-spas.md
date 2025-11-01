@@ -4,6 +4,8 @@ icon: gauge-max
 
 # Non Blocking Rendering in React SPAs
 
+{% tabs %}
+{% tab title="React SPAs" %}
 When using the `oidc-spa/react-spa` adapter, the recommended setup is to wrap your entire application in an `<OidcInitializationGate />`, like so:
 
 <pre class="language-tsx" data-title="src/main.tsx"><code class="lang-tsx">import React from "react";
@@ -156,3 +158,160 @@ export default Protected;
 ***
 
 _(In modern browsers, session restoration typically takes under 300 ms, so even full gating often feels instant.)_
+{% endtab %}
+
+{% tab title="Angular" %}
+### Default: blocking rendering (simplest and safest)
+
+When using the `oidc-spa/angular` adapter, the recommended default is to **let bootstrap wait for OIDC**. \
+You do this by using your `Oidc` service and **not** opting out of provider waiting (the default).
+
+**app.config.ts**
+
+<pre class="language-ts"><code class="lang-ts">import { ApplicationConfig } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { routes } from './app.routes';
+import { Oidc } from './services/oidc.service';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+<strong>    // This will NOT resolve until bootstrapOidc() completes.
+</strong>    Oidc.provide({
+      // ...
+    }),
+    provideRouter(routes),
+  ],
+};
+</code></pre>
+
+**Oidc service (simple example)**
+
+```ts
+import { Injectable } from '@angular/core';
+import { AbstractOidcService } from 'oidc-spa/angular';
+
+export type DecodedIdToken = {
+  name: string;
+  realm_access?: { roles: string[] };
+};
+
+@Injectable({ providedIn: 'root' })
+export class Oidc extends AbstractOidcService<DecodedIdToken> {
+  // providerAwaitsInitialization defaults to true
+}
+```
+
+With this setup, Angular only renders once `bootstrapOidc()` has completed (the IdP has been contacted and the session state is known).
+
+**Why this is nice**
+
+* You do not think about “is OIDC ready”.
+* No layout shifts.
+* Tests and SSR behave predictably. (NOTE: SSR in Angular not tested yet)
+
+***
+
+### Faster first paint: non-blocking rendering
+
+For optimal performance, you can start rendering **before** the authentication state is fully resolved, so the page appears instantly and OIDC-aware parts “hydrate” moments later.
+
+Example of what it can look in action:
+
+{% embed url="https://youtu.be/t1qfU_GeTM4" %}
+
+Enable this by opting out of provider waiting in your `Oidc` service:
+
+<pre class="language-ts"><code class="lang-ts">// examples/angular-kitchensink/src/app/services/oidc.service.ts
+import { Injectable } from '@angular/core';
+import { AbstractOidcService } from 'oidc-spa/angular';
+
+@Injectable({ providedIn: 'root' })
+export class Oidc extends AbstractOidcService {
+  // The provider no longer blocks Angular bootstrap
+<strong>  override providerAwaitsInitialization = false;
+</strong>
+  // ...
+}
+</code></pre>
+
+**Important:** Once you do this, **you** are responsible for placing “init boundaries” in templates, so parts of the UI that need OIDC only render once it is ready.
+
+#### Gate OIDC-aware UI with `@defer`
+
+Use Angular’s built-in `@defer` with a `@placeholder` for instant paint:
+
+<pre class="language-html"><code class="lang-html">&#x3C;!-- examples/angular-kitchensink/src/app/app.html -->
+&#x3C;header>
+  &#x3C;span>OIDC-SPA + Angular (Kitchen Sink)&#x3C;/span>
+
+<strong>  @defer (when oidc.prInitialized | async) {
+</strong>    &#x3C;!-- Safe to read OIDC values here -->
+    @if (oidc.isUserLoggedIn) {
+      &#x3C;div>
+        &#x3C;span>Hello {{ oidc.$decodedIdToken().name }}&#x3C;/span>
+        &#x26;nbsp; &#x3C;button (click)="oidc.logout({ redirectTo: 'home' })">Logout&#x3C;/button>
+      &#x3C;/div>
+    } @else {
+      &#x3C;div>
+        &#x3C;button (click)="oidc.login()">Login&#x3C;/button>
+        &#x3C;button (click)="
+          oidc.login({
+            transformUrlBeforeRedirect: keycloakUtils.transformUrlBeforeRedirectForRegister,
+          })
+        ">
+          Register
+        &#x3C;/button>
+      &#x3C;/div>
+    }
+<strong>  } @placeholder {
+</strong><strong>    &#x3C;span style="line-height: 1.35;">Initializing OIDC...&#x3C;/span>
+</strong><strong>  }
+</strong>&#x3C;/header>
+</code></pre>
+
+Anywhere you read things like `oidc.isUserLoggedIn`, `oidc.$decodedIdToken()`, or values derived from `issuerUri`, put them behind a `@defer (when oidc.prInitialized | async)` (or otherwise guard them) to avoid runtime errors during the brief initialization window.
+
+#### Access helpers lazily to avoid crashes
+
+Because the component can be constructed before OIDC is initialized, compute helpers like `keycloakUtils` **lazily**:
+
+<pre class="language-ts" data-title="src/app/app.ts"><code class="lang-ts">import { Component, inject } from '@angular/core';
+import { Oidc } from './services/oidc.service';
+import { createKeycloakUtils } from 'oidc-spa/keycloak';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.html',
+  imports: [],
+})
+export class App {
+  oidc = inject(Oidc);
+
+  // Use a getter so we read issuerUri only after init
+<strong>  get keycloakUtils() {
+</strong><strong>    return createKeycloakUtils({ issuerUri: this.oidc.issuerUri });
+</strong><strong>  }
+</strong>
+  // Example: drive an "Admin only" link state
+  get canShowAdminLink(): boolean {
+    if (!this.oidc.isUserLoggedIn) return true;
+    const roles = this.oidc.$decodedIdToken().realm_access?.roles ?? [];
+    return roles.includes('admin');
+  }
+}
+</code></pre>
+
+***
+
+### TL;DR
+
+* **Blocking at bootstrap (default):** `Oidc.provide()` waits for `bootstrapOidc()` before Angular renders. Easiest mental model. No layout shift. Tests and SSR are straightforward.
+* **Non-blocking:** set `override providerAwaitsInitialization = false` in your `Oidc` service. Then:
+  * Gate auth-aware UI with `@defer (when oidc.prInitialized | async) { ... } @placeholder { ... }`.
+  * Access helpers like `keycloakUtils` via a **getter** so you do not touch `issuerUri` before init.
+  * Guard overlays or any code that reads OIDC state.
+* Choose based on the UX you want. Both modes are supported.
+
+_(In modern browsers, session restoration usually completes in under \~300 ms, so even full gating often feels instant.)_
+{% endtab %}
+{% endtabs %}
