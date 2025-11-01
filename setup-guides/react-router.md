@@ -73,6 +73,8 @@ cd rr-declarative-oidc
 cp .env.local.sample .env.local
 npm install
 npm run dev
+
+# Start exploring with: src/oidc.ts
 ```
 
 {% embed url="https://github.com/keycloakify/oidc-spa/tree/main/examples/react-router-declarative" %}
@@ -107,8 +109,10 @@ npx gitpick keycloakify/oidc-spa/tree/main/examples/react-router-framework rr-fr
 cd rr-framework-oidc
 # You can use our preconfigured Keycloak, Auth0, or Google OAuth test accounts
 cp .env.local.sample .env.local
-yarn
-yarn dev
+npm install
+npm run dev
+
+# Start exploring with: src/oidc.ts
 ```
 
 {% embed url="https://github.com/keycloakify/oidc-spa/tree/main/examples/react-router-framework" %}

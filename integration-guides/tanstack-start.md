@@ -187,7 +187,7 @@ export const fetchWithAuth: typeof fetch = async (input, init) => {
 
 <figure><img src="../.gitbook/assets/image (5).png" alt="Auth button example" width="262"><figcaption></figcaption></figure>
 
-<figure><img src="../.gitbook/assets/image (4).png" alt="User avatar example" width="196"><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (4) (1).png" alt="User avatar example" width="196"><figcaption></figcaption></figure>
 
 Code reference:
 

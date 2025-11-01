@@ -27,9 +27,9 @@ This guide explains how to configure Auth0 to obtain the necessary parameters fo
 8. **Allowed Web Origins:** The origins of the Callback URLs
 9. Click **Save Changes**
 
-<figure><img src="../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (2) (1).png" alt=""><figcaption></figcaption></figure>
 
-<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 ```typescript
 const { ... } = createOidc({
@@ -50,7 +50,7 @@ If you need Auth0 to issue a JWT access token for your API, follow these steps:
    * **Identifier**: Ideally, use your API's root URL (e.g., `https://myapp.my-company.com/api`). However, this is just an identifier, so any unique string works. It will be the aud claim of the access tokens issued. See [the web API page](broken-reference) for more info.
    * Click **Save**.
 
-<figure><img src="../.gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (3) (1).png" alt=""><figcaption></figcaption></figure>
 
 <pre class="language-typescript"><code class="lang-typescript">const { ... } = createOidc({
     issuerUri: "dev-r2h8076n6dns3d4y.us.auth0.com",

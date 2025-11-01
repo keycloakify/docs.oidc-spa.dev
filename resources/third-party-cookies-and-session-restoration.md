@@ -127,7 +127,7 @@ The browser treats the IdP as third‑party so oidc-spa will fallback to full pa
 1. Set `sessionRestorationMethod: "iframe"` explicitely to force oidc-spa to use iframe.
 2. Allow third party cookies in localhost:
 
-<figure><img src="../.gitbook/assets/image.png" alt="" width="348"><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (4).png" alt="" width="348"><figcaption></figcaption></figure>
 
 
 
