@@ -37,7 +37,7 @@ Guide on how to configure it by provider:
 
 ## Making sure that Auto Logout is enabled
 
-To check if you have correctly set the value you can set `debugLogs: true`, and open de console. If you see:
+To check if you have correctly set the value you can set [`debugLogs: true`](#user-content-fn-2)[^2], and open de console. If you see:
 
 <figure><img src=".gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
 
@@ -54,8 +54,6 @@ If on the other hand you see:&#x20;
 Then it means that you IdP does not propagate this information and you will have to specify this value explicitly with idleSessionLifetimeInSeconds and keep it in sync this value and your IdP Config.
 
 ## Auto Logout Options
-
-
 
 {% tabs %}
 {% tab title="Framwork Agnositc" %}
@@ -324,3 +322,5 @@ export function App() {
 {% endtabs %}
 
 [^1]: 
+
+[^2]: You pass this parameter to createOidc({}) or bootstrapOidc({})
