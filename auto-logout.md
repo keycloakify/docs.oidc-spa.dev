@@ -4,45 +4,49 @@ icon: timer
 
 # Auto Logout
 
-Auto logout is **not** a feature you enable or disable in `oidc-spa`.  
-It’s a **policy defined by your Identity Provider (IdP)**.  
-What `oidc-spa` provides is a way to **display a feedback overlay** that warns users before they are logged out due to inactivity.
+Auto logout is **not** a feature you enable or disable in `oidc-spa`.\
+It’s a **policy defined by your Identity Provider (IdP)**.\
+What oidc-spa provides is:&#x20;
+
+* A mechanism to display a feedback overlay that warns users before they’re logged out due to inactivity.
+* Ensure they never remain stuck on a stale UI where any interaction would simply redirect them to the login page.
+* Monitoring of real user activity across all tabs of your application, ensuring users aren’t mistakenly marked as inactive just because they haven’t performed an action that directly contacts the IdP.
 
 {% embed url="https://youtu.be/GeZaZIr-d68" %}
 Example: Demo app with a short SSO Session Idle
 {% endembed %}
 
----
+***
 
 ## Understanding the Auto Logout Policy
 
-The duration before an inactive user is logged out is **not configured in `oidc-spa`** — it’s controlled by your IdP.  
+The duration before an inactive user is logged out is **not configured in `oidc-spa,`** it’s controlled by your IdP.\
 Depending on the platform, this policy might be named:
 
 * **SSO Session Idle**
 * **Idle Session Lifetime**
 * **Inactivity Timeout**
 
-When a user logs into your application, the IdP creates a **session** for that user.  
-As long as this session remains active, returning to your app (with the **same browser**) automatically restores it — no new login required.
+When a user logs into your application, the IdP creates a **session** for that user.\
+As long as this session remains active, returning to your app (with the **same browser**) automatically restores it, no new login required.
 
 Your IdP defines how long such sessions remain active:
 
 * **Weeks or days** → Users rarely have to log in again (e.g., Instagram, X/Twitter)
 * **Minutes** → Users must log in often or may be logged out during inactivity
 
-`oidc-spa` automatically **tracks user activity across tabs** — mouse movement, touch events, or keyboard input.  
+`oidc-spa` automatically **monitor user activity across tabs,** mouse movement, touch events, or keyboard input.\
 As long as the user is active, it periodically pings the IdP to **keep the session alive**.
 
-> 💡 **Note:**  
-> IdP configuration panels often include multiple session policies.  
+> 💡 **Note:**\
+> IdP configuration panels often include multiple session policies.\
 > For example:
-> * **SSO Session Idle** — how long before the session expires if idle  
-> * **SSO Session Max / Maximum Lifetime** — total duration before forced expiration  
-> * **Remember Me** — may extend lifetime if selected  
-> * **Session cookies** — expire when the browser closes (not just the tab)
+>
+> * **SSO Session Idle:** how long before the session expires if idle
+> * **SSO Session Max / Maximum Lifetime:** total duration before forced expiration
+> * **Remember Me:** may extend lifetime if selected and if not selected set session cookie to expire when the browser closes (not just the tab)
 
----
+***
 
 ## Configuring Auto Logout Policy
 
@@ -50,20 +54,52 @@ Guides for common providers:
 
 * [Keycloak](providers-configuration/keycloak.md#security-sensitive-apps-banking-admin-panels-etc)
 * [Auth0](providers-configuration/auth0.md#optional-configuring-auto-logout)
-* Other providers — search for:  
-  * “SSO Session Idle”  
-  * “Idle Session Lifetime”  
+* Other providers: search for:
+  * “SSO Session Idle”
+  * “Idle Session Lifetime”
   * “Inactivity Timeout”
+  * Refresh Token TTL
 
----
+***
 
 ## Verifying Auto Logout
 
 To confirm that your IdP communicates its session policy correctly, enable debug logs:
 
-```ts
-debugLogs: true
+{% tabs %}
+{% tab title="Framework Agnostic" %}
+{% code title="src/oidc.ts" %}
+```typescript
+createOidc({ 
+    // ...
+    debugLogs: true 
+});
 ```
+{% endcode %}
+{% endtab %}
+
+{% tab title="React" %}
+{% code title="src/oidc.ts" %}
+```typescript
+bootstrapOidc({
+    // ...
+    debugLogs: true
+});
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Angular" %}
+{% code title="src/app/app.config.ts" %}
+```typescript
+Oidc.provide({
+  // ...
+  debugLogs: true
+})
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
 
 Then open your browser console.
 
@@ -77,10 +113,10 @@ If instead you see:
 
 > `oidc-spa: No refresh token, and idleSessionLifetimeInSeconds was not set, can't implement auto logout mechanism.`
 
-It means your IdP does **not** expose this information to clients.  
-In that case, you must manually specify the duration using `idleSessionLifetimeInSeconds` and keep it in sync with your IdP configuration.
+It means your IdP does **not** expose this information to clients.\
+In that case, you must manually specify the duration using `idleSessionLifetimeInSeconds` and keep it in sync with your IdP configuration. Keep reading for futher instructions.
 
----
+***
 
 ## Auto Logout Options
 
@@ -94,7 +130,7 @@ const oidc = await createOidc({
   
   // ⚠️ Read carefully:
   // Only use this if your IdP does not expose its session timeout policy.
-  // Hard-code the number of seconds of inactivity before auto logout.
+  // (Optional) Hard-code the number of seconds of inactivity before auto logout.
   idleSessionLifetimeInSeconds: 300, // 5 minutes
     
   // (Optional) Where to redirect after auto logout:
@@ -115,8 +151,9 @@ bootstrapOidc({
   // Default: 45 seconds
   warnUserSecondsBeforeAutoLogout: 45,
   
-  // ⚠️ Only use this if your IdP does not expose its policy.
-  // Manually specify the idle session lifetime.
+  // ⚠️ Read carefully:
+  // Only use this if your IdP does not expose its session timeout policy.
+  // (Optional) Hard-code the number of seconds of inactivity before auto logout.
   idleSessionLifetimeInSeconds: 300, // 5 minutes
     
   // (Optional) Redirect behavior after auto logout:
@@ -141,7 +178,9 @@ export const appConfig: ApplicationConfig = {
       // Default: 45 seconds
       warnUserSecondsBeforeAutoLogout: 45,
       
-      // ⚠️ Only use this if your IdP does not expose its policy.
+      // ⚠️ Read carefully:
+      // Only use this if your IdP does not expose its session timeout policy.
+      // (Optional) Hard-code the number of seconds of inactivity before auto logout.
       idleSessionLifetimeInSeconds: 300, // 5 minutes
     
       // autoLogoutParams: { redirectTo: "current page" } // Default (recommended)
@@ -149,13 +188,13 @@ export const appConfig: ApplicationConfig = {
       // autoLogoutParams: { redirectTo: "specific url", url: "/a-page" }
     })
   ]
-};
+}
 ```
 {% endcode %}
 {% endtab %}
 {% endtabs %}
 
----
+***
 
 ## Displaying a Warning Before Auto Logout
 
@@ -330,7 +369,4 @@ export function App() {
 {% endtab %}
 {% endtabs %}
 
----
-
-[^1]: Applies when using the same browser profile and storage context.  
-[^2]: Pass `debugLogs: true` to `createOidc({})` or `bootstrapOidc({})`.
+***
