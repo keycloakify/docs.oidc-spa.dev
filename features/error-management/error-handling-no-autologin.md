@@ -1,14 +1,18 @@
-# Error Handling - No AutoLogin
+# Error Handling - No AutoLogin  
 
-If you do not have [Auto Login](../../auto-login.md) enabled and there is an error during initialization of oidc-spa, either due to a miss configuration or becuase the server is down, oidc-spa will load your app with the state of the user: not logged in. (oidc.isUserLoggedIn will be false).  \
-\
-The goal is to enable the user to at least browse the public pages.&#x20;
+If you do not have [Auto Login](../../auto-login.md) enabled and oidc-spa fails to initialize (because of a **misconfiguration** or because the **authorization server is unavailable**), your app will load with the user state **not logged in** (`oidc.isUserLoggedIn === false`).  
+The goal is to let users browse public pages even when authentication cannot start.
 
-If the user click on the login button or navigate to a page that requires autentication in this state they will be met with an alert saying:
+If, in this state, the user clicks a “Log in” button or navigates to a page that requires authentication, by default oidc-spa will fire this alert:
 
 > Authentication is currently unavailable. Please try again later.
 
-You can of course customize this behavior or decide if you want to show an error:
+You can customize this behavior (toast, inline banner, maintenance page, retry, etc.) or surface an error page if that fits your UX.
+
+{% hint style="info" %}
+Use `initializationError.isAuthServerLikelyDown` to distinguish a temporary outage from a misconfiguration.  
+`initializationError.message` is a **developer-oriented** diagnostic with the likely cause and fix; do **not** show it to end users.
+{% endhint %}
 
 {% tabs %}
 {% tab title="Framework Agnostic" %}
@@ -18,19 +22,19 @@ import { createOidc } from "oidc-spa/core";
 const oidc = await createOidc(...);
 
 if( !oidc.isUserLoggedIn ){
-    // If the used is logged in we had no initialization error.
+    // User isn’t logged in: allow the app to render public pages and stop here.
     return;
 }
 
 if( oidc.initializationError ){
 
-    // This help you discriminate configuration errors
-    // and error due to the server being temporarely down.
+    // Helps you distinguish a misconfiguration from a temporary auth-server outage.
     console.log(oidc.initializationError.isAuthServerLikelyDown);
     
     const handleLoginClick = ()=> {
     
         if( oidc.initializationError ){
+            // Developer note: keep this user-facing message short and neutral.
             alert(`Can't login now, try again later ${oidc.initializationError.message}`);
             return;
         }
@@ -58,13 +62,11 @@ const AuthButtons = createOidcComponent({
 
         useEffect(() => {
             if (initializationError) {
-                // This help you discriminate configuration errors
-                // and error due to the server being temporarely down.
+                // Helps distinguish misconfiguration vs. temporary auth-server outage.
                 console.log(initializationError.isAuthServerLikelyDown);
 
-                // This is a debug message that tells you what's wrong
-                // with your configuration and how to fix it.
-                // (this is not something you want to display to the user)
+                // Developer-only diagnostic with likely cause and fix.
+                // Do not display this to end users.
                 console.log(initializationError.message);
             }
         }, []);
@@ -77,6 +79,7 @@ const AuthButtons = createOidcComponent({
             <button
                 onClick={() => {
                     if (initializationError) {
+                        // Keep the UX calm and actionable.
                         alert("Can't login now, try again later");
                         return;
                     }
@@ -89,7 +92,6 @@ const AuthButtons = createOidcComponent({
         );
     }
 });
-
 ```
 {% endtab %}
 
@@ -104,13 +106,11 @@ function AuthButtons() {
 
     useEffect(() => {
         if (initializationError) {
-            // This help you discriminate configuration errors
-            // and error due to the server being temporarely down.
+            // Helps distinguish misconfiguration vs. temporary auth-server outage.
             console.log(initializationError.isAuthServerLikelyDown);
         
-            // This is a debug message that tells you what's wrong
-            // with your configuration and how to fix it.  
-            // (this is not something you want to display to the user)
+            // Developer-only diagnostic with likely cause and fix.
+            // Do not display this to end users.
             console.log(initializationError.message);
         }
     }, []);
@@ -123,6 +123,7 @@ function AuthButtons() {
         <button onClick={() => {
 
             if (initializationError) {
+                // Keep the UX calm and actionable.
                 alert("Can't login now, try again later")
                 return;
             }
@@ -157,13 +158,11 @@ export class App {
 <strong>    if (!this.oidc.isUserLoggedIn &#x26;&#x26; this.oidc.initializationError) {
 </strong><strong>      const { initializationError } = this.oidc;
 </strong><strong>
-</strong><strong>      // This help you discriminate configuration errors
-</strong><strong>      // and error due to the server being temporarely down.
+</strong><strong>      // Helps distinguish a misconfiguration from a temporary auth-server outage.
 </strong><strong>      console.log(initializationError.isAuthServerLikelyDown);
 </strong><strong>
-</strong><strong>      // This is a debug message that tells you what's wrong
-</strong><strong>      // with your configuration and how to fix it.
-</strong><strong>      // (this is not something you want to display to the user)
+</strong><strong>      // Developer-only diagnostic with the likely cause and fix.
+</strong><strong>      // Do not display this to end users.
 </strong><strong>      console.log(initializationError.message);
 </strong>    }
   }
@@ -174,6 +173,7 @@ export class App {
 </strong><strong>    }
 </strong><strong>
 </strong><strong>    if (this.oidc.initializationError) {
+</strong><strong>      // Keep the UX calm and actionable.
 </strong><strong>      alert("Can't login now, try again later");
 </strong><strong>      return;
 </strong><strong>    }
