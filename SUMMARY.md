@@ -30,11 +30,11 @@
 * [Debug and Error Handling](error-management.md)
   * [Error Handling - No AutoLogin](features/error-management/error-handling-no-autologin.md)
   * [Error Handling - With AutoLogin](features/error-management/error-handling-with-autologin.md)
+* [Non Blocking Rendering](features/non-blocking-rendering.md)
 * [Talking to multiple APIs (with different access tokens)](talking-to-multiple-apis-with-different-access-tokens.md)
 * [Tokens Renewal](tokens-renewal.md)
 * [User Account Management](features/user-account-management.md)
 * [User Session Initialization](features/user-session-initialization.md)
-* [Non Blocking Rendering](features/non-blocking-rendering.md)
 
 ## Resources
 

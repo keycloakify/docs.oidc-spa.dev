@@ -4,11 +4,75 @@ icon: file-user
 
 # User Account Management
 
+## Redirecting to your IdP's account managment page
+
+<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+
+IdP always provide a user account page that let users, update their password, account information, manage their session.  \
+If you are using Keycloak you can generate the link to the Account Console with:
+
+{% tabs %}
+{% tab title="Framework Agnostic" %}
+```typescript
+import { createKeycloakUtils } from "oidc-spa/keycloak";
+
+const keycloakUtils = createKeycloakUtils({ issuerUri: oidc.params.issuerUri });
+
+const accountLinkUrl = keycloakUtils.getAccountUrl({
+    clientId: oidc.params.clientId,
+    validRedirectUri: oidc.params.validRedirectUri,
+    locale: "en" // Optional
+});
+```
+{% endtab %}
+
+{% tab title="React" %}
+```typescript
+const { issuerUri, clientId, validRedirectUri } = useOidc();
+
+const keycloakUtils = createKeycloakUtils({ issuerUri: oidc.params.issuerUri });
+
+const accountLinkUrl = keycloakUtils.getAccountUrl({
+    clientId: oidc.params.clientId,
+    validRedirectUri: oidc.params.validRedirectUri,
+    locale: "en" // Optional
+});
+```
+{% endtab %}
+
+{% tab title="Angular" %}
+{% code title="src/app/app.ts" %}
+```typescript
+import { Oidc } from './services/oidc.service';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.html',
+})
+export class App {
+  oidc = inject(Oidc);
+  keycloakUtils = createKeycloakUtils({
+    issuerUri: this.oidc.issuerUri,
+  });
+
+  accountUrl = this.keycloakUtils.getAccountUrl({
+    clientId: this.oidc.clientId,
+    validRedirectUri: this.oidc.validRedirectUri,
+    locale: "en" // Optional
+  })
+}
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
+
+## Direct Link to Specific Actions
+
 {% hint style="info" %}
 In this section we assume you are using Keycloak. If you are using another authentication server you'll have to addapt the `queryParameter` provided.
 {% endhint %}
 
-When your user is logged in, you can provide a link to redirect to Keycloak so they can manage their account.
+<figure><img src="../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
 
 There is thee main actions:
 
@@ -62,9 +126,9 @@ const keycloakAccountUrl = parseKeycloakIssuerUri(oidc.params.issuerUri)
 ```
 {% endtab %}
 
-{% tab title="React API" %}
+{% tab title="React" %}
 ```tsx
-import { useOidc } from "src/oidc";
+import { useOidc } from "@/oidc";
 
 function ProtectedPage() {
     // Here we can safely assume that the user is logged in.
@@ -102,6 +166,25 @@ function ProtectedPage() {
     );
 }
 
+```
+{% endtab %}
+
+{% tab title="Angular" %}
+```typescript
+upsatePassword = ()=> this.oidc.goToAuthServer({
+    extraQueryParams: { kc_action: "UPDATE_PASSWORD" }
+});
+```
+
+```html
+@if( oidc.backFromAuthServer?.extraQueryParams.kc_action === "UPDATE_PASSWORD" ){          
+@if ( oidc.backFromAuthServer.result.kc_action_status === "success" ){
+<p>Password successfully updated</p>
+} @else {
+<P>Password unchanged</p>
+}
+}
+            
 ```
 {% endtab %}
 {% endtabs %}

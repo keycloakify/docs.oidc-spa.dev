@@ -27,7 +27,7 @@ To set up authentication via Google, follow these steps in the **Google Cloud Co
    * `5173` is Vite's default development server port—adjust as needed.
 6. Set the **Authorized JavaScript Origins** to match the origins of your redirect URIs.
 
-<figure><img src="../.gitbook/assets/image (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="warning" %}
 **Client Secret**
