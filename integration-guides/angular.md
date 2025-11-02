@@ -39,7 +39,7 @@ bun add oidc-spa zod
 
 To protect tokens against supply-chain attacks and XSS, oidc-spa must run some initialization code _before any other JavaScript in your app_.
 
-This design provides much stronger security guarantees than any other adapter, and it also delivers unmatched login performance. More details [here](../why-oidcearlyinit.md).
+This design provides much stronger security guarantees than any other adapter, and it also delivers unmatched login performance. More details [here](broken-reference).
 
 First rename your entry point file from `main.ts` to `main.lazy.ts`
 

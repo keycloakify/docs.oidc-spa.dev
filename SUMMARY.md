@@ -40,14 +40,13 @@
 
 * [Third‑party cookies and session restoration](resources/third-party-cookies-and-session-restoration.md)
 * [Why No Client Secret?](resources/why-no-client-secret.md)
+* [Fixing Crypto.subtle is available only in secure contexts (HTTPS)](resources/fixing-crypto.subtle-is-available-only-in-secure-contexts-https.md)
 * [End of third-party cookies](resources/end-of-third-party-cookies.md)
 * [iframe related issues](resources/iframe-related-issues.md)
 * [JWT Of the Access Token](resources/jwt-of-the-access-token.md)
-* [Fixing Crypto.subtle is available only in secure contexts (HTTPS)](resources/fixing-crypto.subtle-is-available-only-in-secure-contexts-https.md)
 * [Discord Server](resources/discord-server.md)
 
 ***
 
 * [User Impersonation](user-impersonation.md)
 * [Sponsors](sponsors.md)
-* [Why oidcEarlyInit](why-oidcearlyinit.md)
