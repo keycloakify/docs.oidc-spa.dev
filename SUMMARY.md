@@ -15,7 +15,6 @@
 
 ## Providers Configuration
 
-* [Migrating from Keycloak-js](providers-configuration/migrating-from-keycloak-js.md)
 * [Provider configuration](providers-configuration/provider-configuration.md)
 * [Keycloak](providers-configuration/keycloak.md)
 * [Auth0](providers-configuration/auth0.md)
@@ -39,6 +38,7 @@
 
 ## Resources
 
+* [Migrating from Keycloak-js](resources/migrating-from-keycloak-js.md)
 * [Third‑party cookies and session restoration](resources/third-party-cookies-and-session-restoration.md)
 * [Why No Client Secret?](resources/why-no-client-secret.md)
 * [Fixing Crypto.subtle is available only in secure contexts (HTTPS)](resources/fixing-crypto.subtle-is-available-only-in-secure-contexts-https.md)
