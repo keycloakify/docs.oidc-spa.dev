@@ -48,5 +48,4 @@
 
 ***
 
-* [User Impersonation](user-impersonation.md)
 * [Sponsors](sponsors.md)
