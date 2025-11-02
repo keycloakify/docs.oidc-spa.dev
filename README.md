@@ -10,7 +10,7 @@ If you're having issues do not hesitate to [reach out on Discord](https://discor
 
 ## What this is
 
-oidc-spa is a framework-agnostic OpenID Connect client for browser-centric web applications implementing the [Authorization Code Flow with PKCE](resources/why-no-client-secret.md).
+oidc-spa is a framework-agnostic OpenID Connect client for browser-centric web applications implementing the [Authorization Code Flow with PKCE](resources/why-no-client-secret.md). &#x20;
 
 It replaces provider-specific SDKs like [keycloak-js](https://www.npmjs.com/package/keycloak-js), [auth0-spa-js](https://www.npmjs.com/package/@auth0/auth0-spa-js), or [@azure/msal-browser](https://www.npmjs.com/package/@azure/msal-browser) with one unified API that works with Keycloak, Auth0, Entra ID, and any other spec-compliant OIDC provider.
 
@@ -24,13 +24,9 @@ Your backend becomes a simple OAuth2 resource server, and tokens can be validate
 
 That means no database, no session store, and **enterprise-grade UX** out of the box, while scaling naturally to edge runtimes.
 
-oidc-spa exposes real OIDC primitives—ID tokens, access tokens, and claims—instead of hiding them behind a “user” object, helping you understand and control your security posture.
+oidc-spa exposes real OIDC primitives, decoded ID tokens, access tokens, and claims, instead of hiding them behind a “user” object, helping you understand and control your security posture.
 
 It’s infra-light, open-standard, transparent, and ready to work in minutes.
-
-***
-
-It’s **infra-light**, **open-standard**, and **ready to run in minutes** — all while staying fully transparent about how it works.
 
 <details>
 
