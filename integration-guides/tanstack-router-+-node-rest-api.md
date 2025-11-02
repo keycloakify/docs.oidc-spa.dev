@@ -1,15 +1,15 @@
 ---
-description: Creating a OAuth enabled resource server.
+description: Creating a OAuth2 enabled resource server.
 icon: arrow-right-arrow-left
 ---
 
 # Creating an API Server
 
-With **oidc-spa**, your frontend is meant to communicate with OAuth-enabled backend services, such as REST APIs, tRPC servers, or WebSocket endpoints, that accept **JSON Web Tokens (JWTs)** as access tokens.
-
 {% hint style="success" %}
-If you’re using TanStack Start, token validation is already integrated into the higher-level adapter. You can define your resource server, whether through Authenticated Server Functions or traditional REST endpoint, directly within your TanStack project.
+If you’re using TanStack Start, token validation is already integrated into the higher-level adapter! You can create your resource server, whether through Authenticated Server Functions or traditional REST endpoint, directly within your TanStack project.
 {% endhint %}
+
+With **oidc-spa**, your frontend is meant to communicate with OAuth-enabled backend services, such as REST APIs, tRPC servers, or WebSocket endpoints, that accept **JSON Web Tokens (JWTs)** as access tokens.
 
 These tokens are sent in the `Authorization` header and allow the backend to **validate**, **decode**, and **use the claims** to perform user-specific actions.
 

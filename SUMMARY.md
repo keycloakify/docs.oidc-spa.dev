@@ -5,7 +5,7 @@
 ## Integration Guides
 
 * [Integration](integration-guides/example-setups.md)
-* [Framework Agnostic](integration-guides/usage.md)
+* [Framework Agnostic Adapter](integration-guides/usage.md)
 * [TanStack Start](integration-guides/tanstack-start.md)
 * [React Router](setup-guides/react-router.md)
 * [Angular](integration-guides/angular.md)

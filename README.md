@@ -10,19 +10,23 @@ If you're having issues do not hesitate to [reach out on Discord](https://discor
 
 ## What this is
 
-oidc-spa is a framework-agnostic OpenID Connect client for web apps using the Authorization Code Flow with PKCE.
+oidc-spa is a framework-agnostic OpenID Connect client for browser centric web application implementing the [Authorization Code Flow with PKCE](resources/why-no-client-secret.md).
 
-It replaces provider-specific SDKs like keycloak-js, auth0-spa-js, or MSAL.js with one unified API that works with any IdP, Keycloak, Auth0, Entra ID, and more, without vendor lock-in or server dependencies.
+It replaces provider-specific SDKs like [keycloak-js](https://www.npmjs.com/package/keycloak-js), [auth0-spa-js](https://www.npmjs.com/package/@auth0/auth0-spa-js), or [@azure/msal-browser](https://www.npmjs.com/package/@azure/msal-browser) with one unified API that works with, Keycloak, Auth0, Entra ID, and any other spec  compliant OIDC provider.
 
-Unlike server-centric solutions such as NextAuth, oidc-spa makes the frontend the OIDC client.
+oidc-spa: provide strong guarenty regarding the [protection of you tokens **even in case of successfull XSS or suply chain attacks**](resources/why-no-client-secret.md#how-oidc-spa-mitigates-the-risks-of-token-exposure). No other solution does that.
 
-Your backend becomes a simple resource server, and tokens can be validated offline. oidc-spa [also provide the tools for token validation on the server side](integration-guides/tanstack-router-+-node-rest-api.md).
+oidc-spa is uncompromizing in terms of performance, security guarenties DX and UX. You get state of the a state of the art authentication and authorization solution out of the box with zero glue code to write and no knobs to ajust.&#x20;
 
-That means no database, no session store, and enterprise-grade UX out of the box, while scaling naturally to edge runtimes.
+Unlike server-centric solutions such as [NextAuth](https://next-auth.js.org/), oidc-spa makes the frontend the OIDC client.
+
+Your backend becomes a simple OAuth2 resource server, and tokens can be validated offline. oidc-spa [also provide the tools for token validation on the server side](integration-guides/tanstack-router-+-node-rest-api.md).
+
+That means no database, no session store, and **enterprise-grade UX** out of the box, while scaling naturally to edge runtimes.
 
 oidc-spa exposes real OIDC primitives, ID tokens, access tokens, claims, instead of hiding them behind a “user” object, helping you understand and control your security posture.
 
-It’s infra-light, open-standard, and transparent, built not to lock you in but to empower you.
+It’s infra-light, open-standard, transparent and ready to work in minutes.
 
 <details>
 
@@ -128,34 +132,26 @@ Eventually however you'll need to configure your own account/instance.
 
 ## Integration
 
-At its core, oidc-spa is a framework-agnostic solution for client-centric web applications. It’s not tied to any specific tech stack.
+At its core, oidc-spa is a **framework-agnostic solution for client-centric web applications**. It’s not tied to any specific UI framwork.
 
-To streamline integration, we provide framework-specific adapters for popular environments.
+In an effort to minimize the amount of glue code you have to write we also provide framework-specific adapters for popular environments.
 
-If you prefer full control or work in a custom setup, select the Framework-Agnostic tab to use the low-level API directly.
+> TanStack Start has a special status since your getting both the frontend and backend capabilities of oidc-spa integrated in a single adapter!
 
-{% tabs %}
-{% tab title="TanStack Router/Start" %}
+Pick one:
+
 {% content-ref url="integration-guides/tanstack-start.md" %}
 [tanstack-start.md](integration-guides/tanstack-start.md)
 {% endcontent-ref %}
-{% endtab %}
 
-{% tab title="React-Router" %}
 {% content-ref url="setup-guides/react-router.md" %}
 [react-router.md](setup-guides/react-router.md)
 {% endcontent-ref %}
-{% endtab %}
 
-{% tab title="Angular" %}
 {% content-ref url="integration-guides/angular.md" %}
 [angular.md](integration-guides/angular.md)
 {% endcontent-ref %}
-{% endtab %}
 
-{% tab title="Framework Agnostic" %}
 {% content-ref url="integration-guides/usage.md" %}
 [usage.md](integration-guides/usage.md)
 {% endcontent-ref %}
-{% endtab %}
-{% endtabs %}
