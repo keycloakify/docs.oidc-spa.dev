@@ -10,23 +10,27 @@ If you're having issues do not hesitate to [reach out on Discord](https://discor
 
 ## What this is
 
-oidc-spa is a framework-agnostic OpenID Connect client for browser centric web application implementing the [Authorization Code Flow with PKCE](resources/why-no-client-secret.md).
+oidc-spa is a framework-agnostic OpenID Connect client for browser-centric web applications implementing the [Authorization Code Flow with PKCE](resources/why-no-client-secret.md).
 
-It replaces provider-specific SDKs like [keycloak-js](https://www.npmjs.com/package/keycloak-js), [auth0-spa-js](https://www.npmjs.com/package/@auth0/auth0-spa-js), or [@azure/msal-browser](https://www.npmjs.com/package/@azure/msal-browser) with one unified API that works with, Keycloak, Auth0, Entra ID, and any other spec  compliant OIDC provider.
+It replaces provider-specific SDKs like [keycloak-js](https://www.npmjs.com/package/keycloak-js), [auth0-spa-js](https://www.npmjs.com/package/@auth0/auth0-spa-js), or [@azure/msal-browser](https://www.npmjs.com/package/@azure/msal-browser) with one unified API that works with Keycloak, Auth0, Entra ID, and any other spec-compliant OIDC provider.
 
-oidc-spa: provide strong guarenty regarding the [protection of you tokens **even in case of successfull XSS or suply chain attacks**](resources/why-no-client-secret.md#how-oidc-spa-mitigates-the-risks-of-token-exposure). No other solution does that.
+oidc-spa provides strong guarantees regarding the [protection of your tokens **even in case of successful XSS or supply chain attacks**](resources/why-no-client-secret.md#how-oidc-spa-mitigates-the-risks-of-token-exposure). No other solution does that.
 
-oidc-spa is uncompromizing in terms of performance, security guarenties DX and UX. You get state of the a state of the art authentication and authorization solution out of the box with zero glue code to write and no knobs to ajust.&#x20;
+oidc-spa is uncompromising in terms of performance, security, DX, and UX. You get a state-of-the-art authentication and authorization solution out of the box with zero glue code to write and no knobs to adjust.&#x20;
 
 Unlike server-centric solutions such as [NextAuth](https://next-auth.js.org/), oidc-spa makes the frontend the OIDC client.
 
-Your backend becomes a simple OAuth2 resource server, and tokens can be validated offline. oidc-spa [also provide the tools for token validation on the server side](integration-guides/tanstack-router-+-node-rest-api.md).
+Your backend becomes a simple OAuth2 resource server, and tokens can be validated offline. oidc-spa [also provides the tools for token validation on the server side](integration-guides/tanstack-router-+-node-rest-api.md).
 
 That means no database, no session store, and **enterprise-grade UX** out of the box, while scaling naturally to edge runtimes.
 
-oidc-spa exposes real OIDC primitives, ID tokens, access tokens, claims, instead of hiding them behind a “user” object, helping you understand and control your security posture.
+oidc-spa exposes real OIDC primitives—ID tokens, access tokens, and claims—instead of hiding them behind a “user” object, helping you understand and control your security posture.
 
-It’s infra-light, open-standard, transparent and ready to work in minutes.
+It’s infra-light, open-standard, transparent, and ready to work in minutes.
+
+---
+
+It’s **infra-light**, **open-standard**, and **ready to run in minutes** — all while staying fully transparent about how it works.
 
 <details>
 
