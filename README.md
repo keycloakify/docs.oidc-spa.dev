@@ -75,14 +75,6 @@ You’re learning _transferable knowledge_ that can make you CTO material, not j
 
 ***
 
-**Why this isn’t already standard**
-
-There’s little financial incentive to build such a solution.\
-Every IdP has a vested interest in **locking you in**, so you’ll hit the limits of the free tier and start paying.\
-oidc-spa is different, it’s a **tool, not a platform**. We devlop it because we need it and for the love of the game.
-
-***
-
 **About SSR and modern rendering**
 
 When the **browser owns the auth**, traditional **server-side rendering** becomes trickier.\
@@ -90,7 +82,7 @@ That’s why oidc-spa primarily targets **single-page applications**.
 
 That said, there’s a **full-stack story** through **TanStack Start**, which provides primitives to SSR as deeply as possible, then defer user-specific rendering to the client.\
 So while oidc-spa doesn’t support _full-page_ SSR, no serious app really does, not even Clerk or Vercel.\
-They all render a shell first, then progressively stream authenticated content. oidc-spa achieves the **same UX**, with **equal or better performance**.
+They all render a shell first, then progressively stream authenticated content. oidc-spa achieves the **same UX**, with **equal or better performance** but through a different flow. &#x20;
 
 ***
 
