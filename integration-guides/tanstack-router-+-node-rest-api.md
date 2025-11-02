@@ -13,7 +13,7 @@ With **oidc-spa**, your frontend is meant to communicate with OAuth-enabled back
 
 These tokens are sent in the `Authorization` header and allow the backend to **validate**, **decode**, and **use the claims** to perform user-specific actions.
 
-There are countless libraries for verifying JWTs, but if you’re building your backend in **JavaScript** (Node, Deno, or Web Workers), **oidc-spa** also provides a built-in utility to validate and decode access tokens issued by your client.
+There are countless libraries for verifying JWTs, but if you’re building your backend in **JavaScript** (Node, Deno, or Web Workers), **oidc-spa** also provides a built-in utility to validate and decode access tokens that your client attaches to requests.
 
 The great thing about JWT validation is that it works offline, there’s no need to contact your authorization server every time to ask “Is this token valid and issued by you?”
 
