@@ -1,8 +1,15 @@
-# Error Handling - With AutoLogin
+# Error handling - Auto Login
 
-In Auto Login mode, error handling works a little differently since we have no mode to fallback to in case oidc-spa failed to initialize.&#x20;
+In **Auto Login** mode, there is no “fallback” unauthenticated experience if `oidc-spa` fails to initialize, so error handling is different.
 
-We expose sprate hooks to let you gracefully handle error separatly:
+We expose separate hooks/components so you can handle initialization errors gracefully and render a clear, user-facing message while keeping diagnostics in the console for developers.
+
+{% hint style="info" %}
+In `autoLogin: false`, `createOidc` never throws (if it does, that’s a bug).  
+In `autoLogin: true`, `createOidc` may throw **only** an `OidcInitializationError`, which includes:
+- `isAuthServerLikelyDown`: helps you distinguish a temporary outage from a misconfiguration.
+- `message`: a developer-oriented diagnostic (do **not** show this to end users).
+{% endhint %}
 
 {% tabs %}
 {% tab title="Framework Agnostic" %}
@@ -13,26 +20,26 @@ const oidc = await createOidc({
     // ...
     autoLogin: true
 })
-// NOTE: in autoLogin: false mode, createOidc can never throw (or it's on us)
-// In autoLogin: true it can throw but only OidcInitializationError so you can
-// safely cast here.
+// In autoLogin: false, createOidc never throws.
+// In autoLogin: true, it can throw — but only OidcInitializationError —
+// so you can safely narrow/cast here.
 .catch(error => error as OidcInitializationError);
 
 if( oidc instanceof Error ){
 
     const oidcInitializationError = oidc;
     
-    // This help you discriminate configuration errors
-    // and error due to the server being temporarely down.
+    // Use this to distinguish a misconfiguration from a temporary auth-server outage.
+    // NOTE: below references should use `oidcInitializationError`.
     console.log(initializationError.isAuthServerLikelyDown);
     
-    // This is a debug message that tells you what's wrong
-    // with your configuration and how to fix it.
-    // (this is not something you want to display to the user)
+    // Developer-only diagnostic with likely cause and fix.
+    // Do not display this to end users.
     console.log(initializationError.message);
     
     alert("Our auth is down, sorry :(");
     
+    // Halt the app in a typed-safe way (nothing renders until you decide otherwise).
     await Promise<never>(()=>{});
 }
 ```
@@ -81,13 +88,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 </strong><strong>}){
 </strong><strong>    const { oidcInitializationError } = props;
 </strong><strong>    
-</strong><strong>    // This help you discriminate configuration errors
-</strong><strong>    // and error due to the server being temporarely down.
+</strong><strong>    // Distinguish misconfiguration vs. temporary auth-server outage.
 </strong><strong>    console.log(oidcInitializationError.isAuthServerLikelyDown);
 </strong><strong>
-</strong><strong>    // This is a debug message that tells you what's wrong
-</strong><strong>    // with your configuration and how to fix it.
-</strong><strong>    // (this is not something you want to display to the user)
+</strong><strong>    // Developer-only diagnostic with likely cause and fix.
+</strong><strong>    // Do not display this to end users.
 </strong><strong>    console.log(oidcInitializationError.message);
 </strong><strong>
 </strong><strong>    return &#x3C;h1>Our auth is down, sorry&#x3C;/h1>;
@@ -136,13 +141,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 </strong><strong>}){
 </strong><strong>    const { oidcInitializationError } = props;
 </strong><strong>    
-</strong><strong>    // This help you discriminate configuration errors
-</strong><strong>    // and error due to the server being temporarely down.
+</strong><strong>    // Distinguish misconfiguration vs. temporary auth-server outage.
 </strong><strong>    console.log(oidcInitializationError.isAuthServerLikelyDown);
 </strong><strong>
-</strong><strong>    // This is a debug message that tells you what's wrong
-</strong><strong>    // with your configuration and how to fix it.
-</strong><strong>    // (this is not something you want to display to the user)
+</strong><strong>    // Developer-only diagnostic with likely cause and fix.
+</strong><strong>    // Do not display this to end users.
 </strong><strong>    console.log(oidcInitializationError.message);
 </strong><strong>
 </strong><strong>    return &#x3C;h1>Our auth is down, sorry&#x3C;/h1>;
@@ -176,13 +179,11 @@ export class App {
 </strong><strong>
 </strong><strong>      const { initializationError } = this.oidc;
 </strong><strong>
-</strong><strong>      // This help you discriminate configuration errors
-</strong><strong>      // and error due to the server being temporarely down.
+</strong><strong>      // Distinguish a misconfiguration from a temporary auth-server outage.
 </strong><strong>      console.log(initializationError.isAuthServerLikelyDown);
 </strong><strong>
-</strong><strong>      // This is a debug message that tells you what's wrong
-</strong><strong>      // with your configuration and how to fix it.
-</strong><strong>      // (this is not something you want to display to the user)
+</strong><strong>      // Developer-only diagnostic with likely cause and fix.
+</strong><strong>      // Do not display this to end users.
 </strong><strong>      console.log(initializationError.message);
 </strong><strong>
 </strong><strong>    }
@@ -192,3 +193,7 @@ export class App {
 </code></pre>
 {% endtab %}
 {% endtabs %}
+
+{% hint style="tip" %}
+User-facing copy ideas: short, neutral, and actionable — e.g., “Sign-in is temporarily unavailable. Please try again later.” Optionally offer a “Retry” button if your app can re-attempt initialization.
+{% endhint %}
