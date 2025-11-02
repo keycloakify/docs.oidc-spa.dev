@@ -15,6 +15,7 @@
 
 ## Providers Configuration
 
+* [Migrating from Keycloak-js](providers-configuration/migrating-from-keycloak-js.md)
 * [Provider configuration](providers-configuration/provider-configuration.md)
 * [Keycloak](providers-configuration/keycloak.md)
 * [Auth0](providers-configuration/auth0.md)
