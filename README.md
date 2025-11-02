@@ -136,9 +136,9 @@ At its core, oidc-spa is a **framework-agnostic solution for client-centric web 
 
 In an effort to minimize the amount of glue code you have to write we also provide framework-specific adapters for popular environments.
 
-> TanStack Start has a special status since your getting both the frontend and backend capabilities of oidc-spa integrated in a single adapter!
-
 Pick one:
+
+> TanStack Start has a special status since your getting both the frontend and backend capabilities of oidc-spa integrated in a single adapter!
 
 {% content-ref url="integration-guides/tanstack-start.md" %}
 [tanstack-start.md](integration-guides/tanstack-start.md)
