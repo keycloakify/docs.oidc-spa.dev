@@ -16,7 +16,7 @@ It replaces provider-specific SDKs like [keycloak-js](https://www.npmjs.com/pack
 
 oidc-spa provides strong guarantees regarding the [protection of your tokens **even in case of successful XSS or supply chain attacks**](resources/why-no-client-secret.md#how-oidc-spa-mitigates-the-risks-of-token-exposure). No other solution does that.
 
-oidc-spa is uncompromising in terms of performance, security, DX, and UX. You get a state-of-the-art authentication and authorization solution out of the box with zero glue code to write and no knobs to adjust.&#x20;
+oidc-spa is uncompromising in terms of performance, security, DX, and UX. You get a state-of-the-art authentication and authorization system out of the box with zero glue code to write and no knobs to adjust.
 
 Unlike server-centric solutions such as [NextAuth](https://next-auth.js.org/), oidc-spa makes the frontend the OIDC client.
 
@@ -28,7 +28,7 @@ oidc-spa exposes real OIDC primitives—ID tokens, access tokens, and claims—i
 
 It’s infra-light, open-standard, transparent, and ready to work in minutes.
 
----
+***
 
 It’s **infra-light**, **open-standard**, and **ready to run in minutes** — all while staying fully transparent about how it works.
 
@@ -41,7 +41,7 @@ Authentication has become a **platform concern**. Whether you host your own iden
 
 ***
 
-#### The problem oidc-spa solves
+**The problem oidc-spa solves**
 
 Each provider ships its own bespoke SDK, `keycloak-js`, `auth0-spa-js`, `MSAL.js`, etc.\
 So even though they all implement the same open standard, **you end up vendor-locking your application** and restricting where it can be deployed.
@@ -51,19 +51,19 @@ That’s what oidc-spa brings to the table.
 
 ***
 
-#### Why not NextAuth or similar?
+**Why not NextAuth or similar?**
 
 Some “agnostic” solutions like **NextAuth** exist, but they’re **backend-centric**, in the OpenID Connect model, the _server_ is the OIDC client.\
 This makes authentication **tightly coupled to a specific stack** (e.g. Next.js for NextAuth) and **requires maintaining a database**.
 
 These server-side solutions also **hide too much**. You’re left with a “user” object and no clear understanding of what your actual security posture is.
 
-As for solution like oidc-client-ts or react-oidc-context. They are good for what they are but requires month of integration for acheiving what oidc-spa gives you out of the box.  \
-oidc-spa is internally using a vendored version of oidc-client-ts. &#x20;
+As for solution like oidc-client-ts or react-oidc-context. They are good for what they are but requires month of integration for acheiving what oidc-spa gives you out of the box.\
+oidc-spa is internally using a vendored version of oidc-client-ts.
 
 ***
 
-#### The oidc-spa model
+**The oidc-spa model**
 
 With **oidc-spa**, the **frontend is the OIDC client**.\
 The backend becomes a simple **resource server**, which you call using **access tokens** that can be **validated offline**, oidc-spa provides the tools for that too.
@@ -79,7 +79,7 @@ You’re learning _transferable knowledge_ that can make you CTO material, not j
 
 ***
 
-#### Why this isn’t already standard
+**Why this isn’t already standard**
 
 There’s little financial incentive to build such a solution.\
 Every IdP has a vested interest in **locking you in**, so you’ll hit the limits of the free tier and start paying.\
@@ -87,7 +87,7 @@ oidc-spa is different, it’s a **tool, not a platform**. We devlop it because w
 
 ***
 
-#### About SSR and modern rendering
+**About SSR and modern rendering**
 
 When the **browser owns the auth**, traditional **server-side rendering** becomes trickier.\
 That’s why oidc-spa primarily targets **single-page applications**.
@@ -98,7 +98,7 @@ They all render a shell first, then progressively stream authenticated content. 
 
 ***
 
-#### Security and XSS resilience
+**Security and XSS resilience**
 
 Yes; client-side authentication raises valid security concerns.\
 But this isn’t a fatal flaw; it’s an **engineering challenge**, and oidc-spa addresses it head-on.
@@ -108,7 +108,7 @@ These mitigations [are documented here](resources/why-no-client-secret.md).
 
 ***
 
-#### Known tradeoffs
+**Known tradeoffs**
 
 The main limitation is with **long-running background operations**.\
 If your backend must call third-party APIs **on behalf of the user** while they’re offline, you’ll need **service accounts** for those APIs or take charge of rotating tokens yourself which [can be tricky](https://authjs.dev/guides/refresh-token-rotation).\
