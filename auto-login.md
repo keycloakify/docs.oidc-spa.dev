@@ -23,35 +23,6 @@ const oidc = await createOidc({
 ```
 {% endtab %}
 
-{% tab title="React SPA" %}
-{% code title="src/oidc.ts" %}
-```diff
- export const {
-     bootstrapOidc,
-     useOidc,
-     getOidc,
-     OidcInitializationGate
--    withLoginEnforced,
--    enforceLogin
- } = oidcSpa
-     .withExpectedDecodedIdTokenShape({ /* ... */ })
-+    .withAutoLogin()
-     .createUtils();
-```
-{% endcode %}
-
-You can then proceed to remove all the usage of `withLoginEnforced` and `enforceLogin` throughout your codebase.\
-\
-You can also remove all the assetion of the login state of the user:
-
-```diff
-- useOidc({ assert: "user logged in" });
-+ useOidc();
-```
-
-All the components with `useOidc({ assert: "user not logged in" });` can be removed.
-{% endtab %}
-
 {% tab title="TanStack Start" %}
 {% code title="src/oidc.ts" %}
 ```diff
@@ -80,6 +51,7 @@ import { AutoLogoutWarningOverlay } from "@/components/AutoLogoutWarningOverlay"
 <strong>import { OidcInitializationGate } from "@/oidc";
 </strong>
 export const Route = createRootRoute({
+    // ...
     shellComponent: RootDocument
 });
 
@@ -165,6 +137,35 @@ You can remove all the beforeLoad: enforceLogin:
      component: Home
  });
 ```
+{% endtab %}
+
+{% tab title="React SPA" %}
+{% code title="src/oidc.ts" %}
+```diff
+ export const {
+     bootstrapOidc,
+     useOidc,
+     getOidc,
+     OidcInitializationGate
+-    withLoginEnforced,
+-    enforceLogin
+ } = oidcSpa
+     .withExpectedDecodedIdTokenShape({ /* ... */ })
++    .withAutoLogin()
+     .createUtils();
+```
+{% endcode %}
+
+You can then proceed to remove all the usage of `withLoginEnforced` and `enforceLogin` throughout your codebase.\
+\
+You can also remove all the assetion of the login state of the user:
+
+```diff
+- useOidc({ assert: "user logged in" });
++ useOidc();
+```
+
+All the components with `useOidc({ assert: "user not logged in" });` can be removed.
 {% endtab %}
 
 {% tab title="Angular" %}

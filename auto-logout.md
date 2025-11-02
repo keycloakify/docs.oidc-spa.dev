@@ -123,7 +123,7 @@ In that case, you must manually specify the duration using `idleSessionLifetimeI
 {% tabs %}
 {% tab title="Framework Agnostic" %}
 ```typescript
-import { createOidc } from "oidc-spa";
+import { createOidc } from "oidc-spa/core";
 
 const oidc = await createOidc({
   // ...
