@@ -50,26 +50,18 @@ And also check "Preseve Log" in the console option so that important info aren't
 
 For example, in the following picture we can deduce from what oidc-spa is saying that we forgot to add `http://localhost:3000/` to the list of Valid Redirect URIs:
 
-<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
 
 ***
 
 ## Gracefully Handling Errors in Production
 
-Error handling is different depending of if you have [Auto Login](../../auto-login.md) enabled or not.
+Error handling is different depending of if you have [Auto Login](auto-login.md) enabled or not.
 
-{% content-ref url="error-handling-no-autologin.md" %}
-[error-handling-no-autologin.md](error-handling-no-autologin.md)
+{% content-ref url="features/error-management/error-handling-no-autologin.md" %}
+[error-handling-no-autologin.md](features/error-management/error-handling-no-autologin.md)
 {% endcontent-ref %}
 
-{% content-ref url="error-handling-with-autologin.md" %}
-[error-handling-with-autologin.md](error-handling-with-autologin.md)
+{% content-ref url="features/error-management/error-handling-with-autologin.md" %}
+[error-handling-with-autologin.md](features/error-management/error-handling-with-autologin.md)
 {% endcontent-ref %}
-
-
-
-By default, if you don't have autoLogin enabled, when there is an error with the OIDC initialization your website will load with the user unauthenticated. &#x20;
-
-This allows the user to at least access parts of the application that do not require authentication. When the user clicks on the login button (triggering the `login()` function), a browser alert is displayed, indicating that authentication is currently unavailable, and no further action is taken.&#x20;
-
-You can customize this behavior. An `initializationError` object is present on the `oidc` object if an error occurred.

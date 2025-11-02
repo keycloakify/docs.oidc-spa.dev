@@ -27,7 +27,7 @@
 
 * [Auto Login](auto-login.md)
 * [Auto Logout](auto-logout.md)
-* [Debug and Error Handling](features/error-management/README.md)
+* [Debug and Error Handling](error-management.md)
   * [Error Handling - No AutoLogin](features/error-management/error-handling-no-autologin.md)
   * [Error Handling - With AutoLogin](features/error-management/error-handling-with-autologin.md)
 * [Talking to multiple APIs (with different access tokens)](talking-to-multiple-apis-with-different-access-tokens.md)
