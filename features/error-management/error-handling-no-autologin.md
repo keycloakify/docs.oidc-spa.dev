@@ -1,6 +1,6 @@
-# Error Handling - No AutoLogin  
+# Error Handling - No AutoLogin
 
-If you do not have [Auto Login](../../auto-login.md) enabled and oidc-spa fails to initialize (because of a **misconfiguration** or because the **authorization server is unavailable**), your app will load with the user state **not logged in** (`oidc.isUserLoggedIn === false`).  
+If you do not have [Auto Login](../../auto-login.md) enabled and oidc-spa fails to initialize (because of a **misconfiguration** or because the **authorization server is unavailable**), your app will load with the user state **not logged in** (`oidc.isUserLoggedIn === false`).\
 The goal is to let users browse public pages even when authentication cannot start.
 
 If, in this state, the user clicks a “Log in” button or navigates to a page that requires authentication, by default oidc-spa will fire this alert:
@@ -10,7 +10,7 @@ If, in this state, the user clicks a “Log in” button or navigates to a page 
 You can customize this behavior (toast, inline banner, maintenance page, retry, etc.) or surface an error page if that fits your UX.
 
 {% hint style="info" %}
-Use `initializationError.isAuthServerLikelyDown` to distinguish a temporary outage from a misconfiguration.  
+Use `initializationError.isAuthServerLikelyDown` to distinguish a temporary outage from a misconfiguration.\
 `initializationError.message` is a **developer-oriented** diagnostic with the likely cause and fix; do **not** show it to end users.
 {% endhint %}
 
@@ -31,11 +31,15 @@ if( oidc.initializationError ){
     // Helps you distinguish a misconfiguration from a temporary auth-server outage.
     console.log(oidc.initializationError.isAuthServerLikelyDown);
     
+    // Developer-only diagnostic with likely cause and fix.
+    // Do not display this to end users.
+    console.log(initializationError.message);
+    
     const handleLoginClick = ()=> {
     
         if( oidc.initializationError ){
             // Developer note: keep this user-facing message short and neutral.
-            alert(`Can't login now, try again later ${oidc.initializationError.message}`);
+            alert("Can't login now, try again later");
             return;
         }
         
@@ -140,15 +144,8 @@ function AuthButtons() {
 {% endtab %}
 
 {% tab title="Angular" %}
-<pre class="language-tsx" data-title="src/app/app.ts"><code class="lang-tsx">import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { Oidc } from './services/oidc.service';
-import { createKeycloakUtils } from 'oidc-spa/keycloak';
-import { inject } from '@angular/core';
-
-@Component({
+<pre class="language-tsx" data-title="src/app/app.ts"><code class="lang-tsx">@Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './app.html',
 })
 export class App {
@@ -181,11 +178,7 @@ export class App {
 </strong><strong>    return this.oidc.login();
 </strong><strong>  }
 </strong>
-  keycloakUtils = createKeycloakUtils({
-    issuerUri: this.oidc.issuerUri,
-  });
 }
-
 </code></pre>
 {% endtab %}
 {% endtabs %}
