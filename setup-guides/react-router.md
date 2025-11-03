@@ -113,7 +113,18 @@ npm run dev
 {% endtab %}
 
 {% tab title="Data Mode" %}
+```bash
+npx gitpick keycloakify/oidc-spa/tree/main/examples/react-router-data rr-data-oidc
+cd rr-data-oidc
+# You can use our preconfigured Keycloak, Auth0, or Google OAuth test accounts
+cp .env.local.sample .env.local
+npm install
+npm run dev
 
+# Start exploring with: src/oidc.ts
+```
+
+{% embed url="https://github.com/keycloakify/oidc-spa/tree/main/examples/react-router-data" %}
 {% endtab %}
 
 {% tab title="Framework Mode" %}
