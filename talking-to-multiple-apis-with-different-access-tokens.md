@@ -59,7 +59,7 @@ In the ideal case, oidc-spa would support:
 getAccessToken({ resource: "https://api1.example.com" })
 ```
 
-Your IdP would let you declare APIs independently and authorize which OIDC clients can request tokens for each API. Some providers like Auth0 or Microsoft EntraID support this pattern but keycloak do not and since it's **the de facto standard OpenID Connect server.** While **oidc-spa** is provider-agnostic, we intentionally align with Keycloak’s capabilities. We therefore **do not support features that Keycloak does not support as of today**. This avoids exposing APIs that would not work for most deployments.
+Your IdP would let you declare APIs independently and authorize which OIDC clients can request tokens for each API. Some providers like Auth0 or Microsoft EntraID support this pattern but keycloak do not and since it's the de facto standard OpenID Connect server, we intentionally align with Keycloak’s capabilities. We therefore do not support features that Keycloak does not support as of today. This avoids exposing APIs that would not work for most deployments.
 
 #### Today with Keycloak
 
@@ -85,7 +85,7 @@ Below is an example “My Secrets” page that exchanges an OIDC access token fo
 ```typescript
 import { oidcSpa } from "oidc-spa/react-spa";
 
-export const { bootstrapOidc, useOidc, getOidc, enforceLogin } = oidcSpa.createApi();
+export const { bootstrapOidc, useOidc, getOidc, enforceLogin } = oidcSpa.createUtils();
 
 bootstrapOidc({
   implementation: "real",
