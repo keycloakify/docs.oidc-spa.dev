@@ -113,16 +113,7 @@ npm run dev
 {% endtab %}
 
 {% tab title="Code-Based Route Configuration" %}
-```bash
-npx gitpick keycloakify/oidc-spa/tree/main/examples/tanstack-router-code-router tr-oidc
-cd tr-oidc
-# You can use our preconfigured Keycloak, Auth0, or Google OAuth test accounts
-cp .env.local.sample .env.local
-npm install
-npm run dev
-
-# Start exploring with: src/oidc.ts
-```
+> Comming Soon
 {% endtab %}
 {% endtabs %}
 
