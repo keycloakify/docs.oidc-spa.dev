@@ -18,7 +18,7 @@ oidc-spa provides strong guarantees regarding the [protection of your tokens **e
 
 oidc-spa is uncompromising in terms of performance, security, DX, and UX. You get a state-of-the-art authentication and authorization system out of the box with zero glue code to write and no knobs to adjust.
 
-Unlike server-centric solutions such as [NextAuth](https://next-auth.js.org/), oidc-spa makes the frontend the OIDC client.
+Unlike server-centric solutions such as [Auth.js](https://authjs.dev/), oidc-spa makes the frontend the OIDC client in your IdP model's representation.
 
 Your backend becomes a simple OAuth2 resource server, and tokens can be validated offline. oidc-spa [also provides the tools for token validation on the server side](integration-guides/tanstack-router-+-node-rest-api.md).
 
