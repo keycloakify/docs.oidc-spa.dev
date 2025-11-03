@@ -145,6 +145,10 @@ Pick one:
 
 > [TanStack Start](https://tanstack.com/start) has a special status since your getting both the frontend and backend capabilities of oidc-spa integrated in a single adapter!
 
+{% content-ref url="integration-guides/tanstack-router-start/" %}
+[tanstack-router-start](integration-guides/tanstack-router-start/)
+{% endcontent-ref %}
+
 {% content-ref url="setup-guides/react-router.md" %}
 [react-router.md](setup-guides/react-router.md)
 {% endcontent-ref %}
