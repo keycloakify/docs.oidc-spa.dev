@@ -6,8 +6,6 @@ icon: umbrella-beach
 
 ## The Example/Tutorial
 
-You'll be cloning this example, it's a very lightly modified version of the Starter that you get with `pnpm create @tanstack/start` where we've enabled autnetication for the todo list.
-
 {% embed url="https://example-tanstack-start.oidc-spa.dev/" %}
 
 ```bash
