@@ -10,7 +10,7 @@ If you're having issues do not hesitate to [reach out on Discord](https://discor
 
 ## What this is
 
-oidc-spa is a framework-agnostic OpenID Connect client for browser-centric web applications implementing the [Authorization Code Flow with PKCE](resources/why-no-client-secret.md). &#x20;
+oidc-spa is a framework-agnostic OpenID Connect client for browser-centric web applications implementing the [Authorization Code Flow with PKCE](resources/why-no-client-secret.md).
 
 It replaces provider-specific SDKs like [keycloak-js](https://www.npmjs.com/package/keycloak-js), [auth0-spa-js](https://www.npmjs.com/package/@auth0/auth0-spa-js), or [@azure/msal-browser](https://www.npmjs.com/package/@azure/msal-browser) with one unified API that works with Keycloak, Auth0, Entra ID, and any other spec-compliant OIDC provider.
 
@@ -47,23 +47,22 @@ That’s what oidc-spa brings to the table.
 
 ***
 
-**Why not [BetterAuth](https://www.better-auth.com/) or [Auth.js](https://authjs.dev/)**
+**Why not** [**BetterAuth**](https://www.better-auth.com/) **or** [**Auth.js**](https://authjs.dev/)
 
-These are great for what they are, but they’re “roll your own auth” solutions.  
+These are great for what they are, but they’re “roll your own auth” solutions.\
 With oidc-spa, you delegate authentication to a specialized identity provider such as Keycloak, Auth0, Okta, or Clerk.
 
-With BetterAuth, your backend _is_ the authorization server (even if you can integrate third party provider).  
-That’s very battery-included, but also far heavier infrastructure-wise.  
+With BetterAuth, your backend _is_ the authorization server (even if you can integrate third party provider).\
+That’s very battery-included, but also far heavier infrastructure-wise.\
 Today, very few companies still roll their own auth—including OpenAI and Vercel.
 
-Another big difference: oidc-spa is **browser-centric**. The token exchange happens on the client,  
+Another big difference: oidc-spa is **browser-centric**. The token exchange happens on the client,\
 and the backend server is merely an OAuth2 resource server in the OIDC model.
 
-If you use BetterAuth to provide login via Keycloak, your backend becomes the OIDC client application,  
+If you use BetterAuth to provide login via Keycloak, your backend becomes the OIDC client application,\
 which has some security benefits over browser token exchange, but at the cost of centralization and requiring backend infrastructure.
 
-One clear advantage BetterAuth has over oidc-spa is SSR support.
-In the oidc-spa model, the server doesn’t handle authentication directly, which makes it difficult to integrate with traditional full-stack frameworks that rely on server-side rendering.
+One clear advantage BetterAuth has over oidc-spa is SSR support. In the oidc-spa model, the server doesn’t handle authentication directly, which makes it difficult to integrate with traditional full-stack frameworks that rely on server-side rendering.
 
 The only SSR-capable framework we currently support is TanStack Start, because it provides the low-level primitives needed to render as much as possible on the server while deferring authentication logic to the client.
 
@@ -96,7 +95,7 @@ That’s why oidc-spa primarily targets **single-page applications**.
 
 That said, there’s a **full-stack story** through **TanStack Start**, which provides primitives to SSR as deeply as possible, then defer user-specific rendering to the client.\
 So while oidc-spa doesn’t support _full-page_ SSR, no serious app really does, not even Clerk or Vercel.\
-They all render a shell first, then progressively stream authenticated content. oidc-spa achieves the **same UX**, with **equal or better performance** but through a different flow. &#x20;
+They all render a shell first, then progressively stream authenticated content. oidc-spa achieves the **same UX**, with **equal or better performance** but through a different flow.
 
 ***
 
@@ -144,11 +143,7 @@ In an effort to minimize the amount of glue code you have to write we also provi
 
 Pick one:
 
-> TanStack Start has a special status since your getting both the frontend and backend capabilities of oidc-spa integrated in a single adapter!
-
-{% content-ref url="integration-guides/tanstack-start.md" %}
-[tanstack-start.md](integration-guides/tanstack-start.md)
-{% endcontent-ref %}
+> [TanStack Start](https://tanstack.com/start) has a special status since your getting both the frontend and backend capabilities of oidc-spa integrated in a single adapter!
 
 {% content-ref url="setup-guides/react-router.md" %}
 [react-router.md](setup-guides/react-router.md)
