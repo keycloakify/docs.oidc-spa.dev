@@ -7,7 +7,7 @@ icon: shield
 
 Auto Login is a mode in oidc-spa designed for applications where every page requires authentication.
 
-This is typically the case for admin dashboards or enterprise-grade apps.
+This is typically the case for admin dashboards or any internal tool that do not need "marketing" pages.
 
 When Auto Login is enabled, visiting your application automatically redirects the user to the IdP’s login page if no active session is detected.
 
