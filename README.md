@@ -47,15 +47,29 @@ That’s what oidc-spa brings to the table.
 
 ***
 
-**Why not NextAuth or similar?**
+**Why not [BetterAuth](https://www.better-auth.com/) or [Auth.js](https://authjs.dev/)**
 
-Some “agnostic” solutions like **NextAuth** exist, but they’re **backend-centric**, in the OpenID Connect model, the _server_ is the OIDC client.\
-This makes authentication **tightly coupled to a specific stack** (e.g. Next.js for NextAuth) and **requires maintaining a database**.
+These are great for what they are, but they’re “roll your own auth” solutions.  
+With oidc-spa, you delegate authentication to a specialized identity provider such as Keycloak, Auth0, Okta, or Clerk.
 
-These server-side solutions also **hide too much**. You’re left with a “user” object and no clear understanding of what your actual security posture is.
+With BetterAuth, your backend _is_ the authorization server (even if you can integrate third party provider).  
+That’s very battery-included, but also far heavier infrastructure-wise.  
+Today, very few companies still roll their own auth—including OpenAI and Vercel.
 
-As for solution like oidc-client-ts or react-oidc-context. They are good for what they are but requires month of integration for acheiving what oidc-spa gives you out of the box.\
-oidc-spa is internally using a vendored version of oidc-client-ts.
+Another big difference: oidc-spa is **browser-centric**. The token exchange happens on the client,  
+and the backend server is merely an OAuth2 resource server in the OIDC model.
+
+If you use BetterAuth to provide login via Keycloak, your backend becomes the OIDC client application,  
+which has some security benefits over browser token exchange, but at the cost of centralization and requiring backend infrastructure.
+
+One clear advantage BetterAuth has over oidc-spa is SSR support.
+In the oidc-spa model, the server doesn’t handle authentication directly, which makes it difficult to integrate with traditional full-stack frameworks that rely on server-side rendering.
+
+The only SSR-capable framework we currently support is TanStack Start, because it provides the low-level primitives needed to render as much as possible on the server while deferring authentication logic to the client.
+
+This approach achieves a similar UX and performance to server-centric frameworks, but it’s inherently less flexible than streaming fully authenticated server components to the client.
+
+oidc-spa is extremely lightweight, it’s just a library, with no infrastructure or backend requirements. It scales beautifully, delivers great performance at the edge, and keeps your deployment simple. The tradeoff is that SSR becomes harder, though not impossible, as [demonstrated with TanStack Start](https://example-tanstack-start.oidc-spa.dev/).
 
 ***
 
