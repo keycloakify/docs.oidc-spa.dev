@@ -12,7 +12,7 @@ Most apps only need one access token for their backend API.
 The rest of this page explains how to talk to multiple APIs securely (Keycloak-style) using oidc-spa.
 {% endhint %}
 
-With **oidc-spa**, your **frontend application is the OIDC client**. Your **backend** is **only** a resource server that you call by attaching an `Authorization: Bearer <access_token>` header. This is different from models like [NextAuth](https://next-auth.js.org/), where the server component constitutes the application in the OpenID Connect model.
+With **oidc-spa**, your **frontend application is the OIDC client**. Your **backend** is **only** a resource server that you call by attaching an `Authorization: Bearer <access_token>` header. This is different from models like [Auth.js](https://authjs.dev/), where the server component constitutes the application in the OpenID Connect model.
 
 This setup works well as long as your app talks to a **single** resource server.
 
