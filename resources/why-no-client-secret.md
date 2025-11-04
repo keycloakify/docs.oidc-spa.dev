@@ -71,17 +71,9 @@ This introduces a potential risk: **XSS and supply chain attacks**, where malici
 
 ## How `oidc-spa` Mitigates the Risks of Token Exposure
 
-`oidc-spa` implements several security measures to minimize the risk of token theft, even in the event of an XSS or supply chain attack (malicious JavaScript running in your frontend).
-
-To fully benefit from these protections, we ensure `oidc-spa` is the first JavaScript code that runs on your website. This is what the Vite plugin is for (or the oidcEarlyInit in non Vite environements).
-
-Security Measures:
-
-* **No persistent token storage** – Tokens are never stored in `localStorage` or `sessionStorage`. Instead, they are kept in scoped variables that are inaccessible to the global scope.
-* **Preventing `fetch`,** `XMLHttpRequest` and `WebSocker` **monkey patching** – APIs that caries access tokens are frozen to prevent malicious code from overriding it and capturing tokens.
-* **Securing silent sign-in responses** – Even if an attacker intercepts the authorization response from a silent sign-in performed in an iframe, it is asymmetrically encrypted, making it unusable. Attacks likes the one shown in [this video](https://www.youtube.com/watch?v=MpPd0WnEG5s\&t=1272s) are not possible.
-* **Secure transfer of the authorization response after front-channel login** – The authorization response, which is temporarily stored in session storage during the redirect process, is cleared and moved to memory before any other code runs.
-* **Still under devlopement**:  There’s a possible edge case involving **malicious Service Workers**. The attack is hard to pull off and requires precise timing, but it’s technically possible. we're still working on this, and in the meantime you can disable Service Workers to eliminate this risk entirely.
+{% content-ref url="xss-and-supply-chain-attack-protection.md" %}
+[xss-and-supply-chain-attack-protection.md](xss-and-supply-chain-attack-protection.md)
+{% endcontent-ref %}
 
 ## Opinionated Conclusion
 
