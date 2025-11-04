@@ -111,6 +111,7 @@ Iframe-based silent sign-in can be attacked by intercepting `postMessage` commun
 * Keeps the private key in memory only in the parent.
 * Verifies origins and binds the key to the initialization process so it cannot be trivially overridden.
 * Ensure the public key used to encrypt the message has not been overwriten by an other process before decoding the response in the parent. &#x20;
+* We ensure that the child process that post the auth server response to the parent is running entirely in the safe window where no other code has run yet. &#x20;
 
 This defeats attacks that sniff or tamper with cross-window messages. See the referenced security talk for the attack demonstration.
 
