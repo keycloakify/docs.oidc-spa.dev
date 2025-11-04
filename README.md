@@ -47,7 +47,6 @@ With oidc-spa, you delegate authentication to a specialized identity provider su
 
 With BetterAuth, your backend _is_ the authorization server, even if you can integrate third party identity providers id doesn't change that fact.\
 That’s very battery-included, but also far heavier infrastructure-wise.\
-Today, very few companies still roll their own auth, not even OpenAI or Vercel.
 
 Another big difference: oidc-spa is **browser-centric**. The token exchange happens on the client,\
 and the backend server is merely an OAuth2 resource server in the OIDC model.
