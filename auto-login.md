@@ -30,7 +30,7 @@ const oidc = await createOidc({
  
  export const {
      bootstrapOidc,
-     createOidcComponent,
+     useOidc,
      getOidc,
      oidcFnMiddleware,
      oidcRequestMiddleware,
@@ -84,36 +84,61 @@ You can remove all the assertin your oidc component, the components specifically
 
 {% code title="src/components/Header.tsx" %}
 ```diff
-import { createOidcComponent } from "@/oidc";
+import { useOidc } from "@/oidc";
 
--const AuthButtons = createOidcComponent({
--    pendingComponent: () => <Spinner />,
--    component: () => {
--        const { isUserLoggedIn } = AuthButtons.useOidc();
+-function AuthButtons() {
+-    const { hasInitCompleted, isUserLoggedIn } = useOidc();
 -
--        return isUserLoggedIn ? <LoggedInAuthButton /> : <NotLoggedInAuthButton />;
+-    if (!hasInitCompleted) {
+-        return null;
 -    }
--});
-
--const LoggedInAuthButton = createOidcComponent({
-+const AuthButtons = createOidcComponent({
-+    pendingComponent: () => <Spinner />,
--    assert: "user logged in",
-    component: () => {
-        const { logout } = LoggedInAuthButton.useOidc();
-
-        return <button onClick={() => logout({ redirectTo: "home" })}>Logout</button>;
-    }
-});
-
--const NotLoggedInAuthButton = createOidcComponent({
--    assert: "user not logged in",
--    component: () => {
--        const { login } = NotLoggedInAuthButton.useOidc();
 -
--        return <button onClick={() => login()}> Login </button>;
--    }
--});
+-    return isUserLoggedIn ? <LoggedInAuthButton /> : <NotLoggedInAuthButton />;
+-}
+-
+-function LoggedInAuthButton() {
+-    const { logout } = useOidc({ assert: "user logged in" });
+-
+-    return (
+-        <button
+-            onClick={() => logout({ redirectTo: "home" })}
+-        >
+-            Logout
+-        </button>
+-    );
+-}
+-
+-function NotLoggedInAuthButton() {
+-    const { login, issuerUri } = useOidc({ assert: "user not logged in" });
+-
+-    return (
+-        <div className="flex items-center gap-2">
+-            <button
+-                onClick={() => login()}
+-            >
+-                Login
+-            </button>
+-        </div>
+-    );
+-}
+
++function AuthButtons() {
++    const { className } = props;
++
++    const { hasInitCompleted, logout } = useOidc();
++
++    if (!hasInitCompleted) {
++        return null;
++    }
++
++    return (
++        <button
++            onClick={() => logout({ redirectTo: "home" })}
++        >
++            Logout
++        </button>
++    );
++}
 ```
 {% endcode %}
 
@@ -121,7 +146,7 @@ You can remove the `assert: "user logged in"` from `oidcFnMiddleware` and `oidcR
 
 ```diff
 -oidcFnMiddleware({ assert: "user logged in" })
-+oidcFnMiddleware({ assert: "user logged in" })
++oidcFnMiddleware()
 
 -oidcRequestMiddleware({ assert: "user logged in" })
 +oidcRequestMiddleware()
@@ -136,6 +161,13 @@ You can remove all the beforeLoad: enforceLogin:
      pendingComponent: () => <Spinner />,
      component: Home
  });
+```
+
+For all the components that are within the \<OidcInitializationGate /> you know that hasInitCompleted will be true so you can assert it to narrow down the type:
+
+```diff
+-const { ... } = useOidc({ assert: "user logged in" });
++const { ... } = useOidc({ assert: "init completed" });
 ```
 {% endtab %}
 
