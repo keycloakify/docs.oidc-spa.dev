@@ -83,7 +83,7 @@ window.fetch = function fetch(url, options){
 };
 
 function doSomethingMalicious(accessToken){
-  // send token to attacker server
+  // send token to the attacker's server
 }
 ```
 
@@ -92,16 +92,18 @@ After this runs, every authenticated request will leak the token. That is why `o
 Example of freezing `fetch`
 
 ```js
-const fetch_trusted = globalThis.fetch;
-
-Object.freeze(fetch_trusted);
-
-Object.defineProperty(globalThis, "fetch", {
+Object.defineProperty(window, "fetch", {
   configurable: false,
   writable: false,
   enumerable: true,
-  value: fetch_trusted
+  value: fetch
 });
+
+// This will be a NoOp
+window.fetch = ()=> {};
+
+// Still the original, unalterated, fetch.
+fetch();
 ```
 
 We apply equivalent measures for `XMLHttpRequest` (used by older libraries like Axios) and `WebSocket`.
@@ -113,11 +115,15 @@ Iframe-based silent sign-in can be attacked by intercepting `postMessage` commun
 * Encrypts the authorization response using a public key delivered to the iframe.
 * Keeps the private key in memory only in the parent.
 * Verifies origins and binds the key to the initialization process so it cannot be trivially overridden.
-* Ensure the public key used to encrypt the message has not been overwriten by an other process before decoding the response in the parent. &#x20;
-* We ensure that the child process that post the auth server response to the parent is running entirely in the safe window where no other code has run yet. &#x20;
+* Ensure the public key used to encrypt the message has not been overwriten by another process before decoding the response in the parent. &#x20;
+* We ensure that the child process that post the auth server response is running entirely in the safe window where no other code has run yet. &#x20;
 
-This defeats attacks that sniff or tamper with cross-window messages. See the referenced security talk for the attack demonstration.
+This defeats attacks that sniff or tamper with cross-window messages as the one demonstrated in this talk:
 
-{% embed url="https://www.youtube.com/watch?v=MpPd0WnEG5s&t=1272s" %}
+{% embed url="https://www.youtube.com/watch?v=MpPd0WnEG5s&t=803s" %}
+
+Everything explained and demonstrated in this talk is true and relevant. &#x20;
+
+We just disagree with the conclustion that the ony solution is to move auth to the backend. We can mitigate thoses theat with client engeenering.&#x20;
 
 ***
