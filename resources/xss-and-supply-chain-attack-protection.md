@@ -9,7 +9,7 @@ icon: shield-check
 
 `oidc-spa` treats the browser JavaScript runtime as a **hostile environment**.
 
-To make defenses possible, `oidc-spa` needs a **safe window**: a guaranteed opportunity to run code **before any other JavaScript** executes. We achieve that with a Vite plugin and, in non Vite environnements with an `oidcEarlyInit()` helper. This guarantee is essential, simply adding an import at the top of your entrypoint is not sufficient because module evaluation order is not deterministic. Any solution that does not offer an early initialization mechanism compled with lazy loading of your app's code cannot claim the same level of protection.
+To make defenses possible, `oidc-spa` needs a guaranteed opportunity to run code **before any other JavaScript** executes. We achieve that with a Vite plugin and, in non Vite environnements with an `oidcEarlyInit()` helper. This guarantee is essential, simply adding an import at the top of your entrypoint is not sufficient because module evaluation order is not deterministic. Any solution that does not offer an early initialization mechanism compled with lazy loading of your app's code cannot claim the same level of protection.
 
 ***
 
@@ -17,7 +17,7 @@ To make defenses possible, `oidc-spa` needs a **safe window**: a guaranteed oppo
 
 In server-centric models like Auth.js or BetterAuth, it can feel reassuring to know that tokens are never directly exposed to JavaScript. However, it’s important to understand that if an attacker manages to inject and execute code within your app’s origin, those systems impose virtually no limits on what the attacker can do. Even without direct access to the tokens, they can perform any action on behalf of the user, since authentication is handled automatically via cookies.
 
-With oidc-spa, the situation is fundamentally different. Even if an XSS attack occurs, the attacker cannot send authenticated requests to your server unless they explicitly attach a valid access token. The security mechanisms implemented in oidc-spa, the ones detailed in this document, are designed to ensure that obtaining or refreshing such tokens without authorization is virtually impossible.
+With oidc-spa, the situation is fundamentally different. Even if an XSS attack occurs, the attacker cannot send authenticated requests to your server unless they explicitly attach a valid access token. The security mechanisms implemented in oidc-spa, the ones detailed in this document, are designed to ensure that obtaining or refreshing such tokens for code that do not explicitly import oidc-spa at build time is virtually impossible.
 
 ***
 
@@ -43,8 +43,8 @@ oidc-spa goes much futher than this.  &#x20;
 
 These mitigations significantly raise the bar for attackers, but they are **not** a mathematical proof of absolute safety. Important limitations:
 
-* **React Router Framework:** React Router when used in **Framework mode** patches the entrypoint in a way that make it impossible to implement an exclusive execution window. So, in this specific setup, oidc-spa cannot protect you the same way it can in every other solution. For better security guarentee consider using [TanStack Router/Start](../integration-guides/tanstack-router-start/). Note however that, unless you move your auth to the backend, no other oidc client implementation will provide you better security guarenty than oidc-spa, even in the context of RR Framwork. &#x20;
-* **Developer errors still expose tokens.** If application code explicitly manipulate tokens with builtin utils, e.g. `console.log(accessToken)` or `accessToken.split(...)`) an attacker can still capture them. In those examples via monkey patching of **console.log** or **String.prototpye.split**. oidc-spa's freezing builtins is limited to the set of runtime APIs that are relevent in sanctioned usecases; freezing _everything_ would be too intrusive and break many legitimate libraries.
+* **React Router Framework:** React Router when used in **Framework mode** [patches the entrypoint in a way that make it impossible to implement an exclusive execution window](https://github.com/keycloakify/oidc-spa/issues/110#issuecomment-3499101635). So, in this specific setup, oidc-spa cannot protect you the same way it can in every other solution. For better security guarentee consider using [TanStack Router/Start](../integration-guides/tanstack-router-start/). Note however that, unless you move your auth to the backend, no other oidc client implementation will provide you better security guarenty than oidc-spa, even in the context of RR Framwork. &#x20;
+* **Developer can still expose tokens.** If application code explicitly manipulate tokens with builtin utils, e.g. `console.log(accessToken)` or `accessToken.split(...)`) an attacker can still capture them. In those examples via monkey patching of **console.log** or **String.prototpye.split**. oidc-spa's freezing builtins is limited to the set of runtime APIs that are relevent in sanctioned usecases; freezing _everything_ would be too intrusive and break many legitimate libraries.
 * **Compromised browser extensions.** `oidc-spa` cannot protect against malicious browser extensions. Extensions can observe network traffic. This is an advantage that remainse for backen driven token exchange. **That being said**, you will never and could never be blamed for a user's compromised environement. This scenario would only affect a specific set of user that have that extention installed and every SPAs they visit would leak their token not just yours.
 * **Head-injected scripts / CDN polyfills.** If you include third-party scripts directly in `<head>` (CDN polyfills, analytics, etc.) they can execute before `oidc-spa` and if they are compromized, can bypass oidc-spa protection. [Importing JS from CDNs is already a recognized security risk, avoid it](https://youtu.be/2xLawmYa_KY?si=sLDSN4iKLNLuOFAY\&t=871).
 * **No-iframe + multiple clients ⇒ persistence.** If your IdP is treated as third-party by the browser and your app uses multiple OIDC clients, `oidc-spa` will persist tokens in `sessionStorage` to avoid redirect loops. If you're talking to multiple OAuth2 API (not only your backend), make sure to configure deployments so the IdP is first party to your app when possible. See: [_Talking to multiple APIs_](../talking-to-multiple-apis-with-different-access-tokens.md).
@@ -107,7 +107,7 @@ Object.defineProperty(window, "fetch", {
   value: fetch
 });
 
-// This will be a NoOp
+// This will fail
 window.fetch = ()=> {};
 
 // Still the original, unalterated, fetch.
