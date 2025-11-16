@@ -316,7 +316,88 @@ _(In modern browsers, session restoration usually completes in under \~300 ms, s
 {% endtab %}
 
 {% tab title="TanStack Start" %}
-In TanStack Start, non blocking rendering is enabled by default!\
-It's a condition to levrage SSR at least on marketing pages.
+In TanStack Start, non-blocking rendering is already enabled by default, since it's required for server rendering.\
+However, if you find the layout shift caused by auth-aware components appearing _after_ hydration annoying, you can easily delay rendering your app until the OIDC initialization process has completed:
+
+<pre class="language-tsx" data-title="src/routes/__root.tsx"><code class="lang-tsx">import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
+import Header from "@/components/Header";
+import { AutoLogoutWarningOverlay } from "@/components/AutoLogoutWarningOverlay";
+import appCss from "../styles.css?url";
+
+<strong>import { useOidc } from "@/oidc";
+</strong>
+export const Route = createRootRoute({
+    head: () => ({ /* ... */ }),
+    shellComponent: RootDocument
+});
+
+function RootDocument({ children }: { children: React.ReactNode }) {
+    const { isOidcReady } = useOidc();
+
+    return (
+        &#x3C;html lang="en">
+            &#x3C;head>
+                &#x3C;HeadContent />
+            &#x3C;/head>
+            &#x3C;body
+                className="min-h-screen text-white"
+                style={{
+                    backgroundColor: "#0f172a",
+                    backgroundImage: "linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)"
+                }}
+            >
+                &#x3C;div className="min-h-screen flex flex-col">
+<strong>                    {isOidcReady &#x26;&#x26; (
+</strong><strong>                        &#x3C;>
+</strong>                            &#x3C;Header />
+                            &#x3C;main className="flex flex-1 flex-col">
+                                &#x3C;div className="flex flex-1 flex-col">{children}&#x3C;/div>
+                            &#x3C;/main>
+<strong>                        &#x3C;/>
+</strong><strong>                    )}
+</strong>                &#x3C;/div>
+                &#x3C;AutoLogoutWarningOverlay />
+                &#x3C;Scripts />
+            &#x3C;/body>
+        &#x3C;/html>
+    );
+}
+</code></pre>
+
+Then, you don't need to test anymore if oidc is ready:
+
+```diff
+ function AuthButtons(props: { className?: string }) {
+     const { className } = props;
+-    const { isOidcReady, isUserLoggedIn } = useOidc();
++    const { isUserLoggedIn } = useOidc({ assert: "ready" });
+
+-    if (!isOidcReady) {
+-        return null;
+-    }
+
+     return (
+         <div className={["opacity-0 animate-[fadeIn_0.2s_ease-in_forwards]", className].join(" ")}>
+             {isUserLoggedIn ? <LoggedInAuthButton /> : <NotLoggedInAuthButton />}
+         </div>
+     );
+ }
+ 
+ function Greeting() {
+-   const { isOidcReady, isUserLoggedIn, decodedIdToken } = useOidc();
++   const { isOidcReady, isUserLoggedIn, decodedIdToken } = useOidc({ assert: "ready" });
+
+-   if (!isOidcReady) {
+-       return <>&nbsp;</>;
+-   }
+
+    return (
+        <span className="opacity-0 animate-[fadeIn_0.2s_ease-in_forwards]">
+            {isUserLoggedIn ? `Welcome back ${decodedIdToken.name}` : `Hello anonymous visitor!`}
+        </span>
+    );
+}
+```
 {% endtab %}
 {% endtabs %}
+

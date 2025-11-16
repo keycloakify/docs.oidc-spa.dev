@@ -51,8 +51,8 @@ if( oidc instanceof Error ){
 
 import Header from "@/components/Header";
 import { AutoLogoutWarningOverlay } from "@/components/AutoLogoutWarningOverlay";
-import { OidcInitializationGate } from "@/oidc";
-<strong>import type { OidcInitializationError } from "oidc-spa/core";
+<strong>import { useOidc } from "@/oidc";
+</strong><strong>import type { OidcInitializationError } from "oidc-spa/core";
 </strong>
 export const Route = createRootRoute({
     // ...
@@ -60,6 +60,9 @@ export const Route = createRootRoute({
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+
+<strong>    const { oidcInitializationError } = useOidc();
+</strong>
     return (
         &#x3C;html lang="en">
             &#x3C;head>
@@ -69,13 +72,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
                 &#x3C;div className="min-h-screen flex flex-col">
                     &#x3C;Header />
                     &#x3C;main className="flex flex-1 flex-col">
-                        &#x3C;OidcInitializationGate 
-                            pendingComponent={()=> &#x3C;Spinner />}
-<strong>                            errorComponent={OidcErrorComponent}
-</strong>                        >
-                            {children}
-                        &#x3C;/OidcInitializationGate>
-                    &#x3C;/main>
+<strong>                        {oidcInitializationError ? (
+</strong><strong>                            &#x3C;OidcErrorComponent oidcInitializationError={oidcInitializationError} />
+</strong><strong>                        ) : (
+</strong>                            children
+<strong>                        )}
+</strong>                    &#x3C;/main>
                 &#x3C;/div>
                 &#x3C;AutoLogoutWarningOverlay />
                 &#x3C;Scripts />
@@ -91,12 +93,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 </strong><strong>    
 </strong><strong>    // Distinguish misconfiguration vs. temporary auth-server outage.
 </strong><strong>    console.log(oidcInitializationError.isAuthServerLikelyDown);
-</strong>
-<strong>    // Developer-only diagnostic with likely cause and fix.
+</strong><strong>
+</strong><strong>    // Developer-only diagnostic with likely cause and fix.
 </strong><strong>    // Do not display this to end users.
 </strong><strong>    console.log(oidcInitializationError.message);
-</strong>
-<strong>    return &#x3C;h1>Our auth is down, sorry&#x3C;/h1>;
+</strong><strong>
+</strong><strong>    return &#x3C;h1>Our auth is down, sorry&#x3C;/h1>;
 </strong><strong>    
 </strong><strong>}
 </strong>

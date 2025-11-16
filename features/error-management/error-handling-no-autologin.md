@@ -61,17 +61,17 @@ const AuthButtons = createOidcComponent({
             isUserLoggedIn, 
             login, 
             logout, 
-            initializationError 
+            oidcInitializationError 
         } = AuthButtons.useOidc();
 
         useEffect(() => {
-            if (initializationError) {
+            if (oidcInitializationError) {
                 // Helps distinguish misconfiguration vs. temporary auth-server outage.
-                console.log(initializationError.isAuthServerLikelyDown);
+                console.log(oidcInitializationError.isAuthServerLikelyDown);
 
                 // Developer-only diagnostic with likely cause and fix.
                 // Do not display this to end users.
-                console.log(initializationError.message);
+                console.log(oidcInitializationError.message);
             }
         }, []);
 
