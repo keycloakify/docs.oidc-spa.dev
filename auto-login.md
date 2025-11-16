@@ -35,7 +35,6 @@ const oidc = await createOidc({
      oidcFnMiddleware,
      oidcRequestMiddleware,
 -     enforceLogin
-+    OidcInitializationGate
  } = oidcSpa
      .withExpectedDecodedIdTokenShape({ /* ... */ })
      .withAccessTokenValidation({ /* ... */ })
@@ -48,7 +47,7 @@ const oidc = await createOidc({
 
 import Header from "@/components/Header";
 import { AutoLogoutWarningOverlay } from "@/components/AutoLogoutWarningOverlay";
-<strong>import { OidcInitializationGate } from "@/oidc";
+<strong>import { useOidc } from "@/oidc";
 </strong>
 export const Route = createRootRoute({
     // ...
@@ -56,6 +55,9 @@ export const Route = createRootRoute({
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+
+    const { isOidcReady } = useOidc();
+    
     return (
         &#x3C;html lang="en">
             &#x3C;head>
@@ -65,11 +67,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
                 &#x3C;div className="min-h-screen flex flex-col">
                     &#x3C;Header />
                     &#x3C;main className="flex flex-1 flex-col">
-<strong>                        &#x3C;OidcInitializationGate 
-</strong><strong>                            pendingComponent={()=> &#x3C;Spinner />} // Optional
-</strong><strong>                        >
-</strong>                            {children}
-<strong>                        &#x3C;/OidcInitializationGate>
+<strong>                        {!isOidcRead ?
+</strong><strong>                            &#x3C;Spinner> :
+</strong>                            children
+<strong>                        }
 </strong>                    &#x3C;/main>
                 &#x3C;/div>
                 &#x3C;AutoLogoutWarningOverlay />
@@ -125,9 +126,9 @@ import { useOidc } from "@/oidc";
 +function AuthButtons() {
 +    const { className } = props;
 +
-+    const { hasInitCompleted, logout } = useOidc();
++    const { isOidcReady, logout } = useOidc();
 +
-+    if (!hasInitCompleted) {
++    if (!isOidcReady) {
 +        return null;
 +    }
 +
@@ -167,7 +168,7 @@ For all the components that are within the \<OidcInitializationGate /> you know 
 
 ```diff
 -const { ... } = useOidc({ assert: "user logged in" });
-+const { ... } = useOidc({ assert: "init completed" });
++const { ... } = useOidc({ assert: "ready" });
 ```
 {% endtab %}
 
