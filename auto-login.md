@@ -51,8 +51,9 @@ import { AutoLogoutWarningOverlay } from "@/components/AutoLogoutWarningOverlay"
 </strong>
 export const Route = createRootRoute({
     // ...
-    shellComponent: RootDocument
-});
+    shellComponent: RootDocument,
+<strong>    ssr: false
+</strong>});
 
 function RootDocument({ children }: { children: React.ReactNode }) {
 
@@ -124,7 +125,6 @@ import { useOidc } from "@/oidc";
 -}
 
 +function AuthButtons() {
-+    const { className } = props;
 +
 +    const { isOidcReady, logout } = useOidc();
 +
