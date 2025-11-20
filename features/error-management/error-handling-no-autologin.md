@@ -52,17 +52,16 @@ if( oidc.initializationError ){
 
 {% tab title="TanStack Start" %}
 ```tsx
-import { createOidcComponent } from "@/oidc";
+import { useOidc } from "@/oidc";
 import { useEffect } from "react";
 
-const AuthButtons = createOidcComponent({
-    component: () => {
+function AuthButtons() {
         const { 
             isUserLoggedIn, 
             login, 
             logout, 
             oidcInitializationError 
-        } = AuthButtons.useOidc();
+        } = useOidc();
 
         useEffect(() => {
             if (oidcInitializationError) {
@@ -95,7 +94,7 @@ const AuthButtons = createOidcComponent({
             </button>
         );
     }
-});
+}
 ```
 {% endtab %}
 
