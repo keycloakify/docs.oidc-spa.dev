@@ -4,9 +4,15 @@ icon: gauge-max
 
 # Non Blocking Rendering
 
+This section explains how to configure your application so it can begin rendering before the user’s authentication state is fully determined.
+
+With this setup, the initial UI appears immediately, and authentication-aware components are rendered a moment later once the auth state is resolved. The result looks like this video:
+
+{% embed url="https://www.youtube.com/watch?v=t1qfU_GeTM4" %}
+
 {% tabs %}
 {% tab title="React SPAs" %}
-When using the `oidc-spa/react-spa` adapter, the recommended setup is to wrap your entire application in an `<OidcInitializationGate />`, like so:
+### Default: blocking rendering (simplest)
 
 <pre class="language-tsx" data-title="src/main.tsx"><code class="lang-tsx">import React from "react";
 import ReactDOM from "react-dom/client";
@@ -29,9 +35,12 @@ This is often the **simplest and safest** choice:
 
 * You don’t have to think about whether the auth state has settled.
 * There’s no risk of layout shifts.
-* Tests and SSR behave predictably (SSR is canceled).
+
+You just need to make sure to at least [set the background color early to avoid white flashes](https://github.com/keycloakify/oidc-spa/blob/c39b0fb70a576e62602d99e9ef86211532de1e35/examples/react-router-declarative/src/index.css#L12).
 
 ***
+
+### Faster first paint: non-blocking rendering
 
 However, for **optimal performance**, you can start rendering _before_ the authentication state is resolved, letting the page appear instantly, while auth-aware components hydrate a few milliseconds later.
 
@@ -42,6 +51,39 @@ For example:
 In this short demo, the homepage renders immediately, and components depending on authentication appear shortly after the session check completes.
 
 You can achieve this simply by moving `<OidcInitializationGate />` closer to the components that call `useOidc()`:
+
+First, you need to remove the root OidcInitializationGate:
+
+{% code title="src/main.tsx" %}
+```diff
+ import React from "react";
+ import ReactDOM from "react-dom/client";
+ import { BrowserRouter } from "react-router";
+ import { App } from "./App";
+-import { OidcInitializationGate } from "~/oidc";
+ import "./index.css";
+
+ ReactDOM.createRoot(document.getElementById("root")!).render(
+     <React.StrictMode>
+-         <OidcInitializationGate>
+             <BrowserRouter>
+                 <App />
+             </BrowserRouter>
+-         </OidcInitializationGate>
+     </React.StrictMode>
+ );
+```
+{% endcode %}
+
+Then wrap all the components that call the useOidc() hook without assertion, into `<OidcInitializationGate />` or `<Suspense />`:
+
+{% hint style="warning" %}
+Don't forget `<AutoLogoutWarningOverlay />`! If you forget to wrap a single component that call useOidc(), you're all app will suspend. &#x20;
+{% endhint %}
+
+{% hint style="success" %}
+The components that call useOidc({ assert: "..." }) do **not** need to be wrapped into `OidcInitializationGate`! If you are able to make an assertion, the auth state has been established already and those calls will never suspend!
+{% endhint %}
 
 <pre class="language-tsx" data-title="src/components/Header.tsx"><code class="lang-tsx">import { Suspense } from "react";
 import { 
@@ -90,15 +132,24 @@ This is often even better, as it lets you define a unified fallback for all your
 When called before the auth state is ready, `useOidc()` throws a Promise, which React will catch using the nearest Suspense boundary.
 
 This means you **must** wrap any component that calls `useOidc()` in either `<OidcInitializationGate />` or `<Suspense />`.\
-If you don’t, your entire app will suspend.\
-&#xNAN;_(And don’t forget to wrap `<AutoLogoutWarningOverlay />` as well.)_
+If you don’t, your entire app will suspend.
 
 ***
 
-### Components protected with `enforceLogin`
+### Only if you are using `withLoginEnforced()`
 
-Any component that’s behind `enforceLogin()` or wrapped in a  `withLoginEnforced()` component **will not suspend**, because those act as their own authentication gates.\
-However, note that if you use `withLoginEnforced()` directly, the resulting component can still suspend, so you want to wrap them too.
+Consider this:
+
+<pre class="language-tsx" data-title="src/pages/Protected.tsx"><code class="lang-tsx">import { withLoginEnforced } from "~/oidc";
+
+<strong>// This component can suspend when rendered (like a lazy component would)
+</strong><strong>// You must define a suspense boundary around it (or use OidcInitializationGate).
+</strong>const Protected = withLoginEnforced(() => {
+    return &#x3C;div>{/* ... */}&#x3C;/div>;
+});
+
+export default Protected;
+</code></pre>
 
 Example:
 
@@ -134,26 +185,15 @@ export function App() {
 
 With route components like:
 
-{% code title="src/pages/Protected.tsx" %}
-```tsx
-import { withLoginEnforced } from "~/oidc";
-
-const Protected = withLoginEnforced(() => {
-    return <div>{/* ... */}</div>;
-});
-
-export default Protected;
-```
-{% endcode %}
-
 ***
 
 ### TL;DR
 
 * `<OidcInitializationGate />` at the root: **simpler mental model**, no layout shift.
 * `<Suspense />` or `<OidcInitializationGate />` near `useOidc()` calls: **faster perceived load**, better user experience.
-* `enforceLogin` and `withLoginEnforced()` automatically handle suspension but Page component wrapped into `withLoginEnforced()` do suspend themselvs.
-* Both options are supported choose based on your desired UX and simplicity.
+* Components using `useOidc({ assert: "..." })` do **not** need to be wrapped, they will never suspend.
+* If you use `withLoginEnforced()` it need to be wrapped as well.
+* Don't forget to wrap `AutoLogoutWarningOverlay`
 
 ***
 
@@ -316,8 +356,8 @@ _(In modern browsers, session restoration usually completes in under \~300 ms, s
 {% endtab %}
 
 {% tab title="TanStack Start" %}
-In TanStack Start, non-blocking rendering is already enabled by default, since it's required for server rendering.\
-However, if you find the layout shift caused by auth-aware components appearing _after_ hydration annoying, you can easily delay rendering your app until the OIDC initialization process has completed:
+In TanStack Start, non-blocking rendering is the default, since it's required for server rendering.\
+However, if you find the layout shift caused by auth-aware components appearing _after_ hydration annoying to handle, you can easily delay rendering your app until the OIDC initialization process has completed:
 
 <pre class="language-tsx" data-title="src/routes/__root.tsx"><code class="lang-tsx">import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
 import Header from "@/components/Header";

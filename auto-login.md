@@ -51,11 +51,15 @@ import { AutoLogoutWarningOverlay } from "@/components/AutoLogoutWarningOverlay"
 </strong>
 export const Route = createRootRoute({
     // ...
-    shellComponent: RootDocument,
-<strong>    ssr: false
+    shellComponent: ShellComponent,
+<strong>    // NOTE: Even with SSR disabled here, the ShellComponent is still SSR'd.
+</strong><strong>    // Only page components lose SSR.  
+</strong><strong>    // You *can* disable SSR per-page for routes that load authed data,
+</strong><strong>    // but if your app isn’t public, it’s simpler to SSR only the shell.  
+</strong><strong>    ssr: false
 </strong>});
 
-function RootDocument({ children }: { children: React.ReactNode }) {
+function ShellComponent({ children }: { children: React.ReactNode }) {
 
     const { isOidcReady } = useOidc();
     
@@ -68,8 +72,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
                 &#x3C;div className="min-h-screen flex flex-col">
                     &#x3C;Header />
                     &#x3C;main className="flex flex-1 flex-col">
-<strong>                        {!isOidcRead ?
-</strong><strong>                            &#x3C;Spinner> :
+<strong>                        {isOidcReady &#x26;&#x26;
 </strong>                            children
 <strong>                        }
 </strong>                    &#x3C;/main>
