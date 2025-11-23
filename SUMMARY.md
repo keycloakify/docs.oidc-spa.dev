@@ -47,6 +47,7 @@
 * [iframe related issues](resources/iframe-related-issues.md)
 * [JWT Of the Access Token](resources/jwt-of-the-access-token.md)
 * [Discord Server](resources/discord-server.md)
+* [Blocked Monkey Patching](resources/blocked-monkey-patching.md)
 
 ***
 

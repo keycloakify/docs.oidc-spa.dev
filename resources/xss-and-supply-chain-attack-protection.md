@@ -13,14 +13,6 @@ To make defenses possible, `oidc-spa` needs a guaranteed opportunity to run code
 
 ***
 
-## Advantage over server-centric authentication
-
-In server-centric models like Auth.js or BetterAuth, it can feel reassuring to know that tokens are never directly exposed to JavaScript. However, it’s important to understand that if an attacker manages to inject and execute code within your app’s origin, those systems impose virtually no limits on what the attacker can do. Even without direct access to the tokens, they can perform any action on behalf of the user, since authentication is handled automatically via cookies.
-
-With oidc-spa, the situation is fundamentally different. Even if an XSS attack occurs, the attacker cannot send authenticated requests to your server unless they explicitly attach a valid access token. The security mechanisms implemented in oidc-spa, the ones detailed in this document, are designed to ensure that obtaining or refreshing such tokens for code that do not explicitly import oidc-spa at build time is virtually impossible.
-
-***
-
 ## Baseline: no token persistence
 
 The first and most important measure is to **avoid persisting tokens,** not in `localStorage`, not in `sessionStorage`.
