@@ -47,9 +47,11 @@ export default defineConfig({
     plugins: [
         // ...
 <strong>        oidcSpa({
-</strong><strong>            freezeFetch: true,
-</strong><strong>            freezeXMLHttpRequest: true,
-</strong><strong>            freezeWebSocket: true
+</strong><strong>            // NOTE: Once everything is working, set this to true,
+</strong><strong>            // if your app do not met the requirement that enable oidc-spa
+</strong><strong>            // to effectively protect your token you'll get an error early.
+</strong><strong>            // Read more here: https://docs.oidc-spa.dev/resources/xss-and-supply-chain-attack-protection
+</strong><strong>            enableTokenExfiltrationDefense: false
 </strong><strong>        })
 </strong>    ]
 });
@@ -70,9 +72,11 @@ Then create a new `index.tsx` file:
 import { oidcEarlyInit } from "oidc-spa/entrypoint";
 
 const { shouldLoadApp } = oidcEarlyInit({
-    freezeFetch: true,
-    freezeXMLHttpRequest: true,
-    freezeWebSocket: true,
+    // NOTE: Once everything is working, set this to true,
+    // if your app do not met the requirement that enable oidc-spa
+    // to effectively protect your token you'll get an error early.
+    // Read more here: https://docs.oidc-spa.dev/resources/xss-and-supply-chain-attack-protection
+    enableTokenExfiltrationDefense: false,
     BASE_URL: "/" // The path where your app is hosted, can also be provided later to createOidc()
 });
 
@@ -131,7 +135,9 @@ npm run dev
 {% hint style="warning" %}
 IMPORTANT NOTICE:
 
-Because React Router Framwork does not expose a true entrypoint you won't benefit from the same security guarenties you get with any other solution. oidc-spa is not any less secure than another client side OIDC client, but it's unique security caims do not apply here.
+Because React Router Framwork does not expose a true entrypoint oidc-spa won't let you set enableTokenExfiltrationDefense to true.  \
+Since this specific framwork do not give us a way to harden the environement before any other JS is evaluated we can't protect agaist token exfiltration effectively.  \
+Note however that even with enableTokenExfiltrationDefense disabled, oidc-spa is state of the art in implementing all CBP. You app will pass any security audit.
 {% endhint %}
 
 ### Enabling SPA mode
