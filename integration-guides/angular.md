@@ -54,9 +54,12 @@ Then create a new `main.ts` file:
 import { oidcEarlyInit } from "oidc-spa/entrypoint";
 
 const { shouldLoadApp } = oidcEarlyInit({
-    freezeFetch: true,
-    freezeXMLHttpRequest: true,
-    freezeWebSocket: true
+    // NOTE: You can enable token exfiltration only in zoneless setup.
+    // Zone.js monkey patches core browser API. We can't implement serious
+    // defence while enabling the environement to be altered at runtime.  
+    // Even with this set to false oidc-spa still implements all CBP, you're
+    // app will pass any security audit.  
+    enableTokenExfiltrationDefense: false
 });
 
 if (shouldLoadApp) {
