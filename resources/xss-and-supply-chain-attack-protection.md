@@ -7,7 +7,13 @@ icon: shield-check
 
 ### Overview
 
-oidc-spa implements a comprehensive, defense-in-depth strategy to protect against token exfiltration attacks. The approach uses **placeholder substitution** as its foundation: tokens exist as inert placeholder strings by default and are only resolved to real values at the moment they're needed for authorized network requests. This is fully transarent to the the user, it does not change the mental model. This only inverts the traditional security model, instead of trying to block all possible exfiltration channels, we make the accessible data inherently safe by default.
+oidc-spa implements a comprehensive, defense-in-depth strategy to protect against token exfiltration attacks.&#x20;
+
+And with the advanced exfiltration model enabled, the security guarantees of a frontend-based approach become _theoretically equivalent_ to backend-based token exchange.
+
+I say “theoretically” because this equivalence ultimately depends on the correctness of oidc-spa’s own hardening implementation. I believe the design is sound and the implementation is robust, but unlike backend token exchange, where tokens are never exposed by construction, I cannot claim mathematical certainty.
+
+The approach uses **placeholder substitution** as its foundation: tokens exist as inert placeholder strings by default and are only resolved to real values at the moment they're needed for authorized network requests. This is fully transarent to you the user, it does not change the mental model, you do not need to adapt your code to make it work. This only inverts the traditional security model, instead of trying to block all possible exfiltration channels, we make the accessible data inherently safe by default.
 
 ### Enabling the Defense (Opt-In)
 
