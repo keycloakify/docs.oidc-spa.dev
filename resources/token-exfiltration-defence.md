@@ -41,31 +41,32 @@ Enabling the defence is simply a matter of flipping a switch:
 
 {% tabs %}
 {% tab title="Vite Plugin" %}
-```ts
-import { oidcSpa } from "oidc-spa/vite-plugin";
+<pre class="language-typescript" data-title="vite.config.ts"><code class="lang-typescript">import { oidcSpa } from "oidc-spa/vite-plugin";
 
 export default {
   plugins: [
+    // ...
     oidcSpa({
-      enableTokenExfiltrationDefense: true,
-      // If you call external resource servers (other than your own backend APIs),
-      // you must declare their hostnames:
-      // resourceServersAllowedHostnames: ["vault.my-company.com", "s3.my-company.com"]
-    })
+<strong>      enableTokenExfiltrationDefense: true,
+</strong><strong>      // If you access external resource servers, (other than you own server APIs)
+</strong><strong>      // you must declare them.
+</strong><strong>      //resourceServersAllowedHostnames: ["vault.my-company.com", "s3.my-company.com"]
+</strong>    })
   ]
 };
-
+</code></pre>
 {% endtab %}
 
-{% tab title=“Manual Setup” %}
-
-import { oidcSpaEarlyInit } from "oidc-spa/earlyInit";
+{% tab title="Manual Setup" %}
+<pre class="language-typescript" data-title="src/main.ts"><code class="lang-typescript">import { oidcSpaEarlyInit } from "oidc-spa/earlyInit";
 
 oidcSpaEarlyInit({
-  enableTokenExfiltrationDefense: true,
-  // resourceServersAllowedHostnames: ["vault.my-company.com", "s3.my-company.com"]
-});
-
+<strong>    enableTokenExfiltrationDefense: true,
+</strong><strong>    // If you access external resource servers, (other than you own server APIs)
+</strong><strong>    // you must declare them.
+</strong><strong>    //resourceServersAllowedHostnames: ["vault.my-company.com", "s3.my-company.com"],
+</strong>});
+</code></pre>
 {% endtab %}
 {% endtabs %}
 
