@@ -50,7 +50,8 @@ export default {
     // ...
     oidcSpa({
 <strong>      enableTokenExfiltrationDefense: true,
-</strong><strong>      // If you access external resource servers, you must declare them.
+</strong><strong>      // If you access external resource servers, (other than you own server APIs)
+</strong><strong>      // you must declare them.
 </strong><strong>      //resourceServersAllowedHostnames: ["vault.my-company.com", "s3.my-company.com"]
 </strong>    })
   ]
@@ -63,7 +64,8 @@ export default {
 
 oidcSpaEarlyInit({
 <strong>    enableTokenExfiltrationDefense: true,
-</strong><strong>    // If you access external resource servers, you must declare them.
+</strong><strong>    // If you access external resource servers, (other than you own server APIs)
+</strong><strong>    // you must declare them.
 </strong><strong>    //resourceServersAllowedHostnames: ["vault.my-company.com", "s3.my-company.com"],
 </strong>});
 </code></pre>
