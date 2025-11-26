@@ -7,12 +7,12 @@ icon: shield-check
 
 oidc-spa implements a comprehensive, defense-in-depth strategy to protect against token exfiltration during a successful XSS or supply-chain attack.
 
-The objective is to achieve—**in a purely client-side architecture**—a level of token safety comparable to traditional backend-based authentication (session cookies).  
+The objective is to achieve, **in a purely client-side architecture**, a level of token safety comparable to traditional backend-based authentication (session cookies).\
 The concerns raised in the talk below no longer apply when the exfiltration defence is enabled.
 
 {% embed url="https://youtu.be/MpPd0WnEG5s?si=ZwlZujfmYboSMlE-&t=779" %}
 
-With the defence enabled, an attacker cannot read or request valid tokens.  
+With the defence enabled, an attacker cannot read or request valid tokens.\
 This is the same property provided by backend session cookies.
 
 ## Enabling the Exfiltration Defence
@@ -20,20 +20,20 @@ This is the same property provided by backend session cookies.
 {% hint style="warning" %}
 It’s possible that your app will refuse to start after enabling the defence.
 
-If this happens, a dependency in your app is attempting to monkey-patch critical built-ins.  
+If this happens, a dependency in your app is attempting to monkey-patch critical built-ins.\
 oidc-spa cannot allow this while guaranteeing token protection.
 
 Examples of incompatible libraries:
 
-- `@microsoft/applicationinsights` — monkey-patches `fetch`
-- `Zone.js` — monkey-patches `Promise` and `XMLHttpRequest`
+* `@microsoft/applicationinsights`, monkey-patches `fetch`
+* `Zone.js`, monkey-patches `Promise` and `XMLHttpRequest`
 
 If you encounter this situation, your only options are:
 
-- Remove or replace the incompatible libraries, **or**  
-- Disable the oidc-spa exfiltration defence
+* Remove or replace the incompatible libraries, **or**
+* Disable the oidc-spa exfiltration defence
 
-Even with this defence disabled, oidc-spa still implements all current best practices for secure client-side auth (including **zero token persistence**).  
+Even with this defence disabled, oidc-spa still implements all current best practices for secure client-side auth (including **zero token persistence**).\
 Your app will still pass a security audit.
 {% endhint %}
 
@@ -72,58 +72,41 @@ oidcSpaEarlyInit({
 
 ⸻
 
-Understanding the Security Guarantees (and Their Limits)
+## Understanding the Security Guarantees (and Their Limits)
 
-Supply-Chain Attacks
+### Supply-Chain Attacks
 
-If an NPM dependency is compromised, the damage remains extremely limited:
-	•	The attacker cannot exfiltrate valid tokens
-	•	This blocks the most common and impactful class of supply-chain attacks
-	•	Most real-world supply-chain malware is opportunistic, not targeted
+If an NPM dependency is compromised, the damage remains extremely limited: • The attacker cannot exfiltrate valid tokens • This blocks the most common and impactful class of supply-chain attacks • Most real-world supply-chain malware is opportunistic, not targeted
 
-An attacker could theoretically act on behalf of the user during the active compromise, but:
-	•	This requires a targeted attack specifically against your build
-	•	This is realistic only for massive, high-value open-source systems
-	•	Even then, oidc-spa makes it very difficult
+An attacker could theoretically act on behalf of the user during the active compromise, but: • This requires a targeted attack specifically against your build • This is realistic only for massive, high-value open-source systems • Even then, oidc-spa makes it very difficult
 
 Why? Because unlike session-cookie auth—where any fetch() automatically includes credentials—here the attacker must obtain a reference to your fetchWithAuth() or getOidc() functions.
 
-These functions usually live inside hashed static assets
-(example: assets/KcAdminUi-BV3D797K.js).
-The hash will likely differ between the moment the attacker crafts the exploit and the moment the compromised dependency lands in your build.
+These functions usually live inside hashed static assets (example: assets/KcAdminUi-BV3D797K.js). The hash will likely differ between the moment the attacker crafts the exploit and the moment the compromised dependency lands in your build.
 
-Additionally, oidc-spa blocks the discovery of the module graph[^1].
+Additionally, oidc-spa blocks the discovery of the module graph\[^1].
 
-Bottom line:
-For supply-chain attacks, oidc-spa offers stronger protection than traditional session cookies.
+Bottom line: For supply-chain attacks, oidc-spa offers stronger protection than traditional session cookies.
 
 ⸻
 
-XSS Attacks
+### XSS Attacks
 
-XSS remains dangerous.
-XSS is always targeted and assumes full knowledge of your application, including your module graph.
+XSS remains dangerous. XSS is always targeted and assumes full knowledge of your application, including your module graph.
 
-An attacker can:
-	•	import your fetchWithAuth() implementation
-	•	perform any action the current user is allowed to perform
+An attacker can: • import your fetchWithAuth() implementation • perform any action the current user is allowed to perform
 
-This is exactly the same situation as cookie-based auth.
-Cookies don’t help here either—if anything, they make it easier.
+This is exactly the same situation as cookie-based auth. Cookies don’t help here either—if anything, they make it easier.
 
-So, this does not mean oidc-spa is less secure than cookie auth.
-Both are equally vulnerable to XSS.
+So, this does not mean oidc-spa is less secure than cookie auth. Both are equally vulnerable to XSS.
 
-The good news is that XSS can be very effectively blocked with strict Content-Security-Policy (CSP).
-And you should absolutely enable one.
+The good news is that XSS can be very effectively blocked with strict Content-Security-Policy (CSP). And you should absolutely enable one.
 
-Bottom line:
-XSS attacks can still allow the attacker to act on behalf of the user.
-Token exfiltration is prevented, but XSS must still be mitigated with CSP.
+Bottom line: XSS attacks can still allow the attacker to act on behalf of the user. Token exfiltration is prevented, but XSS must still be mitigated with CSP.
 
 ⸻
 
-Compromised Browser Extensions
+### Compromised Browser Extensions
 
 This is the one scenario where cookie-based auth has an advantage.
 
@@ -133,27 +116,25 @@ This affects only the user with the compromised extension—and it affects all S
 
 ⸻
 
-How oidc-spa Achieves This
+## How oidc-spa Achieves This
 
 The entire strategy relies on the fact that, thanks to the Vite plugin or oidcSpaEarlyInit, oidc-spa gets a guaranteed window of execution before any other JavaScript runs.
 
-During that window, it can:
-	•	Harden the environment by preventing monkey-patching of fetch, XHR, WebSocket, Promise, String, and other critical built-ins
-	•	Safely extract the authorization response from the URL and store it in memory
-	•	Register a message listener that cannot be unregistered, ensuring silent-signin integrity
-	•	Enforce restrictions on service worker registration
-	•	And most importantly:
+During that window, it can:&#x20;
+
+* Harden the environment by preventing monkey-patching of fetch, XHR, WebSocket, Promise, String, and other critical built-ins&#x20;
+* Safely extract the authorization response from the URL and store it in memory&#x20;
+* Register a message listener that cannot be unregistered, ensuring silent-signin integrity • Enforce restrictions on service worker registration&#x20;
+* And most importantly:
 
 🛡️ Tokens are never exposed to the application layer
 
-The tokens your app sees are structurally valid JWTs, but the signature segment is replaced.
-Such tokens cannot be used to authenticate requests.
+The tokens your app sees are structurally valid JWTs, but the signature segment is replaced. Such tokens cannot be used to authenticate requests.
 
 Before any request leaves the app (fetch, XHR, WebSocket, beacon), the real tokens are restored inside a hardened, sandboxed pre-network interceptor created during early init.
 
 The only way to see the real token is to inspect network traffic.
 
-These protections have zero impact on DX or performance.
-The only requirement is to avoid libraries that monkey-patch critical built-ins.
+These protections have zero impact on DX or performance. The only requirement is to avoid libraries that monkey-patch critical built-ins.
 
----
+***

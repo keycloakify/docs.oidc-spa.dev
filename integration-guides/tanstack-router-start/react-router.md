@@ -47,9 +47,8 @@ export default defineConfig({
     plugins: [
         // ...
 <strong>        oidcSpa({
-</strong><strong>            freezeFetch: true,
-</strong><strong>            freezeXMLHttpRequest: true,
-</strong><strong>            freezeWebSocket: true
+</strong><strong>            // See: https://docs.oidc-spa.dev/resources/token-exfiltration-defence
+</strong><strong>            enableTokenExfiltrationDefense: false
 </strong><strong>        })
 </strong>    ]
 });
@@ -70,9 +69,8 @@ Then create a new `index.tsx` file:
 import { oidcEarlyInit } from "oidc-spa/entrypoint";
 
 const { shouldLoadApp } = oidcEarlyInit({
-    freezeFetch: true,
-    freezeXMLHttpRequest: true,
-    freezeWebSocket: true,
+    // See: https://docs.oidc-spa.dev/resources/token-exfiltration-defence
+    enableTokenExfiltrationDefense: false,
     BASE_URL: "/" // The path where your app is hosted, can also be provided later to createOidc()
 });
 

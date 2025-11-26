@@ -47,11 +47,8 @@ export default defineConfig({
     plugins: [
         // ...
 <strong>        oidcSpa({
-</strong><strong>            // NOTE: Once everything is working, set this to true,
-</strong><strong>            // if your app do not met the requirement that enable oidc-spa
-</strong><strong>            // to effectively protect your token you'll get an error early.
-</strong><strong>            // Read more here: https://docs.oidc-spa.dev/resources/xss-and-supply-chain-attack-protection
-</strong><strong>            enableTokenExfiltrationDefense: false
+</strong><strong>          // See: https://docs.oidc-spa.dev/resources/token-exfiltration-defence
+</strong><strong>          enableTokenExfiltrationDefense: false
 </strong><strong>        })
 </strong>    ]
 });
@@ -72,10 +69,7 @@ Then create a new `index.tsx` file:
 import { oidcEarlyInit } from "oidc-spa/entrypoint";
 
 const { shouldLoadApp } = oidcEarlyInit({
-    // NOTE: Once everything is working, set this to true,
-    // if your app do not met the requirement that enable oidc-spa
-    // to effectively protect your token you'll get an error early.
-    // Read more here: https://docs.oidc-spa.dev/resources/xss-and-supply-chain-attack-protection
+    // See: https://docs.oidc-spa.dev/resources/token-exfiltration-defence
     enableTokenExfiltrationDefense: false,
     BASE_URL: "/" // The path where your app is hosted, can also be provided later to createOidc()
 });
@@ -137,7 +131,7 @@ IMPORTANT NOTICE:
 
 Because React Router Framwork does not expose a true entrypoint oidc-spa won't let you set enableTokenExfiltrationDefense to true.  \
 Since this specific framwork do not give us a way to harden the environement before any other JS is evaluated we can't protect agaist token exfiltration effectively.  \
-Note however that even with enableTokenExfiltrationDefense disabled, oidc-spa is state of the art in implementing all CBP. You app will pass any security audit.
+Note however that even without exfiltration defense, oidc-spa is state of the art in implementing all CBP. You app will pass any security audit.
 {% endhint %}
 
 ### Enabling SPA mode

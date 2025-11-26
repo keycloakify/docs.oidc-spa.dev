@@ -57,8 +57,7 @@ const { shouldLoadApp } = oidcEarlyInit({
     // NOTE: You can enable token exfiltration only in zoneless setup.
     // Zone.js monkey patches core browser API. We can't implement serious
     // defence while enabling the environement to be altered at runtime.  
-    // Even with this set to false oidc-spa still implements all CBP, you're
-    // app will pass any security audit.  
+    // See: https://docs.oidc-spa.dev/resources/token-exfiltration-defence 
     enableTokenExfiltrationDefense: false
 });
 
