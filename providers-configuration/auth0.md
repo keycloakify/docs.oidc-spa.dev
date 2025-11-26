@@ -47,7 +47,7 @@ If you need Auth0 to issue a JWT access token for your API, follow these steps:
 2. In the left panel, go to **Applications → APIs**.
 3. Click **Create API**.
 4. Configure the API:
-   * **Identifier**: Ideally, use your API's root URL (e.g., `https://myapp.my-company.com/api`). However, this is just an identifier, so any unique string works. It will be the aud claim of the access tokens issued. See [the web API page](broken-reference) for more info.
+   * **Identifier**: Ideally, use your API's root URL (e.g., `https://myapp.my-company.com/api`). However, this is just an identifier, so any unique string works. It will be the aud claim of the access tokens issued. See [the web API page](/broken/pages/9h0o4hUvuUAMeveFCosj) for more info.
    * Click **Save**.
 
 <figure><img src="../.gitbook/assets/image (3) (1) (1).png" alt=""><figcaption></figcaption></figure>

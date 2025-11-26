@@ -3,7 +3,7 @@ description: Let's get your App authenticated!
 icon: person-snowboarding
 ---
 
-# Framework Agnostic
+# Framework Agnostic Adapter
 
 {% hint style="info" %}
 oidc-spa is framework-agnostic, but it’s also client-centric.
@@ -49,7 +49,7 @@ bun add oidc-spa
 
 To protect tokens against supply-chain attacks and XSS, oidc-spa must run some initialization code _before any other JavaScript in your app_.
 
-This design provides much stronger security guarantees than any other adapter, and it also delivers unmatched login performance. More details [here](broken-reference).
+This design provides much stronger security guarantees than any other adapter, and it also delivers unmatched login performance. More details [here](/broken/pages/o7mf9sx2j3zFyddFEHST).
 
 {% tabs %}
 {% tab title="Vite SPAs" %}
@@ -62,9 +62,7 @@ export default defineConfig({
     plugins: [
         // ...
 <strong>        oidcSpa({
-</strong><strong>            freezeFetch: true,
-</strong><strong>            freezeXMLHttpRequest: true,
-</strong><strong>            freezeWebSocket: true
+</strong><strong>            
 </strong><strong>        })
 </strong>    ]
 });

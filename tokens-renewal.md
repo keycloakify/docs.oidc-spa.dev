@@ -38,8 +38,7 @@ headers.set("Authorization", `Bearer ${accessToken}`);
 ```
 
 * If a valid token is cached, you’ll get it.
-* If it’s expired, `oidc-spa` silently refreshes it using the refresh token.\
-
+* If it’s expired, `oidc-spa` silently refreshes it using the refresh token.<br>
 
 So the correct approaches when you need an access token are:
 

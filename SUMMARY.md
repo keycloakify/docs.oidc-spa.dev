@@ -38,7 +38,7 @@
 
 ## Resources
 
-* [XSS and Supply Chain Attack Defense](resources/xss-and-supply-chain-attack-protection.md)
+* [Token Exfiltration Defence](resources/token-exfiltration-defence.md)
 * [Migrating from Keycloak-js](resources/migrating-from-keycloak-js.md)
 * [Third‑party cookies and session restoration](resources/third-party-cookies-and-session-restoration.md)
 * [Why No Client Secret?](resources/why-no-client-secret.md)

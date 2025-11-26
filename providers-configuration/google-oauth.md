@@ -45,7 +45,7 @@ That said, **providing the client secret in your frontend code for this specific
 Google do not issue JWT Access Tokens and there is no way to configure it so it does.
 
 As a result, if you want to implement an API you'll have to call Google's special endpoint to validate the access token and get user infos.\
-You won't be able to implement the standard approach for validating token described in the[ Web API](broken-reference) section.
+You won't be able to implement the standard approach for validating token described in the[ Web API](/broken/pages/9h0o4hUvuUAMeveFCosj) section.
 
 Well there is a way to go around this, and that is to ask oidc-spa to substitute the Acess Token by the ID token.
 

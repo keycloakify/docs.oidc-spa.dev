@@ -11,7 +11,7 @@ icon: microsoft
 
 By default, Entra ID issues opaque Access Tokens, which can only be validated by your backend via the Microsoft Graph API.
 
-To enable validation of access tokens in a non-vendor-locked way—such as demonstrated in [the Web API section](broken-reference)—you need to configure a custom scope.
+To enable validation of access tokens in a non-vendor-locked way—such as demonstrated in [the Web API section](/broken/pages/9h0o4hUvuUAMeveFCosj)—you need to configure a custom scope.
 
 ### Steps to Configure a Custom Scope
 
@@ -35,7 +35,7 @@ To enable validation of access tokens in a non-vendor-locked way—such as demon
 
 ### Validating the Token on the Backend
 
-To validate the token on the backend, ensure that the `aud` claim in the JWT access token matches `api://my-app-api`. For more details, refer to the [Web API documentation](broken-reference).
+To validate the token on the backend, ensure that the `aud` claim in the JWT access token matches `api://my-app-api`. For more details, refer to the [Web API documentation](/broken/pages/9h0o4hUvuUAMeveFCosj).
 
 ***
 
