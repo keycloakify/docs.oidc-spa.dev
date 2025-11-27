@@ -76,13 +76,20 @@ oidcSpaEarlyInit({
 
 ### Supply-Chain Attacks
 
-If an NPM dependency is compromised, the damage remains extremely limited: • The attacker cannot exfiltrate valid tokens • This blocks the most common and impactful class of supply-chain attacks • Most real-world supply-chain malware is opportunistic, not targeted
+If an NPM dependency is compromised, the damage remains extremely limited:
 
-An attacker could theoretically act on behalf of the user during the active compromise, but: • This requires a targeted attack specifically against your build • This is realistic only for massive, high-value open-source systems • Even then, oidc-spa makes it very difficult
+* The attacker cannot exfiltrate valid tokens&#x20;
+* This blocks the most common and impactful class of supply-chain attacks • Most real-world supply-chain malware is opportunistic, not targeted
 
-Why? Because unlike session-cookie auth—where any fetch() automatically includes credentials—here the attacker must obtain a reference to your fetchWithAuth() or getOidc() functions.
+An attacker could theoretically act on behalf of the user during the active compromise, but:&#x20;
 
-These functions usually live inside hashed static assets (example: assets/KcAdminUi-BV3D797K.js). The hash will likely differ between the moment the attacker crafts the exploit and the moment the compromised dependency lands in your build.
+* This requires a targeted attack specifically against your build&#x20;
+* This is realistic only for massive, high-value open-source systems&#x20;
+* Even then, oidc-spa makes it very difficult
+
+Why? Because unlike session-cookie auth, where any `fetch()` automatically includes credentials, here the attacker must obtain a reference to your `fetchWithAuth()` or `getOidc()` functions.
+
+These functions usually live inside hashed static assets (example: `assets/KcAdminUi-BV3D797K.js`). The hash will likely differ between the moment the attacker crafts the exploit and the moment the compromised dependency lands in your build.
 
 Additionally, oidc-spa blocks the discovery of the module graph\[^1].
 
@@ -94,9 +101,12 @@ Bottom line: For supply-chain attacks, oidc-spa offers stronger protection than 
 
 XSS remains dangerous. XSS is always targeted and assumes full knowledge of your application, including your module graph.
 
-An attacker can: • import your fetchWithAuth() implementation • perform any action the current user is allowed to perform
+An attacker can:&#x20;
 
-This is exactly the same situation as cookie-based auth. Cookies don’t help here either—if anything, they make it easier.
+* import your fetchWithAuth() implementation&#x20;
+* perform any action the current user is allowed to perform
+
+This is exactly the same situation as cookie-based auth. Cookies don’t help here either, if anything, they make it easier.
 
 So, this does not mean oidc-spa is less secure than cookie auth. Both are equally vulnerable to XSS.
 
@@ -127,7 +137,7 @@ During that window, it can:&#x20;
 * Register a message listener that cannot be unregistered, ensuring silent-signin integrity • Enforce restrictions on service worker registration&#x20;
 * And most importantly:
 
-🛡️ Tokens are never exposed to the application layer
+Tokens are never exposed to the application layer
 
 The tokens your app sees are structurally valid JWTs, but the signature segment is replaced. Such tokens cannot be used to authenticate requests.
 
