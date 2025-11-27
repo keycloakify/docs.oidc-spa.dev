@@ -27,6 +27,7 @@
 
 * [Auto Login](auto-login.md)
 * [Auto Logout](auto-logout.md)
+* [Token Exfiltration Defence](features/token-exfiltration-defence.md)
 * [Debug and Error Handling](error-management.md)
   * [Error Handling - No AutoLogin](features/error-management/error-handling-no-autologin.md)
   * [Error Handling - With AutoLogin](features/error-management/error-handling-with-autologin.md)
@@ -38,7 +39,6 @@
 
 ## Resources
 
-* [Token Exfiltration Defence](resources/token-exfiltration-defence.md)
 * [Migrating from Keycloak-js](resources/migrating-from-keycloak-js.md)
 * [Third‑party cookies and session restoration](resources/third-party-cookies-and-session-restoration.md)
 * [Why No Client Secret?](resources/why-no-client-secret.md)
