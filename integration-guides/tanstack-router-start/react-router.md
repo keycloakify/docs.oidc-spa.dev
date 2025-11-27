@@ -46,10 +46,7 @@ In Vite apps, this is done through a Vite Plugin (If you'd rather avoid using th
 export default defineConfig({
     plugins: [
         // ...
-<strong>        oidcSpa({
-</strong><strong>            // See: https://docs.oidc-spa.dev/resources/token-exfiltration-defence
-</strong><strong>            enableTokenExfiltrationDefense: false
-</strong><strong>        })
+<strong>        oidcSpa()
 </strong>    ]
 });
 </code></pre>
@@ -69,8 +66,6 @@ Then create a new `index.tsx` file:
 import { oidcEarlyInit } from "oidc-spa/entrypoint";
 
 const { shouldLoadApp } = oidcEarlyInit({
-    // See: https://docs.oidc-spa.dev/resources/token-exfiltration-defence
-    enableTokenExfiltrationDefense: false,
     BASE_URL: "/" // The path where your app is hosted, can also be provided later to createOidc()
 });
 

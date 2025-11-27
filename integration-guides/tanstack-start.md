@@ -70,10 +70,7 @@ export default defineConfig({
     viteTsConfigPaths({ projects: ["./tsconfig.json"] }),
     tailwindcss(),
     tanstackStart(),
-<strong>    oidcSpa({
-</strong><strong>      // See: https://docs.oidc-spa.dev/resources/token-exfiltration-defence
-</strong><strong>      enableTokenExfiltrationDefense: false
-</strong><strong>    }),
+<strong>    oidcSpa(),
 </strong>    viteReact(),
   ],
 });

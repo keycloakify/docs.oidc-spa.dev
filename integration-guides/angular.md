@@ -53,13 +53,7 @@ Then create a new `main.ts` file:
 ```typescript
 import { oidcEarlyInit } from "oidc-spa/entrypoint";
 
-const { shouldLoadApp } = oidcEarlyInit({
-    // NOTE: You can enable token exfiltration only in zoneless setup.
-    // Zone.js monkey patches core browser API. We can't implement serious
-    // defence while enabling the environement to be altered at runtime.  
-    // See: https://docs.oidc-spa.dev/resources/token-exfiltration-defence 
-    enableTokenExfiltrationDefense: false
-});
+const { shouldLoadApp } = oidcEarlyInit();
 
 if (shouldLoadApp) {
     // Note: Deferring the main app import adds a few milliseconds to cold start,
