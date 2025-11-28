@@ -41,6 +41,7 @@
 
 * [Migrating from Keycloak-js](resources/migrating-from-keycloak-js.md)
 * [Third‑party cookies and session restoration](resources/third-party-cookies-and-session-restoration.md)
+* [CSP Configuration](resources/csp-configuration.md)
 * [Why No Client Secret?](resources/why-no-client-secret.md)
 * [Fixing Crypto.subtle is available only in secure contexts (HTTPS)](resources/fixing-crypto.subtle-is-available-only-in-secure-contexts-https.md)
 * [End of third-party cookies](resources/end-of-third-party-cookies.md)

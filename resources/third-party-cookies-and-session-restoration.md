@@ -14,9 +14,9 @@ This page explains why modern browsers often refuse to send cookies in third‑p
 
 > TL;DR
 >
-> 1. Align your application and authorization endpoint under a common parent domain so the browser treats your IdP as first‑party to your app.&#x20;
-> 2. Prefer iframe‑based restoration when possible.&#x20;
-> 3. If your CSP forbids iframes or the IdP must live on a foreign domain, use full‑page redirects.
+> 1. Align your application and authorization endpoint under a common parent domain so the browser treats your IdP as first‑party to your app.
+> 2. Prefer iframe‑based restoration when possible.
+> 3. If your CSP completly forbids iframes and you have no way to tweak them or if the IdP must live on a foreign domain, use full‑page redirects.
 
 ***
 
@@ -73,7 +73,7 @@ bootstrapOidc({ // or createOidc({
 * The app performs a quick top‑level redirect to the authorization endpoint, which always carries IdP cookies.
 * The redirect returns immediately to your app with the information needed to rebuild identity.
 * **Works everywhere** but is a about 30% slower and the url flashes auth response info brievly.
-* **Multiple OIDC clients in one page:** to avoid a redirect loop, the app may need to persist state between reloads (for example, tokens or a minimal session hint) which weakens the “no persistence” posture.&#x20;
+* **Multiple OIDC clients in one page:** to avoid a redirect loop, the app may need to persist state between reloads (for example, tokens or a minimal session hint) which weakens the “no persistence” posture.
 
 #### "auto" (default and recommended)
 
@@ -87,173 +87,31 @@ bootstrapOidc({ // or createOidc({
 
 ### When iframes are blocked by your CSP
 
-Silent SSO (iframe-based session restoration) only works if your app is allowed to open an iframe toward your IdP *and* if your app is allowed to be iframed by itself.  
-If your CSP forbids either of these conditions, silent SSO will fail even if your IdP is first-party relative to your app.
+In that case, the question is:
 
-If you do **not** control your server configuration, set:
+**Are you in control of your server configuration, can you change the HTTP respons headers?**
+
+{% tabs %}
+{% tab title="Yes" %}
+If you can edit your server config, then you can relax your CSP just enough to allow iframe in the context of SSO:
+
+{% content-ref url="csp-configuration.md" %}
+[csp-configuration.md](csp-configuration.md)
+{% endcontent-ref %}
+{% endtab %}
+
+{% tab title="No" %}
+If your server is what it is and have no control over it, then your only option is to force oidc-spa to use full page redirect to restore users session:
 
 ```ts
 sessionRestorationMethod: "full page redirect"
 ```
-
-in your oidc-spa configuration.
-
----
-
-## ❌ CSP rules that break silent SSO
-
-Silent SSO breaks under two categories:
-
----
-
-### **1) Your app cannot iframe the IdP**
-
-This happens when:
-
-- `X-Frame-Options: DENY`
-- `Content-Security-Policy: frame-src 'none'`
-- `Content-Security-Policy: frame-src 'self'`
-- `Content-Security-Policy: frame-src 'self' https://not-my-idp.com`
-
-If the IdP domain is missing from `frame-src`, the iframe cannot load → silent SSO cannot run.
-
----
-
-### **2) Your app cannot be iframed by itself**
-
-Silent SSO needs to temporarily load your app inside an iframe (when the IdP redirects back with the authorization response).
-
-If you block this:
-
-- `Content-Security-Policy: frame-ancestors 'none'`
-
-…then the IdP cannot redirect to your app inside the iframe → silent SSO fails.
-
----
-
-## ✅ How to fix it
-
-To restore silent SSO:
-
-1. **Remove** any `X-Frame-Options` header (deprecated).
-2. **Allow** the IdP domain in `frame-src`.
-3. **Allow** your app to frame itself using `frame-ancestors 'self'`.
-
-Example:
-
-```
-Content-Security-Policy:
-  frame-src https://auth.my-domain.com;
-  frame-ancestors 'self';
-  ...other CSP directives...
-```
-
-### **Tip**  
-Instead of hardcoding the IdP domain, allow *sibling subdomains* of your app’s domain.  
-This stays aligned with same-site cookie rules and avoids config drift between environments.
-
-The Nginx configuration below demonstrates this pattern.
-
----
-
-## ⭐ Canonical Nginx configuration
-
-This is a strict, production-grade CSP that:
-
-- supports Vite hashed assets,  
-- forbids all external scripts (strict-dynamic),  
-- disables all workers (service + web),  
-- **still allows iframe-based silent SSO**,  
-- and is suitable for SPA deployments using the image `nginxinc/nginx-unprivileged`.
-
-Adapt if you rely on CDN assets or service workers (via nonce or SHA).
-
-```nginx
-# ============================================================
-# Dynamic base domain extraction (per request)
-# Example: datalab.sspcloud.fr -> sspcloud.fr
-# ============================================================
-map $host $base_domain {
-    ~^(?<sub>.+)\.(?<domain>[^.]+\.[^.]+)$  $domain;
-    default                                 $host;
-}
-
-server {
-    listen 8080;
-
-    # -------------------------
-    # Gzip
-    # -------------------------
-    gzip on;
-    gzip_vary on;
-    gzip_min_length 1024;
-    gzip_proxied expired no-cache no-store private auth;
-    gzip_types
-        text/plain text/css text/xml text/javascript
-        application/javascript application/x-javascript application/xml;
-    gzip_disable "MSIE [1-6]\.";
-
-    # -------------------------
-    # Root and SPA routing
-    # -------------------------
-    root /usr/share/nginx/html;
-    index index.html;
-
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
-
-    # -------------------------
-    # Vite hashed assets (cache 1 year)
-    # -------------------------
-    location ^~ /assets/ {
-        try_files $uri =404;
-        expires 1y;
-        access_log off;
-        add_header Cache-Control "public" always;
-    }
-
-    # -------------------------
-    # HTML (never cached) + CSP
-    # -------------------------
-    location ~* \.html$ {
-        try_files $uri =404;
-        expires -1;
-        add_header Content-Security-Policy
-            "frame-src https://*.$base_domain https://$base_domain; "
-            "frame-ancestors 'self'; "
-            "object-src 'none'; "
-            "worker-src 'none'; "
-            "child-src 'none'; "
-            "script-src 'self' 'strict-dynamic';"
-            always;
-    }
-
-    # -------------------------
-    # JSON / TXT (never cached)
-    # -------------------------
-    location ~* \.(json|txt)$ {
-        try_files $uri =404;
-        expires -1;
-    }
-
-    # -------------------------
-    # Any other file with an extension (cache 1 day)
-    # -------------------------
-    location ~ ^.+\..+$ {
-        try_files $uri =404;
-        expires 1d;
-        access_log off;
-        add_header Cache-Control "public" always;
-    }
-}
-```
-
-***
+{% endtab %}
+{% endtabs %}
 
 ### Local development
 
-When your app runs on `localhost` and your IdP lives on a different domain, wichis almost always the case unless you run a keycloak locally.&#x20;
+When your app runs on `localhost` and your IdP lives on a different domain, wichis almost always the case unless you run a keycloak locally.
 
 The browser treats the IdP as third‑party so oidc-spa will fallback to full page redirect. To run your app in devloppement like you would in prod you need to:
 
@@ -261,8 +119,6 @@ The browser treats the IdP as third‑party so oidc-spa will fallback to full pa
 2. Allow third party cookies in localhost:
 
 <figure><img src="../.gitbook/assets/image (4).png" alt="" width="348"><figcaption></figcaption></figure>
-
-
 
 ***
 

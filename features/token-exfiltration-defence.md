@@ -119,6 +119,10 @@ The good news is that XSS can be very effectively blocked with strict Content-Se
 
 Bottom line: XSS attacks can still allow the attacker to act on behalf of the user. Token exfiltration is prevented, but XSS must still be mitigated with CSP.
 
+{% content-ref url="../resources/csp-configuration.md" %}
+[csp-configuration.md](../resources/csp-configuration.md)
+{% endcontent-ref %}
+
 ⸻
 
 ### Compromised Browser Extensions
