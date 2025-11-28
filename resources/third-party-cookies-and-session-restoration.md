@@ -87,46 +87,94 @@ bootstrapOidc({ // or createOidc({
 
 ### When iframes are blocked by your CSP
 
-In this section we will see how you can configure your CSP header as strictly as possible while enabling iframe session restoration to work. If you don't have control over your server configuration just use  set `sessionRestorationMethod: "full page redirect"` in your oidc-spa config.
+Silent SSO (iframe-based session restoration) only works if your app is allowed to open an iframe toward your IdP *and* if your app is allowed to be iframed by itself.  
+If your CSP forbids either of these conditions, silent SSO will fail even if your IdP is first-party relative to your app.
 
-Tere are two type of policy that will lead to the silent SSO to fail even if your IdP is first party relative to your app:
+If you do **not** control your server configuration, set:
 
-1\) You explicitely forbiden the popening of an ifram toward your IdP domain, this is the case if the HTML of your app is served with the following HTTP header response:&#x20;
+```ts
+sessionRestorationMethod: "full page redirect"
+```
 
-X-Frame-Options -> DENY
+in your oidc-spa configuration.
 
-Content-Security-Policy   frame-src: 'none' ... or frame-src: 'self' ... or frame-src: 'self' https://not-my-idp.com
+---
 
-2\) You explicitely forbien your app to be iframed
+## ❌ CSP rules that break silent SSO
 
-Content-Security-Policy   frame-ancestors: 'none'&#x20;
+Silent SSO breaks under two categories:
 
-How to fix it:
+---
 
-Here are the more restrictice CSP you can apply while still having silent SSO session restoration working
+### **1) Your app cannot iframe the IdP**
 
-First remove the X-Frame-Options header if you have it, it's deprecated in favor of Content-Security-Policy.
+This happens when:
 
-Then you want to have something like:
+- `X-Frame-Options: DENY`
+- `Content-Security-Policy: frame-src 'none'`
+- `Content-Security-Policy: frame-src 'self'`
+- `Content-Security-Policy: frame-src 'self' https://not-my-idp.com`
 
-Content-Security-Policy -> frame-src: https://auth.my-domain.com; frame-ancestors 'self' ... other CSP;
+If the IdP domain is missing from `frame-src`, the iframe cannot load → silent SSO cannot run.
 
-in frame-src you should allow the domain of the authorization endpoint of your IdP, the best approach is not to hardcode it in your config since it will be a pain to maintain but to allow any sibling domain of where your app is hosted, this matches the condition for cookie to be sucessfully set. See after for how to configure it with Ngnix.\
-Frame-ancestors 'self' is also mandatory. You won't be iframing your app directly but the IdP will issue a redirect to your app with the code attached as query param. So you want your app to allow to be iframed by itself.  <br>
+---
 
-Canonical Ngnix configuration (For a Docker image running nginxinc/nginx-unprivileged, [example](https://github.com/InseeFrLab/onyxia/blob/9aae4005712120d7fc8830589350a1ecd742b3b9/web/Dockerfile)): &#x20;
+### **2) Your app cannot be iframed by itself**
 
-This is a Typical ngnix config for an SPA that is portable and apply as strict at can be content security policy that will still enable the silent SSO session restoration via iframe to work,
+Silent SSO needs to temporarily load your app inside an iframe (when the IdP redirects back with the authorization response).
 
-In this CSP, with worker-src, child-src, and script-src, we forbid loading all scripts that ar not hosted by the app and forbid all workers. This is extreem, adapt if you are using CDN or are using web/service worker, use nonce or hash sha if you have legitimate inline script.<br>
+If you block this:
 
-<pre class="language-nginx" data-title="ngnix.conf"><code class="lang-nginx"># ============================================================
+- `Content-Security-Policy: frame-ancestors 'none'`
+
+…then the IdP cannot redirect to your app inside the iframe → silent SSO fails.
+
+---
+
+## ✅ How to fix it
+
+To restore silent SSO:
+
+1. **Remove** any `X-Frame-Options` header (deprecated).
+2. **Allow** the IdP domain in `frame-src`.
+3. **Allow** your app to frame itself using `frame-ancestors 'self'`.
+
+Example:
+
+```
+Content-Security-Policy:
+  frame-src https://auth.my-domain.com;
+  frame-ancestors 'self';
+  ...other CSP directives...
+```
+
+### **Tip**  
+Instead of hardcoding the IdP domain, allow *sibling subdomains* of your app’s domain.  
+This stays aligned with same-site cookie rules and avoids config drift between environments.
+
+The Nginx configuration below demonstrates this pattern.
+
+---
+
+## ⭐ Canonical Nginx configuration
+
+This is a strict, production-grade CSP that:
+
+- supports Vite hashed assets,  
+- forbids all external scripts (strict-dynamic),  
+- disables all workers (service + web),  
+- **still allows iframe-based silent SSO**,  
+- and is suitable for SPA deployments using the image `nginxinc/nginx-unprivileged`.
+
+Adapt if you rely on CDN assets or service workers (via nonce or SHA).
+
+```nginx
+# ============================================================
 # Dynamic base domain extraction (per request)
-# Extracts the last two labels from $host
 # Example: datalab.sspcloud.fr -> sspcloud.fr
 # ============================================================
 map $host $base_domain {
-    ~^(?&#x3C;sub>.+)\.(?&#x3C;domain>[^.]+\.[^.]+)$  $domain;
+    ~^(?<sub>.+)\.(?<domain>[^.]+\.[^.]+)$  $domain;
     default                                 $host;
 }
 
@@ -151,7 +199,6 @@ server {
     root /usr/share/nginx/html;
     index index.html;
 
-    # Serve SPA; CSP applied in the HTML location block
     location / {
         try_files $uri $uri/ /index.html;
     }
@@ -173,9 +220,9 @@ server {
         try_files $uri =404;
         expires -1;
         add_header Content-Security-Policy
-<strong>            "frame-src https://*.$base_domain https://$base_domain; "
-</strong><strong>            "frame-ancestors 'self'; "
-</strong>            "object-src 'none'; "
+            "frame-src https://*.$base_domain https://$base_domain; "
+            "frame-ancestors 'self'; "
+            "object-src 'none'; "
             "worker-src 'none'; "
             "child-src 'none'; "
             "script-src 'self' 'strict-dynamic';"
@@ -200,7 +247,7 @@ server {
         add_header Cache-Control "public" always;
     }
 }
-</code></pre>
+```
 
 ***
 
