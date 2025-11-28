@@ -85,36 +85,122 @@ bootstrapOidc({ // or createOidc({
 
 ***
 
-### When iframes are blocked by policy
+### When iframes are blocked by your CSP
 
-Some environments forbid iframes entirely. If your app is served with either of the following headers, even self‑iframes are blocked:
+In this section we will see how you can configure your CSP header as strictly as possible while enabling iframe session restoration to work. If you don't have control over your server configuration just use  set `sessionRestorationMethod: "full page redirect"` in your oidc-spa config.
 
-```
-Content-Security-Policy: frame-ancestors 'none'
-X-Frame-Options: DENY
-```
+Tere are two type of policy that will lead to the silent SSO to fail even if your IdP is first party relative to your app:
 
-If you can change the policy, allow self‑iframes:
+1\) You explicitely forbiden the popening of an ifram toward your IdP domain, this is the case if the HTML of your app is served with the following HTTP header response:&#x20;
 
-```diff
-- add_header X-Frame-Options "DENY";
-- add_header Content-Security-Policy "frame-ancestors 'none'";
-+ add_header Content-Security-Policy "frame-ancestors 'self'";
-```
+X-Frame-Options -> DENY
 
-If you prefer to only allow iframes in the very specific case of a silent OIDC check, you can conditionally relax CSP based on query parameters at your reverse proxy:
+Content-Security-Policy   frame-src: 'none' ... or frame-src: 'self' ... or frame-src: 'self' https://not-my-idp.com
 
-```nginx
-map $query_string $add_content_security_policy {
-  "~*(?=.*\bstate=)(?=.*\bclient_id=)(?=.*\bresponse_type=)(?=.*\bredirect_uri=)" "frame-ancestors 'self'";
-  default "frame-ancestors 'none'";
+2\) You explicitely forbien your app to be iframed
+
+Content-Security-Policy   frame-ancestors: 'none'&#x20;
+
+How to fix it:
+
+Here are the more restrictice CSP you can apply while still having silent SSO session restoration working
+
+First remove the X-Frame-Options header if you have it, it's deprecated in favor of Content-Security-Policy.
+
+Then you want to have something like:
+
+Content-Security-Policy -> frame-src: https://auth.my-domain.com; frame-ancestors 'self' ... other CSP;
+
+in frame-src you should allow the domain of the authorization endpoint of your IdP, the best approach is not to hardcode it in your config since it will be a pain to maintain but to allow any sibling domain of where your app is hosted, this matches the condition for cookie to be sucessfully set. See after for how to configure it with Ngnix.\
+Frame-ancestors 'self' is also mandatory. You won't be iframing your app directly but the IdP will issue a redirect to your app with the code attached as query param. So you want your app to allow to be iframed by itself.  <br>
+
+Canonical Ngnix configuration (For a Docker image running nginxinc/nginx-unprivileged, [example](https://github.com/InseeFrLab/onyxia/blob/9aae4005712120d7fc8830589350a1ecd742b3b9/web/Dockerfile)): &#x20;
+
+This is a Typical ngnix config for an SPA that is portable and apply as strict at can be content security policy that will still enable the silent SSO session restoration via iframe to work,
+
+In this CSP, with worker-src, child-src, and script-src, we forbid loading all scripts that ar not hosted by the app and forbid all workers. This is extreem, adapt if you are using CDN or are using web/service worker, use nonce or hash sha if you have legitimate inline script.<br>
+
+<pre class="language-nginx" data-title="ngnix.conf"><code class="lang-nginx"># ============================================================
+# Dynamic base domain extraction (per request)
+# Extracts the last two labels from $host
+# Example: datalab.sspcloud.fr -> sspcloud.fr
+# ============================================================
+map $host $base_domain {
+    ~^(?&#x3C;sub>.+)\.(?&#x3C;domain>[^.]+\.[^.]+)$  $domain;
+    default                                 $host;
 }
-add_header Content-Security-Policy $add_content_security_policy;
-```
 
-`oidc‑spa` authenticates and encrypts cross‑window messages and validates origins so that allowing this narrowly scoped iframe remains consistent with your security model.
+server {
+    listen 8080;
 
-If changing headers is not possible, set `sessionRestorationMethod: "full page redirect"`.
+    # -------------------------
+    # Gzip
+    # -------------------------
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_proxied expired no-cache no-store private auth;
+    gzip_types
+        text/plain text/css text/xml text/javascript
+        application/javascript application/x-javascript application/xml;
+    gzip_disable "MSIE [1-6]\.";
+
+    # -------------------------
+    # Root and SPA routing
+    # -------------------------
+    root /usr/share/nginx/html;
+    index index.html;
+
+    # Serve SPA; CSP applied in the HTML location block
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # -------------------------
+    # Vite hashed assets (cache 1 year)
+    # -------------------------
+    location ^~ /assets/ {
+        try_files $uri =404;
+        expires 1y;
+        access_log off;
+        add_header Cache-Control "public" always;
+    }
+
+    # -------------------------
+    # HTML (never cached) + CSP
+    # -------------------------
+    location ~* \.html$ {
+        try_files $uri =404;
+        expires -1;
+        add_header Content-Security-Policy
+<strong>            "frame-src https://*.$base_domain https://$base_domain; "
+</strong><strong>            "frame-ancestors 'self'; "
+</strong>            "object-src 'none'; "
+            "worker-src 'none'; "
+            "child-src 'none'; "
+            "script-src 'self' 'strict-dynamic';"
+            always;
+    }
+
+    # -------------------------
+    # JSON / TXT (never cached)
+    # -------------------------
+    location ~* \.(json|txt)$ {
+        try_files $uri =404;
+        expires -1;
+    }
+
+    # -------------------------
+    # Any other file with an extension (cache 1 day)
+    # -------------------------
+    location ~ ^.+\..+$ {
+        try_files $uri =404;
+        expires 1d;
+        access_log off;
+        add_header Cache-Control "public" always;
+    }
+}
+</code></pre>
 
 ***
 
