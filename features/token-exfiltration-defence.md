@@ -5,6 +5,11 @@ icon: shield-check
 
 # Token Exfiltration Defence
 
+{% hint style="warning" %}
+The API of enableTokenExfiltrationDefense is not stable yet.  \
+We're still actively working on those defences. They will evolves in the comming weeks. &#x20;
+{% endhint %}
+
 oidc-spa implements a comprehensive, defense-in-depth strategy to protect against token exfiltration during a successful XSS or supply-chain attack.
 
 The objective is to achieve, **in a purely client-side architecture**, a level of token safety comparable to traditional backend-based authentication (session cookies).\
