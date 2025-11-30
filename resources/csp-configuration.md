@@ -125,7 +125,7 @@ server {
         try_files $uri =404;
         expires -1;
 <strong>        add_header Content-Security-Policy "
-</strong><strong>            frame-src https://*.$base_domain https://$base_domain;
+</strong><strong>            frame-src https://*.$base_domain;
 </strong><strong>            frame-ancestors 'self';
 </strong><strong>            object-src 'none';
 </strong><strong>            worker-src 'none';
