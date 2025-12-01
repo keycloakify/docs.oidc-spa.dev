@@ -13,7 +13,7 @@ We're still actively working on those defences. They will evolves in the comming
 oidc-spa implements a comprehensive, defense-in-depth strategy to protect against token exfiltration during a successful XSS or supply-chain attack.
 
 The objective is to achieve, **in a purely client-side architecture**, a level of token safety comparable to traditional backend-based authentication (session cookies).\
-The concerns raised in the talk below no longer apply when the exfiltration defence is enabled.
+The concerns raised in the talk below no longer apply when the exfiltration defence is enabled. And even without the advanced defence enabled, the demo where they manually request a token would be structurally impossible with oidc-spa, an attacker cannot request new cretentials. &#x20;
 
 {% embed url="https://youtu.be/MpPd0WnEG5s?si=ZwlZujfmYboSMlE-&t=779" %}
 
@@ -53,9 +53,9 @@ export default {
     // ...
     oidcSpa({
 <strong>      enableTokenExfiltrationDefense: true,
-</strong><strong>      // If you access external resource servers, (other than you own server APIs)
-</strong><strong>      // you must declare them.
-</strong><strong>      //resourceServersAllowedHostnames: ["vault.my-company.com", "s3.my-company.com"]
+</strong><strong>      // If you send auted request to third party server
+</strong><strong>      // (outside of your site) you must declare them.
+</strong><strong>      //resourceServersAllowedHostnames: [ "s3.amazonaws.com" ]
 </strong>    })
   ]
 };
@@ -67,10 +67,10 @@ export default {
 
 oidcSpaEarlyInit({
 <strong>    enableTokenExfiltrationDefense: true,
-</strong><strong>    // If you access external resource servers, (other than you own server APIs)
-</strong><strong>    // you must declare them.
-</strong><strong>    //resourceServersAllowedHostnames: ["vault.my-company.com", "s3.my-company.com"],
-</strong>});
+</strong>    // If you send auted request to third party server
+    // (outside of your site) you must declare them.
+    //resourceServersAllowedHostnames: [ "s3.amazonaws.com" ]
+});
 </code></pre>
 {% endtab %}
 {% endtabs %}
@@ -104,20 +104,11 @@ Bottom line: For supply-chain attacks, oidc-spa offers stronger protection than 
 
 ### XSS Attacks
 
-XSS remains dangerous. XSS is always targeted and assumes full knowledge of your application, including your module graph.
+XSS remains dangerous. oidc-spa protects agaist token exfiltration, but an attacker who would know everything about your build can still manage to act on behafe of user while the attack is going on.
 
-An attacker can:&#x20;
-
-* import your fetchWithAuth() implementation&#x20;
-* perform any action the current user is allowed to perform
-
-This is exactly the same situation as cookie-based auth. Cookies don’t help here either, if anything, they make it easier.
-
-So, this does not mean oidc-spa is less secure than cookie auth. Both are equally vulnerable to XSS.
+They can import your `fetchWithAuth()` implementation (exposed somwere ine the hashed js assets) and perform any action the current user is allowed to perform
 
 The good news is that XSS can be very effectively blocked with strict Content-Security-Policy (CSP). And you should absolutely enable one.
-
-Bottom line: XSS attacks can still allow the attacker to act on behalf of the user. Token exfiltration is prevented, but XSS must still be mitigated with CSP.
 
 {% content-ref url="../resources/csp-configuration.md" %}
 [csp-configuration.md](../resources/csp-configuration.md)
@@ -127,17 +118,17 @@ Bottom line: XSS attacks can still allow the attacker to act on behalf of the us
 
 ### Compromised Browser Extensions
 
-This is the one scenario where cookie-based auth has an advantage.
+This is the one scenario where cookie-based auth has an advantage over oidc-spa's client side auth.
 
 If a user installs a malicious browser extension, it can inspect outgoing network traffic and see the substituted tokens.
 
-This affects only the user with the compromised extension—and it affects all SPAs using client-side auth, not just your app.
+This affects only the user with the compromised extension, and it affects all SPAs using client-side auth, not just your app.
 
 ⸻
 
 ## How oidc-spa Achieves This
 
-The entire strategy relies on the fact that, thanks to the Vite plugin or oidcSpaEarlyInit, oidc-spa gets a guaranteed window of execution before any other JavaScript runs.
+The entire strategy relies on the fact that, thanks to the Vite plugin or `oidcSpaEarlyInit`, oidc-spa gets a guaranteed window of execution before any other JavaScript runs.
 
 During that window, it can:&#x20;
 
@@ -154,6 +145,6 @@ Before any request leaves the app (fetch, XHR, WebSocket, beacon), the real toke
 
 The only way to see the real token is to inspect network traffic.
 
-These protections have zero impact on DX or performance. The only requirement is to avoid libraries that monkey-patch critical built-ins.
+These protections have zero impact on DX or performance. The only requirement is to avoid libraries that monkey-patch critical built-ins and know ahead of time which resources server outside of your site your app might want to send authed request to (like s3.amazon.com for example). &#x20;
 
 ***
