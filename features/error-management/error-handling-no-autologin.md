@@ -1,6 +1,11 @@
 # Error Handling - No AutoLogin
 
-If you do not have [Auto Login](../../auto-login.md) enabled and oidc-spa fails to initialize (because of a **misconfiguration** or because the **authorization server is unavailable**), your app will load with the user state **not logged in** (`oidc.isUserLoggedIn === false`).\
+{% hint style="info" %}
+This guide only apply if you do **not** have [Auto Login](../../auto-login.md) enabled.\
+If you have Auto Login enabled follow [this guide instead](error-handling-with-autologin.md).
+{% endhint %}
+
+If oidc-spa fails to initialize (because of a **misconfiguration** or because the **authorization server is unavailable**), your app will load with the user state **not logged in** (`oidc.isUserLoggedIn === false`).\
 The goal is to let users browse public pages even when authentication cannot start.
 
 If, in this state, the user clicks a “Log in” button or navigates to a page that requires authentication, by default oidc-spa will fire this alert:

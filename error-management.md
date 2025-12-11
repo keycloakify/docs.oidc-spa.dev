@@ -63,14 +63,16 @@ In this case, simply add `http://localhost:3000/` (or the appropriate URL for yo
 
 ## Gracefully Handling Errors in Production
 
-How your app should react to authentication issues depends on whether **Auto Login** is enabled.
-
-See the following sections for best practices and code examples:
-
+{% tabs %}
+{% tab title="My App doesn't have AutoLogin enabled" %}
 {% content-ref url="features/error-management/error-handling-no-autologin.md" %}
 [error-handling-no-autologin.md](features/error-management/error-handling-no-autologin.md)
 {% endcontent-ref %}
+{% endtab %}
 
+{% tab title="My App has AutoLogin enabled" %}
 {% content-ref url="features/error-management/error-handling-with-autologin.md" %}
 [error-handling-with-autologin.md](features/error-management/error-handling-with-autologin.md)
 {% endcontent-ref %}
+{% endtab %}
+{% endtabs %}

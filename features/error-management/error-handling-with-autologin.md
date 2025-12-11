@@ -1,16 +1,11 @@
 # Error Handling - With AutoLogin
 
-In **Auto Login** mode, there is no “fallback” unauthenticated experience if `oidc-spa` fails to initialize, so error handling is different.
-
-We expose separate hooks/components so you can handle initialization errors gracefully and render a clear, user-facing message while keeping diagnostics in the console for developers.
-
 {% hint style="info" %}
-In `autoLogin: false`, `createOidc` never throws (if it does, that’s a bug).\
-In `autoLogin: true`, `createOidc` may throw **only** an `OidcInitializationError`, which includes:
-
-* `isAuthServerLikelyDown`: helps you distinguish a temporary outage from a misconfiguration.
-* `message`: a developer-oriented diagnostic (do **not** show this to end users).
+This guide only applies if you have enabled [Auto Login](../../auto-login.md).\
+If you do **not** have Auto Login enabled, follow [this guide instead](error-handling-no-autologin.md).
 {% endhint %}
+
+Here is how you can gracefully handle oidc initialization errors: &#x20;
 
 {% tabs %}
 {% tab title="Framework Agnostic" %}

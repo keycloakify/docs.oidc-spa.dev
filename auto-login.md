@@ -11,8 +11,17 @@ This is typically the case for admin dashboards or any internal tool that do not
 
 When Auto Login is enabled, visiting your application automatically redirects the user to the IdP’s login page if no active session is detected.
 
+The purpose of this mode is to simplify the auth related mental model of your app, in the regular mode, the one where you have public page you need to:
+
+* Enforce login on certain pages: Call login(), use enfoceLogin( ) or withLoginEnforced()
+* You need to explicitely check if the user is logged in or not. &#x20;
+
+But if you have no public page we can simplify things, the autoLogin mode enable you to just assume the user is always logged in and that every page implicitely requires authentication. &#x20;
+
 {% tabs %}
 {% tab title="Framwork Agnostic" %}
+Here the `oidc` object will always be of type Oidc.UserLoggedIn, there is no need to check `if( oidc.isUserLoggedIn )` anywhere.
+
 ```typescript
 import { createOidc } from "oidc-spa/core";
 
