@@ -5,18 +5,20 @@ icon: shield
 
 # Auto Login
 
-Auto Login is a mode in oidc-spa designed for applications where every page requires authentication.
+Auto Login is a mode in **oidc-spa** designed for applications where **every page requires authentication**.
 
-This is typically the case for admin dashboards or any internal tool that do not need "marketing" pages.
+This is common for admin dashboards or internal tools that don’t expose any public or “marketing” pages.
 
-When Auto Login is enabled, visiting your application automatically redirects the user to the IdP’s login page if no active session is detected.
+When Auto Login is enabled, visiting your application automatically redirects the user to the IdP’s login page whenever no active session is detected.
 
-The purpose of this mode is to simplify the auth related mental model of your app, in the regular mode, the one where you have public page you need to:
+The goal of this mode is to simplify your app’s authentication model.  
+In the regular mode, where you *do* have public pages, you need to:
 
-* Enforce login on certain pages: Call `login()`, use `enfoceLogin()` or `withLoginEnforced()`
-* You need to explicitely check if the user is logged in or not. &#x20;
+- Enforce login on specific routes: call `login()`, use `enforceLogin()`, or wrap pages with `withLoginEnforced()`.
+- Explicitly check whether the user is logged in or not.
 
-But if you have no public page we can simplify things, the autoLogin mode enable you to just assume the user is always logged in and that every page implicitely requires authentication. &#x20;
+But if your app has **no public pages**, all of this can be simplified.  
+Auto Login lets you assume the user is always logged in, and that **every page implicitly requires authentication**.
 
 {% tabs %}
 {% tab title="Framwork Agnostic" %}
