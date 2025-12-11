@@ -13,7 +13,7 @@ When Auto Login is enabled, visiting your application automatically redirects th
 
 The purpose of this mode is to simplify the auth related mental model of your app, in the regular mode, the one where you have public page you need to:
 
-* Enforce login on certain pages: Call login(), use enfoceLogin( ) or withLoginEnforced()
+* Enforce login on certain pages: Call `login()`, use `enfoceLogin()` or `withLoginEnforced()`
 * You need to explicitely check if the user is logged in or not. &#x20;
 
 But if you have no public page we can simplify things, the autoLogin mode enable you to just assume the user is always logged in and that every page implicitely requires authentication. &#x20;
