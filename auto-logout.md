@@ -126,17 +126,25 @@ In that case, you must manually specify the duration using `idleSessionLifetimeI
 import { createOidc } from "oidc-spa/core";
 
 const oidc = await createOidc({
-  // ...
-  
-  // ⚠️ Read carefully:
-  // Only use this if your IdP does not expose its session timeout policy.
-  // (Optional) Hard-code the number of seconds of inactivity before auto logout.
-  idleSessionLifetimeInSeconds: 300, // 5 minutes
-    
-  // (Optional) Where to redirect after auto logout:
-  autoLogoutParams: { redirectTo: "current page" } // Default (recommended)
-  // autoLogoutParams: { redirectTo: "home" }
-  // autoLogoutParams: { redirectTo: "specific url", url: "/a-page" }
+    // ...
+
+    // ⚠️ Read carefully:
+    // Only use this if your IdP does not expose its session timeout policy.
+    // (Optional) Hard-code the number of seconds of inactivity before auto logout.
+    idleSessionLifetimeInSeconds: 300, // 5 minutes
+
+    // (Optional) Where to redirect after auto logout:
+    // autoLogoutParams: { redirectTo: "current page" } // Default
+    // autoLogoutParams: { redirectTo: "home" }
+    autoLogoutParams: {
+        redirectTo: "specific url",
+        get url() {
+            // This let's you create a page that inform the user they have beel
+            // logged out due to inactivity and display a button to come back
+            // where they left off at the time of autoLogout.
+            return `/activity-logout?return_url=${location.href}`;
+        }
+    }
 });
 ```
 {% endtab %}
@@ -156,10 +164,18 @@ bootstrapOidc({
   // (Optional) Hard-code the number of seconds of inactivity before auto logout.
   idleSessionLifetimeInSeconds: 300, // 5 minutes
     
-  // (Optional) Redirect behavior after auto logout:
-  autoLogoutParams: { redirectTo: "current page" } // Default (recommended)
+  // (Optional) Where to redirect after auto logout:
+  // autoLogoutParams: { redirectTo: "current page" } // Default
   // autoLogoutParams: { redirectTo: "home" }
-  // autoLogoutParams: { redirectTo: "specific url", url: "/a-page" }
+  autoLogoutParams: {
+      redirectTo: "specific url",
+      get url() {
+          // This let's you create a page that inform the user they have beel
+          // logged out due to inactivity and display a button to come back
+          // where they left off at the time of autoLogout.
+          return `/activity-logout?return_url=${location.href}`;
+      }
+  }
 });
 ```
 {% endcode %}
@@ -183,9 +199,18 @@ export const appConfig: ApplicationConfig = {
       // (Optional) Hard-code the number of seconds of inactivity before auto logout.
       idleSessionLifetimeInSeconds: 300, // 5 minutes
     
-      // autoLogoutParams: { redirectTo: "current page" } // Default (recommended)
+      // (Optional) Where to redirect after auto logout:
+      // autoLogoutParams: { redirectTo: "current page" } // Default
       // autoLogoutParams: { redirectTo: "home" }
-      // autoLogoutParams: { redirectTo: "specific url", url: "/a-page" }
+      autoLogoutParams: {
+          redirectTo: "specific url",
+          get url() {
+              // This let's you create a page that inform the user they have beel
+              // logged out due to inactivity and display a button to come back
+              // where they left off at the time of autoLogout.
+              return `/activity-logout?return_url=${location.href}`;
+          }
+      }
     })
   ]
 }
@@ -219,75 +244,7 @@ const { unsubscribeFromAutoLogoutCountdown } =
 ```
 {% endtab %}
 
-{% tab title="TanStack Start" %}
-{% code title="src/components/AutoLogoutWarningOverlay.tsx" %}
-```tsx
-import { createOidcComponent } from "@/oidc";
-
-export const AutoLogoutWarningOverlay = createOidcComponent({
-  component: () => {
-    const { autoLogoutState } = AutoLogoutWarningOverlay.useOidc();
-
-    // Default: starts displaying 45 seconds before auto logout
-    if (!autoLogoutState.shouldDisplayWarning) {
-      return null;
-    }
-
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 backdrop-blur">
-        <div
-          role="alertdialog"
-          aria-live="assertive"
-          aria-modal="true"
-          className="w-full max-w-sm rounded-2xl border border-slate-800 bg-slate-900 p-6 text-center shadow-xl shadow-black/30"
-        >
-          <p className="text-sm font-medium text-slate-400">
-            Are you still there?
-          </p>
-          <p className="mt-2 text-lg font-semibold text-white">
-            You will be logged out in {autoLogoutState.secondsLeftBeforeAutoLogout}s
-          </p>
-        </div>
-      </div>
-    );
-  }
-});
-```
-{% endcode %}
-
-Then mount it in your root layout:
-
-<pre class="language-tsx" data-title="src/routes/__root.tsx"><code class="lang-tsx">import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
-import Header from "@/components/Header";
-<strong>import { AutoLogoutWarningOverlay } from "@/components/AutoLogoutWarningOverlay";
-</strong>
-export const Route = createRootRoute({
-  head: () => ({
-    meta: [/* ... */],
-    links: [/* ... */]
-  }),
-  shellComponent: RootDocument
-});
-
-function RootDocument({ children }: { children: React.ReactNode }) {
-  return (
-    &#x3C;html lang="en">
-      &#x3C;head>
-        &#x3C;HeadContent />
-      &#x3C;/head>
-      &#x3C;body>
-        &#x3C;Header />
-        &#x3C;main>{children}&#x3C;/main>
-<strong>        &#x3C;AutoLogoutWarningOverlay />
-</strong>        &#x3C;Scripts />
-      &#x3C;/body>
-    &#x3C;/html>
-  );
-}
-</code></pre>
-{% endtab %}
-
-{% tab title="React SPAs" %}
+{% tab title="React" %}
 {% code title="src/components/AutoLogoutWarningOverlay.tsx" %}
 ```tsx
 import { useOidc } from "~/oidc";
