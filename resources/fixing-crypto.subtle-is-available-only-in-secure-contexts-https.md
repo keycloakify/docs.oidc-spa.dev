@@ -17,35 +17,57 @@ In those cases, you can work around the issue by installing a polyfill such as [
 ## 1. Install the polyfill
 
 ```bash
-npm install --save webcrypto-liner
-```
-
-***
-
-## 2. Add required scripts to your HTML head
-
-Edit your `public.html` (or the file that defines your HTML head, e.g. in TanStack Start or React Router framework mode) and add the following scripts:
-
-```html
-<head>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.7.0/polyfill.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/asmCrypto/2.3.2/asmcrypto.all.es5.min.js"></script>
-  <script src="https://cdn.rawgit.com/indutny/elliptic/master/dist/elliptic.min.js"></script>
-</head>
+npm install --save webcrypto-liner-shim
 ```
 
 ***
 
 ## 3. Import the shim
 
+{% tabs %}
+{% tab title="Framework Agnostic" %}
+<pre class="language-typescript" data-title="src/oidc.ts"><code class="lang-typescript">import { createOidc } from "oidc-spa/core";
+
+<strong>if( crypto.subtle === undefined ){
+</strong><strong>    await import("webcrypto-liner-shim");
+</strong><strong>}
+</strong>
+const oidc = await createOidc({
+    issuerUri: "...",
+    clientId: "..."
+});
+</code></pre>
+{% endtab %}
+
+{% tab title="React" %}
 {% code title="src/oidc.ts" %}
 ```typescript
-import "webcrypto-liner/build/webcrypto-liner.shim";
+import { oidcSpa } from "oidc-spa/react-spa";
+
+export const {
+    bootstrapOidc,
+    //...
+} = oidcSpa
+    .withExpectedDecodedIdTokenShape({ /*...*/ })
+    .createUtils();
+
+(async ()=> {
+
+    if( crypto.subtle === undefined ){
+        await import("webcrypto-liner-shim");
+    }
+
+    bootstrapOidc({
+          implementation: "real",
+          issuerUri: import.meta.env.VITE_OIDC_ISSUER_URI,
+          clientId: import.meta.env.VITE_OIDC_CLIENT_ID
+    });
+
+})();
+
 // ...
+
 ```
 {% endcode %}
-
-***
-
-✅ **Summary:**\
-If you see the error `Crypto.subtle is available only in secure contexts (HTTPS)` in a non-HTTPS environment, install `webcrypto-liner`. This allows `oidc-spa` to work even on local or intranet setups without HTTPS.
+{% endtab %}
+{% endtabs %}
