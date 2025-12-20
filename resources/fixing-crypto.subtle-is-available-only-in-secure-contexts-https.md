@@ -5,6 +5,12 @@ icon: file-lock
 
 # Fixing Crypto.subtle is available only in secure contexts (HTTPS)
 
+{% hint style="success" %}
+Starting with oidc-spa 8.6.18, polyfills for Crypto.subtle are automatically loaded when needed.&#x20;
+
+Nothing to do, evrything will work even if your app is deployed without SSL.
+{% endhint %}
+
 `oidc-spa` internally relies on the [`Crypto.subtle`](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto) browser API for cryptographic operations.\
 This API is only available when your app is served over **HTTPS** or from **localhost**.
 
