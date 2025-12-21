@@ -40,7 +40,7 @@ In Keycloak, the OIDC issuer URI follows this format:
 
 ### `clientId`
 
-The `clientId` is usually something like '<mark style="color:yellow;">myapp</mark>'. Follow these steps to create a suitable client for your SPA:
+The `clientId` is usually something like '<mark style="color:yellow;">myapp</mark>'. Follow these steps to create a client for your app:
 
 1. Open **https://**<mark style="color:blue;">**\<KC\_DOMAIN>**</mark><mark style="color:purple;">**\<KC\_RELATIVE\_PATH>**</mark>**/admin/master/console**.
 2. Log in as an administrator.
