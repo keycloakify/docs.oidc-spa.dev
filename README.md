@@ -10,7 +10,13 @@ If you're having issues do not hesitate to [reach out on Discord](https://discor
 
 ## What this is
 
-oidc-spa is a framework-agnostic OpenID Connect client for browser-centric web applications implementing the [Authorization Code Flow with PKCE](resources/why-no-client-secret.md).
+oidc-spa is a framework-agnostic OpenID Connect client for browser-centric web applications, implementing the [Authorization Code Flow with PKCE](resources/why-no-client-secret.md), and optionally providing OAuth JWT access token validation utilities for JavaScript backends.  \
+\
+It’s a single authentication library you can use to integrate with Keycloak, Microsoft Entra ID, Auth0, Clerk, etc.
+
+<details>
+
+<summary>But in details? I want to understand the tradeoffs.</summary>
 
 It work with any spec compliant OIDC provider like [Keycloak](https://www.keycloak.org/), [Auth0](https://auth0.com/) or [Microsoft EntraID](https://www.microsoft.com/fr-fr/security/business/identity-access/microsoft-entra-id) and replace provider-specific SDKs like [keycloak-js](https://www.npmjs.com/package/keycloak-js), [auth0-spa-js](https://www.npmjs.com/package/@auth0/auth0-spa-js), or [@azure/msal-browser](https://www.npmjs.com/package/@azure/msal-browser) with one unified API, freeing your app from vendor lock-in and making it deployable in any IT system. Concretly this mean that it let you build an app and sell it to different companies ensuring they will be able to deploy it in their environement regardless of what auth plafrom they use internally.
 
@@ -31,9 +37,7 @@ oidc-spa exposes real OIDC primitives, decoded ID tokens, access tokens, and cla
 
 It’s infra-light, open-standard, transparent, and ready to work in minutes.
 
-<details>
-
-<summary>But in details? I want to understand the tradeoffs.</summary>
+***
 
 In the modern tech ecosystem, no one “rolls their own auth” anymore, not even OpenAI or Vercel.\
 Authentication has become a **platform concern**. Whether you host your own identity provider like **Keycloak**, or use a service such as **Auth0** or **Microsoft Entra ID**, authentication today means **redirecting users to your auth provider**.
@@ -111,8 +115,6 @@ At its core, oidc-spa is a **framework-agnostic solution for client-centric web 
 In an effort to minimize the amount of glue code you have to write we also provide framework-specific adapters for popular environments.
 
 Pick one:
-
-> [TanStack Start](https://tanstack.com/start) has a special status since your getting both the frontend and backend capabilities of oidc-spa integrated in a single adapter!
 
 {% content-ref url="integration-guides/tanstack-router-start/" %}
 [tanstack-router-start](integration-guides/tanstack-router-start/)
