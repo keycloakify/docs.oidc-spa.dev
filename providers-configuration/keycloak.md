@@ -31,7 +31,7 @@ In Keycloak, the OIDC issuer URI follows this format:
   Check your Keycloak server configuration; this parameter is typically set using an environment variable:\
   Example: `-e KC_HTTP_RELATIVE_PATH=/auth`
 * <mark style="color:green;">**\<REALM\_NAME>**</mark>: The name of your realm (e.g., **myrealm**).\
-  🔹 **Important:** Always create a dedicated realm for your organization—**never use the master realm**.\
+  🔹 **Important:** Always create a dedicated realm for your organization, **never use the master realm**.\
   To create a new realm:
   1. Open **https://**<mark style="color:blue;">**\<KC\_DOMAIN>**</mark><mark style="color:purple;">**\<KC\_RELATIVE\_PATH>**</mark>**/admin/master/console**.
   2. Log in as an administrator.
