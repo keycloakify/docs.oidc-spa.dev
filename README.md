@@ -16,7 +16,7 @@ It’s a single authentication library you can use to integrate with Keycloak, M
 
 <details>
 
-<summary>But in details? I want to understand the tradeoffs.</summary>
+<summary>But in details?</summary>
 
 It work with any spec compliant OIDC provider like [Keycloak](https://www.keycloak.org/), [Auth0](https://auth0.com/) or [Microsoft EntraID](https://www.microsoft.com/fr-fr/security/business/identity-access/microsoft-entra-id) and replace provider-specific SDKs like [keycloak-js](https://www.npmjs.com/package/keycloak-js), [auth0-spa-js](https://www.npmjs.com/package/@auth0/auth0-spa-js), or [@azure/msal-browser](https://www.npmjs.com/package/@azure/msal-browser) with one unified API, freeing your app from vendor lock-in and making it deployable in any IT system. Concretly this mean that it let you build an app and sell it to different companies ensuring they will be able to deploy it in their environement regardless of what auth plafrom they use internally.
 
