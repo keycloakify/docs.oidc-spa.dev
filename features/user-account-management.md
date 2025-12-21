@@ -171,12 +171,12 @@ function ProtectedPage() {
 
 {% tab title="Angular" %}
 ```typescript
-upsatePassword = ()=> this.oidc.goToAuthServer({
+updatePassword = ()=> this.oidc.goToAuthServer({
     extraQueryParams: { kc_action: "UPDATE_PASSWORD" }
 });
 ```
 
-```html
+```angular-html
 @if( oidc.backFromAuthServer?.extraQueryParams.kc_action === "UPDATE_PASSWORD" ){          
 @if ( oidc.backFromAuthServer.result.kc_action_status === "success" ){
 <p>Password successfully updated</p>
@@ -184,7 +184,6 @@ upsatePassword = ()=> this.oidc.goToAuthServer({
 <P>Password unchanged</p>
 }
 }
-            
 ```
 {% endtab %}
 {% endtabs %}
