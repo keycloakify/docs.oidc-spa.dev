@@ -100,7 +100,7 @@ If that all sounds good to you…\
 ## Configuring your IdP
 
 You can skip this for now since all our examples comes with demo Keycloak/Auth0/EntraID/Google accounts that you can freely use for development.\
-Eventually however you'll need to configure your own account/instance.
+Eventually however you'll need to configure your own credentials.
 
 {% content-ref url="providers-configuration/provider-configuration.md" %}
 [provider-configuration.md](providers-configuration/provider-configuration.md)
