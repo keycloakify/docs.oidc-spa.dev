@@ -1,5 +1,5 @@
 ---
-description: 'RFC 9449: OAuth 2.0 Demonstrating Proof-of-Possession'
+description: OAuth 2.0 Demonstrating Proof-of-Possession
 icon: receipt
 ---
 
@@ -13,7 +13,7 @@ Instead, each request must also include a cryptographic proof showing possession
 As a result, access tokens become **much less sensitive**:\
 if a token leaks, it cannot be replayed from another device or context without the corresponding private key.
 
-DPoP is supported by **Keycloak** and an increasing number of other identity providers and resource server stacks.
+DPoP [is supported by **Keycloak**](https://www.keycloak.org/2025/10/dpop-support-26-4) and an increasing number of other identity providers and resource server stacks.
 
 ***
 
@@ -21,8 +21,8 @@ DPoP is supported by **Keycloak** and an increasing number of other identity pro
 
 oidc-spa exposes a single configuration option to control DPoP behavior:
 
-* **`"disabled"`**: never use DPoP (default)
 * **`"auto"`**: enable DPoP only if supported by the authorization server, otherwise fall back to classic Bearer tokens (Recommended)
+* **`"disabled"`**: never use DPoP (default)
 * **`"enabled"`**: require DPoP support; oidc-spa will refuse to start if the authorization server does not support it. [See support history in Keycloak](https://www.keycloak.org/2025/10/dpop-support-26-4).
 
 {% tabs %}
@@ -68,7 +68,7 @@ Enabling DPoP in oidc-spa does **not** require changes elsewhere in your stack:
 
 * **Identity Provider (Keycloak or other)**\
   No configuration change is required.\
-  If the authorization server supports DPoP, oidc-spa will detect and use it.
+  With `dpop: "auto"`, If the authorization server supports DPoP, oidc-spa will detect and use it.
 * **Frontend codebase**\
   No changes are required.\
   Authenticated requests continue to use `Authorization: Bearer <access_token>` and are automatically upgraded at runtime.
