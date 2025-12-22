@@ -27,6 +27,7 @@
 
 * [Auto Login](auto-login.md)
 * [Auto Logout](auto-logout.md)
+* [DPoP](features/dpop.md)
 * [Token Exfiltration Defence](features/token-exfiltration-defence.md)
 * [Debug and Error Handling](error-management.md)
   * [Error Handling - No AutoLogin](features/error-management/error-handling-no-autologin.md)
