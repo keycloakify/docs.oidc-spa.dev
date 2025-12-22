@@ -1,21 +1,19 @@
 ---
-description: 'RFC 9449: OAuth 2.0 Demonstrating Proof-of-Possession (DPoP)'
+description: 'RFC 9449: OAuth 2.0 Demonstrating Proof-of-Possession'
 icon: receipt
 ---
 
 # DPoP
 
-Demonstrating Proof of Possesion in a nutshell is a protocol level security defence that essentially makes the access tokens unusable, even if intercepted. &#x20;
+[Demonstrating Proof-of-Possesion](https://auth0.com/docs/secure/sender-constraining/demonstrating-proof-of-possession-dpop) is a protocol level security defense that make it so that access token are not suficient on their own to access resource server. It makes access tokens much less sensible and afford you the peice of mind to know that if they ever leak, concequence are very limited. &#x20;
 
-It's widely supported, by Keycloak and most modern backend token validation library. &#x20;
-
-oidc-spa enables you to fully transparently enable DPoP without changing a single line of code in your application! &#x20;
+It's supported by Keycloak and many other IdPs. &#x20;
 
 ## Enabling DPoP
 
 {% hint style="info" %}
-The only reason DPoP isn't automatically enabled when supported by the auth server is that some older token validation libraries does not support it yet.  \
-But if you use oidc-spa/server on the backend or any modern library to validate tokens you can and should set dpop: "auto"
+The only reason DPoP isn't automatically enabled in oidc-spa is that some older token validation libraries might not support it yet.  \
+If you use oidc-spa/server or another modern library to validate tokens you can and should set dpop: "auto"
 {% endhint %}
 
 {% tabs %}
@@ -67,23 +65,21 @@ Oidc.provide({
 
 ## How it works
 
-When DPoP is enabled, oidc-spa will automatically update every outgoing request made with fetch or XMLHttpRequest and replace:
+When DPoP is enabled, oidc-spa will automatically upgrade any outgoing authed request your app sends: &#x20;
 
-{% code title="Request Header" %}
+{% code title="Request Header - Set by you" %}
 ```
 Authorization: Bearer <Access Token>
 ```
 {% endcode %}
 
-With:
-
-{% code title="Request Header" %}
+{% code title="Request Header - Actually goes out" %}
 ```
 Authorization: DPoP <Access Token>
 DPoP:          <DPoP Proof>
 ```
 {% endcode %}
 
-It will also track the nonce issued by the server in the response header.  <br>
+It will also track DPoP nonce that might be issued by resource servers in response headers. &#x20;
 
-The fetch and XMLHttpRequest interceptors are registered either via the Vite plugin or during the execution of oidcEarlyInit(). It's completely transparent to you. You can forget about DPoP and should still send your requests wtih Authorization: \`Bearer ${accessToken}\`. &#x20;
+To accheve that transparently, oidc-spa register a fetch() and XMLHttpRequest interceptor via the Vite plugin or during the execution of oidcEarlyInit(). It's completely transparent to you. You can forget about DPoP and just continue sending your requests like you used to wtih `` Authorization: `Bearer ${accessToken}` ``. &#x20;

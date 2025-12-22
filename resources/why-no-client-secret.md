@@ -71,8 +71,8 @@ This introduces a potential risk: **XSS and supply chain attacks**, where malici
 
 ## How `oidc-spa` Mitigates the Risks of Token Exposure
 
-{% content-ref url="../features/token-exfiltration-defence.md" %}
-[token-exfiltration-defence.md](../features/token-exfiltration-defence.md)
+{% content-ref url="token-exfiltration-defence.md" %}
+[token-exfiltration-defence.md](token-exfiltration-defence.md)
 {% endcontent-ref %}
 
 ## Opinionated Conclusion

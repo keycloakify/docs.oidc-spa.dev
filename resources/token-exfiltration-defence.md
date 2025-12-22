@@ -6,8 +6,9 @@ icon: shield-check
 # Token Exfiltration Defence
 
 {% hint style="warning" %}
-The API of enableTokenExfiltrationDefense is not stable yet.  \
-We're still actively working on those defences. They will evolves in the comming weeks. &#x20;
+The API of enableTokenExfiltrationDefense is not stable yet. &#x20;
+
+UPDATE 22 Dec 25: oidc-spa now transparently [supports DPoP](../features/dpop.md) some defences described here are somewhat redundant. It's going to be reworked. &#x20;
 {% endhint %}
 
 oidc-spa implements a comprehensive, defense-in-depth strategy to protect against token exfiltration during a successful XSS or supply-chain attack.
@@ -110,8 +111,8 @@ They can import your `fetchWithAuth()` implementation (exposed somwere ine the h
 
 The good news is that XSS can be very effectively blocked with strict Content-Security-Policy (CSP). And you should absolutely enable one.
 
-{% content-ref url="../resources/csp-configuration.md" %}
-[csp-configuration.md](../resources/csp-configuration.md)
+{% content-ref url="csp-configuration.md" %}
+[csp-configuration.md](csp-configuration.md)
 {% endcontent-ref %}
 
 ⸻
