@@ -19,17 +19,11 @@ DPoP is supported by **Keycloak** and an increasing number of other identity pro
 
 ## Enabling DPoP
 
-{% hint style="info" %}
-DPoP is not enabled by default in oidc-spa because some **older token validation libraries and gateways do not support DPoP-bound access tokens yet**.
-
-If your resource server uses **oidc-spa/server** or another modern validation library that supports DPoP, you can safely enable it.&#x20;
-{% endhint %}
-
 oidc-spa exposes a single configuration option to control DPoP behavior:
 
 * **`"disabled"`**: never use DPoP (default)
-* **`"enabled"`**: require DPoP support; oidc-spa will refuse to start if the authorization server does not support it
-* **`"auto"`**: enable DPoP only if supported by the authorization server, otherwise fall back to classic Bearer tokens
+* **`"auto"`**: enable DPoP only if supported by the authorization server, otherwise fall back to classic Bearer tokens (Recommended)
+* **`"enabled"`**: require DPoP support; oidc-spa will refuse to start if the authorization server does not support it. [See support history in Keycloak](https://www.keycloak.org/2025/10/dpop-support-26-4).
 
 {% tabs %}
 {% tab title="Framework Agnostic" %}
@@ -38,10 +32,6 @@ oidc-spa exposes a single configuration option to control DPoP behavior:
 createOidc({
     // ...
     dpop: "auto"
-    /* OR:
-    dpop: "disabled" // Default
-    dpop: "enabled"  // Fail fast if DPoP is not supported
-    */
 });
 ```
 {% endcode %}
@@ -53,10 +43,6 @@ createOidc({
 bootstrapOidc({
     // ...
     dpop: "auto"
-    /* OR:
-    dpop: "disabled" // Default
-    dpop: "enabled"  // Fail fast if DPoP is not supported
-    */
 });
 ```
 {% endcode %}
@@ -68,10 +54,6 @@ bootstrapOidc({
 Oidc.provide({
   // ...
   dpop: "auto"
-  /* OR:
-  dpop: "disabled" // Default
-  dpop: "enabled"  // Fail fast if DPoP is not supported
-  */
 });
 ```
 {% endcode %}

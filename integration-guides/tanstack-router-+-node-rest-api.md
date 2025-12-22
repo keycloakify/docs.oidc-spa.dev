@@ -11,6 +11,10 @@ If you’re using TanStack Start, token validation is already integrated into th
 
 With **oidc-spa**, your frontend is meant to communicate with OAuth-enabled backend services, such as REST APIs, tRPC servers, or WebSocket endpoints, that accept **JSON Web Tokens (JWTs)** as access tokens.
 
+<details>
+
+<summary>Tell me more</summary>
+
 These tokens are sent in the `Authorization` header and allow the backend to **validate**, **decode**, and **use the claims** to perform user-specific actions.
 
 There are countless libraries for verifying JWTs, but if you’re building your backend in **JavaScript** (Node, Deno, or Web Workers), **oidc-spa** also provides a built-in utility to validate and decode access tokens that your client attaches to requests.
@@ -27,6 +31,8 @@ This is a huge advantage for edge runtimes, since identity and authorization can
 To authorize certain routes or actions, you can perform additional checks on claims like `groups` or `realm_access.roles`.
 
 And because access tokens issued through the Authorization Code Flow + PKCE are short-lived (typically 5 minutes or less), decoupling session lifetime from token validity isn’t an issue in practice.
+
+</details>
 
 ## Example with Express and Hono
 
