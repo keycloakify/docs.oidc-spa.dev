@@ -12,8 +12,8 @@ It's supported by Keycloak and many other IdPs. &#x20;
 ## Enabling DPoP
 
 {% hint style="info" %}
-The only reason DPoP isn't automatically enabled in oidc-spa is that some older token validation libraries might not support it yet.  \
-If you use oidc-spa/server or another modern library to validate tokens you can and should set dpop: "auto"
+The only reason DPoP isn't enabled by default in oidc-spa is that some older token validation libraries might not support it yet.  \
+But if you use oidc-spa/server or another modern library to validate tokens you can set dpop: "auto"
 {% endhint %}
 
 {% tabs %}
