@@ -5,31 +5,31 @@ icon: receipt
 
 # DPoP
 
-[Demonstrating Proof-of-Possession (DPoP)](https://auth0.com/docs/secure/sender-constraining/demonstrating-proof-of-possession-dpop) is a protocol-level security mechanism defined in **RFC 9449**.
+[Demonstrating Proof-of-Possession (DPoP)](https://auth0.com/docs/secure/sender-constraining/demonstrating-proof-of-possession-dpop) is a protocol-level security mechanism defined in [**RFC 9449**](https://datatracker.ietf.org/doc/html/rfc9449).
 
-It ensures that **an access token alone is no longer sufficient** to access a resource server.  
+It ensures that **an access token alone is no longer sufficient** to access a resource server.\
 Instead, each request must also include a cryptographic proof showing possession of a private key held by the client.
 
-As a result, access tokens become **much less sensitive**:  
+As a result, access tokens become **much less sensitive**:\
 if a token leaks, it cannot be replayed from another device or context without the corresponding private key.
 
 DPoP is supported by **Keycloak** and an increasing number of other identity providers and resource server stacks.
 
----
+***
 
 ## Enabling DPoP
 
 {% hint style="info" %}
 DPoP is not enabled by default in oidc-spa because some **older token validation libraries and gateways do not support DPoP-bound access tokens yet**.
 
-If your resource server uses **oidc-spa/server** or another modern validation library that supports DPoP, you can safely enable it.
+If your resource server uses **oidc-spa/server** or another modern validation library that supports DPoP, you can safely enable it.&#x20;
 {% endhint %}
 
 oidc-spa exposes a single configuration option to control DPoP behavior:
 
-- **`"disabled"`**: never use DPoP (default)
-- **`"enabled"`**: require DPoP support; oidc-spa will refuse to start if the authorization server does not support it
-- **`"auto"`**: enable DPoP only if supported by the authorization server, otherwise fall back to classic Bearer tokens
+* **`"disabled"`**: never use DPoP (default)
+* **`"enabled"`**: require DPoP support; oidc-spa will refuse to start if the authorization server does not support it
+* **`"auto"`**: enable DPoP only if supported by the authorization server, otherwise fall back to classic Bearer tokens
 
 {% tabs %}
 {% tab title="Framework Agnostic" %}
@@ -78,7 +78,23 @@ Oidc.provide({
 {% endtab %}
 {% endtabs %}
 
----
+***
+
+## What does enabling DPoP require?
+
+Enabling DPoP in oidc-spa does **not** require changes elsewhere in your stack:
+
+* **Identity Provider (Keycloak or other)**\
+  No configuration change is required.\
+  If the authorization server supports DPoP, oidc-spa will detect and use it.
+* **Frontend codebase**\
+  No changes are required.\
+  Authenticated requests continue to use `Authorization: Bearer <access_token>` and are automatically upgraded at runtime.
+* **Backend API / resource server**\
+  No changes are required.\
+  Even if you are not using `oidc-spa/server`, a correct implementation of OAuth 2.0 token validation will reject DPoP-bound access tokens when the corresponding DPoP proof is missing or invalid.
+
+In other words, **this configuration option is the only change required to enable DPoP support in oidc-spa**.
 
 ## How it works
 
@@ -102,13 +118,15 @@ DPoP:          <DPoP proof JWT>
 {% endcode %}
 
 In addition, oidc-spa automatically:
-- generates and signs DPoP proofs
-- tracks and reuses DPoP nonces issued by resource servers
-- retries requests when a nonce is required
+
+* generates and signs DPoP proofs
+* tracks and reuses DPoP nonces issued by resource servers
+* retries requests when a nonce is required
 
 To achieve this transparently, oidc-spa installs **`fetch()` and `XMLHttpRequest` interceptors**:
-- via the Vite plugin, or
-- during the execution of `oidcEarlyInit()`
 
-From your application’s point of view, **nothing changes**:  
+* via the Vite plugin, or
+* during the execution of `oidcEarlyInit()`
+
+From your application’s point of view, **nothing changes**:\
 you keep using `Authorization: Bearer <access_token>`, and oidc-spa handles DPoP internally.
