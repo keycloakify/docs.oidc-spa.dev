@@ -87,7 +87,7 @@ Outside of these rare cases, you never need to call `renewTokens()` manually.
 {% tabs %}
 {% tab title="Vanilla API" %}
 ```typescript
-import { createOidc } from "oidc-spa";
+import { createOidc } from "oidc-spa/core";
 
 const prOidc = await createOidc({ ... });
 
@@ -100,7 +100,7 @@ export function renewTokens(){
       throw new Error("Logical error");
    }
    
-   oidc.renewToken(
+   oidc.renewTokens(
       // Optionally you can pass extra params that will be added 
       // to the body of the POST request to the openid-connect/token endpoint.
       // { extraTokenParams: { electedCustomer: "customer123" } }
@@ -140,7 +140,7 @@ export function renewTokens(){
 
    const oidc = await getOidc({ assert: "user logged in" });
    
-   oidc.renewToken(
+   oidc.renewTokens(
       // Optionally you can pass extra params that will be added 
       // to the body of the POST request to the openid-connect/token endpoint.
       // { extraTokenParams: { electedCustomer: "customer123" } }
@@ -168,25 +168,16 @@ getOidc().then(oidc => {
 });
 ```
 
-Inside of a React Component (not valid for real world usecase, just for diagnostic)
-
 ```tsx
 import { useState, useEffect } from "react";
 import { assert } from "tsafe/assert";
-import { useOidc, getOidc } from "../oidc";
+import { useOidc, getOidc } from "~/oidc";
 
-export function LogTokens() {
-    const { decodedIdToken, renewTokens } = useOidc({ assert: "user logged in" });
-
-    const { decodedAccessToken } = useDecodedAccessToken();
-
-
+export function MyComponent() {
+    const { renewTokens } = useOidc({ assert: "user logged in" });
     return (
         <>
-            <h3>Decoded ID Token:</h3>
-            <pre>{JSON.stringify(decodedIdToken, null, 2)}</pre>
-            <br />
-            <button onClick={() => renewTokens()}>Refresh Tokens</button>
+            <button onClick={() => renewTokens()}>Rotate tokens</button>
         </>
     );
 }
