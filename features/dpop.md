@@ -5,27 +5,42 @@ icon: receipt
 
 # DPoP
 
-[Demonstrating Proof-of-Possesion](https://auth0.com/docs/secure/sender-constraining/demonstrating-proof-of-possession-dpop) is a protocol level security defense that make it so that access token are not suficient on their own to access resource server. It makes access tokens much less sensible and afford you the peice of mind to know that if they ever leak, concequence are very limited. &#x20;
+[Demonstrating Proof-of-Possession (DPoP)](https://auth0.com/docs/secure/sender-constraining/demonstrating-proof-of-possession-dpop) is a protocol-level security mechanism defined in **RFC 9449**.
 
-It's supported by Keycloak and many other IdPs. &#x20;
+It ensures that **an access token alone is no longer sufficient** to access a resource server.  
+Instead, each request must also include a cryptographic proof showing possession of a private key held by the client.
+
+As a result, access tokens become **much less sensitive**:  
+if a token leaks, it cannot be replayed from another device or context without the corresponding private key.
+
+DPoP is supported by **Keycloak** and an increasing number of other identity providers and resource server stacks.
+
+---
 
 ## Enabling DPoP
 
 {% hint style="info" %}
-The only reason DPoP isn't enabled by default in oidc-spa is that some older token validation libraries might not support it yet.  \
-But if you use oidc-spa/server or another modern library to validate tokens you can set dpop: "auto"
+DPoP is not enabled by default in oidc-spa because some **older token validation libraries and gateways do not support DPoP-bound access tokens yet**.
+
+If your resource server uses **oidc-spa/server** or another modern validation library that supports DPoP, you can safely enable it.
 {% endhint %}
+
+oidc-spa exposes a single configuration option to control DPoP behavior:
+
+- **`"disabled"`**: never use DPoP (default)
+- **`"enabled"`**: require DPoP support; oidc-spa will refuse to start if the authorization server does not support it
+- **`"auto"`**: enable DPoP only if supported by the authorization server, otherwise fall back to classic Bearer tokens
 
 {% tabs %}
 {% tab title="Framework Agnostic" %}
 {% code title="src/oidc.ts" %}
-```typescript
-createOidc({ 
+```ts
+createOidc({
     // ...
-    dpop: "auto" // Enabled if supported by the Auth server you are using.
-    /* OR: 
-    dpop: "disable" // Default
-    dpop: "enabled" // oidc-spa will refuse to start if the Auth server does not support it.
+    dpop: "auto"
+    /* OR:
+    dpop: "disabled" // Default
+    dpop: "enabled"  // Fail fast if DPoP is not supported
     */
 });
 ```
@@ -34,13 +49,13 @@ createOidc({
 
 {% tab title="React" %}
 {% code title="src/oidc.ts" %}
-```typescript
+```ts
 bootstrapOidc({
     // ...
-    dpop: "auto" // Enabled if supported by the Auth server you are using.
-    /* OR: 
-    dpop: "disable" // Default
-    dpop: "enabled" // oidc-spa will refuse to start if the Auth server does not support it.
+    dpop: "auto"
+    /* OR:
+    dpop: "disabled" // Default
+    dpop: "enabled"  // Fail fast if DPoP is not supported
     */
 });
 ```
@@ -49,37 +64,51 @@ bootstrapOidc({
 
 {% tab title="Angular" %}
 {% code title="src/app/app.config.ts" %}
-```typescript
+```ts
 Oidc.provide({
   // ...
-  dpop: "auto" // Enabled if supported by the Auth server you are using.
-  /* OR: 
-  dpop: "disable" // Default
-  dpop: "enabled" // oidc-spa will refuse to start if the Auth server does not support it.
+  dpop: "auto"
+  /* OR:
+  dpop: "disabled" // Default
+  dpop: "enabled"  // Fail fast if DPoP is not supported
   */
-})
+});
 ```
 {% endcode %}
 {% endtab %}
 {% endtabs %}
 
+---
+
 ## How it works
 
-When DPoP is enabled, oidc-spa will automatically upgrade any outgoing authed request your app sends: &#x20;
+When DPoP is enabled, oidc-spa automatically **upgrades authenticated HTTP requests** sent by your application.
 
-{% code title="Request Header - Set by you" %}
-```
-Authorization: Bearer <Access Token>
-```
-{% endcode %}
+You continue sending requests as usual:
 
-{% code title="Request Header - Actually goes out" %}
+{% code title="Request headers (written by your code)" %}
 ```
-Authorization: DPoP <Access Token>
-DPoP:          <DPoP Proof>
+Authorization: Bearer <access_token>
 ```
 {% endcode %}
 
-It will also track DPoP nonce that might be issued by resource servers in response headers. &#x20;
+At runtime, oidc-spa transparently transforms the request into:
 
-To accheve that transparently, oidc-spa register a fetch() and XMLHttpRequest interceptor via the Vite plugin or during the execution of oidcEarlyInit(). It's completely transparent to you. You can forget about DPoP and just continue sending your requests like you used to wtih `` Authorization: `Bearer ${accessToken}` ``. &#x20;
+{% code title="Request headers (sent over the wire)" %}
+```
+Authorization: DPoP <access_token>
+DPoP:          <DPoP proof JWT>
+```
+{% endcode %}
+
+In addition, oidc-spa automatically:
+- generates and signs DPoP proofs
+- tracks and reuses DPoP nonces issued by resource servers
+- retries requests when a nonce is required
+
+To achieve this transparently, oidc-spa installs **`fetch()` and `XMLHttpRequest` interceptors**:
+- via the Vite plugin, or
+- during the execution of `oidcEarlyInit()`
+
+From your application’s point of view, **nothing changes**:  
+you keep using `Authorization: Bearer <access_token>`, and oidc-spa handles DPoP internally.
