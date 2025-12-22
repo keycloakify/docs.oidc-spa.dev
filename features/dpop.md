@@ -101,7 +101,6 @@ DPoP:          <DPoP proof JWT>
 
 In addition, oidc-spa automatically:
 
-* generates and signs DPoP proofs
 * tracks and reuses DPoP nonces issued by resource servers
 * retries requests when a nonce is required
 
