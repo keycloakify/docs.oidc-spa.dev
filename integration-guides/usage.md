@@ -4,11 +4,11 @@ icon: person-snowboarding
 
 # Framework Agnostic Adapter
 
-This is the instructions for setting the framwork agnostic adapter of oidc-spa in a Single Page Application (SPA) project, so apps that runs entirely in the browser. &#x20;
+These are the instructions for setting up the framework-agnostic adapter for oidc-spa in a Single Page Application (SPA). These apps run entirely in the browser.
 
-If your project involves Server Side Rendering of UI components (SSR) this setup might not work. Don't hesitate to [reach out on Discord](https://discord.gg/mJdYJSdcm4). We're happy to provide assistance for specific stack!  &#x20;
+If your project uses Server-Side Rendering (SSR), this setup may not work. Don’t hesitate to [reach out on Discord](https://discord.gg/mJdYJSdcm4). We’re happy to help with your specific stack.
 
-## Instalation
+## Installation
 
 {% stepper %}
 {% step %}
@@ -48,7 +48,7 @@ bun add oidc-spa zod
 {% step %}
 ### Global Setup
 
-Pick one of those three options: &#x20;
+Pick one of these three options:
 
 {% tabs %}
 {% tab title="Vite Plugin" %}
@@ -65,42 +65,44 @@ export default defineConfig({
 {% endtab %}
 
 {% tab title="Manual - Recommended" %}
-If you are not in a Vite project and if you know what is your app entrypoint file and you can modify it. Do this: &#x20;
+If you’re not using Vite and you can edit your app’s entry file, do this.
 
-First rename your entry point file from `main.tsx` (or `main.ts` or whatever it is) to `main.lazy.tsx`.
+First, rename your entry file (for example `src/main.tsx`) to `src/main.lazy.tsx`.
 
 ```bash
-mv src/main.ts src/main.lazy.ts
+mv src/main.tsx src/main.lazy.tsx
+# Or, if you use TypeScript without JSX:
+# mv src/main.ts src/main.lazy.ts
 ```
 
-Then create a new `index.tsx` file:
+Then create a new `src/main.tsx` file:
 
-{% code title="src/index.tsx" %}
+{% code title="src/main.tsx" %}
 ```typescript
 import { oidcEarlyInit } from "oidc-spa/entrypoint";
 
 const { shouldLoadApp } = oidcEarlyInit({
-    BASE_URL: "/" // The path where your app is hosted, can also be provided later to createOidc()
+    BASE_URL: "/" // The path where your app is hosted. You can also pass it later to createOidc().
 });
 
 if (shouldLoadApp) {
     // Note: Deferring the main app import adds a few milliseconds to cold start,
     // but dramatically speeds up auth. Overall, it's a net win.
-    import("./index.lazy");
+    import("./main.lazy");
 }
 ```
 {% endcode %}
 {% endtab %}
 
 {% tab title="Manual - Easy" %}
-If you are not using Vite and can't edit the actual entrypoint of your app you can simply import and execute oidcEarlyInit in the file where you import createOidc.
+If you’re not using Vite and you can’t edit your app’s entry file, run `oidcEarlyInit()` in the same module where you call `createOidc()`.
 
 <pre class="language-typescript" data-title="src/oidc.ts"><code class="lang-typescript">import { 
 <strong>   oidcEarlyInit, 
 </strong>   createOidc 
 } from "oidc-spa/core";
 
-// Should be executed as soon as possilbe.  
+// Should run as early as possible.  
 <strong>oidcEarlyInit({ 
 </strong><strong>   BASE_URL: "/" // The path where your app is hosted
 </strong><strong>});
@@ -131,11 +133,11 @@ const prOidc = createOidc({
     issuerUri: "https://auth.your-domain.net/realms/myrealm",
     clientId: "myclient",
 
-    // Optional, The expected shape of the access token payload.  
-    // This is declarative, you declare what you will use and what
-    // infos you expect to be present in the id token.
-    // if you don't know what's in your id token open the console
-    // if you have debugLogs set to true you'll see.
+    // Optional. Expected shape of the ID token payload.
+    // This is declarative. You describe what you will use and what
+    // info you expect to be present in the ID token.
+    // If you don't know what's in your ID token, open the console.
+    // If you have debugLogs set to true, you'll see it.
     decodedIdTokenSchema: z.object({
        preferred_username: z.string(),
        name: z.string(),
@@ -158,7 +160,7 @@ const prOidc = createOidc({
     // autoLogin: true
 
     // See: https://docs.oidc-spa.dev/v/v8/features/dpop
-    dpop: "auto"
+    // dpop: "auto"
 });
 
 export async function getOidc(){
@@ -180,6 +182,13 @@ import { getOidc } from "~/oidc"; // The file you created in the previous step
 (async () => {
     const oidc = await getOidc();
 
+    // oidc-spa exports Keycloak-specific utilities:
+    const { createKeycloakUtils, isKeycloak } = await import("oidc-spa/keycloak");
+
+    const keycloakUtils = isKeycloak({ issuerUri: oidc.params.issuerUri })
+        ? createKeycloakUtils({ issuerUri: oidc.params.issuerUri })
+        : undefined;
+
     // In oidc-spa the user is either logged in or they aren't.
     // The state will never mutate without a full app reload.
     if (oidc.isUserLoggedIn) {
@@ -191,7 +200,7 @@ import { getOidc } from "~/oidc"; // The file you created in the previous step
             accessToken
         } = await oidc.getTokens();
 
-        // oidc-spa also provide the toold to create such an API.
+        // oidc-spa also provides utilities to build API clients like this.
         fetch("https://api.your-domain.net/orders", {
             headers: {
                 Authorization: `Bearer ${accessToken}`
@@ -200,24 +209,19 @@ import { getOidc } from "~/oidc"; // The file you created in the previous step
             .then(response => response.json())
             .then(orders => console.log(orders));
 
-        // To call when the user click on logout.
-        // You can also redirect to a custom url with
-        // { redirectTo: "specific url", url: "/bye" }
+        // Call when the user clicks logout.
+        // You can also redirect to a custom URL with:
+        // { redirectTo: "specific URL", url: "/bye" }
         oidc.logout({ redirectTo: "home" });
 
         const decodedIdToken = oidc.getDecodedIdToken();
 
         console.log(`Hello ${decodedIdToken.preferred_username}`);
 
-        // oidc-spa export keycloak specific tooling:
-        const { createKeycloakUtils, isKeycloak } = await import("oidc-spa/keycloak");
-
-        if (isKeycloak({ issuerUri: oidc.params.issuerUri })) {
-            const keycloakUtils = createKeycloakUtils({ issuerUri: oidc.params.issuerUri });
-
+        if (keycloakUtils) {
             // Get a link to the account page:
             const userAccountUrl = keycloakUtils.getAccountUrl({
-                clientId: oidc.params.issuerUri,
+                clientId: oidc.params.clientId,
                 validRedirectUri: oidc.params.validRedirectUri
             });
         }
@@ -225,7 +229,7 @@ import { getOidc } from "~/oidc"; // The file you created in the previous step
         // The user is not logged in.
 
         // We can call login() to redirect the user to the login/register page.
-        // This return a promise that never resolve.
+        // This returns a promise that never resolves.
         oidc.login({
             /**
              * If you are calling login() in the callback of a click event
@@ -233,30 +237,32 @@ import { getOidc } from "~/oidc"; // The file you created in the previous step
              * If you are calling this because the user has navigated to
              * a route that requires them to be logged in, set this to true.
              */
-            doesCurrentHrefRequiresAuth: false
+            doesCurrentHrefRequiresAuth: false,
             /**
-             * Optionally, you can add some extra parameter
+             * Optionally, you can add extra parameters
              * to be added to the authorization endpoint.
              */
             //extraQueryParams: { kc_idp_hint: "google", ui_locales: "fr" }
             /**
              * You can also set where to redirect the user after
-             * successful login but by default it's the current url
+             * successful login but by default it's the current URL
              * which is usually what you want.
              */
             // redirectUrl: "/dashboard"
         });
 
-        // Register button callback
-        oidc.login({
-            doesCurrentHrefRequiresAuth: false,
-            transformUrlBeforeRedirect: keycloakUtils.transformUrlBeforeRedirectForRegister
-        });
+        // Register button callback (Keycloak only)
+        if (keycloakUtils) {
+            oidc.login({
+                doesCurrentHrefRequiresAuth: false,
+                transformUrlBeforeRedirect: keycloakUtils.transformUrlBeforeRedirectForRegister
+            });
+        }
     }
 })();
 ```
 
-## Mock Adapter
+## Mock adapter
 
 For certain use cases, you may want a mock adapter to simulate user authentication without involving an actual authentication server.
 
@@ -274,7 +280,7 @@ const decodedIdTokenSchema = z.object({
 const autoLogin = false;
 
 const prOidc = !import.meta.env.VITE_OIDC_ISSUER
-<strong>    ?  createMockOidc({
+<strong>    ? createMockOidc({
 </strong><strong>          // NOTE: If autoLogin is set to true this option must be removed
 </strong><strong>          isUserInitiallyLoggedIn: false,
 </strong><strong>          mockedTokens: {
