@@ -11,13 +11,13 @@ If you're having issues, don't hesitate to [reach out on Discord](https://discor
 ## What this is
 
 oidc-spa is a framework-agnostic OpenID Connect client for browser-centric web apps. It implements the [Authorization Code Flow with PKCE](resources/why-no-client-secret.md) and also provides token validation utilities for JavaScript backends.\
-It’s a single library that can integrate with Keycloak, Microsoft Entra ID, Auth0, Clerk, and any OIDC-compliant provider. It can replace platform-specific SDKs like `keycloak-js`, `msal.js`, and `@auth0/auth0-spa-js`, etc.
+It’s a single library that can replace platform-specific SDKs like `keycloak-js`, `MSAL.js`, `@auth0/auth0-spa-js`, etc.
 
 **Is it a good fit for my stack?**
 
-oidc-spa shines in apps where logic and state live primarily in the browser. Think single-page applications (SPAs) and frontend-oriented frameworks like TanStack Start.
+oidc-spa shines in apps where logic and state live primarily in the browser. Think single-page applications (SPAs) and frontend-oriented frameworks like [TanStack Start](https://tanstack.com/start/latest).
 
-It’s not a good fit for Next.js, Nuxt, or Astro. These meta-frameworks try to involve the client as little as possible. In oidc-spa, auth is driven by the browser, so there’s a philosophy mismatch.
+It’s not a good fit for [Next.js,](https://nextjs.org/) [Nuxt](https://nuxt.com/), or [Astro](https://astro.build/). These meta-frameworks try to involve the client as little as possible. In oidc-spa, auth is driven by the browser, so there’s a philosophy mismatch.
 
 <details>
 
@@ -36,12 +36,9 @@ With oidc-spa, you delegate authentication to a specialized identity provider su
 With BetterAuth or Auth.js, your backend _is_ the authorization server. Even if you integrate third-party identity providers, it doesn’t change that fact.\
 That’s very batteries-included, but also much heavier infrastructure-wise.
 
-Another big difference: oidc-spa is **browser-centric**. The token exchange happens on the client, and the backend server is merely an OAuth 2.0 resource server in the OIDC model.
+Another big difference: With oidc-spa the token exchange happens on the client, and the backend server is merely an OAuth 2.0 resource server in the OIDC model. The frontend is the client application in the OIDC model.
 
-If you use BetterAuth to provide login via Keycloak, your backend becomes the OIDC client application,\
-which has some security benefits over browser token exchange, but at the cost of centralization and requiring backend infrastructure.
-
-One clear advantage BetterAuth has over oidc-spa is more natural SSR support. In the oidc-spa model, the server doesn’t know the user’s authentication state at all times, which makes it hard to integrate with traditional full-stack frameworks that rely on server-side rendering.
+With BetterAuth and Auth.js, the backend that renders the pages is the client application, it's the backend that exchanges tokens with the auth server. &#x20;
 
 ***
 
