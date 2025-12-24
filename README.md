@@ -36,9 +36,15 @@ With oidc-spa, you delegate authentication to a specialized identity provider su
 With BetterAuth or Auth.js, your backend _is_ the authorization server. Even if you integrate third-party identity providers, it doesn’t change that fact.\
 That’s very batteries-included, but also much heavier infrastructure-wise.
 
-Another big difference: With oidc-spa the token exchange happens on the client, and the backend server is merely an OAuth 2.0 resource server in the OIDC model. The frontend is the client application in the OIDC model.
+Another key difference is where the OIDC client lives.
 
-With BetterAuth and Auth.js, the backend that renders the pages is the client application, it's the backend that exchanges tokens with the auth server. &#x20;
+With oidc-spa, the browser is the OIDC client. It runs the authorization code + PKCE exchange. Your backend is an OAuth 2.0 resource server. It validates access tokens and serves APIs.
+
+With BetterAuth and Auth.js, the server is the OIDC client. It performs the code exchange with the provider. The browser typically only receives a session cookie. It doesn’t handle tokens directly.
+
+Upside of client-centric auth: minimal backend setup and a great UX. The IdP handles the auth flow end-to-end. You don’t need a server-side session store (for example a Redis-backed session cache).
+
+Downside: the server can’t know the user at initial render time. It only learns who the user is after the browser completes auth and sends a request with a token.
 
 ***
 
@@ -57,7 +63,7 @@ Try the TanStack Start example deployment with JavaScript disabled to get a feel
 Yes; client-side authentication raises valid security concerns.\
 But this isn’t a fatal flaw; it’s an **engineering challenge**, and oidc-spa addresses it head-on.
 
-It treats the browser as a **hostile environment**, going to great lengths to protect tokens even under **XSS or supply-chain attacks**.\
+oidc-spa [implements DPoP](features/dpop.md) and treats the browser as a **hostile environment**, going to great lengths to protect tokens even under **XSS or supply-chain attacks**.\
 These mitigations [are documented here](resources/token-exfiltration-defence.md).
 
 ***
