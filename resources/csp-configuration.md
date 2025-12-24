@@ -127,11 +127,11 @@ server {
 <strong>        add_header Content-Security-Policy "
 </strong><strong>            frame-src https://*.$base_domain;
 </strong><strong>            frame-ancestors 'self';
-</strong><strong>            object-src 'none';
-</strong><strong>            worker-src 'none';
-</strong><strong>            script-src 'self' 'strict-dynamic';
-</strong><strong>        " always;
-</strong>    }
+</strong>            object-src 'none';
+            worker-src 'none';
+            script-src 'self' 'strict-dynamic';
+        " always;
+    }
 
     # -------------------------
     # JSON / TXT (never cached)
