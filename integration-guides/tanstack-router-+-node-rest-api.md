@@ -5,7 +5,7 @@ icon: arrow-right-arrow-left
 
 # Backend Token Validation
 
-Now that you have setup oidc-spa in your web project you can make calls like this: &#x20;
+Now that you’ve set up oidc-spa in your web app, you can call your API like this:
 
 ```typescript
 const todos = fetch("/api/todos", { 
@@ -15,47 +15,55 @@ const todos = fetch("/api/todos", {
 });
 ```
 
-Now we're going to see how to implement the backend side fo things. &#x20;
+Next, let’s implement the backend side of things.
 
-When you implement the server GET /todos endpoint handler you want to be able to read the Authorization header of the request to establish and validate the identity of the user and optionally check if that user have sufisent permissions to perform this request. &#x20;
+When you implement the server `GET /api/todos` handler, you want to read the `Authorization` header.\
+Use it to authenticate the user.\
+Optionally, check permissions (roles/scopes) to authorize the request.
 
-If your are implementing a JavaScript backend, for example Express, Hono, tRPC, Nest.js ect, oidc-spa provide the tools you need to validate and decode the access token. The validation process inclues DPoP proof check and replay protection. &#x20;
+If you’re building a JavaScript backend (Express, Hono, tRPC, NestJS, etc.), oidc-spa provides utilities to validate and decode access tokens.\
+Validation includes DPoP proof checks and replay protection.
 
 <details>
 
 <summary>More context</summary>
 
-The server side validation utils that oidc-spa offers implements [RFC 9068: JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens](https://datatracker.ietf.org/doc/rfc9068/).&#x20;
+The server-side validation utilities in oidc-spa implement [RFC 9068: JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens](https://datatracker.ietf.org/doc/rfc9068/).
 
-The great thing about JWT validation is that it works offline, there’s no need to contact your authorization server every time to ask “Is this token valid and issued by you?”
+JWT validation works offline.\
+There’s no need to contact your authorization server for every request.
 
-oidc-spa (server) simply fetches the public key published by your IdP once, then uses it to verify that each incoming token:&#x20;
+`oidc-spa/server` fetches the public key published by your IdP once.\
+It then uses it to verify that each incoming token:
 
-* was signed by the IdP,&#x20;
-* targets the expected audience&#x20;
-* hasn’t expired and,
-* validate [DPoP proof](../features/dpop.md) (if applicable)
+* was signed by the IdP
+* targets the expected audience
+* hasn’t expired
+* has a valid [DPoP proof](../features/dpop.md) (if applicable)
 
-This is a huge advantage for edge runtimes, since identity and authorization can be established locally no external round trips before executing user-specific logic.
+This is a big win for edge runtimes.\
+Identity and authorization can be established locally, with no external round trips.
 
 To authorize certain routes or actions, you can perform additional checks on claims like `groups` or `realm_access.roles`.
 
-Note however that some IdP do not issue JWT access token by default yet. Some still issue opaque access tokens. Opaque access tokens cannot be validated in a provider agnostic way like JWT can. If your IdP issue opaque access token you'll need to use their specific tooling for validating token and won't be able to use oidc-spa/server. &#x20;
+Some IdPs don’t issue JWT access tokens by default and issue opaque access tokens instead.
+
+Opaque access tokens can’t be validated in a provider-agnostic way like JWTs can.\
+If your IdP issues opaque access tokens, you’ll need provider-specific tooling.\
+In that case, you won’t be able to use `oidc-spa/server`.
 
 </details>
 
 ## Integration
 
-Integration example with popular API framworks.&#x20;
+Examples for popular API frameworks.
 
 {% tabs %}
 {% tab title="Hono" %}
-Export your Authentication and Authorization utils:
+Export your authentication and authorization utilities:
 
-{% code title="src/auth.ts" %}
-```typescript
-import { oidcSpa } from "oidc-spa/server";
-import { z } from "zod";
+<pre class="language-typescript" data-title="src/auth.ts"><code class="lang-typescript"><strong>import { oidcSpa } from "oidc-spa/server";
+</strong>import { z } from "zod";
 import { HTTPException } from "hono/http-exception";
 import type { HonoRequest } from "hono";
 
@@ -72,7 +80,7 @@ const { bootstrapAuth, validateAndDecodeAccessToken } = oidcSpa
 
 export { bootstrapAuth };
 
-// This is your internal abstraction of an user
+// This is your internal abstraction of a user
 export type User = {
     id: string;
 };
@@ -80,10 +88,10 @@ export type User = {
 export async function getUser(
     req: HonoRequest,
     requiredRole?: "realm-admin" | "support-staff"
-): Promise<User> {
+): Promise&#x3C;User> {
 
     // NOTE: You can also do `validateAndDecodeAccessToken({ accessToken })`, 
-    // it just won't work with DPoP bound access tokens.  
+    // it just won't work with DPoP-bound access tokens.
     const { isSuccess, errorCause, debugErrorMessage, decodedAccessToken } =
         await validateAndDecodeAccessToken({
             request: {
@@ -95,12 +103,12 @@ export async function getUser(
 
     if (!isSuccess) {
 
-        if( errorCause === "missing Authorization header" ){
+        if (errorCause === "missing Authorization header") {
             // Demo shortcut: we return 401 on missing Authorization, but a mixed
             // public/private endpoint could instead return undefined here and let
             // the caller decide whether to process an anonymous request.
             console.warn("Anonymous request");
-        }else{
+        } else {
             console.warn(debugErrorMessage);
         }
 
@@ -108,7 +116,7 @@ export async function getUser(
     }
 
     if (
-        requiredRole !== undefined &&
+        requiredRole !== undefined &#x26;&#x26;
         !decodedAccessToken.realm_access.roles.includes(requiredRole)
     ) {
         console.warn(`User missing role: ${requiredRole}`);
@@ -121,30 +129,30 @@ export async function getUser(
     
     return user;
 }
-```
-{% endcode %}
+</code></pre>
 
-Using your utils:
+Using your utilities:
 
-<pre class="language-typescript" data-title="src/main.ts"><code class="lang-typescript">
+{% code title="src/main.ts" %}
+```typescript
 import { Hono } from "hono";
 import * as fs from "node:fs/promises";
-<strong>import { bootstrapAuth, getUser } from "./auth";
-</strong>
+import { bootstrapAuth, getUser } from "./auth";
+
 function startHonoServer() {
 
-<strong>    bootstrapAuth({
-</strong><strong>        implementation: "real", // or "mock"
-</strong><strong>        issuerUri: process.env.OIDC_ISSUER_URI!,
-</strong><strong>        expectedAudience: process.env.OIDC_AUDIENCE
-</strong><strong>    });
-</strong>
+    bootstrapAuth({
+        implementation: "real", // or "mock"
+        issuerUri: process.env.OIDC_ISSUER_URI!,
+        expectedAudience: process.env.OIDC_AUDIENCE
+    });
+
     const app = new Hono();
 
     app.get("/api/todos", async c => {
 
-<strong>        const user = await getUser(c.req);
-</strong>
+        const user = await getUser(c.req);
+
         const json = await fs.readFile(`todos_${user.id}.json`, "utf8");
 
         return c.text(json);
@@ -154,7 +162,8 @@ function startHonoServer() {
     // ...
 
 }
-</code></pre>
+```
+{% endcode %}
 {% endtab %}
 
 {% tab title="Express" %}
@@ -166,19 +175,25 @@ function startHonoServer() {
 {% endtab %}
 
 {% tab title="Nest.js" %}
-For Nest.js there is a comunity wrapper around `oidc-spa/server`:
+For NestJS, there’s a community wrapper around `oidc-spa/server`:
 
 {% embed url="https://github.com/mwolf1989/nestjs-spa-oidc" %}
 {% endtab %}
 
 {% tab title="TanStack Start" %}
+If you are in a TanStack Start project you don't need to user `oidc-spa/server` directly. `oidc-spa/react-tanstack-start` already provides the utilities to create authed server functions and REST API endpoints.
 
+{% content-ref url="tanstack-start.md" %}
+[tanstack-start.md](tanstack-start.md)
+{% endcontent-ref %}
 {% endtab %}
 {% endtabs %}
 
+
+
 ## TODO List Example
 
-Here is a TODO list application example build with Vite / React / TanStack Router for the frontend and the backend REST API build with Node.js / Hono.
+A TODO list example app built with Vite / React / TanStack Router on the frontend, and Node.js / Hono on the backend.
 
 {% embed url="https://youtu.be/33VijFArY9s" %}
 
@@ -186,10 +201,10 @@ The app is live here:
 
 {% embed url="https://vite-insee-starter.demo-domain.ovh/" %}
 
-The source code of the REST API:
+Source code (REST API):
 
 {% embed url="https://github.com/InseeFrLab/todo-rest-api" %}
 
-The source code of the frontent:
+Source code (frontend):
 
 {% embed url="https://github.com/InseeFrLab/vite-insee-starter" %}
