@@ -11,7 +11,7 @@
   * [TanStack Router](integration-guides/tanstack-router-start/react-router.md)
 * [React Router](setup-guides/react-router.md)
 * [Angular](integration-guides/angular.md)
-* [Creating an API Server](integration-guides/tanstack-router-+-node-rest-api.md)
+* [Backend Token Validation](integration-guides/tanstack-router-+-node-rest-api.md)
 
 ## Providers Configuration
 

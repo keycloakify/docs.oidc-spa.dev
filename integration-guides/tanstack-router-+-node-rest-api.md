@@ -3,190 +3,182 @@ description: Creating a OAuth2 enabled resource server.
 icon: arrow-right-arrow-left
 ---
 
-# Creating an API Server
+# Backend Token Validation
 
-{% hint style="success" %}
-If you’re using TanStack Start, token validation is already integrated into the higher-level adapter! You can create your resource server, whether through Authenticated Server Functions or traditional REST endpoint, directly within your TanStack project.
-{% endhint %}
+Now that you have setup oidc-spa in your web project you can make calls like this: &#x20;
 
-With **oidc-spa**, your frontend is meant to communicate with OAuth-enabled backend services, such as REST APIs, tRPC servers, or WebSocket endpoints, that accept **JSON Web Tokens (JWTs)** as access tokens.
+```typescript
+const todos = fetch("/api/todos", { 
+    headers: {
+        Authorization: `Bearer ${await oidc.getAccessToken()}`
+    }
+});
+```
+
+Now we're going to see how to implement the backend side fo things. &#x20;
+
+When you implement the server GET /todos endpoint handler you want to be able to read the Authorization header of the request to establish and validate the identity of the user and optionally check if that user have sufisent permissions to perform this request. &#x20;
+
+If your are implementing a JavaScript backend, for example Express, Hono, tRPC, Nest.js ect, oidc-spa provide the tools you need to validate and decode the access token. The validation process inclues DPoP proof check and replay protection. &#x20;
 
 <details>
 
-<summary>Tell me more</summary>
+<summary>More context</summary>
 
-These tokens are sent in the `Authorization` header and allow the backend to **validate**, **decode**, and **use the claims** to perform user-specific actions.
-
-There are countless libraries for verifying JWTs, but if you’re building your backend in **JavaScript** (Node, Deno, or Web Workers), **oidc-spa** also provides a built-in utility to validate and decode access tokens that your client attaches to requests.
+The server side validation utils that oidc-spa offers implements [RFC 9068: JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens](https://datatracker.ietf.org/doc/rfc9068/).&#x20;
 
 The great thing about JWT validation is that it works offline, there’s no need to contact your authorization server every time to ask “Is this token valid and issued by you?”
 
-oidc-spa (server) simply fetches the public key published by your IdP once, then uses it to verify that each incoming token:\
-• was signed by the IdP,\
-• targets the expected audience, and\
-• hasn’t expired.
+oidc-spa (server) simply fetches the public key published by your IdP once, then uses it to verify that each incoming token:&#x20;
+
+* was signed by the IdP,&#x20;
+* targets the expected audience&#x20;
+* hasn’t expired and,
+* validate [DPoP proof](../features/dpop.md) (if applicable)
 
 This is a huge advantage for edge runtimes, since identity and authorization can be established locally no external round trips before executing user-specific logic.
 
 To authorize certain routes or actions, you can perform additional checks on claims like `groups` or `realm_access.roles`.
 
-And because access tokens issued through the Authorization Code Flow + PKCE are short-lived (typically 5 minutes or less), decoupling session lifetime from token validity isn’t an issue in practice.
+Note however that some IdP do not issue JWT access token by default yet. Some still issue opaque access tokens. Opaque access tokens cannot be validated in a provider agnostic way like JWT can. If your IdP issue opaque access token you'll need to use their specific tooling for validating token and won't be able to use oidc-spa/server. &#x20;
 
 </details>
 
-## Example with Express and Hono
+## Integration
 
-Let’s say we have a Node.js REST API built with [**Express**](https://expressjs.com/) or [**Hono**](https://hono.dev/).\
-We’ll create a function that takes an access token (and optionally a required role) and performs the following checks:&#x20;
+Integration example with popular API framworks.&#x20;
 
-* ✅ Validates that the token was **issued by the expected IdP**.
-* ✅ Ensures the token is **still valid** (not expired or tampered with).
-* ✅ Confirms the **audience** matches this specific API — meaning the token was minted for it.
-* ✅ Checks that the user has the **required role**, if one is specified.
+{% tabs %}
+{% tab title="Hono" %}
+Export your Authentication and Authorization utils:
 
-If any of these conditions fail, we throw a specialized **Hono error**, which will cause the HTTP response to return **401 Unauthorized**.
-
-If the token passes all checks, the function returns the user’s **ID** (`sub` claim), allowing the rest of your API logic to identify who made the request.
-
-Let's create a oidc.ts file:
-
-{% code title="src/oidc.ts" %}
+{% code title="src/auth.ts" %}
 ```typescript
-import { createOidcBackend } from "oidc-spa/backend";
+import { oidcSpa } from "oidc-spa/server";
 import { z } from "zod";
 import { HTTPException } from "hono/http-exception";
+import type { HonoRequest } from "hono";
 
-const zDecodedAccessToken = z.object({
-    sub: z.string(),
-    aud: z.union([z.string(), z.array(z.string())]),
-    realm_access: z.object({
-        roles: z.array(z.string())
+const { bootstrapAuth, validateAndDecodeAccessToken } = oidcSpa
+    .withExpectedDecodedAccessTokenShape({
+        decodedAccessTokenSchema: z.object({
+            sub: z.string(),
+            realm_access: z.object({
+                roles: z.array(z.string())
+            })
+        })
     })
-    // Some other info you might want to read from the accessToken, example:
-    // preferred_username: z.string()
-});
+    .createUtils();
 
-export type DecodedAccessToken = z.infer<typeof zDecodedAccessToken>;
+export { bootstrapAuth };
 
-export async function createDecodeAccessToken(params: { 
-    issuerUri: string;
-    audience: string 
-}) {
-    const { issuerUri, audience } = params;
+// This is your internal abstraction of an user
+export type User = {
+    id: string;
+};
 
-    const { verifyAndDecodeAccessToken } = await createOidcBackend({
-        issuerUri,
-        decodedAccessTokenSchema: zDecodedAccessToken
-    });
+export async function getUser(
+    req: HonoRequest,
+    requiredRole?: "realm-admin" | "support-staff"
+): Promise<User> {
 
-    function decodeAccessToken(params: {
-        authorizationHeaderValue: string | undefined;
-        requiredRole?: string;
-    }): DecodedAccessToken {
-        const { authorizationHeaderValue, requiredRole } = params;
-
-        if (authorizationHeaderValue === undefined) {
-            throw new HTTPException(401);
-        }
-
-        const result = verifyAndDecodeAccessToken({
-            accessToken: authorizationHeaderValue.replace(/^Bearer /, "")
+    // NOTE: You can also do `validateAndDecodeAccessToken({ accessToken })`, 
+    // it just won't work with DPoP bound access tokens.  
+    const { isSuccess, errorCause, debugErrorMessage, decodedAccessToken } =
+        await validateAndDecodeAccessToken({
+            request: {
+                url: req.url,
+                method: req.method,
+                getHeaderValue: headerName => req.header(headerName)
+            }
         });
 
-        if (!result.isValid) {
-            switch (result.errorCase) {
-                case "does not respect schema":
-                    throw new Error(`The access token does not respect the schema ${result.errorMessage}`);
-                case "invalid signature":
-                case "expired":
-                    throw new HTTPException(401);
-            }
+    if (!isSuccess) {
+
+        if( errorCause === "missing Authorization header" ){
+            // Demo shortcut: we return 401 on missing Authorization, but a mixed
+            // public/private endpoint could instead return undefined here and let
+            // the caller decide whether to process an anonymous request.
+            console.warn("Anonymous request");
+        }else{
+            console.warn(debugErrorMessage);
         }
 
-        const { decodedAccessToken } = result;
-
-        if (requiredRole !== undefined && !decodedAccessToken.realm_access.roles.includes(requiredRole)) {
-            throw new HTTPException(401);
-        }
-
-        {
-            const { aud } = decodedAccessToken;
-
-            const aud_array = typeof aud === "string" ? [aud] : aud;
-
-            if (!aud_array.includes(audience)) {
-                throw new HTTPException(401);
-            }
-        }
-
-        return decodedAccessToken;
+        throw new HTTPException(401); // Unauthorized
     }
 
-    return { decodeAccessToken };
+    if (
+        requiredRole !== undefined &&
+        !decodedAccessToken.realm_access.roles.includes(requiredRole)
+    ) {
+        console.warn(`User missing role: ${requiredRole}`);
+        throw new HTTPException(403); // Forbidden
+    }
+
+    const user: User = {
+        id: decodedAccessToken.sub
+    };
+    
+    return user;
 }
 ```
 {% endcode %}
 
-Then you can enforce that some endpoints of your API requires the user to be authenticated, in this example we use Hono:&#x20;
+Using your utils:
 
-<pre class="language-typescript"><code class="lang-typescript">import { z, createRoute, OpenAPIHono } from "@hono/zod-openapi";
-import { serve } from "@hono/node-server"
-import { HTTPException } from "hono/http-exception";
-import { getUserTodoStore } from "./todo";
-<strong>import { createDecodeAccessToken } from "./oidc";
+<pre class="language-typescript" data-title="src/main.ts"><code class="lang-typescript">
+import { Hono } from "hono";
+import * as fs from "node:fs/promises";
+<strong>import { bootstrapAuth, getUser } from "./auth";
 </strong>
-(async function main() {
+function startHonoServer() {
 
-<strong>    const { decodeAccessToken } = await createDecodeAccessToken({
-</strong><strong>        // Here example with Keycloak but it work the same with 
-</strong><strong>        // any provider as long as the access token is a JWT.
-</strong><strong>        issuerUri: "https://auth.my-company.com/realms/myrealm",
-</strong><strong>        audience: "account" // default audience in Keycloak
+<strong>    bootstrapAuth({
+</strong><strong>        implementation: "real", // or "mock"
+</strong><strong>        issuerUri: process.env.OIDC_ISSUER_URI!,
+</strong><strong>        expectedAudience: process.env.OIDC_AUDIENCE
 </strong><strong>    });
 </strong>
-    const app = new OpenAPIHono();
+    const app = new Hono();
 
-    {
+    app.get("/api/todos", async c => {
 
-        const route = createRoute({
-            method: 'get',
-            path: '/todos',
-            responses: {/* ... */}
-        });
-
-        app.openapi(route, async c => {
-
-<strong>            const decodedAccessToken = decodeAccessToken({
-</strong><strong>                authorizationHeaderValue: c.req.header("Authorization")
-</strong><strong>            });
+<strong>        const user = await getUser(c.req);
 </strong>
-            const todos = await getUserTodoStore(decodedAccessToken.sub).getAll();
+        const json = await fs.readFile(`todos_${user.id}.json`, "utf8");
 
-            return c.json(todos);
+        return c.text(json);
 
-        });
+    });
 
-    }
+    // ...
 
-    const port = parseInt(process.env.PORT);
-
-    serve({
-        fetch: app.fetch,
-        port
-    })
-
-    console.log(`\nServer running. OpenAPI documentation available at http://localhost:${port}/doc`)
-
-})();
+}
 </code></pre>
+{% endtab %}
 
-## Testable example
+{% tab title="Express" %}
 
-This is a kitchen think example with the following stack:
+{% endtab %}
 
-* Vite
-* [TanStack Router - File Based Routing](https://tanstack.com/router/latest/docs/framework/react/routing/file-based-routing)
-* A Todos Rest API implemented with Node and [Hono](https://hono.dev/)
+{% tab title="tRPC" %}
+
+{% endtab %}
+
+{% tab title="Nest.js" %}
+For Nest.js there is a comunity wrapper around `oidc-spa/server`:
+
+{% embed url="https://github.com/mwolf1989/nestjs-spa-oidc" %}
+{% endtab %}
+
+{% tab title="TanStack Start" %}
+
+{% endtab %}
+{% endtabs %}
+
+## TODO List Example
+
+Here is a TODO list application example build with Vite / React / TanStack Router for the frontend and the backend REST API build with Node.js / Hono.
 
 {% embed url="https://youtu.be/33VijFArY9s" %}
 
@@ -194,10 +186,10 @@ The app is live here:
 
 {% embed url="https://vite-insee-starter.demo-domain.ovh/" %}
 
-The frontend (Vite project):
-
-{% embed url="https://github.com/InseeFrLab/vite-insee-starter" %}
-
-The backend Node Todos App REST API with Express and Hono:
+The source code of the REST API:
 
 {% embed url="https://github.com/InseeFrLab/todo-rest-api" %}
+
+The source code of the frontent:
+
+{% embed url="https://github.com/InseeFrLab/vite-insee-starter" %}
