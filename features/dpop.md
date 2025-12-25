@@ -66,7 +66,7 @@ Oidc.provide({
 
 Enabling DPoP in oidc-spa does **not** require changes elsewhere in your stack:
 
-* **Identity Provider (Keycloak or other)**\
+* **Identity Provider (**[**Keycloak**](#user-content-fn-1)[^1] **or other)**\
   No configuration change is required.\
   With `dpop: "auto"`, If the authorization server supports DPoP, oidc-spa will detect and use it.
 * **Frontend codebase**\
@@ -76,7 +76,7 @@ Enabling DPoP in oidc-spa does **not** require changes elsewhere in your stack:
   No changes are required.\
   Even if you are not using `oidc-spa/server`, a correct implementation of OAuth 2.0 token validation will reject DPoP-bound access tokens when the corresponding DPoP proof is missing or invalid.
 
-In other words, **this configuration option is the only change required to enable DPoP support in oidc-spa**.
+In other words, **this configuration option is the only change required to securly enable DPoP support in your all stack**.
 
 ## How it works
 
@@ -111,3 +111,6 @@ To achieve this transparently, oidc-spa installs **`fetch()` and `XMLHttpRequest
 
 From your application’s point of view, **nothing changes**:\
 you keep using `Authorization: Bearer <access_token>`, and oidc-spa handles DPoP internally.
+
+[^1]: DPoP is officially supported starting with version 26.4.\
+    It's available as a preview feature in older versions.
