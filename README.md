@@ -24,14 +24,14 @@ If you're having issues, don't hesitate to [reach out on Discord](https://discor
 
 ## What this is
 
-oidc-spa is a framework-agnostic OpenID Connect client for browser-centric web apps. It implements the [Authorization Code Flow with PKCE](resources/why-no-client-secret.md) and also provides token validation utilities for JavaScript backends.\
+oidc-spa is an OpenID Connect client for browser-centric web apps. It implements the [Authorization Code Flow with PKCE+DPoP](resources/why-no-client-secret.md) and also provides [token validation utilities for JavaScript backends](integration-guides/tanstack-router-+-node-rest-api/).\
 It’s a single library that can replace platform-specific SDKs like `keycloak-js`, `MSAL.js`, `@auth0/auth0-spa-js`, etc.
 
 **Is it a good fit for my stack?**
 
-oidc-spa shines in apps where logic and state live primarily in the browser. Think single-page applications (SPAs) and frontend-oriented frameworks like [TanStack Start](https://tanstack.com/start/latest).
+:white\_check\_mark:  oidc-spa shines in apps where logic and state live primarily in the browser. Think [single-page applications (SPAs)](#user-content-fn-1)[^1] and frontend-oriented frameworks like [TanStack Start](https://tanstack.com/start/latest).
 
-It’s not a good fit for Next.js, Nuxt, or Astro. These meta-frameworks try to involve the client as little as possible. In oidc-spa, auth is driven by the browser, so there’s a philosophy mismatch.
+:x:  It’s not a good fit for Next.js, Nuxt, or Astro. These meta-frameworks try to involve the client as little as possible. In oidc-spa, auth is driven by the browser, so there’s a philosophy mismatch.
 
 <details>
 
@@ -129,3 +129,5 @@ Pick the integration path for your stack.
 {% endcontent-ref %}
 
 ***
+
+[^1]: Typically, Vite projects
