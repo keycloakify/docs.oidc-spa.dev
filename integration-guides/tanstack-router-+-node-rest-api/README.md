@@ -56,7 +56,7 @@ In that case, you won’t be able to use `oidc-spa/server`.
 
 ## Integration
 
-<table data-view="cards"><thead><tr><th>Option</th><th data-card-target data-type="content-ref">Docs</th></tr></thead><tbody><tr><td>NestJS wrapper</td><td><a href="nest.js.md">nest.js.md</a></td></tr><tr><td>Express.js</td><td><a href="express.js.md">express.js.md</a></td></tr><tr><td>Fastify</td><td><a href="fastify.md">fastify.md</a></td></tr><tr><td>Hono</td><td><a href="hono.md">hono.md</a></td></tr><tr><td>TanStack Start</td><td><a href="../tanstack-start.md">tanstack-start.md</a></td></tr><tr><td></td><td></td></tr></tbody></table>
+<table data-view="cards"><thead><tr><th>Option</th><th data-card-target data-type="content-ref">Docs</th></tr></thead><tbody><tr><td>NestJS</td><td><a href="nest.js.md">nest.js.md</a></td></tr><tr><td>tRPC</td><td><a href="trpc.md">trpc.md</a></td></tr><tr><td>Express.js</td><td><a href="express.js.md">express.js.md</a></td></tr><tr><td>Fastify</td><td><a href="fastify.md">fastify.md</a></td></tr><tr><td>Hono</td><td><a href="hono.md">hono.md</a></td></tr><tr><td>TanStack Start</td><td><a href="../tanstack-start.md">tanstack-start.md</a></td></tr></tbody></table>
 
 <details>
 
