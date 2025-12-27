@@ -11,7 +11,17 @@
   * [TanStack Router](integration-guides/tanstack-router-start/react-router.md)
 * [React Router](setup-guides/react-router.md)
 * [Angular](integration-guides/angular.md)
-* [Backend Token Validation](integration-guides/tanstack-router-+-node-rest-api.md)
+* [Backend Token Validation](integration-guides/tanstack-router-+-node-rest-api/README.md)
+  * [node:http](integration-guides/tanstack-router-+-node-rest-api/node-http.md)
+  * [Deno.serve](integration-guides/tanstack-router-+-node-rest-api/deno.serve.md)
+  * [Bun.serve](integration-guides/tanstack-router-+-node-rest-api/bun.serve.md)
+  * [Cloudflare Workers](integration-guides/tanstack-router-+-node-rest-api/cloudflare-workers.md)
+  * [Vercel Edge](integration-guides/tanstack-router-+-node-rest-api/vercel-edge.md)
+  * [Express.js](integration-guides/tanstack-router-+-node-rest-api/express.js.md)
+  * [Fastify](integration-guides/tanstack-router-+-node-rest-api/fastify.md)
+  * [Hono](integration-guides/tanstack-router-+-node-rest-api/hono.md)
+  * [Nest.js](integration-guides/tanstack-router-+-node-rest-api/nest.js.md)
+  * [TanStack Start](integration-guides/tanstack-router-+-node-rest-api/tanstack-start.md)
 
 ## Providers Configuration
 

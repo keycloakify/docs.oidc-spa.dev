@@ -120,6 +120,6 @@ If you’re building it in JavaScript or TypeScript (for example, using Express)
 
 You’ll find the full documentation here:
 
-{% content-ref url="../tanstack-router-+-node-rest-api.md" %}
-[tanstack-router-+-node-rest-api.md](../tanstack-router-+-node-rest-api.md)
+{% content-ref url="../tanstack-router-+-node-rest-api/" %}
+[tanstack-router-+-node-rest-api](../tanstack-router-+-node-rest-api/)
 {% endcontent-ref %}
