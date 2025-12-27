@@ -56,49 +56,15 @@ In that case, you won’t be able to use `oidc-spa/server`.
 
 ## Integration
 
-Example integration using only the builtins of your JS Runtime:
+Pick the runtime or framework you use.
 
-{% content-ref url="node-http.md" %}
-[node-http.md](node-http.md)
-{% endcontent-ref %}
+### Runtime built-ins
 
-{% content-ref url="deno.serve.md" %}
-[deno.serve.md](deno.serve.md)
-{% endcontent-ref %}
+<table data-view="cards"><thead><tr><th>Option</th><th data-card-target data-type="content-ref">Docs</th></tr></thead><tbody><tr><td>Node.js `node:http`</td><td><a href="node-http.md">node-http.md</a></td></tr><tr><td>Deno `Deno.serve`</td><td><a href="deno.serve.md">deno.serve.md</a></td></tr><tr><td>Bun `Bun.serve`</td><td><a href="bun.serve.md">bun.serve.md</a></td></tr><tr><td>Cloudflare Workers</td><td><a href="cloudflare-workers.md">cloudflare-workers.md</a></td></tr><tr><td>Vercel Edge</td><td><a href="vercel-edge.md">vercel-edge.md</a></td></tr></tbody></table>
 
-{% content-ref url="bun.serve.md" %}
-[bun.serve.md](bun.serve.md)
-{% endcontent-ref %}
+### Frameworks
 
-{% content-ref url="cloudflare-workers.md" %}
-[cloudflare-workers.md](cloudflare-workers.md)
-{% endcontent-ref %}
-
-{% content-ref url="vercel-edge.md" %}
-[vercel-edge.md](vercel-edge.md)
-{% endcontent-ref %}
-
-Example integration at the API framwork level
-
-{% content-ref url="express.js.md" %}
-[express.js.md](express.js.md)
-{% endcontent-ref %}
-
-{% content-ref url="fastify.md" %}
-[fastify.md](fastify.md)
-{% endcontent-ref %}
-
-{% content-ref url="hono.md" %}
-[hono.md](hono.md)
-{% endcontent-ref %}
-
-{% content-ref url="nest.js.md" %}
-[nest.js.md](nest.js.md)
-{% endcontent-ref %}
-
-{% content-ref url="../tanstack-start.md" %}
-[tanstack-start.md](../tanstack-start.md)
-{% endcontent-ref %}
+<table data-view="cards"><thead><tr><th>Option</th><th data-card-target data-type="content-ref">Docs</th></tr></thead><tbody><tr><td>Express</td><td><a href="express.js.md">express.js.md</a></td></tr><tr><td>Fastify</td><td><a href="fastify.md">fastify.md</a></td></tr><tr><td>Hono</td><td><a href="hono.md">hono.md</a></td></tr><tr><td>NestJS wrapper</td><td><a href="nest.js.md">nest.js.md</a></td></tr><tr><td>TanStack Start example</td><td><a href="../tanstack-start.md">tanstack-start.md</a></td></tr></tbody></table>
 
 ## TODO List Example
 
