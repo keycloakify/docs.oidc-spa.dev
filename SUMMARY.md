@@ -23,6 +23,7 @@
   * [Nest.js](integration-guides/tanstack-router-+-node-rest-api/nest.js.md)
   * [TanStack Start](integration-guides/tanstack-router-+-node-rest-api/tanstack-start.md)
   * [tRPC](integration-guides/tanstack-router-+-node-rest-api/trpc.md)
+  * [Websocket](integration-guides/tanstack-router-+-node-rest-api/websocket.md)
 
 ## Providers Configuration
 

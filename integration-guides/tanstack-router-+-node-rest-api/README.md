@@ -66,9 +66,11 @@ In that case, you won’t be able to use `oidc-spa/server`.
 
 </details>
 
-### Runtime built-ins
+## Websocket
 
-### Frameworks
+{% content-ref url="websocket.md" %}
+[websocket.md](websocket.md)
+{% endcontent-ref %}
 
 ## TODO List Example
 
