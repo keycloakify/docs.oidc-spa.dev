@@ -52,6 +52,8 @@ Pick one of these three options:
 
 {% tabs %}
 {% tab title="Vite Plugin" %}
+If you're in a Vite project, the recomended approach is to use oidc-spa's Vite plugin.
+
 <pre class="language-typescript" data-title="vite.config.ts"><code class="lang-typescript">import { defineConfig } from "vite";
 <strong>import { oidcSpa } from "oidc-spa/vite-plugin";
 </strong>
@@ -65,19 +67,24 @@ export default defineConfig({
 {% endtab %}
 
 {% tab title="Manual - Recommended" %}
-If you’re not using Vite and you can edit your app’s entry file, do this.
+Pick this approach if:
 
-First, rename your entry file (for example `src/main.tsx`) to `src/main.lazy.tsx`.
+* You're not in a Vite project and
+* Your app has a single client entrypoint.
+
+***
+
+Let's assume your app entrypoint is `src/main.ts`.
+
+First, rename it to `src/main.lazy.ts`.
 
 ```bash
-mv src/main.tsx src/main.lazy.tsx
-# Or, if you use TypeScript without JSX:
-# mv src/main.ts src/main.lazy.ts
+mv src/main.ts src/main.lazy.ts
 ```
 
-Then create a new `src/main.tsx` file:
+Then create a new `src/main.ts` file:
 
-{% code title="src/main.tsx" %}
+{% code title="src/main.ts" %}
 ```typescript
 import { oidcEarlyInit } from "oidc-spa/entrypoint";
 
