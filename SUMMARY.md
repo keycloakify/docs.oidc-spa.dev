@@ -22,6 +22,7 @@
   * [Hono](integration-guides/tanstack-router-+-node-rest-api/hono.md)
   * [Nest.js](integration-guides/tanstack-router-+-node-rest-api/nest.js.md)
   * [TanStack Start](integration-guides/tanstack-router-+-node-rest-api/tanstack-start.md)
+  * [tRPC](integration-guides/tanstack-router-+-node-rest-api/trpc.md)
 
 ## Providers Configuration
 
