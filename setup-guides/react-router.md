@@ -123,17 +123,9 @@ npm run dev
 {% endtab %}
 
 {% tab title="Framework Mode" %}
-{% hint style="warning" %}
-IMPORTANT NOTICE:
-
-Because React Router Framwork does not expose a true entrypoint oidc-spa won't let you set enableTokenExfiltrationDefense to true.  \
-Since this specific framwork do not give us a way to harden the environement before any other JS is evaluated we can't protect agaist token exfiltration effectively.  \
-Note however that even without exfiltration defense, oidc-spa is state of the art in implementing all CBP. You app will pass any security audit.
-{% endhint %}
-
 ### Enabling SPA mode
 
-This is non optional. React Router Framework does not expose the primitives to enable solution like oidc-spa to provide a full stack story. (You may want to give [TanStack Start](https://tanstack.com/start/latest) a try, it's the same thing than React Router Framwork but better.w)
+This is non optional. React Router Framework does not expose the primitives to enable solution like oidc-spa to provide a full stack story. (You may want to give [TanStack Start](https://tanstack.com/start/latest) a try)
 
 <pre class="language-typescript" data-title="react-router.config.ts"><code class="lang-typescript">import type { Config } from "@react-router/dev/config";
 
