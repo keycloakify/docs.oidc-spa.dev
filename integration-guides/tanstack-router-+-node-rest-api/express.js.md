@@ -33,6 +33,21 @@ function startExpressServer() {
 
     });
 
+    app.get("/api/todos-for-support/:userId", async (req, res) => {
+
+        // Will reject the request if user making the request
+        // doesn't have "support-staff" role
+<strong>        await getUser(req, res, "support-staff");
+</strong>
+        const json = await fs.readFile(
+<strong>            `todos_${req.params.userId}.json`,
+</strong>            "utf8"
+        );
+
+        res.status(200).type("application/json").send(json);
+
+    });
+
     // ...
 
     app.listen(parseInt(process.env.PORT ?? "3000"), () => {
