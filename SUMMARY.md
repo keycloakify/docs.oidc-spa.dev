@@ -16,6 +16,7 @@
   * [Nest.js](integration-guides/tanstack-router-+-node-rest-api/nest.js.md)
   * [TanStack Start](integration-guides/tanstack-router-+-node-rest-api/tanstack-start.md)
   * [Express.js](integration-guides/tanstack-router-+-node-rest-api/express.js.md)
+  * [Koa](integration-guides/tanstack-router-+-node-rest-api/koa.md)
   * [Fastify](integration-guides/tanstack-router-+-node-rest-api/fastify.md)
   * [Hono](integration-guides/tanstack-router-+-node-rest-api/hono.md)
   * [node:http](integration-guides/tanstack-router-+-node-rest-api/node-http.md)
