@@ -23,7 +23,8 @@ Deno.serve(async (request: Request) => {
 </strong>
 <strong>        // We got an exception, validation failed
 </strong><strong>        if (user instanceof Response) {
-</strong><strong>            return userOrResponse;
+</strong><strong>            const response = user;
+</strong><strong>            return response;
 </strong><strong>        }
 </strong>
 <strong>        const json = await Deno.readTextFile(`todos_${user.id}.json`);
