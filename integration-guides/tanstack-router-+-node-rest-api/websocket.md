@@ -4,72 +4,28 @@ icon: right-left-large
 
 # WebSocket
 
-WebSockets start as a normal HTTP request (`Upgrade: websocket`).\
-That means you can validate the access token **once**, during the upgrade.
+Here you have a working example of a secured WebSocket connection
 
-The main gotcha: browsers can’t set custom headers for `new WebSocket()`.\
-So you usually can’t send `Authorization: Bearer ...` directly.
+It's a simple chat with the server echoing what you say:
 
-### Client → server: how to send the access token
+\<video>
 
-#### Recommended (browser-friendly): `Sec-WebSocket-Protocol`
+You can test it live here
 
-You can pass “subprotocols” from the browser.\
-They end up in the `Sec-WebSocket-Protocol` header during the upgrade request.
+\<link to the chat>
 
-Example idea:
+In this example we Use Node + Hono but you should be able to adapt to other framwork/runtime.
 
-* First protocol is a fixed marker: `oidc`
-* Second protocol is the JWT access token
+### Server side code
 
-{% hint style="warning" %}
-If you enabled DPoP on the frontend, WebSockets won’t carry per-request DPoP proofs.\
-DPoP-bound access tokens may fail validation on the backend.
-{% endhint %}
+[Source code](https://github.com/InseeFrLab/todo-rest-api/blob/e00a8a6ed95514c6be4b210506a22b0f0acf24a0/src/main.ts#L36-L53)
 
-#### Fallback: query string
+<pre class="language-typescript" data-title="src/main.ts"><code class="lang-typescript">import { Hono } from "hono";
+<strong>import { createNodeWebSocket } from "@hono/node-ws";
+</strong>import { serve } from "@hono/node-server";
+import { bootstrapAuth, getUser, getUser_ws } from "./auth"; // See below
 
-`wss://api.example.com/ws?access_token=...` works everywhere.\
-But tokens in URLs tend to leak in logs and monitoring. Avoid if possible.
-
-### Node.js + `ws` example
-
-This example:
-
-* extracts the token from `Sec-WebSocket-Protocol`
-* maps it to `Authorization: Bearer ...` on the upgrade request
-* uses `oidc-spa/server` to validate and decode the access token
-* rejects the upgrade with `401/403` if validation fails
-
-{% code title="src/main.ts" %}
-```ts
-import { createServer } from "node:http";
-import { WebSocketServer } from "ws";
-import type { IncomingMessage } from "node:http";
-import { bootstrapAuth, getUserFromWsUpgrade } from "./auth"; // See below
-
-function getAccessTokenFromSubprotocolHeader(req: IncomingMessage): string | undefined {
-    const header = req.headers["sec-websocket-protocol"];
-
-    if (typeof header !== "string") {
-        return undefined;
-    }
-
-    // Example: "oidc, eyJhbGciOi..."
-    const protocols = header
-        .split(",")
-        .map(s => s.trim())
-        .filter(Boolean);
-
-    // We expect ["oidc", "<access_token>"]
-    if (protocols[0] !== "oidc") {
-        return undefined;
-    }
-
-    return protocols[1];
-}
-
-function startWsServer() {
+function startHonoServer() {
 
     bootstrapAuth({
         implementation: "real", // or "mock"
@@ -77,67 +33,56 @@ function startWsServer() {
         expectedAudience: process.env.OIDC_AUDIENCE
     });
 
-    const server = createServer();
+    const app = new Hono();
 
-    const wss = new WebSocketServer({
-        noServer: true,
-        // Important: pick ONLY the marker protocol to avoid echoing the token back.
-        handleProtocols(protocols) {
-            return protocols.has("oidc") ? "oidc" : false;
-        }
+    app.get("/api/todos", async c => { /* ... */ });
+    
+<strong>    const { injectWebSocket, upgradeWebSocket } = createNodeWebSocket({ app });
+</strong>
+<strong>    app.get(
+</strong><strong>        "/ws",
+</strong><strong>        upgradeWebSocket(async c => {
+</strong><strong>
+</strong><strong>            const user = await getUser_ws({ req: c.req });
+</strong><strong>
+</strong><strong>            return {
+</strong><strong>                onOpen: (_event, ws) => {
+</strong><strong>                    ws.send(`Hello ${user.name}`);
+</strong><strong>                },
+</strong><strong>                onMessage(event, ws) {
+</strong><strong>                    ws.send(`I'm not very smart, all I can do is repeat: "${event.data}"`);
+</strong><strong>                }
+</strong><strong>            };
+</strong><strong>        })
+</strong><strong>    );
+</strong>    
+    const server = serve({
+        fetch: app.fetch,
+        port
     });
 
-    server.on("upgrade", async (req, socket, head) => {
-
-        // Browser-friendly token transport: subprotocols.
-        const accessToken = getAccessTokenFromSubprotocolHeader(req);
-
-        if (accessToken) {
-            req.headers.authorization = `Bearer ${accessToken}`;
-        }
-
-        const user = await getUserFromWsUpgrade({ req, socket });
-
-        wss.handleUpgrade(req, socket, head, ws => {
-            // Attach user to the connection (simple example).
-            (ws as any).user = user;
-            wss.emit("connection", ws, req);
-        });
-    });
-
-    wss.on("connection", (ws) => {
-        const user = (ws as any).user as { id: string };
-
-        ws.send(JSON.stringify({ type: "welcome", userId: user.id }));
-
-        ws.on("message", raw => {
-            // Your app messages go here.
-            // You already authenticated the connection at upgrade time.
-            ws.send(raw.toString());
-        });
-    });
-
-    server.listen(parseInt(process.env.PORT ?? "3000"), () => {
-        console.log("WebSocket server listening");
-    });
+<strong>    injectWebSocket(server);
+</strong>
 }
-```
-{% endcode %}
+</code></pre>
 
-### Auth utilities
+The utils:&#x20;
+
+[Source code](https://github.com/InseeFrLab/todo-rest-api/blob/e00a8a6ed95514c6be4b210506a22b0f0acf24a0/src/auth.ts#L95-L139)
 
 {% code title="src/auth.ts" %}
-```ts
+```typescript
 import { oidcSpa, extractRequestAuthContext } from "oidc-spa/server";
 import { z } from "zod";
-import type { IncomingMessage } from "node:http";
-import type { Socket } from "node:net";
+import { HTTPException } from "hono/http-exception";
+import type { HonoRequest } from "hono";
 
 const { bootstrapAuth, validateAndDecodeAccessToken } = oidcSpa
     .withExpectedDecodedAccessTokenShape({
         decodedAccessTokenSchema: z.object({
             sub: z.string(),
-            // Keycloak specific, convention to manage authorization.
+            name: z.string(),
+            email: z.string().optional(),
             realm_access: z
                 .object({
                     roles: z.array(z.string())
@@ -151,68 +96,157 @@ export { bootstrapAuth };
 
 export type User = {
     id: string;
+    name: string;
+    email: string | undefined;
 };
 
-function rejectUpgrade(params: {
-    socket: Socket;
-    statusCode: 400 | 401 | 403;
-}): never {
-    const { socket, statusCode } = params;
+export async function getUser(/* ... */): Promise<User> { /* ... */ }
 
-    // Minimal HTTP response. Good enough for WebSocket upgrade failures.
-    socket.write(`HTTP/1.1 ${statusCode}\r\n\r\n`);
-    socket.destroy();
+export async function getUser_ws(params: { req: HonoRequest }) {
+    const { req } = params;
 
-    return new Promise<never>(() => {});
-}
+    const value = req.header("Sec-WebSocket-Protocol");
 
-export async function getUserFromWsUpgrade(params: {
-    req: IncomingMessage;
-    socket: Socket;
-    requiredRole?: "realm-admin" | "support-staff";
-}): Promise<User | never> {
-    const { req, socket, requiredRole } = params;
-
-    const requestAuthContext = extractRequestAuthContext({
-        request: req,
-        // Set this to false only if you don't have a reverse HTTP proxy in front of your
-        // server. (Almost never the case in modern deployments).
-        trustProxy: true
-    });
-
-    if (!requestAuthContext) {
-        console.warn("Anonymous WebSocket upgrade");
-        return rejectUpgrade({ socket, statusCode: 401 });
+    if (value === undefined) {
+        throw new HTTPException(400); // Bad Request
     }
 
-    if (!requestAuthContext.isWellFormed) {
-        console.warn(requestAuthContext.debugErrorMessage);
-        return rejectUpgrade({ socket, statusCode: 400 });
+    const accessToken = value
+        .split(",")
+        .map(p => p.trim())
+        .map(p => {
+            const match = p.match(/^authorization_bearer_(.+)$/);
+
+            if (match === null) {
+                return undefined;
+            }
+
+            return match[1];
+        })
+        .filter(t => t !== undefined)[0];
+
+    if (accessToken === undefined) {
+        throw new HTTPException(400); // Bad Request
     }
 
     const { isSuccess, debugErrorMessage, decodedAccessToken } =
-        await validateAndDecodeAccessToken(requestAuthContext.accessTokenAndMetadata);
+        await validateAndDecodeAccessToken({
+            scheme: "Bearer",
+            accessToken,
+            // NOTE: The DPoP protocol does not cover WebSocket Upgrade request.
+            // We chose to accept tokens even if the proof isn't provided.
+            rejectIfAccessTokenDPoPBound: false
+        });
 
     if (!isSuccess) {
         console.warn(debugErrorMessage);
-        return rejectUpgrade({ socket, statusCode: 401 });
+        throw new HTTPException(401); // Unauthorized
     }
 
-    if (requiredRole) {
-        if (!decodedAccessToken.realm_access?.roles.includes(requiredRole)) {
-            console.warn(`User missing role: ${requiredRole}`);
-            return rejectUpgrade({ socket, statusCode: 403 });
-        }
-    }
+    const { sub, name, email } = decodedAccessToken;
 
-    return { id: decodedAccessToken.sub };
+    const user: User = {
+        id: sub,
+        name,
+        email
+    };
+
+    return user;
 }
 ```
 {% endcode %}
 
-### Notes for production
+### Client sidecode
 
-* Validate `Origin` during the upgrade if you rely on browser clients.\
-  WebSockets are not protected by CORS.
-* Decide what happens when tokens expire.\
-  Common approach: close the socket and let the client reconnect.
+[Source code](https://github.com/InseeFrLab/vite-insee-starter/blob/053da1b58e76a783aaa36dba1f371f2c46810c32/src/chat.ts#L28-L39)
+
+<pre class="language-typescript" data-title=""><code class="lang-typescript">import { Evt, type StatefulReadonlyEvt } from "evt";
+import { Deferred } from "evt/tools/Deferred";
+import { getOidc } from "~/oidc";
+import { assert } from "tsafe";
+
+export type Chat = {
+    evtMessages: StatefulReadonlyEvt&#x3C;Chat.Message[]>;
+    sendMessage: (message: string) => void;
+};
+
+export namespace Chat {
+    export type Message = {
+        origin: "client" | "server";
+        message: string;
+    };
+}
+
+function createChat(): Chat {
+    const evtMessages = Evt.create&#x3C;Chat.Message[]>([]);
+
+    const dSocket = new Deferred&#x3C;WebSocket>();
+
+    (async () => {
+        const oidc = await getOidc();
+
+        assert(oidc.isUserLoggedIn);
+
+<strong>        const url = new URL(import.meta.env.VITE_TODOS_API_URL); // ex: https://api.my-company.com
+</strong><strong>
+</strong><strong>        url.protocol = url.protocol === "https:" ? "wss" : "ws";
+</strong><strong>
+</strong><strong>        url.pathname += "ws";
+</strong>
+<strong>        const socket = new WebSocket(
+</strong><strong>            url.href, // ex: wss://api.my-company.com/ws
+</strong><strong>            
+</strong><strong>            // NOTE: This is a common workaround to the fact that the WebSocket API
+</strong><strong>            // does not allow to set custom headers to the UPGRADE request.
+</strong><strong>            // So we use the protocol and on the server read the Sec-WebSocket-Protocol header.
+</strong><strong>            [`authorization_bearer_${await oidc.getAccessToken()}` ]
+</strong><strong>        );
+</strong>
+        socket.addEventListener("message", event => {
+            evtMessages.state = [
+                ...evtMessages.state,
+                {
+                    origin: "server",
+                    message: event.data
+                }
+            ];
+        });
+
+        socket.addEventListener("error", err => {
+            console.error("socket error", err);
+        });
+
+        const onOpen = () => {
+            dSocket.resolve(socket);
+            socket.removeEventListener("open", onOpen);
+        };
+
+        socket.addEventListener("open", onOpen);
+    })();
+
+    return {
+        evtMessages,
+        sendMessage: async message => {
+            evtMessages.state = [
+                ...evtMessages.state,
+                {
+                    origin: "client",
+                    message
+                }
+            ];
+            const socket = await dSocket.pr;
+            socket.send(message);
+        }
+    };
+}
+
+let chat: Chat | undefined = undefined;
+
+export function getChat() {
+    if (chat === undefined) {
+        chat = createChat();
+    }
+    return chat;
+}
+
+</code></pre>
