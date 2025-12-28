@@ -36,50 +36,7 @@ bun add oidc-spa zod
 > [Zod](https://zod.dev/) is optional but highly recommended.\
 > Writing validators manually is error-prone, and skipping validation means losing early guarantees about what your auth server provides. You can use another validator though, it doesn't have to be Zod.
 
-{% tabs %}
-{% tab title="Vite" %}
-In Vite apps, this is done through a Vite Plugin (If you'd rather avoid using the Vite plugin checkout the Other SPAs tab).
-
-<pre class="language-typescript" data-title="vite.config.ts"><code class="lang-typescript">import { defineConfig } from "vite";
-<strong>import { oidcSpa } from "oidc-spa/vite-plugin";
-</strong>
-export default defineConfig({
-    plugins: [
-        // ...
-<strong>        oidcSpa()
-</strong>    ]
-});
-</code></pre>
-{% endtab %}
-
-{% tab title="Other" %}
-First rename your entry point file from `main.tsx` (or `main.ts` or whatever it is) to `main.lazy.tsx`
-
-```bash
-mv src/main.ts src/main.lazy.ts
-```
-
-Then create a new `index.tsx` file:
-
-{% code title="src/index.tsx" %}
-```typescript
-import { oidcEarlyInit } from "oidc-spa/entrypoint";
-
-const { shouldLoadApp } = oidcEarlyInit({
-    BASE_URL: "/" // The path where your app is hosted, can also be provided later to createOidc()
-});
-
-if (shouldLoadApp) {
-    // Note: Deferring the main app import adds a few milliseconds to cold start,
-    // but dramatically speeds up auth. Overall, it's a net win.
-    import("./index.lazy");
-}
-```
-{% endcode %}
-
-If you don't have a precise entrypoint that you can simply override, just call oidcEarlyInit as soon as possible and try canceling as much work as possible when `shouldLoadApp` is false.
-{% endtab %}
-{% endtabs %}
+{% include "../../.gitbook/includes/setup-option.md" %}
 
 ## Learning from the example
 
