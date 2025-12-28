@@ -6,27 +6,39 @@ icon: fire
 
 This is how your API handler would typically look like:
 
-{% code title="src/main.ts" %}
-```ts
-import { Hono } from "hono";
+<pre class="language-ts" data-title="src/main.ts"><code class="lang-ts">import { Hono } from "hono";
 import * as fs from "node:fs/promises";
-import { bootstrapAuth, getUser } from "./auth"; // See below
-
+<strong>import { bootstrapAuth, getUser } from "./auth"; // See below
+</strong>
 function startHonoServer() {
 
-    bootstrapAuth({
-        implementation: "real", // or "mock"
-        issuerUri: process.env.OIDC_ISSUER_URI!,
-        expectedAudience: process.env.OIDC_AUDIENCE
-    });
-
+<strong>    bootstrapAuth({
+</strong><strong>        implementation: "real", // or "mock"
+</strong><strong>        issuerUri: process.env.OIDC_ISSUER_URI!,
+</strong><strong>        expectedAudience: process.env.OIDC_AUDIENCE
+</strong><strong>    });
+</strong>
     const app = new Hono();
 
     app.get("/api/todos", async c => {
 
-        const user = await getUser({ req: c.req });
-
+<strong>        const user = await getUser({ req: c.req });
+</strong>
         const json = await fs.readFile(`todos_${user.id}.json`, "utf8");
+
+        return c.text(json);
+
+    });
+
+    app.get("/api/todos-for-support/:userId", async c => {
+
+        // Will reject the request if user making the request
+        // doesn't have "support-staff" role
+<strong>        await getUser({ req: c.req, requiredRole: "support-staff" });
+</strong>
+        const userId = c.req.param("userId");
+
+        const json = await fs.readFile(`todos_${userId}.json`, "utf8");
 
         return c.text(json);
 
@@ -35,8 +47,7 @@ function startHonoServer() {
     // ...
 
 }
-```
-{% endcode %}
+</code></pre>
 
 Let's see how to export the utils to make it happen:
 
