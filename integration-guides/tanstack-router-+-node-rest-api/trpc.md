@@ -37,7 +37,7 @@ function startExpressTrpcServer() {
 
     const appRouter = t.router({
         todos: t.procedure.query(async ({ ctx }) => {
-<strong>            const user = await getUser(ctx.req);
+<strong>            const user = await getUser({ req: ctx.req });
 </strong>            const json = await fs.readFile(
 <strong>                `todos_${user.id}.json`, 
 </strong>                "utf8"
@@ -50,7 +50,7 @@ function startExpressTrpcServer() {
             .query(async ({ ctx, input }) => {
                 // Will reject the request if user making the request
                 // doesn't have "support-staff" role
-<strong>                await getUser(ctx.req, "support-staff");
+<strong>                await getUser({ req: ctx.req, requiredRole: "support-staff" });
 </strong>                const json = await fs.readFile(`todos_${input.userId}.json`, "utf8");
                 return JSON.parse(json);
             })
@@ -104,10 +104,13 @@ export type User = {
     id: string;
 };
 
-export async function getUser(
-    req: Request,
-    requiredRole?: "realm-admin" | "support-staff"
-): Promise<User> {
+export async function getUser(params: {
+    req: Request;
+    requiredRole?: "realm-admin" | "support-staff";
+}): Promise<User> {
+
+    const { req, requiredRole } = params;
+
     const requestAuthContext = extractRequestAuthContext({
         // Here request accept any common representation of a request
         // Request | IncomingMessage | HonoRequest | FastifyRequest ...

@@ -5,7 +5,7 @@ icon: paw-claws
 # Nest.js
 
 {% hint style="info" %}
-If you prefer a more "Nestish" experience, there's a comunity wrapper around oidc-spa/server: &#x20;
+If you prefer a more "Nestish" experience, there's a comunity wrapper around oidc-spa/server:
 
 [https://github.com/mwolf1989/nestjs-spa-oidc](https://github.com/mwolf1989/nestjs-spa-oidc)
 {% endhint %}
@@ -31,20 +31,18 @@ async function bootstrap() {
 bootstrap();
 </code></pre>
 
-Now, in your controllers, keep using the raw request object.
+And this is how your controlled would look:
 
-{% code title="src/todos.controller.ts" %}
-```ts
-import * as fs from "node:fs/promises";
+<pre class="language-ts" data-title="src/todos.controller.ts"><code class="lang-ts">import * as fs from "node:fs/promises";
 import { Controller, Get, Param, Req } from "@nestjs/common";
-import { getUser } from "./auth";
-
+<strong>import { getUser } from "./auth";
+</strong>
 @Controller("api")
 export class TodosController {
     @Get("todos")
     async getTodos(@Req() req) {
-        const user = await getUser(req);
-        const json = await fs.readFile(`todos_${user.id}.json`, "utf8");
+<strong>        const user = await getUser({ req });
+</strong>        const json = await fs.readFile(`todos_${user.id}.json`, "utf8");
         return JSON.parse(json);
     }
 
@@ -53,17 +51,16 @@ export class TodosController {
         @Req() req, 
         @Param("userId") userId: string
     ) {
-        // Will reject the request if user making the request
-        // doesn't have "support-staff" role.
-        await getUser(req, "support-staff");
-        const json = await fs.readFile(`todos_${userId}.json`, "utf8");
+<strong>        // Will reject the request if user making the request
+</strong><strong>        // doesn't have "support-staff" role.
+</strong><strong>        await getUser({ req, requiredRole: "support-staff" });
+</strong>        const json = await fs.readFile(`todos_${userId}.json`, "utf8");
         return JSON.parse(json);
     }
 }
-```
-{% endcode %}
+</code></pre>
 
-This is the only “integration” code you need: &#x20;
+This is the only “integration” code you need:
 
 {% code title="src/auth.ts" %}
 ```ts
@@ -91,15 +88,18 @@ export type User = {
     id: string;
 };
 
-export async function getUser(
+export async function getUser(params: {
     // This can be an Express Request object, a FastifyRequest object
     // or really any well know object that represent a request,
     // oidc-spa will normalize the representation internally.
     // so this function will work regardless of the HTTP framework
     // you're using to bootstrap your NestJS app.
-    req: AnyRequest,
-    requiredRole?: "realm-admin" | "support-staff"
-): Promise<User> {
+    req: AnyRequest;
+    requiredRole?: "realm-admin" | "support-staff";
+}): Promise<User> {
+
+    const { req, requiredRole } = params;
+
     const requestAuthContext = extractRequestAuthContext({
         request: req,
         // Set this to false only if you don't have a reverse HTTP proxy in front of your

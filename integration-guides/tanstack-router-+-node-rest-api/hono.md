@@ -24,7 +24,7 @@ function startHonoServer() {
 
     app.get("/api/todos", async c => {
 
-        const user = await getUser(c.req);
+        const user = await getUser({ req: c.req });
 
         const json = await fs.readFile(`todos_${user.id}.json`, "utf8");
 
@@ -68,10 +68,13 @@ export type User = {
     id: string;
 };
 
-export async function getUser(
-    req: HonoRequest,
-    requiredRole?: "realm-admin" | "support-staff"
-): Promise<User> {
+export async function getUser(params: {
+    req: HonoRequest;
+    requiredRole?: "realm-admin" | "support-staff";
+}): Promise<User> {
+
+    const { req, requiredRole } = params;
+
     const requestAuthContext = extractRequestAuthContext({
         request: req,
         // Set this to false only if you don't have a reverse HTTP proxy in front of your 

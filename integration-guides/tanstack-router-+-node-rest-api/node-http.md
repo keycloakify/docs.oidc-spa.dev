@@ -25,7 +25,7 @@ function startNodeServer() {
 
         if (req.method === "GET" &#x26;&#x26; pathname === "/api/todos") {
 
-<strong>            const user = await getUser(req, res);
+<strong>            const user = await getUser({ req, res });
 </strong>
             const json = await fs.readFile(
 <strong>                `todos_${user.id}.json`,
@@ -46,7 +46,7 @@ function startNodeServer() {
 
 <strong>            // Will reject the request if user making the request
 </strong><strong>            // doesn't have "support-staff" role
-</strong><strong>            await getUser(req, res, "support-staff");
+</strong><strong>            await getUser({ req, res, requiredRole: "support-staff" });
 </strong>
             const userId = decodeURIComponent(
                 pathname.replace("/api/todos-for-support/", "")
@@ -104,11 +104,13 @@ export type User = {
     id: string;
 };
 
-export async function getUser(
-    req: IncomingMessage,
-    res: ServerResponse,
-    requiredRole?: "realm-admin" | "support-staff"
-): Promise<User | never> {
+export async function getUser(params: {
+    req: IncomingMessage;
+    res: ServerResponse;
+    requiredRole?: "realm-admin" | "support-staff";
+}): Promise<User | never> {
+
+    const { req, res, requiredRole } = params;
 
     const bail = (statusCode: 400 | 401 | 403) => {
         res.writeHead(statusCode).end();

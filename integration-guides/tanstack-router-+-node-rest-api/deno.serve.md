@@ -19,7 +19,7 @@ Deno.serve(async (request: Request) => {
 
     if (request.method === "GET" &#x26;&#x26; url.pathname === "/api/todos") {
 
-<strong>        const user = await getUser(request);
+<strong>        const user = await getUser({ req: request });
 </strong>
 <strong>        // We got an exception, validation failed
 </strong><strong>        if (user instanceof Response) {
@@ -59,7 +59,7 @@ Deno.serve(async (request: Request) => {
 
 <strong>            // Will reject the request if user making the request
 </strong><strong>            // doesn't have "support-staff" role
-</strong><strong>            const user = await getUser(request, "support-staff");
+</strong><strong>            const user = await getUser({ req: request, requiredRole: "support-staff" });
 </strong>    
 <strong>            // We got an exception, validation failed
 </strong><strong>            if (user instanceof Response) {
@@ -109,12 +109,15 @@ export type User = {
     id: string;
 };
 
-export async function getUser(
-    request: Request,
-    requiredRole?: "realm-admin" | "support-staff"
-): Promise<User | Response> {
+export async function getUser(params: {
+    req: Request;
+    requiredRole?: "realm-admin" | "support-staff";
+}): Promise<User | Response> {
+
+    const { req, requiredRole } = params;
+
     const requestAuthContext = extractRequestAuthContext({
-        request,
+        request: req,
         // Set this to false only if you don't have a reverse HTTP proxy in front of your
         // server. (Almost never the case in modern deployments).
         trustProxy: true

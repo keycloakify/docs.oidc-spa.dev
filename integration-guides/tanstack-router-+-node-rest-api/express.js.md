@@ -22,7 +22,7 @@ function startExpressServer() {
 
     app.get("/api/todos", async (req, res) => {
 
-<strong>        const user = await getUser(req, res);
+<strong>        const user = await getUser({ req, res });
 </strong>
         const json = await fs.readFile(
 <strong>            `todos_${user.id}.json`, 
@@ -37,7 +37,7 @@ function startExpressServer() {
 
         // Will reject the request if user making the request
         // doesn't have "support-staff" role
-<strong>        await getUser(req, res, "support-staff");
+<strong>        await getUser({ req, res, requiredRole: "support-staff" });
 </strong>
         const json = await fs.readFile(
 <strong>            `todos_${req.params.userId}.json`,
@@ -85,11 +85,13 @@ export type User = {
     id: string;
 };
 
-export async function getUser(
-    req: Request,
-    res: Response,
-    requiredRole?: "realm-admin" | "support-staff"
-): Promise<User | never> {
+export async function getUser(params: {
+    req: Request;
+    res: Response;
+    requiredRole?: "realm-admin" | "support-staff";
+}): Promise<User | never> {
+
+    const { req, res, requiredRole } = params;
 
     const bail = (statusCode: 400 | 401 | 403) => {
         res.sendStatus(statusCode);
