@@ -23,7 +23,7 @@
   * [Bun.serve](integration-guides/tanstack-router-+-node-rest-api/bun.serve.md)
   * [Cloudflare Workers](integration-guides/tanstack-router-+-node-rest-api/cloudflare-workers.md)
   * [Vercel Edge](integration-guides/tanstack-router-+-node-rest-api/vercel-edge.md)
-  * [Websocket](integration-guides/tanstack-router-+-node-rest-api/websocket.md)
+  * [WebSocket](integration-guides/tanstack-router-+-node-rest-api/websocket.md)
 
 ## Providers Configuration
 
