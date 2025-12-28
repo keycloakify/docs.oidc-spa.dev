@@ -27,13 +27,54 @@ Deno.serve(async (request: Request) => {
 </strong><strong>            return response;
 </strong><strong>        }
 </strong>
-<strong>        const json = await Deno.readTextFile(`todos_${user.id}.json`);
-</strong>
+        const json = await Deno.readTextFile(
+<strong>            `todos_${user.id}.json`
+</strong>        );
+
         return new Response(json, {
             status: 200,
             headers: { "content-type": "application/json" }
         });
 
+    }
+
+    /**
+     * Support staff endpoint.
+     * Example: GET /api/todos/1234
+     */
+    if (request.method === "GET" &#x26;&#x26; url.pathname.startsWith("/api/todos/")) {
+        let userId: string;
+
+        try {
+            userId = decodeURIComponent(url.pathname.replace("/api/todos/", ""));
+        } catch {
+            return new Response("bad request", { status: 400 });
+        }
+
+        if (!userId || userId.includes("/")) {
+            return new Response("bad request", { status: 400 });
+        }
+        
+        {
+
+<strong>            // Will reject the request if user making the request
+</strong><strong>            // doesn't have "support-staff" role
+</strong><strong>            const user = await getUser(request, "support-staff");
+</strong>    
+<strong>            // We got an exception, validation failed
+</strong><strong>            if (user instanceof Response) {
+</strong><strong>                const response = user;
+</strong><strong>                return response;
+</strong><strong>            }
+</strong>        
+        }
+
+<strong>        const json = await Deno.readTextFile(`todos_${userId}.json`);
+</strong>
+        return new Response(json, {
+            status: 200,
+            headers: { "content-type": "application/json" }
+        });
     }
 
     return new Response("not found", { status: 404 });
