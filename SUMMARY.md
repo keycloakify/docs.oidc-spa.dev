@@ -11,7 +11,7 @@
   * [TanStack Router](integration-guides/tanstack-router-start/react-router.md)
 * [React Router](setup-guides/react-router.md)
 * [Angular](integration-guides/angular.md)
-* [Backend Token Validationè](integration-guides/tanstack-router-+-node-rest-api/README.md)
+* [Backend Token Validation](integration-guides/tanstack-router-+-node-rest-api/README.md)
   * [tRPC](integration-guides/tanstack-router-+-node-rest-api/trpc.md)
   * [Nest.js](integration-guides/tanstack-router-+-node-rest-api/nest.js.md)
   * [TanStack Start](integration-guides/tanstack-router-+-node-rest-api/tanstack-start.md)
