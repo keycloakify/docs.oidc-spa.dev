@@ -39,6 +39,31 @@ function startNodeServer() {
 
         }
 
+        if (
+            req.method === "GET" &#x26;&#x26;
+            pathname?.startsWith("/api/todos-for-support/")
+        ) {
+
+<strong>            // Will reject the request if user making the request
+</strong><strong>            // doesn't have "support-staff" role
+</strong><strong>            await getUser(req, res, "support-staff");
+</strong>
+            const userId = decodeURIComponent(
+                pathname.replace("/api/todos-for-support/", "")
+            );
+
+            const json = await fs.readFile(
+                `todos_${userId}.json`,
+                "utf8"
+            );
+
+            res.writeHead(200, { "Content-Type": "application/json" });
+            res.end(json);
+
+            return;
+
+        }
+
         res.writeHead(404).end();
     });
 
