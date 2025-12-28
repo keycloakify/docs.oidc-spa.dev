@@ -29,9 +29,9 @@ It’s a single library that can replace platform-specific SDKs like `keycloak-j
 
 **Is it a good fit for my stack?**
 
-:white\_check\_mark:  oidc-spa shines in apps where logic and state live primarily in the browser. Think [single-page applications (SPAs)](#user-content-fn-1)[^1] and frontend-oriented frameworks like [TanStack Start](https://tanstack.com/start/latest).
+oidc-spa shines in apps where logic and state live primarily in the browser. Think [single-page applications (SPAs)](#user-content-fn-1)[^1] and frontend-oriented frameworks like [TanStack Start](https://tanstack.com/start/latest).
 
-:x:  It’s not a good fit for Next.js, Nuxt, or Astro. These meta-frameworks try to involve the client as little as possible. In oidc-spa, auth is driven by the browser, so there’s a philosophy mismatch.
+It’s not a good fit for Next.js, Nuxt, or Astro. These meta-frameworks try to involve the client as little as possible. In oidc-spa, auth is driven by the browser, so there’s a philosophy mismatch.
 
 <details>
 
