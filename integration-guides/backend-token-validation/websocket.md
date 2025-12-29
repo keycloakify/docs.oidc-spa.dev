@@ -5,27 +5,31 @@ icon: right-left-large
 
 # WebSocket
 
-Here we'll see how a WebSocket connection can be secured through revewing a minimal example of an realtime chat with the server that only echo what you say.
+Here’s how to secure a WebSocket connection.\
+We’ll review a minimal real-time chat example.\
+The server simply echoes back what you send.
 
-This is what we're building: &#x20;
+This is what we’re building:
 
 {% embed url="https://youtu.be/tEdYRUcAxFA" %}
 
-You can test it live here
+You can test it live here:
 
 {% embed url="https://vite-insee-starter.demo-domain.ovh/chat" %}
 
-In this example we Use Node + Hono, we don't have a Framework By Framwork / Runtime by Runtime example but you should be able to infer how this approach can be translated to your environement. &#x20;
+This example uses Node.js + Hono.\
+We don’t provide a framework-by-framework (or runtime-by-runtime) guide yet.\
+But you should be able to adapt the same approach to your environment.
 
 {% hint style="info" %}
-Key takeways:
+Key takeaways:
 
-* The authentication happens when handling the upgrade request
-* The WebSocket browser API don't let you attach custom header, use protocol to attach the access token and read it ont the server as Sec-WebSocket-Protocol
-* WebSocket connection are out of scope for DPoP, skip proof validation.
+* Authentication happens when handling the HTTP upgrade request.
+* Browsers don’t let you attach custom headers to a WebSocket upgrade request. Use the `protocols` parameter to carry the access token, then read it server-side from `Sec-WebSocket-Protocol`.
+* WebSocket upgrades are out of scope for DPoP. Skip proof validation.
 {% endhint %}
 
-### Server side code
+### Server-side code
 
 [Source code](https://github.com/InseeFrLab/todo-rest-api/blob/e00a8a6ed95514c6be4b210506a22b0f0acf24a0/src/main.ts#L36-L53)
 
@@ -51,10 +55,10 @@ function startHonoServer() {
 <strong>    app.get(
 </strong><strong>        "/ws",
 </strong><strong>        upgradeWebSocket(async c => {
-</strong><strong>
-</strong><strong>            const user = await getUser_ws({ req: c.req });
-</strong><strong>
-</strong><strong>            return {
+</strong>
+<strong>            const user = await getUser_ws({ req: c.req });
+</strong>
+<strong>            return {
 </strong><strong>                onOpen: (_event, ws) => {
 </strong><strong>                    ws.send(`Hello ${user.name}`);
 </strong><strong>                },
@@ -75,7 +79,7 @@ function startHonoServer() {
 }
 </code></pre>
 
-The utils:&#x20;
+Auth utilities:
 
 [Source code](https://github.com/InseeFrLab/todo-rest-api/blob/e00a8a6ed95514c6be4b210506a22b0f0acf24a0/src/auth.ts#L95-L139)
 
@@ -165,7 +169,7 @@ export async function getUser_ws(params: { req: HonoRequest }) {
 ```
 {% endcode %}
 
-### Client sidecode
+### Client-side code
 
 [Source code](https://github.com/InseeFrLab/vite-insee-starter/blob/053da1b58e76a783aaa36dba1f371f2c46810c32/src/chat.ts#L28-L39)
 
@@ -197,10 +201,10 @@ function createChat(): Chat {
         assert(oidc.isUserLoggedIn);
 
 <strong>        const url = new URL(import.meta.env.VITE_TODOS_API_URL); // ex: https://api.my-company.com
-</strong><strong>
-</strong><strong>        url.protocol = url.protocol === "https:" ? "wss" : "ws";
-</strong><strong>
-</strong><strong>        url.pathname += "ws";
+</strong>
+<strong>        url.protocol = url.protocol === "https:" ? "wss:" : "ws:";
+</strong>
+<strong>        url.pathname += "ws";
 </strong>
 <strong>        const socket = new WebSocket(
 </strong><strong>            url.href, // ex: wss://api.my-company.com/ws
@@ -260,4 +264,4 @@ export function getChat() {
 
 </code></pre>
 
-The source of the react component that consumes getChat is [here](https://github.com/InseeFrLab/vite-insee-starter/blob/053da1b58e76a783aaa36dba1f371f2c46810c32/src/routes/chat.tsx#L18-L83).
+The source of the React component that consumes `getChat` is [here](https://github.com/InseeFrLab/vite-insee-starter/blob/053da1b58e76a783aaa36dba1f371f2c46810c32/src/routes/chat.tsx#L18-L83).
