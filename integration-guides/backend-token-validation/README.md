@@ -3,7 +3,7 @@ description: Creating a OAuth2 enabled resource server.
 icon: arrow-right-arrow-left
 ---
 
-# Backend Token Validationè
+# Backend Token Validation
 
 Now that you’ve set up oidc-spa in your web app, you can call your API like this:
 
@@ -56,6 +56,8 @@ In that case, you won’t be able to use `oidc-spa/server`.
 
 ## Integration
 
+Integration instruction for common HTTP framworks. This only covers REST APIs and RPC. For securing WebSocket connection [see bellow](./#websocket).
+
 <table data-view="cards"><thead><tr><th data-card-target data-type="content-ref">Docs</th><th data-hidden>Option</th></tr></thead><tbody><tr><td><a href="nest.js.md">nest.js.md</a></td><td>NestJS</td></tr><tr><td><a href="trpc.md">trpc.md</a></td><td>tRPC</td></tr><tr><td><a href="express.js.md">express.js.md</a></td><td>Express.js</td></tr><tr><td><a href="koa.md">koa.md</a></td><td>Koa</td></tr><tr><td><a href="fastify.md">fastify.md</a></td><td>Fastify</td></tr><tr><td><a href="hono.md">hono.md</a></td><td>Hono</td></tr><tr><td><a href="../tanstack-start.md">tanstack-start.md</a></td><td>TanStack Start</td></tr></tbody></table>
 
 <details>
@@ -66,10 +68,16 @@ In that case, you won’t be able to use `oidc-spa/server`.
 
 </details>
 
-## Websocket
+## WebSocket
 
 {% content-ref url="websocket.md" %}
 [websocket.md](websocket.md)
+{% endcontent-ref %}
+
+## Mock Modes
+
+{% content-ref url="mock-modes.md" %}
+[mock-modes.md](mock-modes.md)
 {% endcontent-ref %}
 
 ## TODO List Example

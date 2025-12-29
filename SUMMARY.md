@@ -25,6 +25,7 @@
   * [Cloudflare Workers](integration-guides/backend-token-validation/cloudflare-workers.md)
   * [Vercel Edge](integration-guides/backend-token-validation/vercel-edge.md)
   * [WebSocket](integration-guides/backend-token-validation/websocket.md)
+  * [Mock Modes](integration-guides/backend-token-validation/mock-modes.md)
 
 ## Providers Configuration
 
