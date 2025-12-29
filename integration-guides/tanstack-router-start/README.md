@@ -4,7 +4,7 @@ icon: umbrella-beach
 
 # TanStack Router/Start
 
-TanStact Start is TanStack Router + server capabilites. It's a full stack framwork. Your backend and frontend code live inside a single project, it's comparable to Next.js
+TanStack Start is TanStack Router plus server capabilities. It’s a full-stack framework. Your frontend and backend live in the same project. It’s comparable to Next.js.
 
 {% content-ref url="../tanstack-start.md" %}
 [tanstack-start.md](../tanstack-start.md)
@@ -12,7 +12,7 @@ TanStact Start is TanStack Router + server capabilites. It's a full stack framwo
 
 ***
 
-TanStack Router as a library, without the server functionality. It's a library for Single Page Application. Your backend API is a separate project.
+TanStack Router is the client-side routing library. It does not include server features. Used in single-page applications (SPAs). Your backend API stays in a separate project.
 
 {% content-ref url="react-router.md" %}
 [react-router.md](react-router.md)
