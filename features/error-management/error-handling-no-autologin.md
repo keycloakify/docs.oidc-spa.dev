@@ -55,55 +55,7 @@ if( oidc.initializationError ){
 ```
 {% endtab %}
 
-{% tab title="TanStack Start" %}
-```tsx
-import { useOidc } from "@/oidc";
-import { useEffect } from "react";
-
-function AuthButtons() {
-        const { 
-            isUserLoggedIn, 
-            login, 
-            logout, 
-            oidcInitializationError 
-        } = useOidc();
-
-        useEffect(() => {
-            if (oidcInitializationError) {
-                // Helps distinguish misconfiguration vs. temporary auth-server outage.
-                console.log(oidcInitializationError.isAuthServerLikelyDown);
-
-                // Developer-only diagnostic with likely cause and fix.
-                // Do not display this to end users.
-                console.log(oidcInitializationError.message);
-            }
-        }, []);
-
-        if (isUserLoggedIn) {
-            return <button onClick={() => logout({ redirectTo: "home" })}>Logout</button>;
-        }
-
-        return (
-            <button
-                onClick={() => {
-                    if (initializationError) {
-                        // Keep the UX calm and actionable.
-                        alert("Can't login now, try again later");
-                        return;
-                    }
-
-                    login({ ... });
-                }}
-            >
-                Login
-            </button>
-        );
-    }
-}
-```
-{% endtab %}
-
-{% tab title="React SPAs" %}
+{% tab title="React" %}
 ```tsx
 import { useOidc } from "~/oidc";
 import { useEffect } from "react";
