@@ -73,8 +73,8 @@ Enabling DPoP in oidc-spa does **not** require changes elsewhere in your stack:
   No changes are required.\
   Authenticated requests continue to use `Authorization: Bearer <access_token>` and are automatically upgraded at runtime.
 * **Backend API / resource server**\
-  No changes are required.\
-  Even if you are not using `oidc-spa/server`, a correct implementation of OAuth 2.0 token validation will reject DPoP-bound access tokens when the corresponding DPoP proof is missing or invalid.
+  No changes are required, you just have to check if the solution you use on the backend to validate and decode tokens suport DPoP, it's the case for Spring Security and of course oidc-spa/server.\
+  A correct implementation of OAuth 2.0 token validation will reject DPoP-bound access tokens when the corresponding DPoP proof is missing or invalid, so there is no need to actively "enable" anything. Your RS either support DPoP or it doesn't. And if it doesn't it just won't work so no risk of false sense of security.
 
 In other words, **this configuration option is the only change required to securly enable DPoP support in your all stack**.
 
