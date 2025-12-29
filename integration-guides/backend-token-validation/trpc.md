@@ -16,7 +16,6 @@ import { bootstrapAuth, getUser } from "./auth"; // See below
 
 function startExpressTrpcServer() {
 <strong>    bootstrapAuth({
-</strong><strong>        
 </strong><strong>        implementation: "real", // or "mock", see: https://docs.oidc-spa.dev/v/v8/integration-guides/backend-token-validation/mock-modes
 </strong><strong>        issuerUri: process.env.OIDC_ISSUER_URI!,
 </strong><strong>        expectedAudience: process.env.OIDC_AUDIENCE
@@ -24,14 +23,14 @@ function startExpressTrpcServer() {
 </strong>
     const app = express();
 
-    /**
-     * Key idea: Wether you use use Express or something else
-     * as underlying HTTP framework, just expose whatever the 
-     * request object representation is to the global context.
-     * oidc-spa will be able to extract the auth context from it.
-     */
-    const createContext = ({ req }: { req: Request }) => ({ req });
-
+<strong>    /**
+</strong><strong>     * Key idea: Wether you use use Express or something else
+</strong><strong>     * as underlying HTTP framework, just expose whatever the 
+</strong><strong>     * request object representation is to the global context.
+</strong><strong>     * oidc-spa will be able to extract the auth context from it.
+</strong><strong>     */
+</strong><strong>    const createContext = ({ req }: { req: Request }) => ({ req });
+</strong>
     type Context = ReturnType&#x3C;typeof createContext>;
 
     const t = initTRPC.context&#x3C;Context>().create();
