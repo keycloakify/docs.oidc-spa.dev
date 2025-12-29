@@ -25,6 +25,9 @@ oidc-spa exposes a single configuration option to control DPoP behavior:
 * **`"disabled"`**: never use DPoP (default)
 * **`"enabled"`**: require DPoP support; oidc-spa will refuse to start if the authorization server does not support it. [See support history in Keycloak](https://www.keycloak.org/2025/10/dpop-support-26-4).
 
+DPoP defaults to `"disabled"` because many resource servers still can’t validate DPoP-bound tokens.\
+This keeps things working out of the box with older backends, until DPoP support becomes a baseline expectation for resource servers.
+
 {% tabs %}
 {% tab title="Framework Agnostic" %}
 {% code title="src/oidc.ts" %}
@@ -73,10 +76,14 @@ Enabling DPoP in oidc-spa does **not** require changes elsewhere in your stack:
   No changes are required.\
   Authenticated requests continue to use `Authorization: Bearer <access_token>` and are automatically upgraded at runtime.
 * **Backend API / resource server**\
-  No changes are required, you just have to check if the solution you use on the backend to validate and decode tokens suport DPoP, it's the case for Spring Security and of course oidc-spa/server.\
-  A correct implementation of OAuth 2.0 token validation will reject DPoP-bound access tokens when the corresponding DPoP proof is missing or invalid, so there is no need to actively "enable" anything. Your RS either support DPoP or it doesn't. And if it doesn't it just won't work so no risk of false sense of security.
+  No code changes are required.\
+  Just make sure your backend stack can validate and decode **DPoP-bound** access tokens.\
+  This is supported by **Spring Security**, and of course by [**oidc-spa/server**](../integration-guides/backend-token-validation/).\
+  There is nothing to “enable” on the resource server side.\
+  If your RS supports DPoP, correct OAuth 2.0 token validation will reject DPoP-bound tokens when the DPoP proof is missing or invalid.\
+  If your RS does not support DPoP, calls will simply fail, so there is no false sense of security.
 
-In other words, **this configuration option is the only change required to securly enable DPoP support in your all stack**.
+In other words, **this configuration option is the only change required to securely enable DPoP support across your stack**.
 
 ## How it works
 
