@@ -21,7 +21,7 @@ function ensureBootstrapped(env: Env) {
     }
 
 <strong>    bootstrapAuth({
-</strong><strong>        implementation: "real", // or "mock"
+</strong><strong>        implementation: "real", // or "mock", see: https://docs.oidc-spa.dev/v/v8/integration-guides/backend-token-validation/mock-modes
 </strong><strong>        issuerUri: env.OIDC_ISSUER_URI,
 </strong><strong>        expectedAudience: env.OIDC_AUDIENCE ?? undefined
 </strong><strong>    });

@@ -14,7 +14,7 @@ import * as fs from "node:fs/promises";
 function startNodeServer() {
 
 <strong>    bootstrapAuth({
-</strong><strong>        implementation: "real", // or "mock"
+</strong><strong>        implementation: "real", // or "mock", see: https://docs.oidc-spa.dev/v/v8/integration-guides/backend-token-validation/mock-modes
 </strong><strong>        issuerUri: process.env.OIDC_ISSUER_URI!,
 </strong><strong>        expectedAudience: process.env.OIDC_AUDIENCE
 </strong><strong>    });

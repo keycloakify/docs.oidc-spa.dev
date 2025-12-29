@@ -14,16 +14,12 @@ import * as fs from "node:fs/promises";
 async function startKoaServer() {
 
 <strong>    bootstrapAuth({
-</strong><strong>        implementation: "real", // or "mock"
+</strong><strong>        implementation: "real", // or "mock", see: https://docs.oidc-spa.dev/v/v8/integration-guides/backend-token-validation/mock-modes
 </strong><strong>        issuerUri: process.env.OIDC_ISSUER_URI!,
 </strong><strong>        expectedAudience: process.env.OIDC_AUDIENCE
 </strong><strong>    });
 </strong>
     const app = new Koa();
-
-    // If you run behind a reverse proxy, you almost always want this enabled.
-    // It affects things like the computed request origin.
-    app.proxy = true;
 
     const router = new Router();
 

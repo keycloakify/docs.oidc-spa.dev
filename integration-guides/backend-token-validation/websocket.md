@@ -41,7 +41,7 @@ import { bootstrapAuth, getUser, getUser_ws } from "./auth"; // See below
 function startHonoServer() {
 
     bootstrapAuth({
-        implementation: "real", // or "mock"
+        implementation: "real", // or "mock", see: https://docs.oidc-spa.dev/v/v8/integration-guides/backend-token-validation/mock-modes
         issuerUri: process.env.OIDC_ISSUER_URI!,
         expectedAudience: process.env.OIDC_AUDIENCE
     });

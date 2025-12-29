@@ -9,7 +9,7 @@ This is how your API handler would typically look like:
 <pre class="language-ts" data-title="src/main.ts"><code class="lang-ts"><strong>import { bootstrapAuth, getUser } from "./auth.ts"; // See below
 </strong>
 bootstrapAuth({
-    implementation: "real", // or "mock"
+    implementation: "real", // or "mock", see: https://docs.oidc-spa.dev/v/v8/integration-guides/backend-token-validation/mock-modes
     issuerUri: Deno.env.get("OIDC_ISSUER_URI")!,
     expectedAudience: Deno.env.get("OIDC_AUDIENCE") ?? undefined
 });
