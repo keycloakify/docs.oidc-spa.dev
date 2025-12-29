@@ -1,20 +1,29 @@
 ---
+description: Securing a WebSocket connection
 icon: right-left-large
 ---
 
 # WebSocket
 
-Here you have a working example of a secured WebSocket connection
+Here we'll see how a WebSocket connection can be secured through revewing a minimal example of an realtime chat with the server that only echo what you say.
 
-It's a simple chat with the server echoing what you say:
+This is what we're building: &#x20;
 
-\<video>
+{% embed url="https://youtu.be/tEdYRUcAxFA" %}
 
 You can test it live here
 
-\<link to the chat>
+{% embed url="https://vite-insee-starter.demo-domain.ovh/chat" %}
 
-In this example we Use Node + Hono but you should be able to adapt to other framwork/runtime.
+In this example we Use Node + Hono, we don't have a Framework By Framwork / Runtime by Runtime example but you should be able to infer how this approach can be translated to your environement. &#x20;
+
+{% hint style="info" %}
+Key takeways:
+
+* The authentication happens when handling the upgrade request
+* The WebSocket browser API don't let you attach custom header, use protocol to attach the access token and read it ont the server as Sec-WebSocket-Protocol
+* WebSocket connection are out of scope for DPoP, skip proof validation.
+{% endhint %}
 
 ### Server side code
 
@@ -250,3 +259,5 @@ export function getChat() {
 }
 
 </code></pre>
+
+The source of the react component that consumes getChat is [here](https://github.com/InseeFrLab/vite-insee-starter/blob/053da1b58e76a783aaa36dba1f371f2c46810c32/src/routes/chat.tsx#L18-L83).
