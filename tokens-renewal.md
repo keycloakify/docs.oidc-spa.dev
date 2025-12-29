@@ -4,7 +4,7 @@ icon: arrows-rotate-reverse
 
 # Tokens Renewal
 
-Many OpenID Connect adapters, including `keycloak-js`, end up implementing token renewal with a background refresh loop.\
+Many OpenID Connect adapters, end up implementing token renewal with a background refresh loop.\
 That approach often creates avoidable load and some tricky edge cases.\
 With `oidc-spa`, token lifecycle management is handled for you and stays out of your app code.
 
@@ -17,7 +17,7 @@ Many adapters try to **keep an access token “always fresh” in cache**, which
 
 * Constant background refreshes
 * Heavy load on your auth server
-* Wasteful duplication when multiple tabs are open
+* Agravated load when mutiple tabs are open on your app.
 
 This isn’t needed. You don’t need a valid access token cached at all times.
 
@@ -39,9 +39,7 @@ headers.set("Authorization", `Bearer ${accessToken}`);
 ```
 
 * If a valid token is cached, you’ll get it.
-* If it’s expired or soon to expire, `oidc-spa` silently refreshes it using the refresh token.<br>
-
-So the better approaches when you need to make an authed request is to ask oidc-spa to give you an access token and let it decide if it should rotate the current one or if the one in cache is still good. &#x20;
+* If it’s expired or soon to expire, `oidc-spa` silently refreshes it using the refresh token.
 
 Example: [interceptor pattern](https://github.com/InseeFrLab/onyxia/blob/2f7bad234099719debc15ecdaba30dba116ffef9/web/src/core/adapters/onyxiaApi/onyxiaApi.ts#L34-L84)\
 Example: [custom fetch](https://github.com/keycloakify/oidc-spa/blob/a1aae19e2b5a874159fbdfecaaf00be814bb4c6a/examples/tanstack-router-file-based/src/oidc.tsx#L64-L76)
