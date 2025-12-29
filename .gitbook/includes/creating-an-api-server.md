@@ -12,6 +12,6 @@ If you’re building it in JavaScript or TypeScript (for example, using Express)
 
 You’ll find the full documentation here:
 
-{% content-ref url="../../integration-guides/tanstack-router-+-node-rest-api/" %}
-[tanstack-router-+-node-rest-api](../../integration-guides/tanstack-router-+-node-rest-api/)
+{% content-ref url="../../integration-guides/backend-token-validation/" %}
+[backend-token-validation](../../integration-guides/backend-token-validation/)
 {% endcontent-ref %}

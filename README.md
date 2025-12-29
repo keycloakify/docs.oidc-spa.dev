@@ -24,7 +24,7 @@ If you're having issues, don't hesitate to [reach out on Discord](https://discor
 
 ## What this is
 
-oidc-spa is an OpenID Connect client for browser-centric web apps. It implements the [Authorization Code Flow with PKCE+DPoP](resources/why-no-client-secret.md) and also provides [token validation utilities for JavaScript backends](integration-guides/tanstack-router-+-node-rest-api/).\
+oidc-spa is an OpenID Connect client for browser-centric web apps. It implements the [Authorization Code Flow with PKCE+DPoP](resources/why-no-client-secret.md) and also provides [token validation utilities for JavaScript backends](integration-guides/backend-token-validation/).\
 It’s a single library that can replace platform-specific SDKs like `keycloak-js`, `MSAL.js`, `@auth0/auth0-spa-js`, etc.
 
 **Is it a good fit for my stack?**

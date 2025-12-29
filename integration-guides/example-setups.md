@@ -21,6 +21,6 @@ icon: laptop-code
 [angular.md](angular.md)
 {% endcontent-ref %}
 
-{% content-ref url="tanstack-router-+-node-rest-api/" %}
-[tanstack-router-+-node-rest-api](tanstack-router-+-node-rest-api/)
+{% content-ref url="backend-token-validation/" %}
+[backend-token-validation](backend-token-validation/)
 {% endcontent-ref %}
