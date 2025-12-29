@@ -26,7 +26,7 @@ Key takeaways:
 
 * Authentication happens when handling the HTTP upgrade request.
 * Browsers don’t let you attach custom headers to a WebSocket upgrade request. Use the `protocols` parameter to carry the access token, then read it server-side from `Sec-WebSocket-Protocol`.
-* WebSocket upgrades are out of scope for DPoP. Skip proof validation.
+* WebSocket upgrades are **out of scope for DPoP**. There’s no RFC-defined way to send and validate a DPoP proof on the upgrade request. In practice, you must skip DPoP proof validation for the upgrade (`rejectIfAccessTokenDPoPBound: false`). If you need DPoP-grade guarantees on the socket, add an application-level handshake (off-channel).
 {% endhint %}
 
 ### Server-side code
@@ -146,8 +146,11 @@ export async function getUser_ws(params: { req: HonoRequest }) {
         await validateAndDecodeAccessToken({
             scheme: "Bearer",
             accessToken,
-            // NOTE: The DPoP protocol does not cover WebSocket Upgrade request.
-            // We chose to accept tokens even if the proof isn't provided.
+            // NOTE: WebSocket upgrades are out of scope for DPoP.
+            // There's no RFC-defined way to send and validate a DPoP proof
+            // on the WebSocket Upgrade request.
+            // We accept the access token as bearer-like for the WS upgrade only.
+            // If you need DPoP-grade guarantees on the socket, add an app-level handshake.
             rejectIfAccessTokenDPoPBound: false
         });
 
