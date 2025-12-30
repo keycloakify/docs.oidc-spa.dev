@@ -177,7 +177,6 @@ export async function getUser_ws(params: { req: HonoRequest }) {
 [Source code](https://github.com/InseeFrLab/vite-insee-starter/blob/053da1b58e76a783aaa36dba1f371f2c46810c32/src/chat.ts#L28-L39)
 
 <pre class="language-typescript" data-title=""><code class="lang-typescript">import { Evt, type StatefulReadonlyEvt } from "evt";
-import { Deferred } from "evt/tools/Deferred";
 import { getOidc } from "~/oidc";
 import { assert } from "tsafe";
 
@@ -196,7 +195,7 @@ export namespace Chat {
 function createChat(): Chat {
     const evtMessages = Evt.create&#x3C;Chat.Message[]>([]);
 
-    const dSocket = new Deferred&#x3C;WebSocket>();
+    const dSocket = Promise.withResolvers&#x3C;WebSocket>();
 
     (async () => {
         const oidc = await getOidc();
@@ -230,6 +229,7 @@ function createChat(): Chat {
 
         socket.addEventListener("error", err => {
             console.error("socket error", err);
+            dSocket.reject(err);
         });
 
         socket.addEventListener("open", ()=> {
@@ -247,7 +247,7 @@ function createChat(): Chat {
                     message
                 }
             ];
-            const socket = await dSocket.pr;
+            const socket = await dSocket.promise;
             socket.send(message);
         }
     };
