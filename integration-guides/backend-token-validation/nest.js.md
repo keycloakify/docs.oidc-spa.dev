@@ -77,6 +77,8 @@ const { bootstrapAuth, validateAndDecodeAccessToken } = oidcSpa
     .withExpectedDecodedAccessTokenShape({
         decodedAccessTokenSchema: z.object({
             sub: z.string(),
+            name: z.string(),
+            email: z.string().optional(),
             // Keycloak specific, convention to manage authorization.
             realm_access: z
                 .object({
@@ -91,6 +93,8 @@ export { bootstrapAuth };
 
 export type User = {
     id: string;
+    name: string;
+    email: string | undefined;
 };
 
 export async function getUser(params: {
@@ -139,7 +143,9 @@ export async function getUser(params: {
         }
     }
 
-    return { id: decodedAccessToken.sub };
+    const { sub, name, email } = decodedAccessToken;
+
+    return { id: sub, name, email };
 }
 ```
 {% endcode %}
