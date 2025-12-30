@@ -15,17 +15,22 @@ This is how your Nest API would typically look like.
 <pre class="language-ts" data-title="src/main.ts"><code class="lang-ts">import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { bootstrapAuth } from "./auth"; // See below
++import { ConfigService } from "@nestjs/config";
 
 async function bootstrap() {
-<strong>    bootstrapAuth({
-</strong><strong>        implementation: "real", // or "mock", see: https://docs.oidc-spa.dev/v/v8/integration-guides/backend-token-validation/mock-modes
-</strong><strong>        issuerUri: process.env.OIDC_ISSUER_URI!,
-</strong><strong>        expectedAudience: process.env.OIDC_AUDIENCE
-</strong><strong>    });
-</strong>
     const app = await NestFactory.create(AppModule, /* Any adapter */);
 
-    await app.listen(parseInt(process.env.PORT ?? "3000"));
+    // Requires ConfigModule.forRoot() somewhere in your imports (typically AppModule).
+    const configService = app.get(ConfigService);
+
+<strong>    bootstrapAuth({
+</strong><strong>        implementation: "real", // or "mock", see: https://docs.oidc-spa.dev/v/v8/integration-guides/backend-token-validation/mock-modes
+</strong><strong>        issuerUri: configService.get("OIDC_ISSUER_URI")!,
+</strong><strong>        expectedAudience: configService.get("OIDC_AUDIENCE")
+</strong><strong>    });
+</strong>
+
+    await app.listen(parseInt(configService.get("PORT") ?? "3000"));
 }
 
 bootstrap();
