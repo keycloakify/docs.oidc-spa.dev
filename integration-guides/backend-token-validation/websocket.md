@@ -232,12 +232,9 @@ function createChat(): Chat {
             console.error("socket error", err);
         });
 
-        const onOpen = () => {
+        socket.addEventListener("open", ()=> {
             dSocket.resolve(socket);
-            socket.removeEventListener("open", onOpen);
-        };
-
-        socket.addEventListener("open", onOpen);
+        });
     })();
 
     return {
