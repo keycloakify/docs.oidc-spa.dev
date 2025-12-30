@@ -2,7 +2,7 @@
 icon: paw-claws
 ---
 
-# Nest.js
+# NestJS
 
 {% hint style="info" %}
 If you prefer a more "Nestish" experience, there's a comunity wrapper around oidc-spa/server:
@@ -91,6 +91,7 @@ const { bootstrapAuth, validateAndDecodeAccessToken } = oidcSpa
 
 export { bootstrapAuth };
 
+// Your local respresentation of a user
 export type User = {
     id: string;
     name: string;

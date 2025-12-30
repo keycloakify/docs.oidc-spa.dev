@@ -66,8 +66,12 @@ import type { Request, Response } from "express";
 
 const { bootstrapAuth, validateAndDecodeAccessToken } = oidcSpa
     .withExpectedDecodedAccessTokenShape({
-        // This is purely declarative. Here you'll specify
-        // the claim that you expect to be present in the access token payload.
+        // Here you specify the claim you expect to be present in the decoded
+        // JWT payload of the access token.  
+        // What's included in the token is configured on the IdP side.
+        // Here you declare what your application actually uses so that
+        // the type get propagated and you get a clear error if the IdP does
+        // not issue what your app expects.
         decodedAccessTokenSchema: z.object({
             sub: z.string(),
             name: z.string(),
