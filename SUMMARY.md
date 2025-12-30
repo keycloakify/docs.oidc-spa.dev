@@ -13,7 +13,7 @@
 * [Angular](integration-guides/angular.md)
 * [Backend Token Validation](integration-guides/backend-token-validation/README.md)
   * [tRPC](integration-guides/backend-token-validation/trpc.md)
-  * [Nest.js](integration-guides/backend-token-validation/nest.js.md)
+  * [NestJS](integration-guides/backend-token-validation/nestjs.md)
   * [TanStack Start](integration-guides/backend-token-validation/tanstack-start.md)
   * [Express.js](integration-guides/backend-token-validation/express.js.md)
   * [Koa](integration-guides/backend-token-validation/koa.md)
