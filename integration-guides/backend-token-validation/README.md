@@ -64,7 +64,7 @@ Integration instruction for common HTTP framworks. This only covers REST APIs an
 
 <summary>JS Runtime level integration</summary>
 
-<table data-view="cards"><thead><tr><th>Option</th><th data-card-target data-type="content-ref">Docs</th></tr></thead><tbody><tr><td>Node.js `node:http`</td><td><a href="node-http.md">node-http.md</a></td></tr><tr><td>Deno `Deno.serve`</td><td><a href="deno.serve.md">deno.serve.md</a></td></tr><tr><td>Bun `Bun.serve`</td><td><a href="bun.serve.md">bun.serve.md</a></td></tr><tr><td>Cloudflare Workers</td><td><a href="cloudflare-workers.md">cloudflare-workers.md</a></td></tr><tr><td>Vercel Edge</td><td><a href="vercel-edge.md">vercel-edge.md</a></td></tr></tbody></table>
+<table data-view="cards"><thead><tr><th data-card-target data-type="content-ref">Docs</th></tr></thead><tbody><tr><td><a href="node-http.md">node-http.md</a></td></tr><tr><td><a href="deno.serve.md">deno.serve.md</a></td></tr><tr><td><a href="bun.serve.md">bun.serve.md</a></td></tr><tr><td><a href="cloudflare-workers.md">cloudflare-workers.md</a></td></tr><tr><td><a href="vercel-edge.md">vercel-edge.md</a></td></tr></tbody></table>
 
 </details>
 
