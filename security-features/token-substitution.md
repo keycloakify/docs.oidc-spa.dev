@@ -77,7 +77,7 @@ export default defineConfig({
 <strong>            tokenSubstitution: {
 </strong><strong>                enabled: true,
 </strong><strong>                // Optional, see below
-</strong><strong>                resourceServersAllowedHostnames: [
+</strong><strong>                trustedThirdPartyResourceServers: [
 </strong><strong>                    "s3.amazonaws.com", 
 </strong><strong>                    "*.api.my-company.com"
 </strong><strong>                ]
@@ -96,7 +96,7 @@ const { shouldLoadApp } = oidcEarlyInit({
     extraDefenseHook: () => {
 <strong>        enableTokenSubstitution({
 </strong><strong>           // Optional:, see below
-</strong><strong>           resourceServersAllowedHostnames: [
+</strong><strong>           trustedThirdPartyResourceServers: [
 </strong><strong>              "s3.amazonaws.com", 
 </strong><strong>              "*.api.my-company.com"
 </strong><strong>           ]
@@ -111,7 +111,7 @@ if (shouldLoadApp) {
 {% endtab %}
 {% endtabs %}
 
-### resourceServersAllowedHostnames
+### trustedThirdPartyResourceServers
 
 Example: \["s3.amazonaws.com","\*.api.my-company.com"]
 
