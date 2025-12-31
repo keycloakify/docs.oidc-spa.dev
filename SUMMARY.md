@@ -41,7 +41,6 @@
 
 * [Auto Login](auto-login.md)
 * [Auto Logout](auto-logout.md)
-* [DPoP](features/dpop.md)
 * [Debug and Error Handling](error-management.md)
   * [Error Handling - No AutoLogin](features/error-management/error-handling-no-autologin.md)
   * [Error Handling - With AutoLogin](features/error-management/error-handling-with-autologin.md)
@@ -50,6 +49,13 @@
 * [Tokens Renewal](tokens-renewal.md)
 * [User Account Management](features/user-account-management.md)
 * [User Session Initialization](features/user-session-initialization.md)
+
+## Security Features
+
+* [Overview](security-features/overview.md)
+* [Browser Runtime Freeze](security-features/browser-runtime-freeze.md)
+* [DPoP](security-features/dpop.md)
+* [Token Substitution](security-features/token-substitution.md)
 
 ## Resources
 

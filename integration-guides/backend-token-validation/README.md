@@ -39,7 +39,7 @@ It then uses it to verify that each incoming token:
 * was signed by the IdP
 * targets the expected audience
 * hasn’t expired
-* has a valid [DPoP proof](../../features/dpop.md) (if applicable)
+* has a valid [DPoP proof](../../security-features/dpop.md) (if applicable)
 
 This is a big win for edge runtimes.\
 Identity and authorization can be established locally, with no external round trips.

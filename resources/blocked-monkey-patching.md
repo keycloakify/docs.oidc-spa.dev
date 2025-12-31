@@ -13,6 +13,6 @@ As a result, there is currently no workaround. If you cannot remove or replace t
 
 However: You can probably enable DPoP and get most of the security benfit you get when enabling oidc-spa's custom security defences. &#x20;
 
-{% content-ref url="../features/dpop.md" %}
-[dpop.md](../features/dpop.md)
+{% content-ref url="../security-features/dpop.md" %}
+[dpop.md](../security-features/dpop.md)
 {% endcontent-ref %}

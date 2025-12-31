@@ -77,7 +77,7 @@ Try the TanStack Start example deployment with JavaScript disabled to get a feel
 Yes; client-side authentication raises valid security concerns.\
 But this isn’t a fatal flaw; it’s an **engineering challenge**, and oidc-spa addresses it head-on.
 
-oidc-spa [implements DPoP](features/dpop.md) and treats the browser as a **hostile environment**, going to great lengths to protect tokens even under **XSS or supply-chain attacks**.\
+oidc-spa [implements DPoP](security-features/dpop.md) and treats the browser as a **hostile environment**, going to great lengths to protect tokens even under **XSS or supply-chain attacks**.\
 These mitigations [are documented here](resources/token-exfiltration-defence.md).
 
 ***

@@ -8,7 +8,7 @@ icon: shield-check
 {% hint style="warning" %}
 The API of enableTokenExfiltrationDefense is not stable yet. &#x20;
 
-UPDATE 22 Dec 25: oidc-spa now transparently [supports DPoP](../features/dpop.md) some defences described here are somewhat redundant. It's going to be reworked. &#x20;
+UPDATE 22 Dec 25: oidc-spa now transparently [supports DPoP](../security-features/dpop.md) some defences described here are somewhat redundant. It's going to be reworked. &#x20;
 {% endhint %}
 
 oidc-spa implements a comprehensive, defense-in-depth strategy to protect against token exfiltration during a successful XSS or supply-chain attack.
