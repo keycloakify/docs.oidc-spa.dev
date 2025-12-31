@@ -8,62 +8,93 @@ icon: cards-blank
 Still under construction
 {% endhint %}
 
-## Uderstanding the Defence
+### Understanding the defence
 
-The Token Substitution Defence is a mecanism that you can enable to protect against token exfiltration in case of successfull NPM supply chain attack or XSS.
+Token Substitution is an optional defence against token exfiltration during:
 
-When this mode is enabled the access token that you can manipulate at the application level are substituted by harmless token that can't be used to access resource server.
+* a successful NPM supply-chain attack
+* an XSS compromise
 
-Concretely if you do:
+When enabled, any access token your app can read is replaced with a harmless “substituted” token.\
+The substituted token **cannot** be used to call a resource server.
+
+Example:
 
 ```typescript
-const acessToken = await oidc.getAccessToken();
+const accessToken = await oidc.getAccessToken();
 ```
 
-You'll get a string that looks like this (<mark style="color:green;">\<header></mark><mark style="color:orange;">.</mark><mark style="color:yellow;">\<payload></mark><mark style="color:orange;">.</mark><mark style="color:purple;">\<signature></mark>):
+You’ll get a JWT-shaped string:
 
-<mark style="color:green;">eyJh...3NRIn0</mark><mark style="color:orange;">.</mark><mark style="color:yellow;">eyJleHA....QifQ</mark><mark style="color:orange;">.</mark><mark style="color:purple;">sig\_placeholder\_1640197\_AAA....AAA</mark>
+`<real header>.<real payload>.<placeholder signature>`
 
-The <mark style="color:green;">header</mark> and <mark style="color:yellow;">payload</mark> part are real and unlalterated, (so the token can still be decoded). The <mark style="color:purple;">signature</mark> part however will have been substituted by a placeholder, to it can't be validated.
+The header and payload are real and unaltered.\
+The signature is replaced with a placeholder, so validation fails.
 
-Consequence: If an attacker exfiltrate this token they won't be able to use is to access resource server since the mock signatue will make any validation attempt fail. &#x20;
+#### What this blocks
 
-The placeholder signature will be replaced internally by the real signature at network APIs interceptor level set up by oidc-spa via the vite plugin or in the oidcEarly init.
+If an attacker exfiltrates the substituted token, they can’t use it against your resource servers.\
+Any validation attempt fails because the signature is fake.
 
-fetch, XMLHttpRequext, WebSocket, Beacon, fetchLater are covered and the token can be anywhere, in the header, the body, the url, the interveptor will replace them transparently.\
-\
-Aditionally, the interceptor will enforce that only request to trusted resource server can go out. &#x20;
+#### How requests still work
 
-## VS DPoP
+oidc-spa restores the real signature **right before the request leaves the browser**.\
+This happens inside hardened interceptors installed during early init (via the Vite plugin or `oidcEarlyInit`).
 
-[DPoP](dpop.md) Posture: "Limits the security implication of a leaked token".
+Covered APIs:
 
-Token Substitution Posture: "Devence to prevent token from being leaked in the first place".
+* `fetch`
+* `XMLHttpRequest`
+* `WebSocket`
+* `navigator.sendBeacon`
+* `fetchLater`
 
-DPoP Nature: Protocol level RFC, open standard, relying on cryptography.
+The token can be in headers, body, or URL.\
+The interceptor replaces it transparently.
 
-Token Substitution Nature: Adapter level strategy. Specific to oidc-spa, best effort: trying to treat the JavaScript runtime as hostile environement is very delicate, we can patch holes as they get discovered but not guarentee that there's no holes in the first place.
+It also blocks authenticated requests to untrusted hosts.
 
-Overlap in security property: Limiting the severity of the harm that can be done by a successfull supply chain or XSS attack.
+### Compared to DPoP
 
-So DPoP is unquestionably a better defence than Token Substitution. If your all app is covered with DPoP you can safely ignore Token Exfiltration. But, the reality is that DPoP often can't be enabled everywhere:
+Posture:
 
-* Not all Authorization server and Resource Server support DPoP yet.
-* WebSocket is out of scope for DPoP.
-* Some token exchange like AWS S3 STS or HashiCorp Vault, when you exchange an access token for an other kind of token, those calls are often requiring you to pass the access token in the payload body, making thos call fall outsideof the DPoP spec.
+* [DPoP](dpop.md): limits the impact of a leaked token.
+* Token Substitution: prevents usable tokens from being exposed at the app layer.
 
-So if one of those three thing is true for you, you'll still benefit from enabling Token Substitution.
+Nature:
 
-## Requirements; Can I enable it?
+* DPoP is a protocol-level RFC. It’s standardised and crypto-based.
+* Token Substitution is an adapter-level strategy. It’s oidc-spa specific and “best effort”.
 
-Unfortunately, the requirement for being able to enable token substitution are quite strict, not all apps will be able to.\
-What you need:
+Overlap:
 
-* Having enabled [Browser Runtime Freeze,](browser-runtime-freeze.md) idealy with no exception, if the integrity of the environement can't be guarentied the token  substitution strategy can be easily circumvented.
-* If your app consumes resource servers that are outside of your site like for example s3.amazon.com, you need to know at builtime (or at least syncronously at runtime) what are the urls of those servers. If we simply allow request to go out an attacker can just call their own server and receive the real token on the other end.&#x20;
-* If you need to actually render the access toke to the user. You won't be able to implement a button "copy the access token" for example.
+* Both reduce the damage from a successful supply-chain or XSS attack.
 
-## Enabling the defence
+DPoP is generally the stronger defence.\
+If your whole app uses DPoP, Token Substitution is often unnecessary.
+
+In practice, DPoP is not always possible:
+
+* not all authorisation servers and resource servers support DPoP yet
+* WebSocket is out of scope for DPoP
+* some token exchanges require the access token in the request body (often outside DPoP’s coverage), e.g. AWS STS or Vault-style exchanges
+
+If any of these apply, Token Substitution still helps.
+
+### Requirements (can I enable it?)
+
+The requirements are strict. Not every app can enable it.
+
+You need:
+
+* [Browser Runtime Freeze](browser-runtime-freeze.md), ideally with no exceptions.\
+  If runtime integrity can’t be guaranteed, this defence can be bypassed.
+* If you call resource servers outside your site (example: `s3.amazonaws.com`), you must know their hostnames at build time (or synchronously at runtime).\
+  Otherwise an attacker could send a request to their own host and recover the real token.
+* You must not need to display the raw access token to the user.\
+  Example: no “copy access token” button.
+
+### Enabling the defence
 
 {% tabs %}
 {% tab title="Vite Plugin" %}
@@ -95,7 +126,7 @@ import { enableTokenSubstitution } from "oidc-spa/token-substitution";
 const { shouldLoadApp } = oidcEarlyInit({
     extraDefenseHook: () => {
 <strong>        enableTokenSubstitution({
-</strong><strong>           // Optional:, see below
+</strong><strong>           // Optional, see below
 </strong><strong>           trustedThirdPartyResourceServers: [
 </strong><strong>              "s3.amazonaws.com", 
 </strong><strong>              "*.api.my-company.com"
@@ -113,54 +144,40 @@ if (shouldLoadApp) {
 
 ### trustedThirdPartyResourceServers
 
-Example: \["s3.amazonaws.com","\*.api.my-company.com"]
+Use this when your app needs to call third-party resource servers (outside your site).
 
-&#x20;    Note that any domains first party (same site) relative to where your app
+Example:
 
-&#x20;     is deployed will be automatically allowed.
+```ts
+["s3.amazonaws.com", "*.api.my-company.com"]
+```
 
-&#x20;   &#x20;
+#### What’s allowed by default
 
-&#x20;    So for example if your app is deployed under:
+Same-site (first-party) hosts are allowed automatically.
 
-&#x20;     dashboard.my-company.com
+Example: if your app is deployed at `dashboard.my-company.com`, these are allowed:
 
-&#x20;    \*Authed request to the following domains will automatically be allowed (examples):
+* `minio.my-company.com`
+* `minio.dashboard.my-company.com`
+* `my-company.com`
 
-&#x20;    \- minio.my-company.com
+{% hint style="warning" %}
+If your app is deployed under a free multi-tenant domain, parent domains are **not** automatically allowed.
 
-&#x20;    \- minio.dashboard.my-company.com
+Examples:
 
-&#x20;    \- my-company.com
+* `xxx.vercel.app`
+* `xxx.netlify.app`
+* `xxx.github.io`
+* `xxx.pages.dev`
+* `xxx.web.app`
+{% endhint %}
 
-&#x20;   &#x20;
+{% hint style="info" %}
+Host filtering is disabled in dev server environments:
 
-&#x20;    BUT there is an exception to the rule. If your app is deployed under free default domain
-
-&#x20;    provided by known hosting platform like
-
-&#x20;    \- xxx.vercel.com
-
-&#x20;    \- xxx.netlify.com
-
-&#x20;    \- xxx.github.com
-
-&#x20;    \- xxx.pages.dev (firebase)
-
-&#x20;    \- xxx.web.app (firebase)
-
-&#x20;    \- ...
-
-&#x20;   &#x20;
-
-&#x20;    We we won't allow request to parent domain since those are multi tenant.
-
-&#x20;   &#x20;
-
-&#x20;    Also, all filtering will be disabled when the app is ran with the dev server, so under:
-
-&#x20;    \- localhost
-
-&#x20;    \- 127.0.0.1
-
-&#x20;    \- \[::]&#x20;
+* `localhost`
+* `127.0.0.1`
+* `[::]`
+{% endhint %}
