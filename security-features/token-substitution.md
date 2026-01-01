@@ -108,7 +108,7 @@ export default defineConfig({
 </strong><strong>                // Optional, see below
 </strong><strong>                trustedThirdPartyResourceServers: [
 </strong><strong>                    "s3.amazonaws.com", 
-</strong><strong>                    "*.api.my-company.com"
+</strong><strong>                    "*.microsoft.com"
 </strong><strong>                ]
 </strong><strong>            }
 </strong><strong>        })
@@ -147,7 +147,7 @@ Use this when your app needs to call third-party resource servers (outside your 
 Example:
 
 ```ts
-["s3.amazonaws.com", "*.api.my-company.com"]
+["s3.amazonaws.com", "*.microsoft.com"]
 ```
 
 #### What’s allowed by default
