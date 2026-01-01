@@ -72,8 +72,7 @@ Overlap:
 
 * Both reduce the damage from a successful supply-chain or XSS attack.
 
-DPoP is generally the stronger defence.\
-If your whole app uses DPoP, Token Substitution is often unnecessary.
+DPoP is generally the stronger defence but in practice, DPoP can't al
 
 In practice, DPoP is not always possible:
 
