@@ -72,15 +72,13 @@ Overlap:
 
 * Both reduce the damage from a successful supply-chain or XSS attack.
 
-DPoP is generally the stronger defence but in practice, DPoP can't al
-
-In practice, DPoP is not always possible:
+DPoP is generally the stronger defence but in practice:&#x20;
 
 * not all authorisation servers and resource servers support DPoP yet
-* WebSocket is out of scope for DPoP
-* some token exchanges require the access token in the request body (often outside DPoP’s coverage), e.g. AWS STS or Vault-style exchanges
+* [WebSocket is out of scope for DPoP](../integration-guides/backend-token-validation/websocket.md)
+* some token exchanges require the access token in the request body (often outside DPoP’s coverage), e.g. AWS STS or [Vault-style exchanges](../talking-to-multiple-apis-with-different-access-tokens.md#using-multiple-clients-in-oidc-spa)
 
-If any of these apply, Token Substitution still helps.
+If any of these apply, enabling Token Exfiltration still improve your security posture significantly.
 
 ### Requirements (can I enable it?)
 
@@ -90,8 +88,7 @@ You need:
 
 * [Browser Runtime Freeze](browser-runtime-freeze.md), ideally with no exceptions.\
   If runtime integrity can’t be guaranteed, this defence can be bypassed.
-* If you call resource servers outside your site (example: `s3.amazonaws.com`), you must know their hostnames at build time (or synchronously at runtime).\
-  Otherwise an attacker could send a request to their own host and recover the real token.
+* If you call resource servers outside your site (example: `s3.amazonaws.com`), you must know their hostnames at build time (or synchronously at runtime).
 * You must not need to display the raw access token to the user.\
   Example: no “copy access token” button.
 
