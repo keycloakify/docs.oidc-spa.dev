@@ -26,7 +26,7 @@ const accessToken = await oidc.getAccessToken();
 
 You’ll get a JWT-shaped string:
 
-`<real header>.<real payload>.<placeholder signature>`
+`<real header>`<mark style="color:orange;">`.`</mark>`<real payload>`<mark style="color:orange;">`.`</mark><mark style="color:yellow;">`<placeholder signature>`</mark>
 
 The header and payload are real and unaltered.\
 The signature is replaced with a placeholder, so validation fails.
