@@ -16,7 +16,7 @@ Token Substitution is an optional defence against token exfiltration during:
 * an XSS compromise
 
 When enabled, any access token your app can read is replaced with a harmless “substituted” token.\
-The substituted token **cannot** be used to call a resource server. &#x20;
+The substituted token **cannot** be used to call a resource server.
 
 Example:
 
@@ -34,7 +34,7 @@ The signature is replaced with a placeholder, so validation fails.
 #### What this blocks
 
 If an attacker exfiltrates the substituted token, they can’t use it against your resource servers.\
-Any validation attempt fails because the signature is fake. &#x20;
+Any validation attempt fails because the signature is fake.
 
 #### How requests still work
 
@@ -59,12 +59,14 @@ It also blocks authenticated requests to untrusted hosts.
 Posture:
 
 * [DPoP](dpop.md): limits the impact of a leaked token.
-* Token Substitution: Attemps to prevent tokens from being leaked in the first place.
+* Token Substitution: Attempts to prevent tokens from being leaked in the first place.
 
 Nature:
 
 * DPoP is a protocol-level RFC. It’s standardised and crypto-based.
-* Token Substitution is an adapter-level strategy. It’s oidc-spa specific and not demonstrably bulletproof by essense.&#x20;
+* Token Substitution is an adapter-level technique. It’s oidc-spa specific.\
+  It’s practical hardening, not a cryptographic guarantee.\
+  It can’t be proven “bulletproof”. New bypasses may be found.
 
 Overlap:
 
