@@ -24,7 +24,7 @@ Example:
 const accessToken = await oidc.getAccessToken();
 ```
 
-You’ll get a JWT-shaped string:
+[Assuming your Authorization Server issues, JWT access token](#user-content-fn-1)[^1], you’ll get a string shaped like:
 
 `<real header>`<mark style="color:orange;">`.`</mark>`<real payload>`<mark style="color:orange;">`.`</mark><mark style="color:yellow;">`<placeholder signature>`</mark>
 
@@ -179,3 +179,5 @@ Host filtering is disabled in dev server environments:
 * `127.0.0.1`
 * `[::]`
 {% endhint %}
+
+[^1]: If your IdP issues opaque tokens, you'll just receive a placeholder string.
