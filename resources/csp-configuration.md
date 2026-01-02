@@ -1,5 +1,8 @@
 ---
 icon: user-police
+metaLinks:
+  alternates:
+    - https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/resources/csp-configuration
 ---
 
 # CSP Configuration
@@ -13,7 +16,7 @@ Silent session restoration via iframe is **optional**, oidc-spa can restore user
 _If that is so, why does oidc-spa even attemt to use iframe?_
 
 * For performance: iframe based session resoration is a little faster than full page redirect (not much but still noticable).
-* For security **if and only if** [your app talks to more than one resource server](../talking-to-multiple-apis-with-different-access-tokens.md) (which is **not** the case in most apps), because "multiple oidc-client" + "no iframe SSO" = "oidc-spa needs to persist tokens in session storage". &#x20;
+* For security **if and only if** [your app talks to more than one resource server](../features/talking-to-multiple-apis-with-different-access-tokens.md) (which is **not** the case in most apps), because "multiple oidc-client" + "no iframe SSO" = "oidc-spa needs to persist tokens in session storage". &#x20;
 
 ***
 

@@ -1,5 +1,8 @@
 ---
 icon: angular
+metaLinks:
+  alternates:
+    - https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/angular
 ---
 
 # Angular

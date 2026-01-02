@@ -7,9 +7,9 @@
 * [Integration](integration-guides/example-setups.md)
 * [Framework Agnostic Adapter](integration-guides/usage.md)
 * [TanStack Router/Start](integration-guides/tanstack-router-start/README.md)
-  * [TanStack Start](integration-guides/tanstack-start.md)
+  * [TanStack Start](integration-guides/tanstack-router-start/tanstack-start.md)
   * [TanStack Router](integration-guides/tanstack-router-start/react-router.md)
-* [React Router](setup-guides/react-router.md)
+* [React Router](integration-guides/react-router.md)
 * [Angular](integration-guides/angular.md)
 * [Backend Token Validation](integration-guides/backend-token-validation/README.md)
   * [tRPC](integration-guides/backend-token-validation/trpc.md)
@@ -39,14 +39,14 @@
 
 ## features
 
-* [Auto Login](auto-login.md)
-* [Auto Logout](auto-logout.md)
-* [Debug and Error Handling](error-management.md)
+* [Auto Login](features/auto-login.md)
+* [Auto Logout](features/auto-logout.md)
+* [Debug and Error Handling](features/error-management/README.md)
   * [Error Handling - No AutoLogin](features/error-management/error-handling-no-autologin.md)
   * [Error Handling - With AutoLogin](features/error-management/error-handling-with-autologin.md)
 * [Non Blocking Rendering](features/non-blocking-rendering.md)
-* [Talking to multiple APIs (with different access tokens)](talking-to-multiple-apis-with-different-access-tokens.md)
-* [Tokens Renewal](tokens-renewal.md)
+* [Talking to multiple APIs (with different access tokens)](features/talking-to-multiple-apis-with-different-access-tokens.md)
+* [Tokens Renewal](features/tokens-renewal.md)
 * [User Account Management](features/user-account-management.md)
 * [User Session Initialization](features/user-session-initialization.md)
 

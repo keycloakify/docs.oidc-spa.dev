@@ -1,6 +1,10 @@
 ---
 description: Ensuring the integrity of the browser runtime environment.
 icon: igloo
+metaLinks:
+  alternates:
+    - >-
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/security-features/browser-runtime-freeze
 ---
 
 # Browser Runtime Freeze
@@ -61,7 +65,7 @@ Your app may fail to start after enabling `browserRuntimeFreeze`.
 
 You might see an exception like this:
 
-<figure><img src="../.gitbook/assets/image (7).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (16).png" alt=""><figcaption></figcaption></figure>
 
 In this example, [Zone.js](https://www.npmjs.com/package/zone.js) tries to overwrite `window.fetch`. Other libraries can do the same. Telemetry libraries are common offenders (for example, [@microsoft/applicationinsights-react-js](https://www.npmjs.com/package/@microsoft/applicationinsights-react-js)).
 
@@ -74,7 +78,7 @@ You have two options:
 
 **How much is my security posture degraded by adding exclusion?**
 
-Excluding `fetch` and `XMLHttpRequest` is usually **not too bad**. Although they are the first APIs attackers try to instrument, [DPoP](dpop.md) and/or [Token Substitution](token-substitution.md) makes those vectors much less useful.
+Excluding `fetch` and `XMLHttpRequest` is usually **not too bad**. Although they are the first APIs attackers try to instrument, [DPoP](https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/security-features/dpop) and/or [Token Substitution](https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/security-features/token-substitution) makes those vectors much less useful.
 
 The APIs that are most critical like `Function`, `String`, or `JSON` are very rarely monkey instrumented by legitimate library so you shouldn't have to exclude them. &#x20;
 

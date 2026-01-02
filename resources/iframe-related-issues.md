@@ -1,6 +1,10 @@
 ---
 hidden: true
 icon: crop-simple
+metaLinks:
+  alternates:
+    - >-
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/resources/iframe-related-issues
 ---
 
 # iframe related issues

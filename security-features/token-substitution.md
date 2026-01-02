@@ -1,5 +1,9 @@
 ---
 icon: cards-blank
+metaLinks:
+  alternates:
+    - >-
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/security-features/token-substitution
 ---
 
 # Token Substitution
@@ -58,7 +62,7 @@ It also blocks authenticated requests to untrusted hosts.
 
 Posture:
 
-* [DPoP](dpop.md): limits the impact of a leaked token.
+* [DPoP](https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/security-features/dpop): limits the impact of a leaked token.
 * Token Substitution: Attempts to prevent tokens from being leaked in the first place.
 
 Nature:
@@ -76,7 +80,7 @@ DPoP is generally the stronger defence but in practice:&#x20;
 
 * not all authorisation servers and resource servers support DPoP yet
 * [WebSocket is out of scope for DPoP](../integration-guides/backend-token-validation/websocket.md)
-* some token exchanges require the access token in the request body (often outside DPoP’s coverage), e.g. AWS STS or [Vault-style exchanges](../talking-to-multiple-apis-with-different-access-tokens.md#using-multiple-clients-in-oidc-spa)
+* some token exchanges require the access token in the request body (often outside DPoP’s coverage), e.g. AWS STS or [Vault-style exchanges](../features/talking-to-multiple-apis-with-different-access-tokens.md#using-multiple-clients-in-oidc-spa)
 
 If any of these apply, enabling Token Exfiltration still improve your security posture significantly.
 
@@ -86,7 +90,7 @@ The requirements are strict. Not every app can enable it.
 
 You need:
 
-* To enable [Browser Runtime Freeze](browser-runtime-freeze.md).\
+* To enable [Browser Runtime Freeze](https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/security-features/browser-runtime-freeze).\
   If runtime integrity can’t be guaranteed, this defence can be bypassed. \
   That being said the defence remains effective even if you had to exclude fetch and XMLHttpRequest. (`browserRuntimeFreeze.exclude = ["fetch", "XMLHttpRequest"]`)
 * If you call resource servers outside your site (example: `s3.amazonaws.com`), you must know their hostnames at build time (or synchronously at runtime).

@@ -1,7 +1,14 @@
+---
+metaLinks:
+  alternates:
+    - >-
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/features/error-management/error-handling-with-autologin
+---
+
 # Error Handling - With AutoLogin
 
 {% hint style="info" %}
-This guide only applies if you have enabled [Auto Login](../../auto-login.md).\
+This guide only applies if you have enabled [Auto Login](../auto-login.md).\
 If you do **not** have Auto Login enabled, follow [this guide instead](error-handling-no-autologin.md).
 {% endhint %}
 

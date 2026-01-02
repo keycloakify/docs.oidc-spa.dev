@@ -1,5 +1,9 @@
 ---
 icon: gauge-max
+metaLinks:
+  alternates:
+    - >-
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/features/non-blocking-rendering
 ---
 
 # Non Blocking Rendering

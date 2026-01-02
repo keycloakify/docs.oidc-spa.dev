@@ -1,5 +1,8 @@
 ---
 icon: person-snowboarding
+metaLinks:
+  alternates:
+    - https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/usage
 ---
 
 # Framework Agnostic Adapter

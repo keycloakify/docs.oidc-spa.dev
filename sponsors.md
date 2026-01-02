@@ -1,6 +1,9 @@
 ---
 description: Backers of the project
 icon: star
+metaLinks:
+  alternates:
+    - https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/sponsors
 ---
 
 # Sponsors

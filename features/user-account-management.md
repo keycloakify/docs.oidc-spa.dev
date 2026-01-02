@@ -1,5 +1,9 @@
 ---
 icon: file-user
+metaLinks:
+  alternates:
+    - >-
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/features/user-account-management
 ---
 
 # User Account Management

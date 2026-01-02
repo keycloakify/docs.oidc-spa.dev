@@ -1,5 +1,8 @@
 ---
 icon: discord
+metaLinks:
+  alternates:
+    - https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/resources/discord-server
 ---
 
 # Discord Server

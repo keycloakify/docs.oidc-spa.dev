@@ -1,6 +1,10 @@
 ---
 hidden: true
 icon: cookie
+metaLinks:
+  alternates:
+    - >-
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/resources/end-of-third-party-cookies
 ---
 
 # End of third-party cookies

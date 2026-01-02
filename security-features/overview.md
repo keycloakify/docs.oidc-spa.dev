@@ -1,6 +1,9 @@
 ---
 description: How oidc-spa mitigates the risks of token exposure
 icon: lighthouse
+metaLinks:
+  alternates:
+    - https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/security-features/overview
 ---
 
 # Overview

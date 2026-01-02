@@ -1,6 +1,10 @@
 ---
 hidden: true
 icon: octagon-exclamation
+metaLinks:
+  alternates:
+    - >-
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/resources/blocked-monkey-patching
 ---
 
 # Blocked Monkey Patching

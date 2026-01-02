@@ -1,6 +1,10 @@
 ---
 description: Why Doesn't oidc-spa Require a Client Secret?
 icon: question
+metaLinks:
+  alternates:
+    - >-
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/resources/why-no-client-secret
 ---
 
 # Why No Client Secret?

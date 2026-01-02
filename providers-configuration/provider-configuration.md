@@ -1,6 +1,10 @@
 ---
 hidden: true
 icon: sliders
+metaLinks:
+  alternates:
+    - >-
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/providers-configuration/provider-configuration
 ---
 
 # Provider configuration

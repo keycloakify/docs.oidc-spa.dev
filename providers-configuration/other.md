@@ -1,5 +1,9 @@
 ---
 icon: sliders
+metaLinks:
+  alternates:
+    - >-
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/providers-configuration/other
 ---
 
 # Other OIDC Provider

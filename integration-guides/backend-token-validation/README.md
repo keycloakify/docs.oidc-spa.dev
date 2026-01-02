@@ -1,6 +1,10 @@
 ---
 description: Creating a OAuth2 enabled resource server.
 icon: arrow-right-arrow-left
+metaLinks:
+  alternates:
+    - >-
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation
 ---
 
 # Backend Token Validation
@@ -39,7 +43,7 @@ It then uses it to verify that each incoming token:
 * was signed by the IdP
 * targets the expected audience
 * hasn’t expired
-* has a valid [DPoP proof](../../security-features/dpop.md) (if applicable)
+* has a valid [DPoP proof](https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/security-features/dpop) (if applicable)
 
 This is a big win for edge runtimes.\
 Identity and authorization can be established locally, with no external round trips.
@@ -58,13 +62,13 @@ In that case, you won’t be able to use `oidc-spa/server`.
 
 Integration instruction for common HTTP framworks. This only covers REST APIs and RPC. For securing WebSocket connection [see bellow](./#websocket).
 
-<table data-view="cards"><thead><tr><th data-card-target data-type="content-ref">Docs</th><th data-hidden>Option</th></tr></thead><tbody><tr><td><a href="nestjs.md">nestjs.md</a></td><td>NestJS</td></tr><tr><td><a href="trpc.md">trpc.md</a></td><td>tRPC</td></tr><tr><td><a href="express.js.md">express.js.md</a></td><td>Express.js</td></tr><tr><td><a href="koa.md">koa.md</a></td><td>Koa</td></tr><tr><td><a href="fastify.md">fastify.md</a></td><td>Fastify</td></tr><tr><td><a href="hono.md">hono.md</a></td><td>Hono</td></tr><tr><td><a href="../tanstack-start.md">tanstack-start.md</a></td><td>TanStack Start</td></tr></tbody></table>
+<table data-view="cards"><thead><tr><th data-card-target data-type="content-ref">Docs</th><th data-hidden>Option</th></tr></thead><tbody><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/nestjs">NestJS</a></td><td>NestJS</td></tr><tr><td><a href="trpc.md">trpc.md</a></td><td>tRPC</td></tr><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/express.js">Express.js</a></td><td>Express.js</td></tr><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/koa">Koa</a></td><td>Koa</td></tr><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/fastify">Fastify</a></td><td>Fastify</td></tr><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/hono">Hono</a></td><td>Hono</td></tr><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/tanstack-router-start/tanstack-start">TanStack Start</a></td><td>TanStack Start</td></tr></tbody></table>
 
 <details>
 
 <summary>JS Runtime level integration</summary>
 
-<table data-view="cards"><thead><tr><th data-card-target data-type="content-ref">Docs</th></tr></thead><tbody><tr><td><a href="node-http.md">node-http.md</a></td></tr><tr><td><a href="deno.serve.md">deno.serve.md</a></td></tr><tr><td><a href="bun.serve.md">bun.serve.md</a></td></tr><tr><td><a href="cloudflare-workers.md">cloudflare-workers.md</a></td></tr><tr><td><a href="vercel-edge.md">vercel-edge.md</a></td></tr></tbody></table>
+<table data-view="cards"><thead><tr><th data-card-target data-type="content-ref">Docs</th></tr></thead><tbody><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/node-http">node:http</a></td></tr><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/deno.serve">Deno.serve</a></td></tr><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/bun.serve">Bun.serve</a></td></tr><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/cloudflare-workers">Cloudflare Workers</a></td></tr><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/vercel-edge">Vercel Edge</a></td></tr></tbody></table>
 
 </details>
 

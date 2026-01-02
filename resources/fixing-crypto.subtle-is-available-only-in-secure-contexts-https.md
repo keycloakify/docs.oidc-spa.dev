@@ -1,6 +1,10 @@
 ---
 hidden: true
 icon: file-lock
+metaLinks:
+  alternates:
+    - >-
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/resources/fixing-crypto.subtle-is-available-only-in-secure-contexts-https
 ---
 
 # Fixing Crypto.subtle is available only in secure contexts (HTTPS)

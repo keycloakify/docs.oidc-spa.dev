@@ -1,6 +1,10 @@
 ---
 hidden: true
 icon: laptop-code
+metaLinks:
+  alternates:
+    - >-
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/example-setups
 ---
 
 # Integration
@@ -9,12 +13,12 @@ icon: laptop-code
 [usage.md](usage.md)
 {% endcontent-ref %}
 
-{% content-ref url="tanstack-start.md" %}
-[tanstack-start.md](tanstack-start.md)
+{% content-ref url="tanstack-router-start/tanstack-start.md" %}
+[tanstack-start.md](tanstack-router-start/tanstack-start.md)
 {% endcontent-ref %}
 
-{% content-ref url="../setup-guides/react-router.md" %}
-[react-router.md](../setup-guides/react-router.md)
+{% content-ref url="react-router.md" %}
+[react-router.md](react-router.md)
 {% endcontent-ref %}
 
 {% content-ref url="angular.md" %}

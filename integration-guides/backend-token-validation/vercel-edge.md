@@ -1,5 +1,9 @@
 ---
 icon: triangle
+metaLinks:
+  alternates:
+    - >-
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/vercel-edge
 ---
 
 # Vercel Edge

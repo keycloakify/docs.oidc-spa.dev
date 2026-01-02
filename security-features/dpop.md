@@ -1,6 +1,9 @@
 ---
 description: OAuth 2.0 Demonstrating Proof-of-Possession
 icon: receipt
+metaLinks:
+  alternates:
+    - https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/security-features/dpop
 ---
 
 # DPoP

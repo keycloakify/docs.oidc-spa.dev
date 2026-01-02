@@ -1,5 +1,9 @@
 ---
 icon: umbrella-beach
+metaLinks:
+  alternates:
+    - >-
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/tanstack-router-start/react-router
 ---
 
 # TanStack Router

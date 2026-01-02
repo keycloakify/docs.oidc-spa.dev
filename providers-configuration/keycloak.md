@@ -1,5 +1,9 @@
 ---
 icon: code-simple
+metaLinks:
+  alternates:
+    - >-
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/providers-configuration/keycloak
 ---
 
 # Keycloak
@@ -88,8 +92,8 @@ Users accessing sensitive applications should not remain authenticated indefinit
    * Set **SSO Session max idle**: `14 days` (ensures users who actively use the app don’t get logged out unnecessarily).
 3. Optionally, display a logout countdown before automatic logout:
 
-{% content-ref url="../auto-logout.md" %}
-[auto-logout.md](../auto-logout.md)
+{% content-ref url="../features/auto-logout.md" %}
+[auto-logout.md](../features/auto-logout.md)
 {% endcontent-ref %}
 
 ***

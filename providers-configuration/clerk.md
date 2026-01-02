@@ -1,5 +1,9 @@
 ---
 icon: circle
+metaLinks:
+  alternates:
+    - >-
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/providers-configuration/clerk
 ---
 
 # Clerk

@@ -1,13 +1,17 @@
 ---
 description: And why it's not supposed to be read on the client side.
 icon: brackets-curly
+metaLinks:
+  alternates:
+    - >-
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/resources/jwt-of-the-access-token
 ---
 
-# JWT of the Access Token
+# JWT Of the Access Token
 
 You might be surprised, or even frustrated, that oidc-spa only provides the decoded ID token and not the decoded access token. This is intentional: the access token is meant to be **opaque** to the client application. It should be used only as an authentication key (e.g., a Bearer token when calling an API). According to the OAuth 2.0 specification, [the access token is not even required to be a JWT](https://datatracker.ietf.org/doc/html/rfc6749#section-1.4):
 
-> The string is usually opaque to the client. [...] The token may denote an identifier used to retrieve the authorization information or may self-contain the authorization information in a verifiable manner (i.e., a token string consisting of some data and a signature).
+> The string is usually opaque to the client. \[...] The token may denote an identifier used to retrieve the authorization information or may self-contain the authorization information in a verifiable manner (i.e., a token string consisting of some data and a signature).
 
 The good news is that everything you need is usually found in the ID token. If you notice that certain information appears in the access token but not in the ID token, there are two likely reasons:
 
@@ -26,8 +30,10 @@ import { decodeJwt } from 'oidc-spa/tools/decodeJwt';
 const decodedAccessToken = decodeJwt(await oidc.getAccessToken());
 ```
 {% endtab %}
+
 {% tab title="React" %}
 `oidc.ts`
+
 ```typescript
 import { oidcSpa } from "oidc-spa/react-spa";
 import { decodeJwt } from "oidc-spa/tools/decodeJwt";

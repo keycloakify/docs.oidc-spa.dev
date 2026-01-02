@@ -1,5 +1,9 @@
 ---
 icon: e
+metaLinks:
+  alternates:
+    - >-
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/express.js
 ---
 
 # Express.js

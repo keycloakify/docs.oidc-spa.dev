@@ -14,6 +14,9 @@ layout:
     visible: false
   metadata:
     visible: true
+metaLinks:
+  alternates:
+    - https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/
 ---
 
 # Getting Started
@@ -116,8 +119,8 @@ Pick the integration path for your stack.
 [tanstack-router-start](integration-guides/tanstack-router-start/)
 {% endcontent-ref %}
 
-{% content-ref url="setup-guides/react-router.md" %}
-[react-router.md](setup-guides/react-router.md)
+{% content-ref url="integration-guides/react-router.md" %}
+[react-router.md](integration-guides/react-router.md)
 {% endcontent-ref %}
 
 {% content-ref url="integration-guides/angular.md" %}

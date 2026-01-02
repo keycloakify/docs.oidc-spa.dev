@@ -1,5 +1,9 @@
 ---
 icon: square-caret-up
+metaLinks:
+  alternates:
+    - >-
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/features/user-session-initialization
 ---
 
 # User Session Initialization

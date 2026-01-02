@@ -1,6 +1,10 @@
 ---
 description: Formerly Azure Active Directory
 icon: microsoft
+metaLinks:
+  alternates:
+    - >-
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/providers-configuration/microsoft-entra-id
 ---
 
 # Microsoft Entra ID
