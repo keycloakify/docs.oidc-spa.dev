@@ -2,7 +2,7 @@
 icon: up
 ---
 
-# v8.x -> v8.8
+# v8 -> v9
 
 The security defences has been reworked. See security features overview:
 
@@ -10,7 +10,9 @@ The security defences has been reworked. See security features overview:
 [Overview](https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/security-features/overview)
 {% endcontent-ref %}
 
-Sorry, technically this should be a major but those APIs where marked unstable.&#x20;
+
+
+## Vite Plugin and Entrypoint
 
 {% tabs %}
 {% tab title="Vite Plugin" %}
