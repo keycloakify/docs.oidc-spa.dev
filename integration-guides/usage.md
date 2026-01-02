@@ -207,7 +207,7 @@ For certain use cases, you may want a mock adapter to simulate user authenticati
 This approach is useful when building an app where user authentication is a feature but not a requirement. It also proves beneficial for running tests or in Storybook environments.
 
 <pre class="language-typescript"><code class="lang-typescript">import { createOidc } from "oidc-spa/core";
-<strong>import { createMockOidc } from "oidc-spa/mock";
+<strong>import { createMockOidc } from "oidc-spa/core-mock";
 </strong>import { z } from "zod";
 
 const decodedIdTokenSchema = z.object({
