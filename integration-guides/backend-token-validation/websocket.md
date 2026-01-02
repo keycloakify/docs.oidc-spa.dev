@@ -3,8 +3,7 @@ description: Securing a WebSocket connection
 icon: right-left-large
 metaLinks:
   alternates:
-    - >-
-      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/websocket
+    - /broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/2h9b2JIP2ifZUPpmy07q
 ---
 
 # WebSocket

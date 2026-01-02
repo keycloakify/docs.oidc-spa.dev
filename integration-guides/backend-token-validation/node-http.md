@@ -2,8 +2,7 @@
 icon: node-js
 metaLinks:
   alternates:
-    - >-
-      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/node-http
+    - /broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/8IHPKsisQp1ZEgtiRmTI
 ---
 
 # node:http

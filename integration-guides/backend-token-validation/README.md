@@ -3,8 +3,7 @@ description: Creating a OAuth2 enabled resource server.
 icon: arrow-right-arrow-left
 metaLinks:
   alternates:
-    - >-
-      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation
+    - /broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/yolKsccF0yDQcZTXQnPo
 ---
 
 # Backend Token Validation
@@ -62,13 +61,13 @@ In that case, you won’t be able to use `oidc-spa/server`.
 
 Integration instruction for common HTTP framworks. This only covers REST APIs and RPC. For securing WebSocket connection [see bellow](./#websocket).
 
-<table data-view="cards"><thead><tr><th data-card-target data-type="content-ref">Docs</th><th data-hidden>Option</th></tr></thead><tbody><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/nestjs">NestJS</a></td><td>NestJS</td></tr><tr><td><a href="trpc.md">trpc.md</a></td><td>tRPC</td></tr><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/express.js">Express.js</a></td><td>Express.js</td></tr><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/koa">Koa</a></td><td>Koa</td></tr><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/fastify">Fastify</a></td><td>Fastify</td></tr><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/hono">Hono</a></td><td>Hono</td></tr><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/tanstack-router-start/tanstack-start">TanStack Start</a></td><td>TanStack Start</td></tr></tbody></table>
+<table data-view="cards"><thead><tr><th data-card-target data-type="content-ref">Docs</th><th data-hidden>Option</th></tr></thead><tbody><tr><td><a href="/broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/U95czlJaG5VGFSiLaeUm">Broken link</a></td><td>NestJS</td></tr><tr><td><a href="trpc.md">trpc.md</a></td><td>tRPC</td></tr><tr><td><a href="/broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/D7oSdXrY8PpRNgwq8P0j">Broken link</a></td><td>Express.js</td></tr><tr><td><a href="/broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/YklVLJe1CNTx5tAEmDL3">Broken link</a></td><td>Koa</td></tr><tr><td><a href="/broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/dpMjSkwHciZoaYThM3xK">Broken link</a></td><td>Fastify</td></tr><tr><td><a href="/broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/ouqjtmsZVJywv5rMklIc">Broken link</a></td><td>Hono</td></tr><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/tanstack-router-start/tanstack-start">TanStack Start</a></td><td>TanStack Start</td></tr></tbody></table>
 
 <details>
 
 <summary>JS Runtime level integration</summary>
 
-<table data-view="cards"><thead><tr><th data-card-target data-type="content-ref">Docs</th></tr></thead><tbody><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/node-http">node:http</a></td></tr><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/deno.serve">Deno.serve</a></td></tr><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/bun.serve">Bun.serve</a></td></tr><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/cloudflare-workers">Cloudflare Workers</a></td></tr><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/vercel-edge">Vercel Edge</a></td></tr></tbody></table>
+<table data-view="cards"><thead><tr><th data-card-target data-type="content-ref">Docs</th></tr></thead><tbody><tr><td><a href="/broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/8IHPKsisQp1ZEgtiRmTI">Broken link</a></td></tr><tr><td><a href="/broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/d2qm0aCjKdy6kvR8uvUR">Broken link</a></td></tr><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/tanstack-router-+-node-rest-api/bun.serve">Bun.serve</a></td></tr><tr><td><a href="/broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/7iLCD0QZbmGywDt5qJd7">Broken link</a></td></tr><tr><td><a href="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/tanstack-router-+-node-rest-api/vercel-edge">Vercel Edge</a></td></tr></tbody></table>
 
 </details>
 

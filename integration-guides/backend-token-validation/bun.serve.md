@@ -3,7 +3,7 @@ icon: onion
 metaLinks:
   alternates:
     - >-
-      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/bun.serve
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/tanstack-router-+-node-rest-api/bun.serve
 ---
 
 # Bun.serve
