@@ -17,9 +17,7 @@ It consist in ensuring the integrity of the Browser environement to make sure th
 
 {% tabs %}
 {% tab title="Vite Plugin" %}
-{% code title="vite.config.ts" %}
-```typescript
-import { defineConfig } from "vite";
+<pre class="language-typescript" data-title="vite.config.ts"><code class="lang-typescript">import { defineConfig } from "vite";
 import { oidcSpa } from "oidc-spa/vite-plugin";
 
 export default defineConfig({
@@ -27,15 +25,14 @@ export default defineConfig({
         // ...
         oidcSpa({
             // ...
-            browserRuntimeFreeze: {
-                enabled: true,
-                // exclude: ["fetch", "XMLHttpRequest", "Promise"]
-            }
-        })
+<strong>            browserRuntimeFreeze: {
+</strong><strong>                enabled: true,
+</strong><strong>                // exclude: ["Promise", "fetch", "XMLHttpRequest"]
+</strong><strong>            }
+</strong>        })
     ]
 });
-```
-{% endcode %}
+</code></pre>
 {% endtab %}
 
 {% tab title="Manual" %}
@@ -47,7 +44,7 @@ const { shouldLoadApp } = oidcEarlyInit({
     // ...
 <strong>    browserRuntimeFreeze: {
 </strong><strong>        enabled: true,
-</strong><strong>        // exclude: ["fetch", "XMLHttpRequest", "Promise"]
+</strong><strong>        // exclude: ["Promise", "fetch", "XMLHttpRequest"]
 </strong><strong>    }
 </strong>});
 
@@ -64,33 +61,26 @@ Unfortunately there is a high likelyhood that your app will refuse to start afte
 
 You might be faced by an exception like this:
 
+<figure><img src="../.gitbook/assets/image (7).png" alt=""><figcaption></figcaption></figure>
 
+Here we can see that it's [Zone.js](https://www.npmjs.com/package/zone.js) that is attempting to overwrite the default implementation of winow.fetch. Other libraries, typically telemetry libraries like [@microsoft/applicationinsights-react-js](https://www.npmjs.com/package/@microsoft/applicationinsights-react-js) will produce the same error.
 
+Here you have two option:
 
+* 1\) Evaluate if you really need the library that is monkey patching. ([For example, can't you go Zoneless?](#user-content-fn-1)[^1])
+* 2\) Add an exception for a specific API, by adding "fetch" to the exclude array you're telling oidc-spa to allow alteration of fetch.
 
-It’s possible that your app will refuse to start after enabling the defence.
+**How much is my security posture degraded by adding exclusion?**
 
-If this happens, a dependency in your app is attempting to monkey-patch critical built-ins.\
-oidc-spa cannot allow this while guaranteeing token protection.
+Unintuitively, excluding fetch and XMLHttpRequest is **not that bad**. Those are the first API that an attacker will try to instrument but [DPoP](dpop.md) and/or [Token Substitution](token-substitution.md) will make those vectors harmless.
 
-Examples of incompatible libraries:
-
-* `@microsoft/applicationinsights`, monkey-patches `fetch`
-* `Zone.js`, monkey-patches `Promise` and `XMLHttpRequest`
-
-If you encounter this situation, your only options are:
-
-* Remove or replace the incompatible libraries, **or**
-* Disable the oidc-spa exfiltration defence
-
-Even with this defence disabled, oidc-spa still implements all current best practices for secure client-side auth (including **zero token persistence**).\
-Your app will still pass a security audit.
+The good news is that the APIs that are more critical to remain unalterated like `Function`, `String` or `JSON` are virtually never instrumented legitimely by libraries and shouldn't cause problem.  &#x20;
 
 ## Understanding What This Protects Against
 
-In javascript runtime, by default prety much any global APIs can be alterated at runtime. &#x20;
+In JavaScript, prety much any builtin APIs can be alterated at runtime. &#x20;
 
-Example an attacker could write:
+Let's consider this attack: &#x20;
 
 ```javascript
 // Attacker's code:
@@ -115,6 +105,8 @@ const [header, payload, signature ] = accessToken.split(".");
 
 The purpose of browserRuntimeFreeze is precisely to prevent this.&#x20;
 
-To make sure that when you call .split() or fetch or promise.then() you're actually calling the real browther builtin and not a mokey patched version of it that would have been set by a compromized dependency you're using or an XSS attack.
+To make sure that when you call .split() or fetch() or promise.then() you're actually calling the real browther builtin and not a mokey patched version of it that would have been set by a compromized dependency you're using or an XSS attack.
 
 With browserRuntimeFreeze enabled. Trying to do String.prototype.split = ()=>{} will throw a runtime exception. &#x20;
+
+[^1]: Note specific to Angular project and Zode.js: You can also move the import of "zone.js" in your main.js file, so the alteration happen before oidc-spa lock down the environement. This will prevent you from having to exclude anything.
