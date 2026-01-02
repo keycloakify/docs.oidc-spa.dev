@@ -13,6 +13,8 @@ Instead, each request must also include a cryptographic proof showing possession
 As a result, access tokens become **much less sensitive**:\
 if a token leaks, it cannot be replayed from another device or context without the corresponding private key.
 
+The protocol also provide replay attack protection. &#x20;
+
 DPoP [is supported by **Keycloak**](https://www.keycloak.org/2025/10/dpop-support-26-4) and an increasing number of other identity providers and resource server stacks.
 
 ***
