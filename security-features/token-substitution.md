@@ -86,8 +86,9 @@ The requirements are strict. Not every app can enable it.
 
 You need:
 
-* [Browser Runtime Freeze](browser-runtime-freeze.md), ideally with no exceptions.\
-  If runtime integrity can’t be guaranteed, this defence can be bypassed.
+* To enable [Browser Runtime Freeze](browser-runtime-freeze.md).\
+  If runtime integrity can’t be guaranteed, this defence can be bypassed. \
+  That being said the defence remains effective even if you had to exclude fetch and XMLHttpRequest. (`browserRuntimeFreeze.exclude = ["fetch", "XMLHttpRequest"]`)
 * If you call resource servers outside your site (example: `s3.amazonaws.com`), you must know their hostnames at build time (or synchronously at runtime).
 * You must not need to display the raw access token to the user.\
   Example: no “copy access token” button.
@@ -127,7 +128,7 @@ const { shouldLoadApp } = oidcEarlyInit({
 </strong><strong>           // Optional, see below
 </strong><strong>           trustedThirdPartyResourceServers: [
 </strong><strong>              "s3.amazonaws.com", 
-</strong><strong>              "*.api.my-company.com"
+</strong><strong>              "*.microsoft.com"
 </strong><strong>           ]
 </strong><strong>        })
 </strong>    }

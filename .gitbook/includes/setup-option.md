@@ -56,6 +56,8 @@ if (shouldLoadApp) {
 {% tab title="Manual - Easy" %}
 If you’re not using Vite and you can’t edit your app’s entry file, run `oidcEarlyInit()` in the same module where you call `createOidc()`.
 
+Note however that implementing this option [dowgrade the security posture of your app](../../security-features/overview.md#how-oidc-spa-achieves-this-in-a-nutshell) compared to the two other approaches and, in some instances, might conflict with your client side routing library.
+
 <pre class="language-typescript" data-title="src/oidc.ts"><code class="lang-typescript">import { 
 <strong>   oidcEarlyInit, 
 </strong>   createOidc 

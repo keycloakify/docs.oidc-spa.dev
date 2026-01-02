@@ -5,7 +5,7 @@ icon: octagon-exclamation
 
 # Blocked Monkey Patching
 
-If you are seeing this page, it means that you have enabled [oidc-spa’s custom exfiltration defense mechanisms](token-exfiltration-defence.md), but they conflict with one or more libraries used in your application.
+If you are seeing this page, it means that you have enabled [oidc-spa’s custom exfiltration defense mechanisms](../security-features/overview.md), but they conflict with one or more libraries used in your application.
 
 For these defenses to be effective, oidc-spa must ensure that certain sensitive browser APIs (such as `window.fetch`) have not been modified. Unfortunately, there is no reliable way to distinguish between APIs that were monkey-patched by a legitimate dependency and those altered as part of an NPM supply-chain or XSS attack. Allowing exceptions would weaken the guarantees provided by the defense, so oidc-spa does not support whitelisting or bypassing these checks.
 
