@@ -29,11 +29,16 @@ oidc-spa is an OpenID Connect client for browser-centric web apps. It implements
 
 It features [a set of security defences](security-features/overview.md) that make it stand out compared to other Client-Side OIDC implementations.
 
-It’s a single library that can replace platform-specific SDKs like keycloak-js, MSAL.js, @auth0/auth0-spa-js, etc. on the frontend, and [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken), [jose](https://www.npmjs.com/package/jose) or [express-jwt](https://www.npmjs.com/package/express-jwt) on your JS backend.
+It’s a single library that can replace platform-specific SDKs like `keycloak-js`, `MSAL.js`, `@auth0/auth0-spa-js`, etc. on the frontend, and `jsonwebtoken`, `jose` or `express-jwt` on your JS backend.
+
+**What it isn't**
+
+* It is **not** a server-side auth/session framework.&#x20;
+* If your app’s auth state must exist on the server at render time, this isn’t your tool.
 
 ## Dive In
 
-Convinced this is what you're looking for already? Let's get your app authenticated.
+This is what you're looking for? Let's get your app authenticated.
 
 {% content-ref url="integration-guides/example-setups.md" %}
 [example-setups.md](integration-guides/example-setups.md)
