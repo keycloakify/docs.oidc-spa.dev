@@ -1,20 +1,36 @@
 ---
-hidden: true
-icon: laptop-code
+description: Let's get your app authenticated!
+icon: flag-checkered
+layout:
+  width: default
+  title:
+    visible: true
+  description:
+    visible: true
+  tableOfContents:
+    visible: true
+  outline:
+    visible: true
+  pagination:
+    visible: false
+  metadata:
+    visible: true
 metaLinks:
   alternates:
     - >-
       https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/example-setups
 ---
 
-# Integration
+# Getting Started
+
+Onboard? Let's get your app authenticated!
 
 {% content-ref url="usage.md" %}
 [usage.md](usage.md)
 {% endcontent-ref %}
 
-{% content-ref url="tanstack-router-start/tanstack-start.md" %}
-[tanstack-start.md](tanstack-router-start/tanstack-start.md)
+{% content-ref url="tanstack-router-start/" %}
+[tanstack-router-start](tanstack-router-start/)
 {% endcontent-ref %}
 
 {% content-ref url="react-router.md" %}

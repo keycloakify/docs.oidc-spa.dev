@@ -1,10 +1,10 @@
 # Table of contents
 
-* [Getting Started](README.md)
+* [What This Is](README.md)
 
 ## Integration Guides
 
-* [Integration](integration-guides/example-setups.md)
+* [Getting Started](integration-guides/example-setups.md)
 * [Framework Agnostic Adapter](integration-guides/usage.md)
 * [TanStack Router/Start](integration-guides/tanstack-router-start/README.md)
   * [TanStack Start](integration-guides/tanstack-router-start/tanstack-start.md)
