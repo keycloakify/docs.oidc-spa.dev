@@ -11,7 +11,7 @@ layout:
   outline:
     visible: true
   pagination:
-    visible: false
+    visible: true
   metadata:
     visible: true
 metaLinks:
@@ -95,11 +95,3 @@ Typically:
 * React Router Framework with `ssr: false`
 
 If you’re choosing between this and a BFF for security, start with the [security features](security-features/overview.md). With those defenses enabled, the security profile can be comparable to server-side OIDC.
-
-***
-
-Next step: get your app authenticated.
-
-{% content-ref url="integration-guides/example-setups.md" %}
-[example-setups.md](integration-guides/example-setups.md)
-{% endcontent-ref %}
