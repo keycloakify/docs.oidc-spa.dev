@@ -38,23 +38,25 @@ It’s one library for the full stack. It can replace frontend SDKs like `keyclo
 
 **Why this exists?**
 
-At Insee, we build datacience software that is deployed at scale by natinonal agencies, eurostat, the UN and some large private corporation. &#x20;
+At Insee, we build data-science web apps deployed at scale. They run at national agencies, Eurostat, the UN, and large enterprises.
 
-We needed a Client OIDC solution that would acheive a security profile comparable server side OIDC (BFF).
+We needed a browser OIDC client with a security posture close to a BFF. We also needed provider-agnostic deployments. We use Keycloak internally, but our users run Entra ID, Okta, and others.
 
-Also, even if we internally use Keycloak, many organization use other OIDC platform like Microsoft Entra ID or Okta. We needed to make sur our software could be deployed by any organization regardless of what they use for auth and without knowing in advance the deployment configuration.
+Lower-level libraries like `oidc-client-ts` worked. But they required a lot of glue code. We kept re-implementing baseline “enterprise” expectations:
 
-With other lower level toolkit like oidc-client-ts we had to write at the application level a ton of glue code to acheive what are todays baseline expectation for entreprise grade software:
+* Idle timeout UX (auto-logout / re-auth prompts)
+* Login/logout propagation across tabs
+* Reliable auth on slow networks, and when third-party cookies are blocked
 
-* Auto Logout overlay after inactivity
-* Login/Logout propagation across tabs.
-* Fast and relyable authentication, even on slower network or when thrid party cookies are blocked.
+We also wanted a TanStack-like developer experience:
 
-We also wanned a devloper experience akin to what TanStack provide, where type safety propagate naturally from declaration and where the API is design in such a way that it can't be missued. &#x20;
+* Types that flow from config to the runtime API
+* APIs that are hard to misuse
+* Mockable OIDC for tests, and for “no-auth” / degraded environments
 
-We also wanted to be able to mock OIDC to run tests and have a degraded mode for entreprise that did not wish to setup auth but still wanned to use our software.
+So we built `oidc-spa`. It’s opinionated and high-level. It has few knobs by design.
 
-So we build oidc-spa, a very opinionated, very high level OIDC solution, with very little configuration knobs, that buys you entreprize grade auth out of the box. So we could forget about it and focus on improving our app. &#x20;
+It gives you enterprise-grade auth primitives out of the box. So you can focus on your app.
 
 ## Dive In
 
