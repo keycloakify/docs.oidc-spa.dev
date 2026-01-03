@@ -38,15 +38,13 @@ It’s one library for the full stack. It can replace frontend SDKs like `keyclo
 
 **Why this exists?**
 
-At Insee, we build data-science web apps deployed at scale. They run at national agencies, Eurostat, the UN, and large enterprises.
+Lower-level libraries like `oidc-client-ts` work. But they required a lot of glue code for:
 
-We needed a browser OIDC client with a security posture close to a BFF. We also needed provider-agnostic deployments. We use Keycloak internally, but our users run Entra ID, Okta, and others.
-
-Lower-level libraries like `oidc-client-ts` worked. But they required a lot of glue code. We kept re-implementing baseline “enterprise” expectations:
-
+* Token renewal and “what happens when it expires?”
 * Idle timeout UX (auto-logout / re-auth prompts)
 * Login/logout propagation across tabs
 * Reliable auth on slow networks, and when third-party cookies are blocked
+* Each Authorization server (Keycloak / Entra ID / Auth0) behave differently, in practice you can't switch provider without seeing the auth crumble.
 
 We also wanted a TanStack-like developer experience:
 
