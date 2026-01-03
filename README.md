@@ -36,25 +36,25 @@ It’s one library for the full stack. It can replace frontend SDKs like `keyclo
 * It is **not** a server-side auth/session framework.
 * If auth state must exist on the server at render time, this isn't your tool.
 
-**Why this exists?**
+**Why we built it**
 
-Other oidc client library usually covers the base login flow pretty well. But they generally leave it up to you to implement:
+Most OIDC client libraries handle the basic sign-in flow well. But they leave you to implement:
 
-* Token renewal, plus “what happens when it expires?”
+* Token renewal, and what happens on expiry.
 * Idle timeout UX. Auto-logout and re-auth prompts.
 * Login/logout sync across tabs.
-* Reliable session restore on reload, and blocked third‑party cookies.
-* Provider quirks. Keycloak, Entra ID, and Auth0 are not interchangeable in practice.
+* Reliable session restore on reload, including third‑party cookie blocks.
+* Provider quirks. Keycloak, Entra ID, and Auth0 differ in practice.
 
-We also wanted a TanStack-like developer experience:
+We also wanted a TanStack-style developer experience:
 
-* Types that flow from config to the runtime API.
+* Types flowing from config into the runtime API.
 * APIs that are hard to misuse.
 * Mockable OIDC for tests and “no-auth” / degraded environments.
 
 So we built `oidc-spa`. It’s opinionated and high-level. It has few knobs by design.
 
-It gives you enterprise-grade auth primitives out of the box. So you can focus on your app.
+It gives you enterprise-grade auth out of the box. So you can focus on your app.
 
 ## Dive In
 
