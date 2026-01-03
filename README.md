@@ -38,7 +38,7 @@ It’s one library for the full stack. It can replace frontend SDKs like `keyclo
 
 **Why this exists?**
 
-Lower-level libraries like `oidc-client-ts` cover the core OIDC flow. But they generally leave it up to you to implement:
+Other oidc client library usually covers the base login flow pretty well. But they generally leave it up to you to implement:
 
 * Token renewal, plus “what happens when it expires?”
 * Idle timeout UX. Auto-logout and re-auth prompts.
