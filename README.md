@@ -36,6 +36,26 @@ It’s one library for the full stack. It can replace frontend SDKs like `keyclo
 * It is **not** a server-side auth/session framework.
 * If auth state must exist on the server at render time, this isn't your tool.
 
+**Why this exists?**
+
+At Insee, we build datacience software that is deployed at scale by natinonal agencies, eurostat, the UN and some large private corporation. &#x20;
+
+We needed a Client OIDC solution that would acheive a security profile comparable server side OIDC (BFF).
+
+Also, even if we internally use Keycloak, many organization use other OIDC platform like Microsoft Entra ID or Okta. We needed to make sur our software could be deployed by any organization regardless of what they use for auth and without knowing in advance the deployment configuration.
+
+With other lower level toolkit like oidc-client-ts we had to write at the application level a ton of glue code to acheive what are todays baseline expectation for entreprise grade software:
+
+* Auto Logout overlay after inactivity
+* Login/Logout propagation across tabs.
+* Fast and relyable authentication, even on slower network or when thrid party cookies are blocked.
+
+We also wanned a devloper experience akin to what TanStack provide, where type safety propagate naturally from declaration and where the API is design in such a way that it can't be missued. &#x20;
+
+We also wanted to be able to mock OIDC to run tests and have a degraded mode for entreprise that did not wish to setup auth but still wanned to use our software.
+
+So we build oidc-spa, a very opinionated, very high level OIDC solution, with very little configuration knobs, that buys you entreprize grade auth out of the box. So we could forget about it and focus on improving our app. &#x20;
+
 ## Dive In
 
 Ready to integrate? Start here.
