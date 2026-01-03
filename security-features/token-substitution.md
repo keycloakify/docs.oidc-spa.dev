@@ -2,15 +2,14 @@
 icon: cards-blank
 metaLinks:
   alternates:
-    - >-
-      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/security-features/token-substitution
+    - /broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/zmd4gn3akUmtOPPYQAXq
 ---
 
 # Token Substitution
 
-{% hint style="danger" %}
-Still under construction
-{% endhint %}
+### Enabling the defence
+
+{% include "../.gitbook/includes/enabling-a-security-defense.md" %}
 
 ### Understanding the defence
 
@@ -62,7 +61,7 @@ It also blocks authenticated requests to untrusted hosts.
 
 Posture:
 
-* [DPoP](https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/security-features/dpop): limits the impact of a leaked token.
+* [DPoP](dpop.md): limits the impact of a leaked token.
 * Token Substitution: Attempts to prevent tokens from being leaked in the first place.
 
 Nature:
@@ -90,16 +89,12 @@ The requirements are strict. Not every app can enable it.
 
 You need:
 
-* To enable [Browser Runtime Freeze](https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/security-features/browser-runtime-freeze).\
+* To enable [Browser Runtime Freeze](/broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/OQPfLaz21wcSz22qMpf2).\
   If runtime integrity can’t be guaranteed, this defence can be bypassed. \
   That being said the defence remains effective even if you had to exclude fetch and XMLHttpRequest. (`browserRuntimeFreeze.exclude = ["fetch", "XMLHttpRequest"]`)
 * If you call resource servers outside your site (example: `s3.amazonaws.com`), you must know their hostnames at build time (or synchronously at runtime).
 * You must not need to display the raw access token to the user.\
   Example: no “copy access token” button.
-
-### Enabling the defence
-
-{% include "../.gitbook/includes/enabling-a-security-defense.md" %}
 
 ### trustedThirdPartyResourceServers
 

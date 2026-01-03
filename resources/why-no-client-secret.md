@@ -25,9 +25,13 @@ The key lies in the difference between **Authorization Code Flow**, which requir
   Frameworks like **NextAuth** follow this approach.\
   The resulting access token is mostly incidental, it's used only if we need to call third party APIs.
 * **Authorization Code Flow with PKCE:**\
-  Adds an additional verification step that removes the need for a client secret, enabling secure token exchange directly from the **browser**.\
+  Adds an additional verification step that removes the need for a client secret, enabling secure token exchange directly from the **browser** (public client)**.**\
   This is the flow implemented by **oidc-spa**.\
   Here, the **frontend** itself is the OIDC client application, and the access token is used as a key to make authenticated requests to a backend that otherwise has no built-in knowledge of authentication.
+
+So the **Authorization Code Flow** is intended for **server side OIDC** and **Authorization Code Flow with PKCE** is intended for **Browser side OIDC**. &#x20;
+
+What's a bit confusing is that some server side OIDC solution will also implement PKCE. They do that only as an extra layer of security in case the client secret get's leaked.
 
 ### 1. Authorization Code Flow (without PKCE)
 
@@ -60,17 +64,6 @@ This is where **PKCE** (Proof Key for Code Exchange) comes in. Here’s how it w
 > A user who disables all cookies would not be able to use any website requiring authentication.\
 > Session cookies should not be confused with **tracking cookies** or [**third-party cookies**](third-party-cookies-and-session-restoration.md).
 
-## Advantages and Trade-offs of Implementing Token Exchange on the Frontend
-
-✅ **No persistent token storage** – There’s no need to store user tokens in a backend database. The OIDC provider itself acts as the session store, meaning you only need to focus on\
-securely deploying your OIDC server (if self-hosting).
-
-✅ **Fewer moving parts** – Everything happens between `oidc-spa` and the OIDC provider, reducing the chances of misconfiguration.\
-Even if you're not entirely confident in your setup, as long as it works, you’ve implemented it correctly.
-
-However, in this mode, tokens are exposed to the **JavaScript client code**, unlike when the token exchange is performed on the backend.\
-This introduces a potential risk: **XSS and supply chain attacks**, where malicious code running on your website could attempt to steal tokens.
-
 ***
 
 ## How `oidc-spa` Mitigates the Risks of Token Exposure
@@ -78,16 +71,6 @@ This introduces a potential risk: **XSS and supply chain attacks**, where malici
 {% content-ref url="../security-features/overview.md" %}
 [overview.md](../security-features/overview.md)
 {% endcontent-ref %}
-
-## Opinionated Conclusion
-
-PKCE is a widely adopted open standard, supported by all major OIDC providers, and provides strong security guarantees **without requiring a backend**.
-
-While a backend-based token exchange is theoretically more secure, in practice, it introduces additional attack surfaces and operational complexity. Every extra moving part is a potential point of failure or misconfiguration, and securing a backend against threats like token leakage, improper session management, and server-side vulnerabilities is a non-trivial task.
-
-With the security measures implemented in `oidc-spa`, **Authorization Code Flow + PKCE is not just the simpler approach, it is arguably the safer one in real-world scenarios.** By eliminating the backend entirely, it reduces the risk of misconfiguration and ensures that authentication security is handled directly by the OIDC provider, which is purpose-built for this task.
-
-
 
 Read more:
 

@@ -3,15 +3,10 @@ description: Ensuring the integrity of the browser runtime environment.
 icon: igloo
 metaLinks:
   alternates:
-    - >-
-      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/security-features/browser-runtime-freeze
+    - /broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/OQPfLaz21wcSz22qMpf2
 ---
 
 # Browser Runtime Freeze
-
-{% hint style="danger" %}
-Still under construction.
-{% endhint %}
 
 This is the most important security defense. It’s a prerequisite for the other measures to be effective.
 
@@ -78,7 +73,7 @@ You have two options:
 
 **How much is my security posture degraded by adding exclusion?**
 
-Excluding `fetch` and `XMLHttpRequest` is usually **not too bad**. Although they are the first APIs attackers try to instrument, [DPoP](https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/security-features/dpop) and/or [Token Substitution](https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/security-features/token-substitution) makes those vectors much less useful.
+Excluding `fetch` and `XMLHttpRequest` is usually **not too bad**. Although they are the first APIs attackers try to instrument, [DPoP](/broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/AkX224WAW7UAYAoUymBd) and/or [Token Substitution](/broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/zmd4gn3akUmtOPPYQAXq) makes those vectors much less useful.
 
 The APIs that are most critical like `Function`, `String`, or `JSON` are very rarely monkey instrumented by legitimate library so you shouldn't have to exclude them. &#x20;
 

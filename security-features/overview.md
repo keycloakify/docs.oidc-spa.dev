@@ -3,14 +3,10 @@ description: How oidc-spa mitigates the risks of token exposure
 icon: lighthouse
 metaLinks:
   alternates:
-    - https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/security-features/overview
+    - /broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/U7NXkYENwaWcbAO6iQDb
 ---
 
 # Overview
-
-{% hint style="danger" %}
-Still in construciton, comme back in a few hours/days.
-{% endhint %}
 
 oidc-spa implements a comprehensive, defense-in-depth strategy to protect against token exfiltration during a successful XSS or supply-chain attack.
 

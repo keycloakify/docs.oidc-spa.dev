@@ -25,18 +25,17 @@ If you absolutely need to introspect the access token, such as when migrating fr
 {% tabs %}
 {% tab title="Vanilla API" %}
 ```typescript
-import { decodeJwt } from 'oidc-spa/tools/decodeJwt';
+import { decodeJwt } from 'oidc-spa/decode-jwt';
 
 const decodedAccessToken = decodeJwt(await oidc.getAccessToken());
 ```
 {% endtab %}
 
 {% tab title="React" %}
-`oidc.ts`
-
+{% code title="src/oidc.ts" %}
 ```typescript
 import { oidcSpa } from "oidc-spa/react-spa";
-import { decodeJwt } from "oidc-spa/tools/decodeJwt";
+import { decodeJwt } from "oidc-spa/decode-jwt";
 
 export const {
     bootstrapOidc,
@@ -69,5 +68,6 @@ export function getDecodedAccessToken(): Record<string, unknown> | undefined {
     return decodedAccessToken;
 }
 ```
+{% endcode %}
 {% endtab %}
 {% endtabs %}
