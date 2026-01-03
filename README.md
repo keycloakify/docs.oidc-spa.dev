@@ -1,5 +1,5 @@
 ---
-icon: sign-posts-wrench
+icon: lightbulb-exclamation-on
 layout:
   width: default
   title:
