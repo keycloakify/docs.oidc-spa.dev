@@ -4,9 +4,13 @@ icon: up
 
 # v8 -> v9
 
-## Renamed Exports
+This release mostly renames entrypoints and config options.
 
-No breaking changes, you can just search and replace.
+Some changes are **breaking** if you use React (`oidc-spa/react`) or the server package (`oidc-spa/backend`).
+
+### Import path changes
+
+These are pure renames. A simple search/replace is enough:
 
 ```diff
 - import { ... } from "oidc-spa";
@@ -19,7 +23,15 @@ No breaking changes, you can just search and replace.
 + import { ... } from "oidc-spa/decode-jwt";
 ```
 
-## Vite Plugin and Entrypoint
+### Vite Plugin and oidcEarlyInit Params changes
+
+oidc-spa's security features have been reworked, see:
+
+{% content-ref url="https://app.gitbook.com/s/oygeayjvIPxroUcp3jt4/security-features/overview" %}
+[Overview](https://app.gitbook.com/s/oygeayjvIPxroUcp3jt4/security-features/overview)
+{% endcontent-ref %}
+
+This is the changes you need to apply to migrate your current config while keeping the same security profile: &#x20;
 
 {% tabs %}
 {% tab title="Vite Plugin" %}
@@ -28,17 +40,17 @@ No breaking changes, you can just search and replace.
 
   oidcSpa({
 -   enableTokenExfiltrationDefense: true,
--   resourceServersAllowedHostnames: ["s3.amazon.com"],
+-   resourceServersAllowedHostnames: ["s3.amazonaws.com"],
 +   browserRuntimeFreeze: { enabled: true },
 +   tokenSubstitution: {
 +       enabled: true,
-+       trustedThirdPartyResourceServers: [ "s3.amazonaws.com" ]
-+   }   
++       trustedThirdPartyResourceServers: ["s3.amazonaws.com"]
++   }
 });
 ```
 {% endcode %}
 
-Or (if you have an older config):&#x20;
+If you’re migrating from the older `freeze*` flags:
 
 {% code title="vite.config.ts" %}
 ```diff
@@ -47,11 +59,11 @@ Or (if you have an older config):&#x20;
 -    freezeXMLHttpRequest: false,
 -    freezeWebSocket: true,
 -    freezePromise: true
-     // Add to `exclude` the APIs for which you had freeze: false 
-+    browserRuntimeFreeze: { 
+     // Add to `exclude` the APIs for which you had `freezeXxx: false`.
++    browserRuntimeFreeze: {
 +        enabled: true,
-+        exclude: ["fetch", "XMLHttpRequest" ]
-+    }  
++        exclude: ["fetch", "XMLHttpRequest"]
++    }
 });
 ```
 {% endcode %}
@@ -65,18 +77,18 @@ Or (if you have an older config):&#x20;
  
  const { shouldLoadApp } = oidcEarlyInit({
 -   enableTokenExfiltrationDefense: true,
--   resourceServersAllowedHostnames: ["s3.amazon.com"],
-+   browserRuntimeFreeze: { enabled: true }
+-   resourceServersAllowedHostnames: ["s3.amazonaws.com"],
++   browserRuntimeFreeze: { enabled: true },
 +   extraDefenseHook: () => {
 +       enableTokenSubstitution({
-+          trustedThirdPartyResourceServers: [ "s3.amazonaws.com" ]
++           trustedThirdPartyResourceServers: ["s3.amazonaws.com"]
 +       });
-+   }  
++   }
  });
 ```
 {% endcode %}
 
-Or (if you migrate from an older config)
+If you’re migrating from the older `freeze*` flags:
 
 {% code title="src/main.ts" %}
 ```diff
@@ -85,53 +97,47 @@ Or (if you migrate from an older config)
 -    freezeXMLHttpRequest: false,
 -    freezeWebSocket: true,
 -    freezePromise: true
-     // Add to `exclude` the APIs for which you had freeze: false
-+    browserRuntimeFreeze: { 
+     // Add to `exclude` the APIs for which you had `freezeXxx: false`.
++    browserRuntimeFreeze: {
 +        enabled: true,
-+        exclude: ["fetch", "XMLHttpRequest" ]
-+    }  
++        exclude: ["fetch", "XMLHttpRequest"]
++    }
 });
 ```
 {% endcode %}
 {% endtab %}
 {% endtabs %}
 
-## Removal of the `oidc-spa/react` export
+### React entrypoint rename (breaking)
 
-The legacy `oidc-spa/react` export has been removed in favor of `oidc-spa/react-spa`.
+{% hint style="warning" %}
+Breaking change. `oidc-spa/react` has been removed. Use `oidc-spa/react-spa`.
+{% endhint %}
 
-The philosophy is the same but the API has changed substentially. &#x20;
+The overall approach is the same, but the API changed significantly.
 
-You can follow the new integration guide to see the difference:
+Use the new integration guide:
 
-{% content-ref url="https://app.gitbook.com/s/oygeayjvIPxroUcp3jt4/integration-guides/example-setups" %}
-[Getting Started](https://app.gitbook.com/s/oygeayjvIPxroUcp3jt4/integration-guides/example-setups)
-{% endcontent-ref %}
+[React SPA integration guide](https://app.gitbook.com/s/oygeayjvIPxroUcp3jt4/integration-guides/example-setups)
 
-Since the userbase of this older API is relatively small. I won't redact a full migration guide. However if you're facing difficulty upgrading I commit to help you on discord and even do the migration with you over a Discord call.
+### Server entrypoint rename (breaking)
 
-This is something I routinely do and that I like doing, I won't be surprize if you act on this offer.
+{% hint style="warning" %}
+Breaking change. `oidc-spa/backend` has been removed. Use `oidc-spa/server`.
+{% endhint %}
 
-[Discord Invite](https://discord.gg/mJdYJSdcm4)
+This was required to support DPoP. It also cleans up the API.
 
-## Removal of the oidc-spa/backend export
+Use the new docs: [Server integration guide](https://app.gitbook.com/s/oygeayjvIPxroUcp3jt4/integration-guides/backend-token-validation)
 
-oidc-spa/backend has been removed in favor of oidc-spa/server
+### `crypto.subtle` polyfill
 
-A breaking change was required to support DPoP, and I took the oportunity to improve the API design.
+`oidc-spa` now auto-polyfills `crypto.subtle` when it’s missing (typically when not served over HTTPS). This has no bundle size impact.
 
-New documentation here:
+If you previously added `webcrypto-liner-shim` as described [here](/broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/yaMcQptxW0DTymZQSMM8), you can remove it.
 
-{% content-ref url="https://app.gitbook.com/s/oygeayjvIPxroUcp3jt4/integration-guides/backend-token-validation" %}
-[Backend Token Validation](https://app.gitbook.com/s/oygeayjvIPxroUcp3jt4/integration-guides/backend-token-validation)
-{% endcontent-ref %}
+### Need a hand?
 
-Same here, the userbase of this API is small. So I won't redact a migration guide but I can do the migration for you or with you if you need. Just hit me up on Discord.
+If you hit a migration edge case, ask on Discord:
 
-[Discord Invite](https://discord.gg/mJdYJSdcm4)
-
-## Crypto.subtle polyfill
-
-oidc-spa will now automatically polyfill crypto.subtle if missing due to your app not being deployed over HTTPS. It will do so without impact on the bundle size. &#x20;
-
-If you had setup webcrypto-liner-shim, as described [here](https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/resources/fixing-crypto.subtle-is-available-only-in-secure-contexts-https). You can remove it.
+<a href="https://discord.gg/mJdYJSdcm4" class="button secondary">Discord invite</a>
