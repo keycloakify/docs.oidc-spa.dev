@@ -3,7 +3,7 @@ icon: umbrella-beach
 metaLinks:
   alternates:
     - >-
-      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/tanstack-router-+-node-rest-api/tanstack-start
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/tanstack-start
 ---
 
 # TanStack Start

@@ -2,7 +2,8 @@
 icon: cat-space
 metaLinks:
   alternates:
-    - /broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/dpMjSkwHciZoaYThM3xK
+    - >-
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/fastify
 ---
 
 # Fastify

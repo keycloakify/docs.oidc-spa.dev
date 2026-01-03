@@ -2,7 +2,8 @@
 icon: cloudflare
 metaLinks:
   alternates:
-    - /broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/7iLCD0QZbmGywDt5qJd7
+    - >-
+      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/cloudflare-workers
 ---
 
 # Cloudflare Workers
