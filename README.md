@@ -38,19 +38,19 @@ It’s one library for the full stack. It can replace frontend SDKs like `keyclo
 
 **Why this exists?**
 
-Lower-level libraries like `oidc-client-ts` work. But they required a lot of glue code for:
+Lower-level libraries like `oidc-client-ts` work for the happy path. Real apps need a lot more than “can we log in?”. You end up writing an auth framework around them:
 
-* Token renewal and “what happens when it expires?”
-* Idle timeout UX (auto-logout / re-auth prompts)
-* Login/logout propagation across tabs
-* Reliable auth on slow networks, and when third-party cookies are blocked
-* Each Authorization server (Keycloak / Entra ID / Auth0) behave differently, in practice you can't switch provider without seeing the auth crumble.
+* Token renewal, plus “what happens when it expires?”
+* Idle timeout UX. Auto-logout and re-auth prompts.
+* Login/logout sync across tabs.
+* Reliable session restore on reload, and blocked third‑party cookies.
+* Provider quirks. Keycloak, Entra ID, and Auth0 are not interchangeable in practice.
 
 We also wanted a TanStack-like developer experience:
 
-* Types that flow from config to the runtime API
-* APIs that are hard to misuse
-* Mockable OIDC for tests, and for “no-auth” / degraded environments
+* Types that flow from config to the runtime API.
+* APIs that are hard to misuse.
+* Mockable OIDC for tests and “no-auth” / degraded environments.
 
 So we built `oidc-spa`. It’s opinionated and high-level. It has few knobs by design.
 
