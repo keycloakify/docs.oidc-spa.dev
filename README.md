@@ -4,11 +4,13 @@ icon: up
 
 # v8 -> v9
 
-The security defences has been reworked. See security features overview:
+In oidc-spa v9 we've mainly removed the legacy API that have been maintain for a while for avoiding breaking changes while the newer APIs are stablilized. &#x20;
 
-{% content-ref url="https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/security-features/overview" %}
-[Overview](https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/security-features/overview)
-{% endcontent-ref %}
+Overview of the changes:
+
+* `oidc-spa/react` and `oidc-spa/mock/react` becomes `oidc-spa/react-spa`
+* `oidc-spa/mock` has been moved to `oidc-spa/core-mock`
+*
 
 
 
