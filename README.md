@@ -31,11 +31,6 @@ It includes [security defenses](security-features/overview.md) to reduce token e
 
 It’s one library for the full stack. It can replace frontend SDKs like `keycloak-js`, `MSAL.js`, or `@auth0/auth0-spa-js`. It can also replace backend token tooling like `jsonwebtoken`, `jose`, or `express-jwt`.
 
-**What it isn't**
-
-* It is **not** a server-side auth/session framework.
-* If auth state must exist on the server at render time, this isn't your tool.
-
 **Why we built it**
 
 Most OIDC client libraries handle the basic sign-in flow well. But they leave you to implement:
