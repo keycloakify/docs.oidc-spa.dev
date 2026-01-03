@@ -96,12 +96,6 @@ Or (if you migrate from an older config)
 {% endtab %}
 {% endtabs %}
 
-## Crypto.subtle polyfill
-
-oidc-spa will now automatically polyfill crypto.subtle if missing due to your app not being deployed over HTTPS. It will do so without impact on the bundle size. &#x20;
-
-If you had implemented&#x20;
-
 ## Removal of the `oidc-spa/react` export
 
 The legacy `oidc-spa/react` export has been removed in favor of `oidc-spa/react-spa`.
@@ -120,3 +114,24 @@ This is something I routinely do and that I like doing, I won't be surprize if y
 
 [Discord Invite](https://discord.gg/mJdYJSdcm4)
 
+## Removal of the oidc-spa/backend export
+
+oidc-spa/backend has been removed in favor of oidc-spa/server
+
+A breaking change was required to support DPoP, and I took the oportunity to improve the API design.
+
+New documentation here:
+
+{% content-ref url="https://app.gitbook.com/s/oygeayjvIPxroUcp3jt4/integration-guides/backend-token-validation" %}
+[Backend Token Validation](https://app.gitbook.com/s/oygeayjvIPxroUcp3jt4/integration-guides/backend-token-validation)
+{% endcontent-ref %}
+
+Same here, the userbase of this API is small. So I won't redact a migration guide but I can do the migration for you or with you if you need. Just hit me up on Discord.
+
+[Discord Invite](https://discord.gg/mJdYJSdcm4)
+
+## Crypto.subtle polyfill
+
+oidc-spa will now automatically polyfill crypto.subtle if missing due to your app not being deployed over HTTPS. It will do so without impact on the bundle size. &#x20;
+
+If you had setup webcrypto-liner-shim, as described [here](https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/resources/fixing-crypto.subtle-is-available-only-in-secure-contexts-https). You can remove it.
