@@ -76,7 +76,7 @@ It depends. oidc-spa is strong for client-side OIDC. But client-side OIDC isn’
 
 ### When NOT to use oidc-spa
 
-Avoid oidc-spa if you rely on SSR for auth-aware pages. This includes Next.js, Nuxt, SvelteKit, Remix / React Router Framework (non‑SPA mode), or Astro.
+Avoid oidc-spa if you rely on SSR for auth-aware pages. This includes Next.js, Nuxt, SvelteKit, Remix/React Router Framework (non‑SPA mode), or Astro.
 
 Those stacks push state and logic to the server. They also aim to ship minimal client JavaScript.
 
