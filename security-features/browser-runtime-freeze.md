@@ -75,7 +75,7 @@ You have two options:
 
 Excluding `fetch` and `XMLHttpRequest` is usually **not too bad**. Although they are the first APIs attackers try to instrument, [DPoP](/broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/AkX224WAW7UAYAoUymBd) and/or [Token Substitution](/broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/zmd4gn3akUmtOPPYQAXq) makes those vectors much less useful.
 
-The APIs that are most critical like `Function`, `String`, or `JSON` are very rarely monkey instrumented by legitimate library so you shouldn't have to exclude them. &#x20;
+The APIs that are most critical like `Function`, `String`, or `JSON` are very rarely instrumented by legitimate library so you shouldn't have to exclude them. &#x20;
 
 ## Understanding What This Protects Against
 
