@@ -50,9 +50,17 @@ This example shows a vanilla Vite app with only `oidc-spa` installed. Notice how
 
 ### Compared to other libraries
 
-* [@azure/msal-browser - 82.4 KB](https://bundlephobia.com/package/@azure/msal-browser@4.27.0)
-* [@auth0/auth0-spa-js - 19 KB](https://bundlephobia.com/package/@auth0/auth0-spa-js@2.11.0)
-* [keycloak-js - 11.3 KB](https://bundlephobia.com/package/keycloak-js@24.0.5)
-* [oidc-client-ts - 17.5 KB](https://bundlephobia.com/package/oidc-client-ts@3.4.1)
+Reference points:
 
-Bottom line: oidc-spa with it's 33 KB is not lean compared to libraries of the same plays the same role in the stack. But it's also much more feature rich, it moves glue code that would otherwise leave in your application into the adapter.&#x20;
+* [@azure/msal-browser — 82.4 KB](https://bundlephobia.com/package/@azure/msal-browser@4.27.0)
+* [@auth0/auth0-spa-js — 19 KB](https://bundlephobia.com/package/@auth0/auth0-spa-js@2.11.0)
+* [keycloak-js — 11.3 KB](https://bundlephobia.com/package/keycloak-js@24.0.5)
+* [oidc-client-ts — 17.5 KB](https://bundlephobia.com/package/oidc-client-ts@3.4.1)
+
+Takeaway:
+
+* `oidc-spa` is **not the smallest** option for “basic login”.
+* The extra size mostly buys security features; and built-in that would otherwise live in your app codebase:
+  * Early runtime hardening (`entrypoint`).
+  * Adapter-level integration patterns (routing, render gating, token refresh).
+  * Security features like [DPoP](../security-features/dpop.md) and [runtime integrity checks](../security-features/browser-runtime-freeze.md).
