@@ -1,25 +1,58 @@
 ---
-description: Understanding the impact on oidc-spa on your bundle size
+description: Understanding oidc-spa’s impact on your bundle size
 icon: scale-unbalanced-flip
 ---
 
 # Bundle Size
 
-Because oidc-spa is a single package that bundles adapter and utils both for the client and the backend and for multiple framwork it can be tricky to assess the actuall inpact of oidc-spa on your bundle size.
+`oidc-spa` ships as a single package.
 
-So let's see in details:
+It includes browser code, server helpers, and multiple adapters. That can make “bundle size” reports look confusing at first.
 
-* oidc-spa/entrypoint - 5.2KB min+gzip. The crutial code required to harden the environement early.
-* oidc-spa/core - 27.9KB - The actuall implementation of oidc-spa
+This page breaks down:
 
-In total it's about \~ 33kb that is downloaded in normal circumstances. Add \~4kb if you use higher level React / Angular adapters. &#x20;
+* what ends up in your **initial download**
+* why some tools report a much larger “import cost”
 
-Why is it then that import cost is reporting oidc-spa to wheigh 151KB ?
+### What your app typically downloads
+
+In the common “happy path” (modern browser, secure context), the initial cost is roughly:
+
+* `oidc-spa/entrypoint`: **≈5.2 KB min+gzip**. Runs early to harden the runtime environment.
+* `oidc-spa/core`: **≈27.9 KB min+gzip**. The main OIDC implementation.
+
+Total: **≈33 KB min+gzip**.
+
+Add **≈4 KB** if you use higher-level React / Angular adapters.
+
+{% hint style="info" %}
+These numbers are “what the browser downloads”, not “what npm installs”.
+{% endhint %}
+
+### Why tools sometimes report ≈151 KB
 
 <figure><img src="../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
 
-Because oidc-spa generate optional chunks that will be downloaded as fallbacks, the bigger ones are related to the crypto.subtle polyfill. But those polifill won't be actually downloaded unless your app is deployed without SSL (which can be the case in some intranet environement).
+Tools like “Import Cost” tend to:
 
-Here is a visualization with bundle-analizer of a vanilla vite app with only oidc-spa installed:
+* sum **all potentially reachable code**, even if it is split into separate chunks
+* ignore whether a chunk is only loaded as a **runtime fallback**
+
+`oidc-spa` generates optional chunks. The biggest ones are usually related to the `crypto.subtle` fallback.
+
+Those chunks are only downloaded when needed, for example:
+
+* your app runs in an **insecure context** (typically `http://`, where `window.isSecureContext === false`)
+* the runtime is missing required WebCrypto capabilities
+
+{% hint style="warning" %}
+If your production app is served over HTTPS, these fallback chunks should not load.
+
+You might still see them during local dev on `http://localhost`.
+{% endhint %}
+
+### Example bundle visualization
 
 <div data-full-width="true"><figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure></div>
+
+This example shows a vanilla Vite app with only `oidc-spa` installed. Notice how the optional polyfills are in separate chunks.
