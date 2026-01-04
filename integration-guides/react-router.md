@@ -115,7 +115,7 @@ You're going to be cloning this example:
 
 {% embed url="https://example-react-router-framework.oidc-spa.dev/" %}
 
-React Router v7 has [three modes](https://reactrouter.com/start/modes) pick the one for you:&#x20;
+React Router v7 has [three modes](https://reactrouter.com/start/modes) pick the one for you:
 
 {% tabs %}
 {% tab title="Declarative Mode" %}
@@ -150,17 +150,13 @@ npm run dev
 
 {% tab title="Framework Mode" %}
 {% hint style="warning" %}
-WARNING: &#x20;
+The security features of `oidc-spa` are not fully effective with React Router Framework.
 
-The security feature of oidc-spa are not fully effective with React Router Framwork. &#x20;
+The security model relies on [hardening the environment before any code is evaluated](../security-features/overview.md#how-oidc-spa-achieves-this-in-a-nutshell). If that invariant does not hold, a supply chain attack can alter the JavaScript runtime before `oidc-spa` can secure it.
 
-The all security model is build on top of [the assumption that we can harden the environement before any code has been evaluated](../security-features/overview.md#how-oidc-spa-achieves-this-in-a-nutshell).  \
-Without this invariant, a supply chain attack can alter the JavaScript runtime before oidc-spa had the chance to secure. &#x20;
+React Router Framework [does not expose a true client entrypoint](https://github.com/keycloakify/oidc-spa/issues/110#issuecomment-3499101635). There’s no workaround for this.
 
-The problem with RR Framwork is that it [does not expose a true client entrypoint](https://github.com/keycloakify/oidc-spa/issues/110#issuecomment-3499101635) there is no way around it. &#x20;
-
-Bottom line: You can use RR Framwork in SPA mode and it will work but oidc-spa will not be able to protect your tokens anymore than any other Browser side OIDC solution.  \
-If security is on top of your priority concern consider [migrating to TanStack](tanstack-router-start/).
+Bottom line: you can run React Router Framework in SPA mode and it will work, but `oidc-spa` cannot protect your tokens any more than other browser-side OIDC solutions. If security is a top priority, consider [migrating to TanStack](tanstack-router-start/).
 {% endhint %}
 
 ### Enabling SPA mode
