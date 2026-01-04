@@ -2,8 +2,7 @@
 icon: triangle
 metaLinks:
   alternates:
-    - >-
-      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/vercel-edge
+    - /broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/yfnnatrSBynS6LZmpmMQ
 ---
 
 # Vercel Edge

@@ -3,8 +3,7 @@ description: Creating a OAuth2 enabled resource server.
 icon: arrow-right-arrow-left
 metaLinks:
   alternates:
-    - >-
-      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation
+    - /broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/yolKsccF0yDQcZTXQnPo
 ---
 
 # Backend Token Validation
@@ -43,7 +42,7 @@ It then uses it to verify that each incoming token:
 * was signed by the IdP
 * targets the expected audience
 * hasn’t expired
-* has a valid [DPoP proof](https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/security-features/dpop) (if applicable)
+* has a valid [DPoP proof](/broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/AkX224WAW7UAYAoUymBd) (if applicable)
 
 This is a big win for edge runtimes.\
 Identity and authorization can be established locally, with no external round trips.

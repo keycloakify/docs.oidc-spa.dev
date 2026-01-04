@@ -2,8 +2,7 @@
 icon: e
 metaLinks:
   alternates:
-    - >-
-      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/express.js
+    - /broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/D7oSdXrY8PpRNgwq8P0j
 ---
 
 # Express.js

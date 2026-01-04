@@ -2,8 +2,7 @@
 icon: umbrella-beach
 metaLinks:
   alternates:
-    - >-
-      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/tanstack-start
+    - /broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/5uhFykcwc3KGWmQA2FfM
 ---
 
 # TanStack Start

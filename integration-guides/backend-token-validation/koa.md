@@ -2,8 +2,7 @@
 icon: leaf
 metaLinks:
   alternates:
-    - >-
-      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/koa
+    - /broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/YklVLJe1CNTx5tAEmDL3
 ---
 
 # Koa

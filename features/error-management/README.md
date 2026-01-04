@@ -58,7 +58,7 @@ Once enabled, make sure to check **"Preserve Log"** in your browser’s console 
 Here’s a common example:\
 If you see a message like this in the console, it usually means your **Valid Redirect URIs** list in your IdP configuration is incomplete:
 
-<figure><img src="../../.gitbook/assets/image (3).png" alt="Console showing missing redirect URI error"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (3) (1).png" alt="Console showing missing redirect URI error"><figcaption></figcaption></figure>
 
 In this case, simply add `http://localhost:3000/` (or the appropriate URL for your environment) to your list of valid redirect URIs in the IdP settings.
 

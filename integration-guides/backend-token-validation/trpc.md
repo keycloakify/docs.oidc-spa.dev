@@ -2,8 +2,7 @@
 icon: cubes
 metaLinks:
   alternates:
-    - >-
-      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/trpc
+    - /broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/jPYFd1DOgIwEr8YEhJ6x
 ---
 
 # tRPC

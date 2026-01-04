@@ -2,8 +2,7 @@
 icon: dinosaur
 metaLinks:
   alternates:
-    - >-
-      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/deno.serve
+    - /broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/d2qm0aCjKdy6kvR8uvUR
 ---
 
 # Deno.serve

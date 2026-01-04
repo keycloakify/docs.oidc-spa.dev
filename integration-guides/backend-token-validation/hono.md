@@ -2,8 +2,7 @@
 icon: fire
 metaLinks:
   alternates:
-    - >-
-      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/hono
+    - /broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/ouqjtmsZVJywv5rMklIc
 ---
 
 # Hono

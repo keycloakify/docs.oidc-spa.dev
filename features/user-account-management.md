@@ -10,7 +10,7 @@ metaLinks:
 
 ## Redirecting to your IdP's account managment page
 
-<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 IdP always provide a user account page that let users, update their password, account information, manage their session.  \
 If you are using Keycloak you can generate the link to the Account Console with:
@@ -76,7 +76,7 @@ export class App {
 In this section we assume you are using Keycloak. If you are using another authentication server you'll have to addapt the `queryParameter` provided.
 {% endhint %}
 
-<figure><img src="../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (2) (1).png" alt=""><figcaption></figcaption></figure>
 
 There is thee main actions:
 

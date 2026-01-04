@@ -66,6 +66,7 @@
 * [End of third-party cookies](resources/end-of-third-party-cookies.md)
 * [iframe related issues](resources/iframe-related-issues.md)
 * [JWT Of the Access Token](resources/jwt-of-the-access-token.md)
+* [Bundle Size](resources/bundle-size.md)
 * [Discord Server](resources/discord-server.md)
 
 ***

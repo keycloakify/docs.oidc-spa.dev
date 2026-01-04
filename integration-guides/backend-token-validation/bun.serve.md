@@ -2,8 +2,7 @@
 icon: onion
 metaLinks:
   alternates:
-    - >-
-      https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/integration-guides/backend-token-validation/bun.serve
+    - /broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/vNMUshRNFWPeFKiFOtWv
 ---
 
 # Bun.serve
