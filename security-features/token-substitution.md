@@ -7,6 +7,8 @@ metaLinks:
 
 # Token Substitution
 
+###
+
 ### Enabling the defence
 
 {% include "../.gitbook/includes/enabling-a-security-defense.md" %}
@@ -89,7 +91,7 @@ The requirements are strict. Not every app can enable it.
 
 You need:
 
-* To enable [Browser Runtime Freeze](/broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/OQPfLaz21wcSz22qMpf2).\
+* To enable [Browser Runtime Freeze](browser-runtime-freeze.md).\
   If runtime integrity can’t be guaranteed, this defence can be bypassed. \
   That being said the defence remains effective even if you had to exclude fetch and XMLHttpRequest. (`browserRuntimeFreeze.exclude = ["fetch", "XMLHttpRequest"]`)
 * If you call resource servers outside your site (example: `s3.amazonaws.com`), you must know their hostnames at build time (or synchronously at runtime).
