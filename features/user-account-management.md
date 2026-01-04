@@ -10,7 +10,7 @@ metaLinks:
 
 ## Redirecting to your IdP's account managment page
 
-<figure><img src="../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 IdP always provide a user account page that let users, update their password, account information, manage their session.  \
 If you are using Keycloak you can generate the link to the Account Console with:

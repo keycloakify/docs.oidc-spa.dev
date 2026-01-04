@@ -40,19 +40,10 @@ Tools like “Import Cost” tend to:
 
 `oidc-spa` generates optional chunks. The biggest ones are usually related to the `crypto.subtle` fallback.
 
-Those chunks are only downloaded when needed, for example:
-
-* your app runs in an **insecure context** (typically `http://`, where `window.isSecureContext === false`)
-* the runtime is missing required WebCrypto capabilities
-
-{% hint style="warning" %}
-If your production app is served over HTTPS, these fallback chunks should not load.
-
-You might still see them during local dev on `http://localhost`.
-{% endhint %}
+Those chunks are only downloaded for apps that are deployed over `http://` (where `window.isSecureContext === false`).
 
 ### Example bundle visualization
 
-<div data-full-width="true"><figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure></div>
+<div data-full-width="true"><figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure></div>
 
 This example shows a vanilla Vite app with only `oidc-spa` installed. Notice how the optional polyfills are in separate chunks.
