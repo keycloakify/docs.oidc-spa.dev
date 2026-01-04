@@ -47,3 +47,12 @@ Those chunks are only downloaded for apps that are deployed over `http://` (wher
 <div data-full-width="true"><figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure></div>
 
 This example shows a vanilla Vite app with only `oidc-spa` installed. Notice how the optional polyfills are in separate chunks.
+
+### Compared to other libraries
+
+* [@azure/msal-browser - 82.4 KB](https://bundlephobia.com/package/@azure/msal-browser@4.27.0)
+* [@auth0/auth0-spa-js - 19 KB](https://bundlephobia.com/package/@auth0/auth0-spa-js@2.11.0)
+* [keycloak-js - 11.3 KB](https://bundlephobia.com/package/keycloak-js@24.0.5)
+* [oidc-client-ts - 17.5 KB](https://bundlephobia.com/package/oidc-client-ts@3.4.1)
+
+Bottom line: oidc-spa with it's 33 KB is not lean compared to libraries of the same plays the same role in the stack. But it's also much more feature rich, it moves glue code that would otherwise leave in your application into the adapter.&#x20;
