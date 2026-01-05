@@ -53,7 +53,7 @@ These functions usually live inside hashed static assets (example: `assets/KcAdm
 
 Additionally, oidc-spa make best effort attempt to block the discovery of the module graph harder.
 
-Bottom line: For opportunistic supply-chain attacks, oidc-spa arguably offers stronger protection than traditional session cookies.
+Bottom line: For supply-chain attacks, oidc-spa arguably offers stronger protection than traditional session cookies.
 
 ⸻
 
@@ -62,6 +62,8 @@ Bottom line: For opportunistic supply-chain attacks, oidc-spa arguably offers st
 XSS remains dangerous. oidc-spa protects agaist token exfiltration, but an attacker who would know everything about your build can still manage to act on behafe of user while the attack is going on.
 
 They can import your `fetchWithAuth()` implementation (exposed somwere ine the hashed js assets) and perform any action the current user is allowed to perform.
+
+Note that apps that implement traditional, backend driven, session-cookie auth are just as vulerable to XSS, it's even easier for the attacker since they don't even have to find the `fetchWithAuth` reference in the module graph, they can call the API with a simple `fetch()` and the session cookie will be automatically attached.&#x20;
 
 The good news is that XSS can be very effectively blocked with strict Content-Security-Policy (CSP). And you should absolutely enable one.
 
@@ -73,11 +75,13 @@ Here you can find an example of a cannonical very strict CSP that ensure that on
 
 ### Compromised Browser Extensions
 
-This is the one scenario where cookie-based auth has an advantage over oidc-spa's client side auth.
+If a user installs a malicious browser extension, it can inspect outgoing network traffic and see the real tokens. &#x20;
 
-If a user installs a malicious browser extension, it can inspect outgoing network traffic and see the substituted tokens.
+Here's where DPoP shines. It makes it so that the access token alone is not enough to mint new request, and prevent outgoing caputred request from being replayed. &#x20;
 
-This affects only the user with the compromised extension, and it affects all SPAs using client-side auth, not just your app.
+However, DPoP is not an absolute protection since a malicious browser extention could theroically manage to execute some code before oidc-spa's early init had the chance to ensure the runtime integrity. This would however be very hard to pull off in practice. oidc-spa will block classical attack vectors. &#x20;
+
+Bottom line: oidc-spa makes it much, much, arder for a comprimized browser extention to successfully mint and exfiltrate usable tokens than any other client side OIDC implementation. And in any case, such attack would only, affects the user with the compromised extension.
 
 ⸻
 
@@ -91,7 +95,7 @@ During that window, it can:&#x20;
 * Safely extract the authorization response from the URL and store it in memory&#x20;
 * Register a message listener that cannot be unregistered, ensuring silent-signin integrity&#x20;
 * Enforce restrictions on service worker registration&#x20;
-* And with DPoP and/or Token Substitution you're guarenteed either that a leaked token is harmless ([DPoP](dpop.md)) or that token cannot be leaked ([Token Substitution](token-substitution.md)).
+* And with DPoP and/or Token Substitution you're guarenteed either that a leaked token is harmless ([DPoP](dpop.md)) or that token cannot be leaked ([Token Substitution](token-substitution.md)). &#x20;
 
 [^1]: Except if your app talk to multiple different resource server AND your Authorization server hosted off site. In that specific scenario oidc-spa might need to persist token in sessionStorage. More details in the "Talking to multiple APIs" page.
 

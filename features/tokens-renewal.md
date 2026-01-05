@@ -143,13 +143,23 @@ getOidc().then(oidc => {
         return;
     }
     
-    const { unsubscribe } = oidc.subscribeToTokensChange(tokens => {
-       console.log("Token Renewed", tokens);
+    const { 
+       unsubscribeFromAccessTokenRotation 
+    } = oidc.subscribeToAccessTokenRotation(accessToken => {
+       console.log("Access Token Rotated!", accessToken);
     });
+    
+    const {
+         unsubscribeFromDecodedIdTokenChange
+     } = oidc.subscribeToDecodedIdTokenChange(decodedIdToken => {
+         console.log(`Decoded id token change`, decodedIdToken);
+     });
+    
     
     setTimeout(() => {
         // Call unsubscribe when you want to stop watching tokens change
-        unsubscribe();
+        unsubscribeFromAccessTokenRotation();
+        unsubscribeFromDecodedIdTokenChange();
     }, 10_000);
 });
 ```
@@ -168,5 +178,9 @@ export function MyComponent() {
     );
 }
 ```
+{% endtab %}
+
+{% tab title="Angular" %}
+
 {% endtab %}
 {% endtabs %}
