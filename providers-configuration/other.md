@@ -11,16 +11,17 @@ metaLinks:
 If you are using an OIDC provider other than the ones for which we have [a specific guide](https://github.com/keycloakify/docs.oidc-spa.dev/blob/v6/providers-configuration/broken-reference/README.md), follow these general instructions to configure your OIDC provider.
 
 {% hint style="warning" %}
-Not all OIDC provider support Client Side OIDC (public client)
+Not every “OIDC provider” works with a browser-only (public) client.
 
-For example, tryingto integrate oidc-spa directly with GitHub, Facebook, Linkdin and other social providers won't work.  \
-They are OIDC providers but they only support the Authorization Code Flow, they do not support PKCE, so they force you to provide a client secret, you can't have a client secret in a public client.  \
-If you want to integrate with those provider you have to use a real authentication server like Keycloak, Auth0, Entra ID, Clerk ect and funnel those provider through those authorization platofrm. \
-\
-When it comes to Authorization Server, not all of them support public client well.  \
-Common offender are [DEX that still does not support PKCE](https://github.com/dexidp/dex/pull/3777) or WorkOS that claims they support PKCE and let you declare a public client but in practice it does not work (I'm trying to reach them on that matter).  \
-\
-Bottom lines: Browser side OIDC is not as whidely supported than backend OIDC, if you're having issue with a specific provider, [please reach out on Discord](https://discord.com/invite/mJdYJSdcm4).
+`oidc-spa` requires **Authorization Code + PKCE** and **no client secret**.
+
+Some “social login” providers (GitHub, Facebook, LinkedIn, …) don’t support PKCE. They force a client secret. That can’t work in a public client.
+
+Use a real authorization server (Keycloak, Auth0, Microsoft Entra ID, Clerk, …). Federate the social providers through it.
+
+Even some authorization servers have rough edges for public clients, they all claim to support them but in practice some don't. Example: [Dex doesn’t support PKCE yet](https://github.com/dexidp/dex/pull/3777).   &#x20;
+
+Bottom line: browser-side OIDC is less widely supported than backend OIDC. If your provider behaves oddly, [reach out on Discord](https://discord.com/invite/mJdYJSdcm4).
 {% endhint %}
 
 ## Creating the Client Application
