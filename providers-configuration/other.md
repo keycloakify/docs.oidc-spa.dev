@@ -33,7 +33,7 @@ Bottom line: browser-side OIDC is less widely supported than backend OIDC. If yo
   * Some providers will ask you to select an application type and choose between Single Page Application (SPA), Web Application (or Web Server App), and Mobile App. **Select SPA**.
   * You may need to explicitly provide a Client ID, or it may be generated automatically. This is the `clientId` parameter required by oidc-spa.
 * **Valid Redirect URIs**:\
-  **https://my-app.com/** and **http://localhost:5173/**
+  **https://my-app.com/** and **http://localhost:**[**5173**](#user-content-fn-1)[^1]**/**
   * The trailing slash (`/`) is important.
   * If your app is hosted on a subpath (e.g., `/dashboard`), set:\
     **https://my-app.com/dashboard/** and **http://localhost:5173/dashboard/**
@@ -45,7 +45,7 @@ Bottom line: browser-side OIDC is less widely supported than backend OIDC. If yo
 
 ## How Do I Find the `issuerUri`?
 
-The issuer URI is not always clearly documented—it depends on the provider.
+The issuer URI is not always clearly documented, it depends on the provider.
 
 If you are given a Discovery URL like:
 
@@ -70,3 +70,5 @@ For example:
 
 * **Auth0** requires you to ["Create an API" and specify an audience](auth0.md#creating-an-api).
 * **Microsoft Entra ID** requires you to ["register an application" and specify a scope](microsoft-entra-id.md#configuring-entra-id-to-issue-a-jwt-access-token).
+
+[^1]: This is the default port that Vite dev server uses. Addapt to your setup to be able to run your app in localhost.&#x20;
