@@ -66,10 +66,6 @@ There are two legitimate edge cases:
 
 Outside of these rare cases, you never need to call `renewTokens()` manually.
 
-***
-
-👉 With `oidc-spa`, token renewal is **always correct, efficient, and invisible to you**.
-
 {% tabs %}
 {% tab title="Vanilla API" %}
 ```typescript
@@ -181,6 +177,33 @@ export function MyComponent() {
 {% endtab %}
 
 {% tab title="Angular" %}
+{% code title="src/app/app.ts" %}
+```angular-ts
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.html',
+})
+export class App {
+  oidc = inject(Oidc);
 
+  constructor(){
+
+    // Subscribing to token rotation: 
+    this.oidc.accessTokenRotation$.subscribe(accessToken => {
+      console.log(`Access Token Rotation: ${accessToken}`);
+    });
+
+    // Triggering token rotation manually
+    setTimeout(()=> {
+
+      this.oidc.renewTokens(/* ... optionally some params */);
+
+    }, 10_000);
+
+  }
+
+}
+```
+{% endcode %}
 {% endtab %}
 {% endtabs %}
