@@ -10,12 +10,25 @@ metaLinks:
 
 If you are using an OIDC provider other than the ones for which we have [a specific guide](https://github.com/keycloakify/docs.oidc-spa.dev/blob/v6/providers-configuration/broken-reference/README.md), follow these general instructions to configure your OIDC provider.
 
+{% hint style="warning" %}
+Not all OIDC provider support Client Side OIDC (public client)
+
+For example, tryingto integrate oidc-spa directly with GitHub, Facebook, Linkdin and other social providers won't work.  \
+They are OIDC providers but they only support the Authorization Code Flow, they do not support PKCE, so they force you to provide a client secret, you can't have a client secret in a public client.  \
+If you want to integrate with those provider you have to use a real authentication server like Keycloak, Auth0, Entra ID, Clerk ect and funnel those provider through those authorization platofrm. \
+\
+When it comes to Authorization Server, not all of them support public client well.  \
+Common offender are [DEX that still does not support PKCE](https://github.com/dexidp/dex/pull/3777) or WorkOS that claims they support PKCE and let you declare a public client but in practice it does not work (I'm trying to reach them on that matter).  \
+\
+Bottom lines: Browser side OIDC is not as whidely supported than backend OIDC, if you're having issue with a specific provider, [please reach out on Discord](https://discord.com/invite/mJdYJSdcm4).
+{% endhint %}
+
 ## Creating the Client Application
 
 * Create a **Public** OpenID Connect client.
   * OpenID Connect clients may also be referred to as **OIDC clients** or **OAuth clients**.
   * The technical term for a public OIDC client is **Authorization Code Flow + PKCE**.
-  * If provided with the option, **disable client credentials**—you do not need to provide a client secret to oidc-spa.
+  * If provided with the option, **disable client credentials,** you do not need to provide a client secret to oidc-spa.
   * Some providers will ask you to select an application type and choose between Single Page Application (SPA), Web Application (or Web Server App), and Mobile App. **Select SPA**.
   * You may need to explicitly provide a Client ID, or it may be generated automatically. This is the `clientId` parameter required by oidc-spa.
 * **Valid Redirect URIs**:\
