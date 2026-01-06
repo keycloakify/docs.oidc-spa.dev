@@ -29,7 +29,7 @@ oidc-spa is an OpenID Connect client for browser-first web apps. It implements t
 
 It includes [security defenses](security-features/overview.md) to reduce token exposure risks in the browser.
 
-It’s one library for the full stack. It can replace frontend SDKs like `keycloak-js`, `MSAL.js`, or `@auth0/auth0-spa-js`. It can also replace backend token tooling like `jsonwebtoken`, `jose`, or `express-jwt`.
+It’s one [dependency free](https://npmgraph.js.org/?q=oidc-spa) library for the full stack. It can replace frontend SDKs like `keycloak-js`, `MSAL.js`, or `@auth0/auth0-spa-js`. It can also replace backend token tooling like `jsonwebtoken`, `jose`, or `express-jwt`.
 
 **Why we built it**
 
