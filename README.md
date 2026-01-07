@@ -21,6 +21,17 @@ These are pure renames. A simple search/replace is enough:
 
 - import { ... } from "oidc-spa/tools/decodeJwt";
 + import { ... } from "oidc-spa/decode-jwt";
+
+- oidc.params.issuerUri;
++ oidc.issuerUri;
+
+- oidc.params.clientId;
++ oidc.clientId;
+
+- oidc.params.validRedirectUri;
++ oidc.validRedirectUri;
+
+
 ```
 
 ### Vite Plugin and oidcEarlyInit Params changes
@@ -108,6 +119,54 @@ If you’re migrating from the older `freeze*` flags:
 {% endtab %}
 {% endtabs %}
 
+### Removal of `oidc-spa/tools/parseKeycloakIssuerUri`
+
+There is now more comprehensive keycloak integration utils: [Keycloak Utils](https://app.gitbook.com/s/oygeayjvIPxroUcp3jt4/features/keycloak-utils "mention")
+
+```diff
+-import { parseKeycloakIssuerUri } from "oidc-spa/tools/parseKeycloakIssuerUri";
+
+-const issuerUri = oidc.params.issuerUri;
+-const clientId = oidc.params.clientId;
+
+-const keycloak = parseKeycloakIssuerUri(issuerUri);
+
+-if( keycloak === undefined ){
+-    console.log("Not keycloak");
+-    return;
+-}
+
+-const { origin, realm, kcHttpRelativePath, adminConsoleUrl, getAccountUrl } = keycloak;
+
+-const accountUrl = getAccountUrl({
+-    thisAppDisplayName: clientId,
+-    backToAppFromAccountUrl: location.href
+-});
+
++ import { createKeycloakUtils, isKeycloak } from "oidc-spa/keycloak";
+
++const issuerUri = oidc.issuerUri;
++const clientId = oidc.clientId;
++const validRedirectUri = oidc.validRedirectUri;
+
++if( !isKeycloak({ issuerUri }) ){
++    console.log("Not keycloak");
++    return;
++}
+
++const keycloakUtils = createKeycloakUtils({ issuerUri });
+
++const { origin, realm, kcHttpRelativePath } = keycloakUtils.issuerUriParsed;
+
++const { adminConsoleUrl } = keycloakUtils;
+
++const accountUrl = keycloakUtils.getAccountUrl({
++    clientId: oidc.clientId,
++    validRedirectUri: oidc.validRedirectUri,
++    locale: "en" // Optional
++});
+```
+
 ### React entrypoint rename (breaking)
 
 {% hint style="warning" %}
@@ -134,7 +193,7 @@ Use the new docs: [Server integration guide](https://app.gitbook.com/s/oygeayjvI
 
 `oidc-spa` now auto-polyfills `crypto.subtle` when it’s missing (typically when not served over HTTPS). This has no bundle size impact.
 
-If you previously added `webcrypto-liner-shim` as described [here](/broken/spaces/UhNOMoIddws1XoAnT5Nn/pages/yaMcQptxW0DTymZQSMM8), you can remove it.
+If you previously added `webcrypto-liner-shim` as described [here](https://app.gitbook.com/s/UhNOMoIddws1XoAnT5Nn/resources/fixing-crypto.subtle-is-available-only-in-secure-contexts-https), you can remove it.
 
 ### Need a hand?
 
