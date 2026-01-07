@@ -4,72 +4,116 @@ icon: code-simple
 
 # Keycloak Utils
 
-oidc-spa is provider agnostic. You won't find in it's core any feature that will only work with Keycloak. &#x20;
+oidc-spa is provider agnostic.\
+You won’t find any Keycloak-only logic in the core package.
 
-However Keycloak is absolutly first class citizen when it come to keycloak integration, oidc-spa exposes utils to levrage keycloak specific features.
+If you _are_ using Keycloak, `oidc-spa/keycloak` exposes small utilities to leverage Keycloak-specific URLs and endpoints.
+
+{% hint style="info" %}
+These utilities are **pure** (no side effects) and only need your `issuerUri`.\
+`createKeycloakUtils()` is memoized, so it’s safe to call often.
+{% endhint %}
+
+### Import
 
 ```typescript
 import { createKeycloakUtils, isKeycloak } from "oidc-spa/keycloak";
+```
 
-const oidc = await getOidc(); // or useOidc() or inject(Oidc);
+### Optional runtime check: is this issuer Keycloak?
 
-// Optional: Check at runtime is the app is a keycloak instance.
-if( !isKeycloak({ issuerUri: oidc.issuerUri }) ){
-    console.log("The authorization server is not a Keycloak Instance");
+Useful when your app can run against multiple providers.
+
+```typescript
+const oidc = await getOidc(); // or useOidc() or inject(Oidc)
+
+if (!isKeycloak({ issuerUri: oidc.issuerUri })) {
+    console.log("The authorization server is not a Keycloak instance");
     return;
 }
+```
 
-// keycloakUtils is a wrapper of pure, side effect free functions.
-// createKeycloakUtils is memoized and non expensive to create.
+### Create the utils object
+
+```typescript
 const keycloakUtils = createKeycloakUtils({ issuerUri: oidc.issuerUri });
+```
 
-// Redirecting directly to the register pages instead of the login page.
+### Common use cases
+
+#### Redirect to the registration page (instead of login)
+
+```typescript
 oidc.login({
     doesCurrentHrefRequiresAuth: false,
     transformUrlBeforeRedirect: keycloakUtils.transformUrlBeforeRedirectForRegister
 });
+```
 
-// url string to the Keycloak Account Console.
-// Where the users can update their account information.
-// See: https://docs.oidc-spa.dev/v/v9/features/user-account-management#redirecting-to-your-idps-account-managment-page
+#### Link to the Keycloak Account Console
+
+Users can update their profile, password, MFA, sessions, etc.
+
+```typescript
 const accountUrl = keycloakUtils.getAccountUrl({
     clientId: oidc.clientId,
     validRedirectUri: oidc.validRedirectUri,
     locale: "en" // Optional
 });
-
-// Fetch Keycloak's internal representation of the user.
-// Richer than the decodedIdToken
-// In keycloak-js it's .loadUserProfile()
-const userProfile = await keycloakUtils.fetchUserProfile({ 
-    accessToken: await oidc.getAccessToken() // or (await oidc.getTokens()).accesToken
-});
-userProfile.id;
-userProfile.username;
-userProfile.userVerified;
-userProfile.totp;
-userProfile.attributes;
-// ...
-
-// Calling the well-known userinfo endpoint.
-// In keycloak-js it's .loadUserInfo()
-const userInfo = await keycloakUtils.fetchUserInfo({
-    accessToken: await oidc.getAccessToken() // or (await oidc.getTokens()).accesToken
-});
-userInfo.sub;
-// This is an object similar than what you get when you do:
-const { decodeJwt } = await import("oidc-spa/decode-jwt");
-const decodedAccessToken = decodeJwt(accessToken);
-
-// url string to Keyloak's Admin Console
-// You should first check if the user has "realm-admin" before displaying this link.
-keycloakUtils.adminConsoleUrl; // Link to the admin console of the realm.
-keycloakUtils.adminConsoleUrl_master; // Link to the master admin console.
-
-const { issuerUriParsed } = keycloakUtils;
-// eg: If issuerUri is "https://auth.my-company.com/realms/myrealm"
-issuerUriParsed.origin; // eg: "https://auth.my-company.com"
-issuerUriParsed.realm; // eg: "myrealm"
-issuerUriParsed.kcHttpRelativePath; // eg: undefined or "/auth"
 ```
 
+See: [#redirecting-to-your-idps-account-managment-page](user-account-management.md#redirecting-to-your-idps-account-managment-page "mention")
+
+#### Fetch the Keycloak user profile (Keycloak-internal endpoint)
+
+This is richer than the decoded ID token.\
+Equivalent of `keycloak-js` `.loadUserProfile()`.
+
+```typescript
+const accessToken = await oidc.getAccessToken(); // or (await oidc.getTokens()).accessToken
+
+const userProfile = await keycloakUtils.fetchUserProfile({ accessToken });
+
+userProfile.id;
+userProfile.username;
+userProfile.attributes;
+```
+
+#### Fetch user info (OIDC `userinfo` endpoint)
+
+Equivalent of `keycloak-js` `.loadUserInfo()`.
+
+```typescript
+const accessToken = await oidc.getAccessToken(); // or (await oidc.getTokens()).accessToken
+
+const userInfo = await keycloakUtils.fetchUserInfo({ accessToken });
+userInfo.sub;
+```
+
+The userInfo object is similarly shaped as what you get if you decode the payload of the access token (which you shouldn't do on the client, see: [jwt-of-the-access-token.md](../resources/jwt-of-the-access-token.md "mention"))
+
+```typescript
+import { decodeJwt } from "oidc-spa/decode-jwt";
+const decodedAccessToken = decodeJwt(accessToken);
+```
+
+#### Admin Console URLs
+
+Only show these links to privileged users (for example `realm-admin`).
+
+```typescript
+keycloakUtils.adminConsoleUrl; // Admin console for the current realm
+keycloakUtils.adminConsoleUrl_master; // Admin console for the "master" realm
+```
+
+### Parse the issuer URI
+
+```typescript
+const { issuerUriParsed } = keycloakUtils;
+
+// Example issuerUri:
+// "https://auth.my-company.com/realms/myrealm"
+issuerUriParsed.origin; // "https://auth.my-company.com"
+issuerUriParsed.realm; // "myrealm"
+issuerUriParsed.kcHttpRelativePath; // undefined or "/auth" if the issuer uri was "https://auth.my-company.com/auth/realms/myrealm"
+```
