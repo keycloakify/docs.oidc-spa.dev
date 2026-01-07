@@ -222,11 +222,18 @@ const prOidc = !import.meta.env.VITE_OIDC_ISSUER
 <strong>    ? createMockOidc({
 </strong><strong>          // NOTE: If autoLogin is set to true this option must be removed
 </strong><strong>          isUserInitiallyLoggedIn: false,
+</strong><strong>          // Optional: 
+</strong><strong>          mockedParams: {
+</strong><strong>              issuerUri: "https://auth.my-company.com/realms/myrealm",
+</strong><strong>              clientId: "myclient"
+</strong><strong>          },
 </strong><strong>          mockedTokens: {
 </strong><strong>              decodedIdToken: {
 </strong><strong>                  sub: "123",
 </strong><strong>                  preferred_username: "john doe"
-</strong><strong>              } satisfies z.infer&#x3C;typeof decodedIdTokenSchema>
+</strong><strong>              } satisfies z.infer&#x3C;typeof decodedIdTokenSchema>,
+</strong><strong>              // accessToken: "mocked access token",
+</strong><strong>              // ...
 </strong><strong>          },
 </strong><strong>          autoLogin
 </strong><strong>      })
