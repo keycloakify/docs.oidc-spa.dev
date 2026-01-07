@@ -67,7 +67,7 @@ import { createOidc } from "oidc-spa/core";
 import { z } from "zod";
 
 const prOidc = createOidc({
-    // See: https://docs.oidc-spa.dev/v/v8/providers-configuration/provider-configuration
+    // See: https://docs.oidc-spa.dev/v/v9/providers-configuration/provider-configuration
     issuerUri: "https://auth.your-domain.net/realms/myrealm",
     clientId: "myclient",
 
@@ -123,8 +123,8 @@ import { getOidc } from "~/oidc"; // The file you created in the previous step
     // oidc-spa exports Keycloak-specific utilities:
     const { createKeycloakUtils, isKeycloak } = await import("oidc-spa/keycloak");
 
-    const keycloakUtils = isKeycloak({ issuerUri: oidc.params.issuerUri })
-        ? createKeycloakUtils({ issuerUri: oidc.params.issuerUri })
+    const keycloakUtils = isKeycloak({ issuerUri: oidc.issuerUri })
+        ? createKeycloakUtils({ issuerUri: oidc.issuerUri })
         : undefined;
 
     // In oidc-spa the user is either logged in or they aren't.
@@ -159,8 +159,9 @@ import { getOidc } from "~/oidc"; // The file you created in the previous step
         if (keycloakUtils) {
             // Get a link to the account page:
             const userAccountUrl = keycloakUtils.getAccountUrl({
-                clientId: oidc.params.clientId,
-                validRedirectUri: oidc.params.validRedirectUri
+                clientId: oidc.clientId,
+                validRedirectUri: oidc.validRedirectUri,
+                locale: "en" // Optional
             });
         }
     } else {

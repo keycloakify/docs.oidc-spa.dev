@@ -77,3 +77,9 @@ export async function getOidc(){
 </code></pre>
 {% endtab %}
 {% endtabs %}
+
+You might also want to enable some of the opt-in security features:
+
+{% content-ref url="/broken/pages/9CHQX9V9dazRrd5n6par" %}
+[Broken link](/broken/pages/9CHQX9V9dazRrd5n6par)
+{% endcontent-ref %}

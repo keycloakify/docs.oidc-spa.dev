@@ -20,11 +20,11 @@ If you are using Keycloak you can generate the link to the Account Console with:
 ```typescript
 import { createKeycloakUtils } from "oidc-spa/keycloak";
 
-const keycloakUtils = createKeycloakUtils({ issuerUri: oidc.params.issuerUri });
+const keycloakUtils = createKeycloakUtils({ issuerUri: oidc.issuerUri });
 
 const accountLinkUrl = keycloakUtils.getAccountUrl({
-    clientId: oidc.params.clientId,
-    validRedirectUri: oidc.params.validRedirectUri,
+    clientId: oidc.clientId,
+    validRedirectUri: oidc.validRedirectUri,
     locale: "en" // Optional
 });
 ```
@@ -34,11 +34,11 @@ const accountLinkUrl = keycloakUtils.getAccountUrl({
 ```typescript
 const { issuerUri, clientId, validRedirectUri } = useOidc();
 
-const keycloakUtils = createKeycloakUtils({ issuerUri: oidc.params.issuerUri });
+const keycloakUtils = createKeycloakUtils({ issuerUri });
 
 const accountLinkUrl = keycloakUtils.getAccountUrl({
-    clientId: oidc.params.clientId,
-    validRedirectUri: oidc.params.validRedirectUri,
+    clientId,
+    validRedirectUri,
     locale: "en" // Optional
 });
 ```
