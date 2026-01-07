@@ -2,13 +2,11 @@
 icon: up
 ---
 
-# v8 -> v9
+# v8/v9 -> v10
 
-This release mostly renames entrypoints and config options.
 
-Some changes are **breaking** if you use React (`oidc-spa/react`) or the server package (`oidc-spa/backend`).
 
-### Import path changes
+### Renames
 
 These are pure renames. A simple search/replace is enough:
 
@@ -33,15 +31,40 @@ These are pure renames. A simple search/replace is enough:
 
 - const { unusbscribe } = oidc.subscribeToTokensChange(...);
 + const { unsubscribeFromTokensChange } = oidc.subscribeToTokensChange(...);
+
+createOidc({
+-    noIframe: true
++    sessionRestorationMethod: "full page redirect"
+});
 ```
+
+### homeUrl removed
+
+```diff
+ createOidc({ // createMockOidc({
+-    homeUrl: import.meta.env.BASE_URL,
+});
+```
+
+{% tabs %}
+{% tab title="Vite Plugin" %}
+That's it.
+{% endtab %}
+
+{% tab title="Manual" %}
+The base url should now be provided as a param of oidcEarlyInit:
+
+```diff
+ oidcEealyInit({
++    BASE_URL: import.meta.env.BASE_URL   
+ });
+```
+{% endtab %}
+{% endtabs %}
 
 ### Vite Plugin and oidcEarlyInit Params changes
 
-oidc-spa's security features have been reworked, see:
-
-{% content-ref url="https://app.gitbook.com/s/oygeayjvIPxroUcp3jt4/security-features/overview" %}
-[Overview](https://app.gitbook.com/s/oygeayjvIPxroUcp3jt4/security-features/overview)
-{% endcontent-ref %}
+oidc-spa's security features have been reworked, see: [Security Features](https://app.gitbook.com/s/oygeayjvIPxroUcp3jt4/security-features "mention")
 
 This is the changes you need to apply to migrate your current config while keeping the same security profile: &#x20;
 
