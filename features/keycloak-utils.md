@@ -40,6 +40,7 @@ const accountUrl = keycloakUtils.getAccountUrl({
 
 // Fetch Keycloak's internal representation of the user.
 // Richer than the decodedIdToken
+// In keycloak-js it's .loadUserProfile()
 const userProfile = await keycloakUtils.fetchUserProfile({ 
     accessToken: await oidc.getAccessToken() // or (await oidc.getTokens()).accesToken
 });
@@ -51,6 +52,7 @@ userProfile.attributes;
 // ...
 
 // Calling the well-known userinfo endpoint.
+// In keycloak-js it's .loadUserInfo()
 const userInfo = await keycloakUtils.fetchUserInfo({
     accessToken: await oidc.getAccessToken() // or (await oidc.getTokens()).accesToken
 });
