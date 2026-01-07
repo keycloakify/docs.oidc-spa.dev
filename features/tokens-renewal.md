@@ -99,13 +99,15 @@ prOidc.then(oidc => {
         return;
     }
     
-    const { unsubscribe } = oidc.subscribeToTokensChange(tokens => {
+    const { 
+       unsubscribeFromTokensChange 
+    } = oidc.subscribeToTokensChange(tokens => {
        console.log("Token Renewed", tokens);
     });
     
     setTimeout(() => {
         // Call unsubscribe when you want to stop watching tokens change
-        unsubscribe();
+        unsubscribeFromTokensChange();
     }, 10_000);
 });
 ```
