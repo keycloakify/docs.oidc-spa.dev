@@ -31,7 +31,8 @@ These are pure renames. A simple search/replace is enough:
 - oidc.params.validRedirectUri;
 + oidc.validRedirectUri;
 
-
+- const { unusbscribe } = oidc.subscribeToTokensChange(...);
++ const { unsubscribeFromTokensChange } = oidc.subscribeToTokensChange(...);
 ```
 
 ### Vite Plugin and oidcEarlyInit Params changes
@@ -118,6 +119,19 @@ If you’re migrating from the older `freeze*` flags:
 {% endcode %}
 {% endtab %}
 {% endtabs %}
+
+### Update of `keycloakUtils.getAccountUrl()` API
+
+The "back to app" url actually only allows to redirect to a valid redirect uri.
+
+```diff
+ const accountUrl = keycloakUtils.getAccountUrl({
+     clientId: oidc.clientId,
+-    backToAppFromAccountUrl: location.href,
++    validRedirectUri: oidc.validRedirectUri,
+     locale: "en" // Optional
+ });
+```
 
 ### Removal of `oidc-spa/tools/parseKeycloakIssuerUri`
 
