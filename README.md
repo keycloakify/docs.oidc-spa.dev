@@ -4,7 +4,11 @@ icon: up
 
 # v8/v9 -> v10
 
+{% hint style="info" %}
+NOTE: v9 and v10 have been released with 2 days intervals. They are essentially the same version.
 
+v10 just removes properties that where marked as deprecated.
+{% endhint %}
 
 ### Renames
 
