@@ -119,6 +119,9 @@ export async function clientLoader(params: Route.ClientLoaderArgs) {
     issuerUri: (await getOidc()).issuerUri, // reuse the same realm
     clientId: "myapp-vault",                // dedicated client for Vault
     autoLogin: true,                        // silent login through shared realm session
+    disabledDPoP: true,                     // DPoP only apply when using Authorization header
+                                            // here we're going to exchange the access token
+                                            // for a Vault token in a non OAuth way.
     // sessionRestorationMethod: "iframe"
   });
 

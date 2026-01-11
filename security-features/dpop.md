@@ -33,7 +33,40 @@ oidc-spa exposes a single configuration option to control DPoP behavior:
 DPoP defaults to `"disabled"` because many resource servers still can’t validate DPoP-bound tokens.\
 This keeps things working out of the box with older backends, until DPoP support becomes a baseline expectation for resource servers.
 
-{% include "../.gitbook/includes/enable-security-defense.md" %}
+{% tabs %}
+{% tab title="Framework Agnostic" %}
+{% code title="src/oidc.ts" %}
+```ts
+createOidc({
+    // ...
+    dpop: "auto"
+});
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="React" %}
+{% code title="src/oidc.ts" %}
+```ts
+bootstrapOidc({
+    // ...
+    dpop: "auto"
+});
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Angular" %}
+{% code title="src/app/app.config.ts" %}
+```ts
+Oidc.provide({
+  // ...
+  dpop: "auto"
+});
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
 
 ***
 

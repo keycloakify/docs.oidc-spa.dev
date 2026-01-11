@@ -21,6 +21,10 @@ metaLinks:
 
 # What This Is
 
+{% hint style="warning" %}
+oidc-spa v10 is not stable and still in constructinon. If you want to use it anyway, use the latest release candidate: 10.0.1-rc.x
+{% endhint %}
+
 {% hint style="info" %}
 Stuck? Reach out on [Discord](https://discord.gg/mJdYJSdcm4). We’ll help you debug it.
 {% endhint %}
