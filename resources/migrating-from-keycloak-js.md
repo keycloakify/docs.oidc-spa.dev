@@ -12,7 +12,9 @@ metaLinks:
 If you're using [keycloak-js](https://www.npmjs.com/package/keycloak-js) in an existing codebase, you can migrate to `oidc-spa` without a painful rewrite.\
 `oidc-spa` ships a `keycloak-js` polyfill. It’s a literal drop-in replacement.
 
-### Why switch?
+<details>
+
+<summary><strong>Why switch?</strong></summary>
 
 #### Security
 
@@ -27,6 +29,10 @@ If you're using [keycloak-js](https://www.npmjs.com/package/keycloak-js) in an e
 * Login/Logout propagation across tabs.
 * Much faster and relyable SSO, especially in non ideal condition (iframe blocked / Keycloak not on same site, slow network...)
 
+</details>
+
+{% stepper %}
+{% step %}
 ### Update dependency
 
 Replace `keycloak-js` with `oidc-spa` in your `package.json`.
@@ -41,7 +47,9 @@ Replace `keycloak-js` with `oidc-spa` in your `package.json`.
  }
 ```
 {% endcode %}
+{% endstep %}
 
+{% step %}
 ### Update your codebase
 
 ```diff
@@ -58,7 +66,9 @@ Replace `keycloak-js` with `oidc-spa` in your `package.json`.
 ```
 
 Delete **public/silent-check-sso.html**.
+{% endstep %}
 
+{% step %}
 ### (OPTIONAL) Fix your Valid Redirect URIs
 
 Log in to the Keycloak Admin Console. Open your client configuration.
@@ -70,7 +80,9 @@ Valid Redirect URIs:
 -https://dashboard.my-company.com/silent-check-sso.html
 +https://dashboard.my-company.com/
 ```
+{% endstep %}
 
+{% step %}
 ### Enable Security Features
 
 If you're moving to `oidc-spa`, you likely want to [enable DPoP and other security features](../security-features/overview.md).
@@ -179,7 +191,9 @@ const keycloak = new Keycloak({ /* ... */ });
 {% endtabs %}
 
 You can enable `keycloak.init({ enableLogging: true })` to see a console report for the security features.
+{% endstep %}
 
+{% step %}
 ### (OPTIONAL) Display a Warning Before Auto Logout
 
 `oidc-spa` implements auto logout by respecting the idle session lifetime you configured in Keycloak.
@@ -201,3 +215,11 @@ const oidc = keycloak.getOidc();
 ```
 
 Then implement the overlay as described here: [Displaying a Warning Before Auto Logout](../features/auto-logout.md#displaying-a-warning-before-auto-logout).
+{% endstep %}
+
+{% step %}
+### You're Done 🎉
+
+If you run into some issue do not hesitate to [reach out on Discord](https://discord.gg/mJdYJSdcm4).
+{% endstep %}
+{% endstepper %}
