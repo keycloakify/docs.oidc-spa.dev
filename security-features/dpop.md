@@ -27,46 +27,55 @@ DPoP [is supported by **Keycloak**](https://www.keycloak.org/2025/10/dpop-suppor
 oidc-spa exposes a single configuration option to control DPoP behavior:
 
 * **`"auto"`**: enable DPoP only if supported by the authorization server, otherwise fall back to classic Bearer tokens (Recommended)
-* **`"disabled"`**: never use DPoP (default)
-* **`"enabled"`**: require DPoP support; oidc-spa will refuse to start if the authorization server does not support it. [See support history in Keycloak](https://www.keycloak.org/2025/10/dpop-support-26-4).
+* **`"enforced"`**: require DPoP support; oidc-spa will refuse to start if the authorization server does not support it. [See support history in Keycloak](https://www.keycloak.org/2025/10/dpop-support-26-4).
 
-DPoP defaults to `"disabled"` because many resource servers still can’t validate DPoP-bound tokens.\
-This keeps things working out of the box with older backends, until DPoP support becomes a baseline expectation for resource servers.
+DPoP isn't enabled by default like PKCE is because many resource servers still can’t validate DPoP-bound tokens.\
+We keep things working out of the box with older backends, until DPoP support becomes a baseline expectation for resource servers.
 
 {% tabs %}
-{% tab title="Framework Agnostic" %}
-{% code title="src/oidc.ts" %}
-```ts
-createOidc({
-    // ...
-    dpop: "auto"
+{% tab title="Vite Plugin" %}
+If you're in a Vite project, the recomended approach is to use oidc-spa's Vite plugin.
+
+<pre class="language-typescript" data-title="vite.config.ts"><code class="lang-typescript">import { defineConfig } from "vite";
+import { oidcSpa } from "oidc-spa/vite-plugin";
+
+export default defineConfig({
+    plugins: [
+        // ...
+        oidcSpa({
+            browserRuntimeFreeze: { enabled: true, /*exclude: [...]*/ }, //Recommended
+<strong>            DPoP: { enabled: true, mode: "auto" }
+</strong>        })
+    ]
 });
-```
-{% endcode %}
+</code></pre>
 {% endtab %}
 
-{% tab title="React" %}
-{% code title="src/oidc.ts" %}
-```ts
-bootstrapOidc({
-    // ...
-    dpop: "auto"
+{% tab title="Manual - Recommended" %}
+<pre class="language-typescript" data-title="src/main.ts"><code class="lang-typescript">import { oidcEarlyInit } from "oidc-spa/entrypoint";
+import { browserRuntimeFreeze } from 'oidc-spa/browser-runtime-freeze';
+<strong>import { DPoP } from 'oidc-spa/DPoP';
+</strong>
+const { shouldLoadApp } = oidcEarlyInit({
+    BASE_URL: "/",
+    securityDefenses: {
+        ...browserRuntimeFreeze(/*{ exclude: [...] }*/), // Recommended
+<strong>        ...DPoP({ mode: "auto" })
+</strong>  },
 });
-```
-{% endcode %}
-{% endtab %}
 
-{% tab title="Angular" %}
-{% code title="src/app/app.config.ts" %}
-```ts
-Oidc.provide({
-  // ...
-  dpop: "auto"
-});
-```
-{% endcode %}
+if (shouldLoadApp) {
+    // Note: Deferring the main app import adds a few milliseconds to cold start,
+    // but dramatically speeds up auth. Overall, it's a net win.
+    import("./main.lazy");
+}
+</code></pre>
 {% endtab %}
 {% endtabs %}
+
+{% hint style="info" %}
+NOTE: If your app [talks to different resource servers](../features/talking-to-multiple-apis-with-different-access-tokens.md) and one resource server does not suppor DPoP yet, you can opt out from DPoP on a client by client basis by using `createOidc({ disableDPoP: true })`.
+{% endhint %}
 
 ***
 
@@ -76,7 +85,7 @@ Enabling DPoP in oidc-spa does **not** require changes elsewhere in your stack:
 
 * **Identity Provider (**[**Keycloak**](#user-content-fn-1)[^1] **or other)**\
   No configuration change is required.\
-  With `dpop: "auto"`, If the authorization server supports DPoP, oidc-spa will detect and use it.
+  With `mode: "auto"`, If the authorization server supports DPoP, oidc-spa will detect and use it.
 * **Frontend codebase**\
   No changes are required.\
   Authenticated requests continue to use `Authorization: Bearer <access_token>` and are automatically upgraded at runtime.
@@ -88,7 +97,7 @@ Enabling DPoP in oidc-spa does **not** require changes elsewhere in your stack:
   If your RS supports DPoP, correct OAuth 2.0 token validation will reject DPoP-bound tokens when the DPoP proof is missing or invalid.\
   If your RS does not support DPoP, calls will simply fail, so there is no false sense of security.
 
-In other words, **this configuration option is the only change required to securely enable DPoP support across your stack**.
+In other words, **this configuration option is the only change required to securely enable DPoP support across your stack**. &#x20;
 
 ## How it works
 

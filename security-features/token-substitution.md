@@ -8,11 +8,58 @@ metaLinks:
 
 # Token Substitution
 
-###
-
 ### Enabling the defence
 
-{% include "../.gitbook/includes/enabling-a-security-defense.md" %}
+{% tabs %}
+{% tab title="Vite Plugin" %}
+<pre class="language-typescript" data-title="vite.config.ts"><code class="lang-typescript">import { defineConfig } from "vite";
+import { oidcSpa } from "oidc-spa/vite-plugin";
+
+export default defineConfig({
+    plugins: [
+        // ...
+        oidcSpa({
+            // ...
+            browserRuntimeFreeze: { enabled: true, /*exclude: [...]*/ }, //Recommended
+<strong>            tokenSubstitution: {
+</strong><strong>                enabled: true,
+</strong><strong>                // Optional, see below
+</strong><strong>                trustedExternalResourceServers: [
+</strong><strong>                    "*.{{location.hostname}}", 
+</strong><strong>                    "s3.amazon.com"
+</strong><strong>                ]
+</strong><strong>            }
+</strong><strong>        })
+</strong>    ]
+});
+</code></pre>
+{% endtab %}
+
+{% tab title="Manual" %}
+<pre class="language-typescript" data-title="src/main.ts"><code class="lang-typescript">import { oidcEarlyInit } from "oidc-spa/entrypoint";
+import { browserRuntimeFreeze } from 'oidc-spa/browser-runtime-freeze';
+<strong>import { tokenSubstitution } from 'oidc-spa/token-substitution';
+</strong>
+const { shouldLoadApp } = oidcEarlyInit({
+    BASE_URL: "/",
+    securityDefenses: {
+        ...browserRuntimeFreeze(/*{ exclude: [...] }*/), // Recommended
+<strong>        ...tokenSubstitution({
+</strong><strong>           // Optional, see below
+</strong><strong>           trustedExternalResourceServers: [
+</strong><strong>               `*.${location.hostname}`,
+</strong><strong>               "s3.amazon.com"
+</strong><strong>           ]
+</strong><strong>        })
+</strong>    }
+});
+
+if (shouldLoadApp) {
+    import("./main.lazy");
+}
+</code></pre>
+{% endtab %}
+{% endtabs %}
 
 ### Understanding the defence
 
@@ -99,37 +146,31 @@ You need:
 * You must not need to display the raw access token to the user.\
   Example: no “copy access token” button.
 
-### trustedThirdPartyResourceServers
+### trustedExternalResourceServers
 
 Use this when your app needs to call third-party resource servers (outside your site).
 
 Example:
 
-```ts
-["s3.amazonaws.com", "*.microsoft.com"]
+```typescript
+trustedExternalResourceServers: [ 
+  "*.{{location.hostname.split('.').slice(-2).join('.')}}", 
+  "s3.amazon.com"
+]
 ```
 
-#### What’s allowed by default
+At runtime, assuming your app is hosted at dashboard.my-company.com:
 
-Same-site (first-party) hosts are allowed automatically.
+```typescript
+trustedExternalResourceServers: [
+    "*.my-company.com",
+    "s3.amazon.com"
+]
+```
 
-Example: if your app is deployed at `dashboard.my-company.com`, these are allowed:
+This mean that oidc-spa will allow to send authed request to hostname that match this pattern. &#x20;
 
-* `minio.my-company.com`
-* `minio.dashboard.my-company.com`
-* `my-company.com`
-
-{% hint style="warning" %}
-If your app is deployed under a free multi-tenant domain, parent domains are **not** automatically allowed.
-
-Examples:
-
-* `xxx.vercel.app`
-* `xxx.netlify.app`
-* `xxx.github.io`
-* `xxx.pages.dev`
-* `xxx.web.app`
-{% endhint %}
+Note that the location.hostname (dashboard.my-company.com) is always allowed since you will typically send requests to "/api/todo...". &#x20;
 
 {% hint style="info" %}
 Host filtering is disabled in dev server environments:

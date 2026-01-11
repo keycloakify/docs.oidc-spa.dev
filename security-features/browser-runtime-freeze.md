@@ -39,12 +39,15 @@ export default defineConfig({
 This defense is only effective if `oidcEarlyInit()` runs first. It must run before any other code is evaluated. If you call it from **oidc.ts** (instead of your entrypoint), the environment may already be compromised.
 
 <pre class="language-typescript" data-title="src/main.ts"><code class="lang-typescript">import { oidcEarlyInit } from "oidc-spa/entrypoint";
-
+<strong>import { browserRuntimeFreeze } from 'oidc-spa/browser-runtime-freeze';
+</strong>
 const { shouldLoadApp } = oidcEarlyInit({
     // ...
-<strong>    browserRuntimeFreeze: {
-</strong><strong>        enabled: true,
-</strong><strong>        // exclude: ["Promise", "fetch", "XMLHttpRequest"]
+<strong>    securityDefenses: {
+</strong><strong>      // ...
+</strong><strong>      ...browserRuntimeFreeze({
+</strong><strong>        //exclude: [ "fetch", "XMLHttpRequest", "Promise"]
+</strong><strong>      })
 </strong><strong>    }
 </strong>});
 

@@ -41,7 +41,10 @@ Then create a new `src/main.ts` file:
 import { oidcEarlyInit } from "oidc-spa/entrypoint";
 
 const { shouldLoadApp } = oidcEarlyInit({
-    BASE_URL: "/" // The path where your app is hosted. You can also pass it later to createOidc().
+    BASE_URL: "/" // The path where your app is hosted
+                  // If applicable you should use `process.env.PUBLIC_URL`
+                  // or `import.meta.env.BASE_URL`.
+                  // This is not an option. There's only one good answer.
 });
 
 if (shouldLoadApp) {
@@ -66,6 +69,9 @@ Note however that implementing this option [dowgrade the security posture of you
 // Should run as early as possible.  
 <strong>oidcEarlyInit({ 
 </strong><strong>   BASE_URL: "/" // The path where your app is hosted
+</strong><strong>                 // If applicable you should use `process.env.PUBLIC_URL`
+</strong><strong>                 // or `import.meta.env.BASE_URL`.
+</strong><strong>                 // This is not an option. There's only one good answer.
 </strong><strong>});
 </strong>
 const prOidc = createOidc({ /* ... See below ... */ });
