@@ -25,8 +25,8 @@ export default defineConfig({
 </strong><strong>                enabled: true,
 </strong><strong>                // Optional, see below
 </strong><strong>                trustedExternalResourceServers: [
-</strong><strong>                    "*.{{location.hostname}}", 
-</strong><strong>                    "s3.amazon.com"
+</strong><strong>                    "*.{{location.hostname}}",
+</strong><strong>                    "s3.amazonaws.com"
 </strong><strong>                ]
 </strong><strong>            }
 </strong><strong>        })
@@ -48,7 +48,7 @@ const { shouldLoadApp } = oidcEarlyInit({
 </strong><strong>           // Optional, see below
 </strong><strong>           trustedExternalResourceServers: [
 </strong><strong>               `*.${location.hostname}`,
-</strong><strong>               "s3.amazon.com"
+</strong><strong>               "s3.amazonaws.com"
 </strong><strong>           ]
 </strong><strong>        })
 </strong>    }
@@ -125,7 +125,7 @@ Overlap:
 
 * Both reduce the damage from a successful supply-chain or XSS attack.
 
-DPoP is generally the stronger defence but in practice:&#x20;
+DPoP is generally the stronger defence but in practice:
 
 * not all authorisation servers and resource servers support DPoP yet
 * [WebSocket is out of scope for DPoP](../integration-guides/backend-token-validation/websocket.md)
@@ -140,7 +140,7 @@ The requirements are strict. Not every app can enable it.
 You need:
 
 * To enable [Browser Runtime Freeze](browser-runtime-freeze.md).\
-  If runtime integrity can’t be guaranteed, this defence can be bypassed. \
+  If runtime integrity can’t be guaranteed, this defence can be bypassed.\
   That being said the defence remains effective even if you had to exclude fetch and XMLHttpRequest. (`browserRuntimeFreeze.exclude = ["fetch", "XMLHttpRequest"]`)
 * If you call resource servers outside your site (example: `s3.amazonaws.com`), you must know their hostnames at build time (or synchronously at runtime).
 * You must not need to display the raw access token to the user.\
@@ -148,29 +148,44 @@ You need:
 
 ### trustedExternalResourceServers
 
-Use this when your app needs to call third-party resource servers (outside your site).
+Use this when your app needs to call resource servers **outside** your host.
 
-Example:
+By default, oidc-spa only allows authenticated requests to your own origin (`location.hostname`) so you can call  `fetchWithAuth("/api/todos")` with configuring anything.
 
-```typescript
-trustedExternalResourceServers: [ 
-  "*.{{location.hostname.split('.').slice(-2).join('.')}}", 
-  "s3.amazon.com"
-]
-```
+If your code tries to send an authenticated request to another host, it gets blocked.
 
-At runtime, assuming your app is hosted at dashboard.my-company.com:
+#### What to put in the list
+
+Each entry is a **hostname pattern** (not a URL).
+
+Supported shapes:
+
+* Exact host: `"s3.amazonaws.com"`
+* Any subdomain: `"*.my-company.com"`
+
+You don’t need to include `location.hostname`. It’s always allowed.
+
+#### Example
+
+If you want to allow any subdomain of your base domain (same site) plus S3 STS:
 
 ```typescript
 trustedExternalResourceServers: [
-    "*.my-company.com",
-    "s3.amazon.com"
+  "*.{{location.hostname.split('.').slice(-2).join('.')}}",
+  "s3.amazonaws.com"
 ]
 ```
 
-This mean that oidc-spa will allow to send authed request to hostname that match this pattern. &#x20;
+At runtime, if your app is hosted at `dashboard.my-company.com`:
 
-Note that the location.hostname (dashboard.my-company.com) is always allowed since you will typically send requests to "/api/todo...". &#x20;
+```typescript
+trustedExternalResourceServers: [
+  "*.my-company.com",
+  "s3.amazonaws.com"
+]
+```
+
+oidc-spa will allow authenticated requests to hosts matching these patterns. Any other host is treated as untrusted.
 
 {% hint style="info" %}
 Host filtering is disabled in dev server environments:
