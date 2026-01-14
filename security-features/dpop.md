@@ -51,7 +51,7 @@ export default defineConfig({
 </code></pre>
 {% endtab %}
 
-{% tab title="Manual - Recommended" %}
+{% tab title="Manual" %}
 <pre class="language-typescript" data-title="src/main.ts"><code class="lang-typescript">import { oidcEarlyInit } from "oidc-spa/entrypoint";
 import { browserRuntimeFreeze } from 'oidc-spa/browser-runtime-freeze';
 <strong>import { DPoP } from 'oidc-spa/DPoP';

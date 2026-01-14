@@ -119,7 +119,7 @@ export default defineConfig({
 {% tab title="Manual - Recommended" %}
 Pick this approach if:
 
-* You're not in a Vite project and
+* You're not in a Vite project (or want more control) and
 * Your app has a single client entrypoint.
 
 ***

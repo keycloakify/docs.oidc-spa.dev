@@ -22,7 +22,7 @@ metaLinks:
 # What This Is
 
 {% hint style="warning" %}
-oidc-spa v10 is not stable and still in constructinon. If you want to use it anyway, use the latest release candidate: 10.0.1-rc.x
+oidc-spa v10 is still in Relase Candidate state, to install it use the latest: 10.0.1-rc.x
 {% endhint %}
 
 {% hint style="info" %}
