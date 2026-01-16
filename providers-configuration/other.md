@@ -11,17 +11,16 @@ metaLinks:
 If you are using an OIDC provider other than the ones for which we have [a specific guide](https://github.com/keycloakify/docs.oidc-spa.dev/blob/v6/providers-configuration/broken-reference/README.md), follow these general instructions to configure your OIDC provider.
 
 {% hint style="warning" %}
-Not every “OIDC provider” works with a browser-only (public) client.
+Not every OIDC provider support public OIDC client seamlessly. &#x20;
 
-`oidc-spa` requires **Authorization Code + PKCE** and **no client secret**.
+You must make sure that your provider support:
 
-Some “social login” providers (GitHub, Facebook, LinkedIn, …) don’t support PKCE. They force a client secret. That can’t work in a public client.
+* PKCE
+* Public Client: Is letting you register a OIDC client (some calls it OAuth apps) without client secret.
 
-Use a real authorization server (Keycloak, Auth0, Microsoft Entra ID, Clerk, …). Federate the social providers through it.
+Note that trying to integrate oidc-spa directly with a social identityp provider like Facebook, Instagram, Google, Github is not supported.
 
-Even some authorization servers have rough edges for public clients, they all claim to support them but in practice some don't. Example: [Dex doesn’t support PKCE yet](https://github.com/dexidp/dex/pull/3777).   &#x20;
-
-Bottom line: browser-side OIDC is less widely supported than backend OIDC. If your provider behaves oddly, [reach out on Discord](https://discord.com/invite/mJdYJSdcm4).
+In some case it can technically work, for example Google OAuth 2.0, but in general it won't (no option for public client, no PKCE support). Regardless, using a social media provider as your auth platform is not a great idea. If you want a simple, free solution for enabling login with Google or GitHub, just create an Auth0 account and enable the provider social media provider you're intrested in. The have a very generous free tier and you'll be in control of your users. &#x20;
 {% endhint %}
 
 ## Creating the Client Application

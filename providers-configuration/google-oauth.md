@@ -1,5 +1,6 @@
 ---
 description: Implement "Login with Google"
+hidden: true
 icon: google
 metaLinks:
   alternates:

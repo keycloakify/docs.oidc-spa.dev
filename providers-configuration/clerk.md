@@ -1,4 +1,5 @@
 ---
+hidden: true
 icon: circle
 metaLinks:
   alternates:
