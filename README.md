@@ -2,11 +2,7 @@
 icon: up
 ---
 
-# v9 -> v10-rc.X
-
-{% hint style="warning" %}
-v10 is still in relase candidate.
-{% endhint %}
+# v9 -> v10
 
 {% tabs %}
 {% tab title="Vite Plugin" %}
