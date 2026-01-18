@@ -55,14 +55,34 @@ Replace `keycloak-js` with `oidc-spa` in your `package.json`.
 ```diff
 -import Keycloak from "keycloak-js";
 +import { Keycloak } from "oidc-spa/keycloak-js";
+-import KeycloakAuthorization from "keycloak-js/authz";
++import { KeycloakAuthorization } from "oidc-spa/keycloak-js-authz";
 
  // ...
 
  await keycloak.init({
      onLoad: 'check-sso',
 -    silentCheckSsoRedirectUri: `${location.origin}/silent-check-sso.html`,
+     //NOTE: fragment will be used. Conflict with your app logic routing
+     //is structuraly impossible in oidc-spa so there is no reason to support query.
+-    responseMode: "query",
      // ...
  });
+ 
+// In oidc-spa the auth state is immutable and can be either:
+// - Not established yet:   keycloak.didInitialize is false
+// - User is logged in:     keycloak.authenticated is true
+// - User is not logged in: keycloak.authenticated is false
+// The value of keycloak.authenticated will never change without a full app reload.
+// If you want to redirect to a specific page after logout call:
+// keycloak.logout({ redirectUri: "/bye" })
+-keycloak.onAuthLogout(()=> {});
+
+// With oidc-spa you'll never end-up in a state where calling this makes sense.
+-keycloak.clearToken();
+
+// oidc-spa handles this internally.
+-keycloak.onAuthRefreshError(); 
 ```
 
 Delete **public/silent-check-sso.html**.
@@ -74,11 +94,11 @@ Delete **public/silent-check-sso.html**.
 Log in to the Keycloak Admin Console. Open your client configuration.
 
 ```diff
-Valid Redirect URIs:
- http://localhost*
--https://dashboard.my-company.com/*
--https://dashboard.my-company.com/silent-check-sso.html
-+https://dashboard.my-company.com/
+ Valid Redirect URIs:
+  http://localhost*
+- https://dashboard.my-company.com/*
+- https://dashboard.my-company.com/silent-check-sso.html
++ https://dashboard.my-company.com/
 ```
 {% endstep %}
 
