@@ -10,20 +10,23 @@ metaLinks:
 # Migrating from Keycloak-js
 
 If you're using [keycloak-js](https://www.npmjs.com/package/keycloak-js) in an existing codebase, you can migrate to `oidc-spa` without a painful rewrite.\
-`oidc-spa` ships a `keycloak-js` polyfill. It’s a literal drop-in replacement.
+`oidc-spa` ships a `keycloak-js` polyfill. It’s a drop-in replacement.
+
+It's not an exhaustive poliffils, some knobs have been intentionally removed to align with current best practices. For example, this implementation of the keycloak-js surface won't let you use the implicit or hybrid flow and won't let you disable PKCE.
 
 <details>
 
 <summary><strong>Why switch?</strong></summary>
 
-#### Security
+**Security**
 
 * [Enabling DPoP](../security-features/dpop.md): Keycloak, [starting with 26.4](https://www.keycloak.org/2025/10/dpop-support-26-4), officially supports DPoP. `keycloak-js` doesn’t.
 * [Browser Runtime Freeze](../security-features/browser-runtime-freeze.md)
 * (Optional) [Token Substitution](../security-features/token-substitution.md)
 * Static valid redirect URIs: `keycloak-js` forces you to allow wildcard redirects like `https://dashboard.my-company.com/*`. This is [a known attack vector](https://securityblog.omegapoint.se/en/writeup-keycloak-cve-2023-6927/). With `oidc-spa`, the only valid redirect URI is your app’s origin, for example `https://dashboard.my-company.com/`.
+* Remove all the unsafe knobs that where present in keycloak-js. No footgun. &#x20;
 
-#### UX
+**UX**
 
 * [Auto Logout](../features/auto-logout.md): optional “You will be logged out in 30…29…” overlay. No more “submit → redirect to login” because the Keycloak session expired.
 * Login/Logout propagation across tabs.
@@ -42,7 +45,7 @@ Replace `keycloak-js` with `oidc-spa` in your `package.json`.
  {
      dependencies: {
 -        "keycloak-js": "...",
-+        "oidc-spa": "..."
++        "oidc-spa": "10.0.1-rc.9"
      }
  }
 ```
@@ -64,7 +67,8 @@ Replace `keycloak-js` with `oidc-spa` in your `package.json`.
      onLoad: 'check-sso',
 -    silentCheckSsoRedirectUri: `${location.origin}/silent-check-sso.html`,
      //NOTE: fragment will be used. Conflict with your app logic routing
-     //is structuraly impossible in oidc-spa so there is no reason to support query.
+     //is structuraly impossible in oidc-spa so there is no reason to 
+     //support query.
 -    responseMode: "query",
      // ...
  });
@@ -98,7 +102,7 @@ Log in to the Keycloak Admin Console. Open your client configuration.
   http://localhost*
 - https://dashboard.my-company.com/*
 - https://dashboard.my-company.com/silent-check-sso.html
-+ https://dashboard.my-company.com/
++ https://dashboard.my-company.com/ (Note: The trailing `/` is important)
 ```
 {% endstep %}
 
@@ -160,8 +164,7 @@ import { oidcEarlyInit } from "oidc-spa/entrypoint";
 import { browserRuntimeFreeze } from 'oidc-spa/browser-runtime-freeze';
 import { DPoP } from 'oidc-spa/DPoP';
 
-// Should run as early as possible.  
-oidcEarlyInit({ 
+const { shouldLoadApp } = oidcEarlyInit({ 
     BASE_URL: "/" // The path where your app is hosted
                   // If applicable you should use `process.env.PUBLIC_URL`
                   // or `import.meta.env.BASE_URL`.
@@ -175,6 +178,10 @@ oidcEarlyInit({
         ...DPoP({ mode: 'auto' })
     }
 });
+
+if( shouldLoadApp ){
+    import("./main.lazy");
+}
 ```
 {% endcode %}
 {% endtab %}
@@ -228,10 +235,22 @@ import { Keycloak } from "oidc-spa/keycloak-js";
 
 const keycloak = new Keycloak({ ... });
 
-await keycloak.init({ ... });
+await keycloak.init({ 
+    ...
+    
+    // Optionally, customize the behavior of where the user gets redirected
+    // when their session expires.  
+    // autoLogoutParams: { redirectTo: "current page" } // Default
+    // autoLogoutParams: { redirectTo: "home" }
+    // autoLogoutParams: { redirectTo: "specific url", url: "/your-session-has-expired" }
+    // autoLogoutParams: { 
+    //      redirectTo: "specific url", 
+    //      get url(){ return `/your-session-has-expired?return_url=${encodeUriComponent(location.href)}`; }
+    // }
+});
 
-// Can call this only after keycloak.init() has resolved.
-const oidc = keycloak.getOidc();
+// You can only access this property after keycloak.init() has resolved.
+const oidc = keycloak.oidc;
 ```
 
 Then implement the overlay as described here: [Displaying a Warning Before Auto Logout](../features/auto-logout.md#displaying-a-warning-before-auto-logout).

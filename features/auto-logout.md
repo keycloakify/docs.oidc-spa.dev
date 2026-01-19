@@ -230,6 +230,8 @@ export const appConfig: ApplicationConfig = {
 
 {% tabs %}
 {% tab title="Framework Agnostic" %}
+Let's assume we have some utility to display an overlay modal: `showModal(message)` and `hideModal()`:  &#x20;
+
 ```typescript
 const { unsubscribeFromAutoLogoutCountdown } =
   oidc.subscribeToAutoLogoutCountdown(({ secondsLeft }) => {
