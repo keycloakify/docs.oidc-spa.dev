@@ -18,9 +18,9 @@ This page explains why modern browsers often refuse to send cookies in third‑p
 
 > TL;DR
 >
-> 1. Align your application and authorization endpoint under a common parent domain so the browser treats your IdP as first‑party to your app.
-> 2. Prefer iframe‑based restoration when possible.
-> 3. If your CSP completly forbids iframes and you have no way to tweak them or if the IdP must live on a foreign domain, use full‑page redirects.
+> 1. Align your application and authorization endpoint under a common parent domain (same site) so the browser treats your IdP as first‑party to your app.
+> 2. Prefer iframe‑based restoration when possible, it's enabled by default when your IdP is on the same site with your app.
+> 3. If your CSP completly forbids iframes and you have no way to tweak them or if the IdP must live on a foreign domain, explicitely use full‑page redirects.
 
 ***
 
@@ -30,15 +30,15 @@ Traditional web apps keep a session on your backend. Your browser sends the back
 
 With `oidc‑spa`, your frontend talks directly to the authorization server. When a user revisits your app, `oidc‑spa` first tries to learn whether the user still has a valid session **at the IdP** without prompting for credentials again. It does so by contacting the authorization endpoint silently. If the browser **sends the IdP’s cookies** in that context, the IdP can attest that the user is still signed in and return the data needed to rebuild local identity.
 
-If the browser considers the IdP **third‑party** to your app, it often refuses to attach those cookies in an embedded context. oidc-spa has to use full‑page redirect in those configurations.
+If the browser considers the IdP **third‑party** to your app, it often refuses to attach those cookies in an embedded context (iframe). oidc-spa has to use full‑page redirect in those configurations. It happen so fast that it's hardly percevable, however iframe session restoration still yield the best performance.
 
 ***
 
 ### Make your IdP first‑party: share a parent domain
 
-The key is to host your application and your authorization endpoint under the **same registrable (parent) domain**.
+The key is to host your application and your authorization endpoint under the **same registrable (parent) domain - this is commonly refered as "same site"**.
 
-#### ✅ Examples where the IdP is _not_ third‑party
+#### ✅ Examples where the IdP is _not_ third‑party - same site
 
 * App: `www.my-company.com`, `dashboard.my-company.com`, or `my-company.com/dashboard`
 * Authorization endpoint: `https://auth.my-company.com/realms/oidc-spa/protocol/openid-connect/auth`
@@ -48,7 +48,7 @@ The key is to host your application and your authorization endpoint under the **
 
 * App: `my-company.com`
 * Authorization endpoints on unrelated domains:
-  * `https://auth.my-keycloak.com/realms/oidc-spa/protocol/openid-connect/auth` _(configurable; you choose where to host)_
+  * `https://my-keycloak.com/realms/oidc-spa/protocol/openid-connect/auth` _(configurable; you choose where to host)_
   * `https://login.microsoftonline.com/<tenant>/oauth2/v2.0/authorize` _(configurable via External ID / B2C custom domain)_
   * `https://<tenant>.us.auth0.com/authorize` _(configurable via Auth0 Custom Domains)_
   * `https://accounts.google.com/o/oauth2/v2/auth` _(not configurable)_

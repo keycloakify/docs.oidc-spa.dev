@@ -29,7 +29,7 @@ In frontend-centric apps, you often need to call **several** APIs (resource serv
 
 You can proxy those calls through your backend using a service account. That is a valid approach, but many architectures prefer to keep the backend light and stateless, and to concentrate logic in the frontend to lower infra cost and improve responsiveness.
 
-The challenge is that you should **not** reuse a single access token across different APIs. Even if it “works,” it is a poor security posture and will usually fail in practice because claims differ per API.
+The challenge is that you should **not** reuse a single access token across different APIs. Even if it “works", it is a poor security posture and will usually fail in practice because different APIs will expect different claims in the access token.
 
 ### Why a single token is not enough
 
