@@ -145,7 +145,7 @@ const oidc = await createOidc({
             // This let's you create a page that inform the user they have beel
             // logged out due to inactivity and display a button to come back
             // where they left off at the time of autoLogout.
-            return `/activity-logout?return_url=${location.href}`;
+            return `/activity-logout?return_url=${encodeURIComponent(location.href)}`;
         }
     }
 });

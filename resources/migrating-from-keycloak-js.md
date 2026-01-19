@@ -245,7 +245,7 @@ await keycloak.init({
     // autoLogoutParams: { redirectTo: "specific url", url: "/your-session-has-expired" }
     // autoLogoutParams: { 
     //      redirectTo: "specific url", 
-    //      get url(){ return `/your-session-has-expired?return_url=${encodeUriComponent(location.href)}`; }
+    //      get url(){ return `/your-session-has-expired?return_url=${encodeURIComponent(location.href)}`; }
     // }
 });
 
