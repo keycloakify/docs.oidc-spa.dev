@@ -16,7 +16,7 @@ Some providers don’t support SPAs as true **public OIDC clients**.
 Before you proceed, make sure your provider supports:
 
 * **Authorization Code Flow + PKCE**
-* **Public clients** (no client secret; no client-credentials flow)
+* **Public clients** (no client secret; no client-credentials flow). If it lets you declare application type Single Page Application (SPA) you're good. &#x20;
 * Configuring **redirect URIs** (login + post-logout)
 * Configuring **web origins / CORS** for your app’s origin
 
