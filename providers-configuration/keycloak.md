@@ -16,13 +16,43 @@ oidc-spa with Keycloak
 
 `oidc-spa` requires two parameters to connect to your Keycloak instance: `issuerUri` and `clientId`.
 
+{% tabs %}
+{% tab title="Framwork Agnostic" %}
+{% code title="src/oidc.ts" %}
 ```typescript
-const { ... } = createOidc({
-    issuerUri: "...",
-    clientId: "...",
+createOidc({
+    issuerUri: "https://auth.my-company.com/realms/myeralm",
+    clientId! "myclient",
     // ...
 });
 ```
+{% endcode %}
+{% endtab %}
+
+{% tab title="React" %}
+{% code title="src/oidc.ts" %}
+```typescript
+bootstrapOidc({
+    issuerUri: "https://auth.my-company.com/realms/myeralm",
+    clientId! "myclient",
+    // ...
+});
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Angular" %}
+{% code title="src/app/app.config.ts" %}
+```typescript
+Oidc.provide({
+    issuerUri: "https://auth.my-company.com/realms/myeralm",
+    clientId! "myclient",
+    //...
+})
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
 
 ### `issuerUri`
 
@@ -128,23 +158,6 @@ Enabling Account Deletion:
 2. Enable **"Delete Account"**.
 3. Go to **Realm Settings** → **User Registration** → **Default Roles**.
 4. Click **Assign Role**, filter by **client**, select **Delete Account**, and assign it.
-
-***
-
-## Testing the Setup
-
-To test your configuration:
-
-```bash
-npx degit https://github.com/keycloakify/oidc-spa/examples/tanstack-router-file-based oidc-spa-tanstack-router
-cd oidc-spa-tanstack-router
-cp .env.local.sample .env.local
-
-# Edit the .env.local file to reflect your configuration
-
-yarn
-yarn dev
-```
 
 [^1]: The user is considered inactive by oidc-spa when it's not actively moving the mouse, touching the screen or typing on the keyboard in any tab of your app.\
     \

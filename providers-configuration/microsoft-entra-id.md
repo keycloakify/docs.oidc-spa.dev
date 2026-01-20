@@ -11,13 +11,9 @@ metaLinks:
 
 {% embed url="https://youtu.be/upcAmYq4JLY" %}
 
-## Configuring Entra ID to Issue a JWT Access Token
+## Declaring your Backend API
 
-By default, Entra ID issues opaque Access Tokens, which can only be validated by your backend via the Microsoft Graph API.
-
-To enable validation of access tokens in a non-vendor-locked way—such as demonstrated in [the Web API section](/broken/pages/9h0o4hUvuUAMeveFCosj)—you need to configure a custom scope.
-
-### Steps to Configure a Custom Scope
+This step is important so that the access token issued by Entra ID are in JWT format and specificially crafter for for your backend API.
 
 1. Go to [Microsoft Azure Portal](https://portal.azure.com/).
 2. In the left panel, select **"Microsoft Entra ID"**.
@@ -32,14 +28,10 @@ To enable validation of access tokens in a non-vendor-locked way—such as demon
    * **Scope name**: `access_as_user`
    * **Who can consent**: Admins and Users
    * **Admin Consent Display Name**: "JWT Access Token"
-   * **Admin Consent Description**: "Ensure issuance of a JWT Access Token"
+   * **Admin Consent Description**: "Read permission on the basic user profile"
    * **User Consent Display Name**: "View your basic profile"
    * **User Consent Description**: "Allows the app to see your basic profile (e.g., name, picture, user name, email address)"
    * **State**: Enabled
-
-### Validating the Token on the Backend
-
-To validate the token on the backend, ensure that the `aud` claim in the JWT access token matches `api://my-app-api`. For more details, refer to the [Web API documentation](/broken/pages/9h0o4hUvuUAMeveFCosj).
 
 ***
 
@@ -72,66 +64,8 @@ These are required to configure `oidc-spa`.
 
 ***
 
-## Configuring `oidc-spa`
+## Providing the parameters to oidc-spa
 
-{% tabs %}
-{% tab title="Vanilla" %}
-```typescript
-import { createOidc } from "oidc-spa";
-
-// Directory (tenant) ID:
-const directoryId = "XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
-// Application (client) ID:
-const clientId = "XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
-// Application ID URI: (Of the API!)
-const applicationIdUri_api= "api://my-app-api/access_as_user";
-
-export const prOidc = createOidc({
-    issuerUri: `https://login.microsoftonline.com/${directoryId}/v2.0`,
-    clientId,
-    scopes: ["profile", applicationIdUri_api],
-    homeUrl: import.meta.env.BASE_URL
-});
-```
-{% endtab %}
-
-{% tab title="React" %}
-```typescript
-import { createReactOidc } from "oidc-spa/react";
-
-// Directory (tenant) ID:
-const directoryId = "XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
-// Application (client) ID:
-const clientId = "XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
-// Application ID URI: (Of the API!)
-const applicationIdUri_api= "api://my-app-api/access_as_user";
-
-export const { OidcProvider, useOidc, getOidc } = createReactOidc({
-    issuerUri: `https://login.microsoftonline.com/${directoryId}/v2.0`,
-    clientId,
-    scopes: ["profile", applicationIdUri_api],
-    homeUrl: import.meta.env.BASE_URL
-});
-```
-{% endtab %}
-{% endtabs %}
-
-***
-
-## Testing the Setup
-
-To test your configuration:
-
-```bash
-npx degit https://github.com/keycloakify/oidc-spa/examples/tanstack-router-file-based oidc-spa-tanstack-router
-cd oidc-spa-tanstack-router
-cp .env.local.sample .env.local
-
-# Uncomment the Microsoft Entra ID section and comment out the Keycloak section.
-# Update the values with your own.
-
-yarn
-yarn dev
-```
+{% include "../.gitbook/includes/entra-id-config.md" %}
 
 [^1]: Only for now. You can change that later if you want to enable pepole to signin with their personal accounts.
