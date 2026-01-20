@@ -21,10 +21,6 @@ metaLinks:
 
 # What This Is
 
-{% hint style="warning" %}
-oidc-spa v10 is still in Release Candidate state. To install it, use the latest: `10.0.1-rc.x`.
-{% endhint %}
-
 {% hint style="info" %}
 Stuck? Reach out on [Discord](https://discord.gg/mJdYJSdcm4). We’ll help you debug it.
 {% endhint %}
