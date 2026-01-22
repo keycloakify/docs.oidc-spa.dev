@@ -1,7 +1,7 @@
 # Table of contents
 
-* [v9 -> v10.0.1-rc.x](README.md)
-* [v8 -> v10.0.1-rc.x](v8-greater-than-v10.0.1-rc.x.md)
+* [v9 -> v10](README.md)
+* [v8 -> v10](v8-greater-than-v10.md)
 * [v8 -> v9](<README (3).md>)
 * [v7 -> v8](<README (2).md>)
 * [v6 -> v7](<README (1).md>)
