@@ -7,16 +7,16 @@ title: entra id config
 {% code title="src/oidc.ts" %}
 ```typescript
 // Directory (tenant) ID:
-const directoryId = "XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
+const DIRECTORY_ID = "XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
 // Application (client) ID:
-const clientId = "XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
+const CLIENT_ID = "XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
 // Application ID URI: (Of the API!)
-const applicationIdUri_api= "api://my-app-api/access_as_user";
+const SCOPE_FOR_API= "api://my-app-api/access_as_user";
 
 createOidc({
-    issuerUri: `https://login.microsoftonline.com/${directoryId}/v2.0`,
-    clientId,
-    scopes: ["profile", applicationIdUri_api],
+    issuerUri: `https://login.microsoftonline.com/${DIRECTORY_ID}/v2.0`,
+    clientId: CLIENT_ID,
+    scopes: ["profile", SCOPE_FOR_API],
     // ...
 });
 ```
@@ -27,16 +27,16 @@ createOidc({
 {% code title="src/oidc.ts" %}
 ```typescript
 // Directory (tenant) ID:
-const directoryId = "XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
+const DIRECTORY_ID = "XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
 // Application (client) ID:
-const clientId = "XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
+const CLIENT_ID = "XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
 // Application ID URI: (Of the API!)
-const applicationIdUri_api= "api://my-app-api/access_as_user";
+const SCOPE_FOR_API= "api://my-app-api/access_as_user";
 
 bootstrapOidc({
-    issuerUri: `https://login.microsoftonline.com/${directoryId}/v2.0`,
-    clientId,
-    scopes: ["profile", applicationIdUri_api],
+    issuerUri: `https://login.microsoftonline.com/${DIRECTORY_ID}/v2.0`,
+    clientId: CLIENT_ID,
+    scopes: ["profile", SCOPE_FOR_API],
     // ...
 });
 ```
@@ -47,16 +47,16 @@ bootstrapOidc({
 {% code title="src/app/app.config.ts" %}
 ```typescript
 // Directory (tenant) ID:
-const directoryId = "XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
+const DIRECTORY_ID = "XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
 // Application (client) ID:
-const clientId = "XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
+const CLIENT_ID = "XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
 // Application ID URI: (Of the API!)
-const applicationIdUri_api= "api://my-app-api/access_as_user";
+const SCOPE_FOR_API= "api://my-app-api/access_as_user";
 
 Oidc.provide({
-    issuerUri: `https://login.microsoftonline.com/${directoryId}/v2.0`,
-    clientId,
-    scopes: ["profile", applicationIdUri_api],
+    issuerUri: `https://login.microsoftonline.com/${DIRECTORY_ID}/v2.0`,
+    clientId: CLIENT_ID,
+    scopes: ["profile", SCOPE_FOR_API],
 })
 ```
 {% endcode %}

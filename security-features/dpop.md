@@ -85,7 +85,7 @@ Enabling DPoP in oidc-spa does **not** require changes elsewhere in your stack:
 
 * **Identity Provider (**[**Keycloak**](#user-content-fn-1)[^1] **or other)**\
   No configuration change is required.\
-  With `mode: "auto"`, If the authorization server supports DPoP, oidc-spa will detect and use it.
+  With `mode: "auto"`, If the authorization server supports DPoP, oidc-spa will detect and use it. Note that Microsoft EntraID does not support DPoP yet. &#x20;
 * **Frontend codebase**\
   No changes are required.\
   Authenticated requests continue to use `Authorization: Bearer <access_token>` and are automatically upgraded at runtime.
