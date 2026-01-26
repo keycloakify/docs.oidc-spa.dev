@@ -48,7 +48,7 @@ const oidc = await createOidc({
      getOidc,
      oidcFnMiddleware,
      oidcRequestMiddleware,
--     enforceLogin
+-    enforceLogin
  } = oidcSpa
      .withExpectedDecodedIdTokenShape({ /* ... */ })
      .withAccessTokenValidation({ /* ... */ })
@@ -68,7 +68,7 @@ export const Route = createRootRoute({
     shellComponent: ShellComponent,
 <strong>    // NOTE: Even with SSR disabled here, the ShellComponent is still SSR'd.
 </strong><strong>    // Only page components lose SSR.  
-</strong><strong>    // You *can* disable SSR per-page for routes that load authed data,
+</strong><strong>    // You *can* disable SSR per-page for routes that don't load authed data,
 </strong><strong>    // but if your app isn’t public, it’s simpler to SSR only the shell.  
 </strong><strong>    ssr: false
 </strong>});
