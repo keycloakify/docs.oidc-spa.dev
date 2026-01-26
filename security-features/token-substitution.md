@@ -125,7 +125,7 @@ Overlap:
 
 * Both reduce the damage from a successful supply-chain or XSS attack.
 
-DPoP is generally the stronger defence but in practice:
+DPoP is generally the stronger defence but in practice **but**:
 
 * not all authorisation servers and resource servers support DPoP yet
 * [WebSocket is out of scope for DPoP](../integration-guides/backend-token-validation/websocket.md)
