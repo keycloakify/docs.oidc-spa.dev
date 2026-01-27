@@ -100,7 +100,7 @@ If you’re migrating from the older `freeze*` flags:
      // Add to `exclude` the APIs for which you had `freezeXxx: false`.
 +    browserRuntimeFreeze: {
 +        enabled: true,
-+        exclude: ["fetch", "XMLHttpRequest"]
++        excludes: ["fetch", "XMLHttpRequest"]
 +    }
 });
 ```
