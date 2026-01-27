@@ -27,7 +27,7 @@ export default defineConfig({
             // ...
 <strong>            browserRuntimeFreeze: {
 </strong><strong>                enabled: true,
-</strong><strong>                // exclude: ["Promise", "fetch", "XMLHttpRequest"]
+</strong><strong>                // excludes: ["Promise", "fetch", "XMLHttpRequest"]
 </strong><strong>            }
 </strong>        })
     ]
@@ -46,7 +46,7 @@ const { shouldLoadApp } = oidcEarlyInit({
 <strong>    securityDefenses: {
 </strong><strong>      // ...
 </strong><strong>      ...browserRuntimeFreeze({
-</strong><strong>        //exclude: [ "fetch", "XMLHttpRequest", "Promise"]
+</strong><strong>        //excludes: [ "fetch", "XMLHttpRequest", "Promise"]
 </strong><strong>      })
 </strong><strong>    }
 </strong>});
@@ -58,7 +58,7 @@ if (shouldLoadApp) {
 {% endtab %}
 {% endtabs %}
 
-## browserRuntimeFreeze.exclude
+## browserRuntimeFreeze.excludes
 
 Your app may fail to start after enabling `browserRuntimeFreeze`.
 

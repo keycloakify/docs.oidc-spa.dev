@@ -20,7 +20,7 @@ export default defineConfig({
         // ...
         oidcSpa({
             // ...
-            browserRuntimeFreeze: { enabled: true, /*exclude: [...]*/ }, //Recommended
+            browserRuntimeFreeze: { enabled: true, /*excludes: [...]*/ },//Recommended
 <strong>            tokenSubstitution: {
 </strong><strong>                enabled: true,
 </strong><strong>                // Optional, see below
@@ -43,7 +43,7 @@ import { browserRuntimeFreeze } from 'oidc-spa/browser-runtime-freeze';
 const { shouldLoadApp } = oidcEarlyInit({
     BASE_URL: "/",
     securityDefenses: {
-        ...browserRuntimeFreeze(/*{ exclude: [...] }*/), // Recommended
+        ...browserRuntimeFreeze(/*{ excludes: [...] }*/), // Recommended
 <strong>        ...tokenSubstitution({
 </strong><strong>           // Optional, see below
 </strong><strong>           trustedExternalResourceServers: [

@@ -43,7 +43,7 @@ export default defineConfig({
     plugins: [
         // ...
         oidcSpa({
-            browserRuntimeFreeze: { enabled: true, /*exclude: [...]*/ }, //Recommended
+            browserRuntimeFreeze: { enabled: true, /*excludes: [...]*/ },//Recommended
 <strong>            DPoP: { enabled: true, mode: "auto" }
 </strong>        })
     ]
@@ -59,7 +59,7 @@ import { browserRuntimeFreeze } from 'oidc-spa/browser-runtime-freeze';
 const { shouldLoadApp } = oidcEarlyInit({
     BASE_URL: "/",
     securityDefenses: {
-        ...browserRuntimeFreeze(/*{ exclude: [...] }*/), // Recommended
+        ...browserRuntimeFreeze(/*{ excludes: [...] }*/), // Recommended
 <strong>        ...DPoP({ mode: "auto" })
 </strong>  },
 });

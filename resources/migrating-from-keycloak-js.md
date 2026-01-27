@@ -127,7 +127,7 @@ export default defineConfig({
 </strong><strong>            // See: https://docs.oidc-spa.dev/v/v10/security-features/browser-runtime-freeze
 </strong><strong>            browserRuntimeFreeze: {
 </strong><strong>                enabled: true
-</strong><strong>                //exclude: [ "fetch", "XMLHttpRequest"]
+</strong><strong>                //excludes: [ "fetch", "XMLHttpRequest"]
 </strong><strong>            },
 </strong><strong>            // See: https://docs.oidc-spa.dev/v/v10/security-features/dpop
 </strong><strong>            DPoP: {
@@ -172,7 +172,7 @@ const { shouldLoadApp } = oidcEarlyInit({
     securityDefenses: {
         // See: https://docs.oidc-spa.dev/v/v10/security-features/browser-runtime-freeze
         ...browserRuntimeFreeze({
-            //exclude: [ "fetch", "XMLHttpRequest" ]
+            //excludes: [ "fetch", "XMLHttpRequest" ]
         }),
         // See: https://docs.oidc-spa.dev/v/v10/security-features/dpop
         ...DPoP({ mode: 'auto' })
@@ -205,7 +205,7 @@ Note: this option [downgrades the security posture of your app](../security-feat
 </strong><strong>    securityDefenses: {
 </strong><strong>        // See: https://docs.oidc-spa.dev/v/v10/security-features/browser-runtime-freeze
 </strong><strong>        ...browserRuntimeFreeze({
-</strong><strong>            //exclude: [ "fetch", "XMLHttpRequest" ]
+</strong><strong>            //excludes: [ "fetch", "XMLHttpRequest" ]
 </strong><strong>        }),
 </strong><strong>        // See: https://docs.oidc-spa.dev/v/v10/security-features/dpop
 </strong><strong>        ...DPoP({ mode: 'auto' })
