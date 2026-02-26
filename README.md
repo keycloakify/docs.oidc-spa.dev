@@ -1,19 +1,5 @@
 ---
 icon: lightbulb-exclamation-on
-layout:
-  width: default
-  title:
-    visible: true
-  description:
-    visible: false
-  tableOfContents:
-    visible: true
-  outline:
-    visible: true
-  pagination:
-    visible: true
-  metadata:
-    visible: true
 metaLinks:
   alternates:
     - https://app.gitbook.com/s/oygeayjvIPxroUcp3jt4/
@@ -93,7 +79,7 @@ If you’re choosing between this and a BFF for security, start with the [securi
 
 [^1]: Or call the introspecition endpoint.
 
-[^2]: In the setup demo, you'll have middleware that resolves the user's identity against a Redis database before starting SSR.\
+[^2]: In typical demo setups, you'll have middleware that resolves the user's identity against a Redis database before starting SSR.\
     This significantly increases the delay before the user receives the page.\
     In practice, large enterprise dashboards like Vercel send a skeleton, resolve identity, then stream the authed components.
 
