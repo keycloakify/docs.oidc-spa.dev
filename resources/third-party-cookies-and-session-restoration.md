@@ -14,7 +14,7 @@ metaLinks:
 > That said, if you want the **best possible user experience**, it’s worth understanding what’s going on under the hood and configuring your domains and headers accordingly.
 {% endhint %}
 
-This page explains why modern browsers often refuse to send cookies in third‑party contexts, how that impacts silent session restoration in a frontend-entric auth model, and how to configure your domain and security headers so that `oidc‑spa` can deliver a seamless UX.
+This page explains why modern browsers often refuse to send cookies in third‑party contexts, how that impacts silent session restoration in a frontend-centric auth model, and how to configure your domain and security headers so that `oidc‑spa` can deliver a seamless UX.
 
 > TL;DR
 >
