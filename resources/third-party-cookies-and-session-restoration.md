@@ -14,13 +14,13 @@ metaLinks:
 > That said, if you want the **best possible user experience**, it’s worth understanding what’s going on under the hood and configuring your domains and headers accordingly.
 {% endhint %}
 
-This page explains why modern browsers often refuse to send cookies in third‑party contexts, how that impacts silent session restoration in frontend centric auth model, and how to configure your domain and security headers so that `oidc‑spa` can deliver a seamless UX.
+This page explains why modern browsers often refuse to send cookies in third‑party contexts, how that impacts silent session restoration in a frontend-centric auth model, and how to configure your domain and security headers so that `oidc‑spa` can deliver a seamless UX.
 
 > TL;DR
 >
 > 1. Align your application and authorization endpoint under a common parent domain (same site) so the browser treats your IdP as first‑party to your app.
-> 2. Prefer iframe‑based restoration when possible, it's enabled by default when your IdP is on the same site with your app.
-> 3. If your CSP completly forbids iframes and you have no way to tweak them or if the IdP must live on a foreign domain, explicitely use full‑page redirects.
+> 2. Prefer iframe‑based restoration when possible, it's enabled by default when your IdP is on the same site as your app.
+> 3. If your CSP completely forbids iframes and you have no way to tweak them or if the IdP must live on a foreign domain, explicitly use full‑page redirects.
 
 ***
 
@@ -30,13 +30,13 @@ Traditional web apps keep a session on your backend. Your browser sends the back
 
 With `oidc‑spa`, your frontend talks directly to the authorization server. When a user revisits your app, `oidc‑spa` first tries to learn whether the user still has a valid session **at the IdP** without prompting for credentials again. It does so by contacting the authorization endpoint silently. If the browser **sends the IdP’s cookies** in that context, the IdP can attest that the user is still signed in and return the data needed to rebuild local identity.
 
-If the browser considers the IdP **third‑party** to your app, it often refuses to attach those cookies in an embedded context (iframe). oidc-spa has to use full‑page redirect in those configurations. It happen so fast that it's hardly percevable, however iframe session restoration still yield the best performance.
+If the browser considers the IdP **third‑party** to your app, it often refuses to attach those cookies in an embedded context (iframe). oidc-spa has to use full‑page redirect in those configurations. It happens so fast that it's hardly perceivable, however iframe session restoration still yields the best performance.
 
 ***
 
 ### Make your IdP first‑party: share a parent domain
 
-The key is to host your application and your authorization endpoint under the **same registrable (parent) domain - this is commonly refered as "same site"**.
+The key is to host your application and your authorization endpoint under the **same registrable (parent) domain - this is commonly referred to as "same site"**.
 
 #### ✅ Examples where the IdP is _not_ third‑party - same site
 
@@ -76,7 +76,7 @@ bootstrapOidc({ // or createOidc({
 
 * The app performs a quick top‑level redirect to the authorization endpoint, which always carries IdP cookies.
 * The redirect returns immediately to your app with the information needed to rebuild identity.
-* **Works everywhere** but is a about 30% slower and the url flashes auth response info brievly.
+* **Works everywhere** but is about 30% slower and the url flashes auth response info briefly.
 * **Multiple OIDC clients in one page:** to avoid a redirect loop, the app may need to persist state between reloads (for example, tokens or a minimal session hint) which weakens the “no persistence” posture.
 
 #### "auto" (default and recommended)
@@ -93,7 +93,7 @@ bootstrapOidc({ // or createOidc({
 
 In that case, the question is:
 
-**Are you in control of your server configuration, can you change the HTTP respons headers?**
+**Are you in control of your server configuration, can you change the HTTP response headers?**
 
 {% tabs %}
 {% tab title="Yes" %}
@@ -105,7 +105,7 @@ If you can edit your server config, then you can relax your CSP just enough to a
 {% endtab %}
 
 {% tab title="No" %}
-If your server is what it is and have no control over it, then your only option is to force oidc-spa to use full page redirect to restore users session:
+If your server is what it is and you have no control over it, then your only option is to force `oidc-spa` to use full page redirect to restore the user's session:
 
 ```ts
 sessionRestorationMethod: "full page redirect"
@@ -115,12 +115,12 @@ sessionRestorationMethod: "full page redirect"
 
 ### Local development
 
-When your app runs on `localhost` and your IdP lives on a different domain, wichis almost always the case unless you run a keycloak locally.
+When your app runs on `localhost` and your IdP lives on a different domain, which is almost always the case unless you run Keycloak locally.
 
-The browser treats the IdP as third‑party so oidc-spa will fallback to full page redirect. To run your app in devloppement like you would in prod you need to:
+The browser treats the IdP as third‑party so oidc-spa will fallback to full page redirect. To run your app in development like you would in prod you need to:
 
-1. Set `sessionRestorationMethod: "iframe"` explicitely to force oidc-spa to use iframe.
-2. Allow third party cookies in localhost:
+1. Set `sessionRestorationMethod: "iframe"` explicitly to force oidc-spa to use iframe.
+2. Allow third-party cookies in localhost:
 
 <figure><img src="../.gitbook/assets/image (14).png" alt="" width="348"><figcaption></figcaption></figure>
 
@@ -141,7 +141,7 @@ Most managed IdPs let you put their endpoints behind your domain. This is crucia
 
 A short video that shows the UX difference between iframe‑based restoration and a full‑page redirect:
 
-(This video was recorded a while ago, performance a **much** better now)
+(This video was recorded a while ago, performance is **much** better now)
 
 {% embed url="https://www.youtube.com/watch?v=55sZ7XSWh4Q" %}
 
