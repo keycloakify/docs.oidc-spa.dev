@@ -105,7 +105,7 @@ If you can edit your server config, then you can relax your CSP just enough to a
 {% endtab %}
 
 {% tab title="No" %}
-If your server is what it is and you have no control over it, then your only option is to force oidc-spa to use full page redirect to restore users session:
+If your server is what it is and you have no control over it, then your only option is to force `oidc-spa` to use full page redirect to restore the user's session:
 
 ```ts
 sessionRestorationMethod: "full page redirect"
