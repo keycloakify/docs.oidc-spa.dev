@@ -107,9 +107,9 @@ if( oidc.isUserLoggedIn ){
    // when the user is redirected back to your application after completing
    // or canceling the action.
    if( 
-      oidc.backFromAuthServer?.extraQueryParams.kc_action === "UPDATE_PASSWORD"
+      oidc.backFromAuthServer?.extraQueryParams["kc_action"] === "UPDATE_PASSWORD"
    ){
-      switch(oidc.backFromAuthServer.result.kc_action_status){
+      switch(oidc.backFromAuthServer.result["kc_action_status"]){
           case "canceled": 
              alert("You password was not updated");
              break;
@@ -154,10 +154,10 @@ function ProtectedPage() {
             are redirected back to the app after completing or canceling the
             action.
             */}
-            {backFromAuthServer?.extraQueryParams.kc_action === "UPDATE_PASSWORD" && (
+            {backFromAuthServer?.extraQueryParams["kc_action"] === "UPDATE_PASSWORD" && (
                 <p>
                     {(()=>{
-                        switch(backFromAuthServer.result.kc_action_status){
+                        switch(backFromAuthServer.result["kc_action_status"]){
                             case "success":
                                 return "Password successfully updated";
                             case "cancelled":
@@ -181,8 +181,8 @@ updatePassword = ()=> this.oidc.goToAuthServer({
 ```
 
 ```angular-html
-@if( oidc.backFromAuthServer?.extraQueryParams.kc_action === "UPDATE_PASSWORD" ){          
-@if ( oidc.backFromAuthServer.result.kc_action_status === "success" ){
+@if( oidc.backFromAuthServer?.extraQueryParams["kc_action"] === "UPDATE_PASSWORD" ){          
+@if ( oidc.backFromAuthServer.result["kc_action_status"] === "success" ){
 <p>Password successfully updated</p>
 } @else {
 <P>Password unchanged</p>

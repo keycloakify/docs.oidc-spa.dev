@@ -47,8 +47,8 @@
 * [Non Blocking Rendering](features/non-blocking-rendering.md)
 * [Talking to multiple APIs (with different access tokens)](features/talking-to-multiple-apis-with-different-access-tokens.md)
 * [Tokens Renewal](features/tokens-renewal.md)
-* [User Session Initialization](features/user-session-initialization.md)
 * [User Account Management](features/user-account-management.md)
+* [User Session Initialization](features/user-session-initialization.md)
 * [Keycloak Utils](features/keycloak-utils.md)
 
 ## Security Features
