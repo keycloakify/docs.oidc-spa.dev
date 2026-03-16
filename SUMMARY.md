@@ -10,6 +10,7 @@
   * [TanStack Start](integration-guides/tanstack-router-start/tanstack-start.md)
   * [TanStack Router](integration-guides/tanstack-router-start/react-router.md)
 * [React Router](integration-guides/react-router.md)
+* [Next.js](integration-guides/next.js.md)
 * [Angular](integration-guides/angular.md)
 * [Backend Token Validation](integration-guides/backend-token-validation/README.md)
   * [tRPC](integration-guides/backend-token-validation/trpc.md)
