@@ -31,12 +31,6 @@ npm run dev
 # Start exploring with: lib/oidc.tsx
 ```
 
-If you already cloned the monorepo, you can also run:
-
-```bash
-yarn start-next-example
-```
-
 {% embed url="https://github.com/keycloakify/oidc-spa/tree/main/examples/next" %}
 
 ## Installation
@@ -82,7 +76,7 @@ Use `instrumentation-client.ts` to run `oidcEarlyInit()` as early as possible.
 import { oidcEarlyInit } from "oidc-spa/entrypoint";
 
 oidcEarlyInit({
-    BASE_URL: "/"
+    BASE_URL: process.env.__NEXT_ROUTER_BASEPATH || "/"
 });
 ```
 {% endcode %}
@@ -91,15 +85,15 @@ oidcEarlyInit({
 
 Wrap the whole app in `OidcInitializationGate`.
 
-In the example, this happens in `app/layout.tsx`.
+In the example, this happens in [`app/layout.tsx`](https://github.com/keycloakify/oidc-spa/blob/main/examples/next/app/layout.tsx).
 
 ### Add Next-specific adapters
 
-`OidcInitializationGate` and `withLoginEnforced` cannot be used directly in Next.js as-is.
+The `OidcInitializationGate` and `withLoginEnforced` utils exported by oidc-spa cannot be used directly in Next.js as-is.
 
 They need Next-specific adapters.
 
-In the example, that adaptation lives in `lib/oidc.tsx`.
+In the example, that adaptation lives in [`lib/oidc.tsx`](https://github.com/keycloakify/oidc-spa/blob/main/examples/next/lib/oidc.tsx).
 
 ### Keep oidc-spa on the client
 
