@@ -19,6 +19,8 @@ Use this setup only if you accept that trade-off.
 
 ## The example
 
+{% embed url="https://youtu.be/zkOWKeTZcYk" %}
+
 This example shows the minimum wiring needed for a Next.js App Router app.
 
 ```bash

@@ -12,6 +12,7 @@
 * [React Router](integration-guides/react-router.md)
 * [Angular](integration-guides/angular.md)
 * [Next.js](integration-guides/next.js.md)
+* [Nuxt](integration-guides/nuxt.md)
 * [Backend Token Validation](integration-guides/backend-token-validation/README.md)
   * [tRPC](integration-guides/backend-token-validation/trpc.md)
   * [NestJS](integration-guides/backend-token-validation/nestjs.md)
