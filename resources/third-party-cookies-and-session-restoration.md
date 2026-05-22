@@ -59,12 +59,30 @@ The key is to host your application and your authorization endpoint under the **
 
 `oidc‑spa` supports two session restoration strategies. You choose (or let the library auto‑choose) using `sessionRestorationMethod`.
 
+{% tabs %}
+{% tab title="Vite Plugin" %}
+<pre class="language-typescript" data-title="vite.config.ts"><code class="lang-typescript">export default defineConfig({
+    plugins: [
+        // ...
+        oidcSpa({
+<strong>            // "auto" (default) | "iframe" | "full page redirect"
+</strong><strong>            sessionRestorationMethod: "auto"
+</strong>        }),
+
+    ]
+});
+</code></pre>
+{% endtab %}
+
+{% tab title="Manual Setup" %}
 ```ts
 bootstrapOidc({ // or createOidc({
   // "auto" (default) | "iframe" | "full page redirect"
   sessionRestorationMethod: "auto"
 });
 ```
+{% endtab %}
+{% endtabs %}
 
 #### "iframe" (silent, seamless)
 
