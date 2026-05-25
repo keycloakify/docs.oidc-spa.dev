@@ -94,11 +94,9 @@ const prOidc = createOidc({
 
     debugLogs: true,
     
-    // See: https://docs.oidc-spa.dev/v/v8/features/auto-login
+    // See: https://docs.oidc-spa.dev/v/v10/features/auto-login
     // autoLogin: true
 
-    // See: https://docs.oidc-spa.dev/v/v8/features/dpop
-    // dpop: "auto"
 });
 
 export async function getOidc(){
