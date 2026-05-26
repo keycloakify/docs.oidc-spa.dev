@@ -41,7 +41,7 @@
 
 ## features
 
-* [The User Object](features/the-user-object.md)
+* [The User Object](features/user.md)
 * [Auto Login](features/auto-login.md)
 * [Auto Logout](features/auto-logout.md)
 * [Debug and Error Handling](features/error-management/README.md)
