@@ -174,7 +174,7 @@ export const prOidc = !import.meta.env.VITE_OIDC_ISSUER
 </strong>          autoLogin
       });
 
-<strong>export async function greatUser() {
+<strong>export async function greetUser() {
 </strong><strong>    const oidc = await prOidc;
 </strong><strong>
 </strong><strong>    if (!oidc.isUserLoggedIn) {
