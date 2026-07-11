@@ -9,8 +9,8 @@ metaLinks:
 # Auth0
 
 {% hint style="danger" %}
-Resent platform changes of Auth0 have made it hard for us to recomend Auth0 in good consience. \
-See: [https://community.auth0.com/t/silent-authentication-systematically-requiring-consent-in-spa-breaking-token-rotation-for-oidc-spa-library-users/201575](https://community.auth0.com/t/silent-authentication-systematically-requiring-consent-in-spa-breaking-token-rotation-for-oidc-spa-library-users/201575)
+Recent Auth0 platform changes can require consent during silent authentication. This breaks token rotation for affected SPA integrations. We cannot currently recommend Auth0 for SPAs.\
+See the [Auth0 community report](https://community.auth0.com/t/silent-authentication-systematically-requiring-consent-in-spa-breaking-token-rotation-for-oidc-spa-library-users/201575).
 {% endhint %}
 
 {% embed url="https://www.youtube.com/embed/zPikliLzC84?si=_bIUM5lxNwDIZ3eR" %}
@@ -22,7 +22,7 @@ First step is to configure a custom Domain.
 1. Navigate to the [Auth0 Dashboard](https://manage.auth0.com/dashboard).
 2. Click **Settings** in the left panel.
 3. Open the **Custom Domain** tab.
-4. Configure a custom domain (e.g., `auth.my-company.com`). Make sure it's a sub domain of where your app will be deployed. &#x20;
+4. Configure a custom domain (e.g., `auth.my-company.com`). Make sure it's a sub domain of where your app will be deployed.
 5. Copy this (`auth.my-company.com`) it is your `issuerUri`.
 
 <figure><img src="../.gitbook/assets/image.png" alt=""><figcaption><p>In this screenshot we used auth0.oidc-spa.dev (instead of auth.my-company.com)</p></figcaption></figure>
@@ -55,7 +55,7 @@ If you need Auth0 to issue a JWT access token for your API, follow these steps:
 4. Navigate to the Settings tab
 5. Fill up **Identifier**: Ideally, use your API's root URL (e.g., `https://myapp.my-company.com/api`). However, this is just an identifier, so any unique string works. Copy it, it is your audience (aud claim in the access token's JWT)
 6. Under **Access Token Settings: We want to reduce the lifespan of the access token, the 24 hour default is non acceptable for an SPA usecase.**
-   * **Maximum Access Token Lifetime**: `5 minutes` (300 seconds), can be even shorter. It only need to be valid for the duration of transit from the frontend to the backend. &#x20;
+   * **Maximum Access Token Lifetime**: `5 minutes` (300 seconds), can be even shorter. It only need to be valid for the duration of transit from the frontend to the backend.
    * **Implicit/Hybrid Flow Access Token Lifetime**: `5 minutes` – required to save settings, even if unused.
 7. Click **Save**
 
