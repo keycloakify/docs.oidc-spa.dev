@@ -8,12 +8,12 @@ metaLinks:
 
 # Auth0
 
-{% embed url="https://www.youtube.com/embed/zPikliLzC84?si=_bIUM5lxNwDIZ3eR" %}
-
 {% hint style="danger" %}
 Resent platform changes of Auth0 have made it hard for us to recomend Auth0 in good consience. \
 See: [https://community.auth0.com/t/silent-authentication-systematically-requiring-consent-in-spa-breaking-token-rotation-for-oidc-spa-library-users/201575](https://community.auth0.com/t/silent-authentication-systematically-requiring-consent-in-spa-breaking-token-rotation-for-oidc-spa-library-users/201575)
 {% endhint %}
+
+{% embed url="https://www.youtube.com/embed/zPikliLzC84?si=_bIUM5lxNwDIZ3eR" %}
 
 ## Configuring a Custom Domain
 
