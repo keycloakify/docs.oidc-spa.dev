@@ -169,4 +169,4 @@ When developing your app in localhost you may notice that your auth status is lo
 It's anoying but it only happens in development, not in production.   \
 See this note in Auth0 documentation: [https://auth0.com/docs/get-started/applications/third-party-applications/user-consent-and-third-party-applications?utm\_source=chatgpt.com#skip-consent-for-first-party-applications](https://auth0.com/docs/get-started/applications/third-party-applications/user-consent-and-third-party-applications?utm_source=chatgpt.com#skip-consent-for-first-party-applications)
 
-<figure><img src="../.gitbook/assets/image (21).png" alt="" width="375"><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (22).png" alt="" width="375"><figcaption></figcaption></figure>
