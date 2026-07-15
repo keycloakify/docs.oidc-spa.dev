@@ -39,7 +39,7 @@ First step is to configure a custom Domain.
    * `https://my-app.my-company.com/` (include trailing slash; adjust if hosted under a subpath, e.g., `https://my-company.com/my-app/`)
    * `http://localhost:5173/` (include trailing slash; adjust based on your dev server)
 6. **Allowed Logout URLs**: Copy paste what you put into **Allowed Callback URLs**
-7. **Allowed Web Origins:** The origins of the Callback URLs
+7. **Allowed Web Origins** and **Allowed Origins (CORS):** The origins of the Callback URLs
 8. Click **Save Changes**
 9. Copy the **Client ID**
 
@@ -59,7 +59,8 @@ If you need Auth0 to issue a JWT access token for your API, follow these steps:
 6. Under **Access Token Settings: We want to reduce the lifespan of the access token, the 24 hour default is non acceptable for an SPA usecase.**
    * **Maximum Access Token Lifetime**: `5 minutes` (300 seconds), can be even shorter. It only need to be valid for the duration of transit from the frontend to the backend.
    * **Implicit/Hybrid Flow Access Token Lifetime**: `5 minutes` – required to save settings, even if unused.
-7. Click **Save**
+7. Under the Application Access tab: Click on the edit button on the line of the Application we've created in the previous step (ex: My App), Under "User Delegated Access", click the "Grant Access" button. &#x20;
+8. Click **Save**
 
 <figure><img src="../.gitbook/assets/image (17).png" alt=""><figcaption></figcaption></figure>
 
