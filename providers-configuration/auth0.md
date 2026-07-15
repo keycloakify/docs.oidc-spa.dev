@@ -8,13 +8,6 @@ metaLinks:
 
 # Auth0
 
-{% hint style="danger" %}
-Recent Auth0 platform changes can require consent during silent authentication. This breaks token rotation for affected SPA integrations. We cannot currently recommend Auth0 for SPAs.\
-See the [Auth0 community report](https://community.auth0.com/t/silent-authentication-systematically-requiring-consent-in-spa-breaking-token-rotation-for-oidc-spa-library-users/201575).\
-\
-On top of this DPoP needs to be [explicitely disabled](../security-features/dpop.md#enabling-dpop) because Auth0 claim to support it but does not in a standard way.&#x20;
-{% endhint %}
-
 {% embed url="https://www.youtube.com/embed/zPikliLzC84?si=_bIUM5lxNwDIZ3eR" %}
 
 ## Configuring a Custom Domain
