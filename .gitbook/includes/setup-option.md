@@ -86,6 +86,6 @@ export async function getOidc(){
 
 You might also want to enable some of the opt-in security features:
 
-{% content-ref url="/broken/pages/9CHQX9V9dazRrd5n6par" %}
-[Broken link](/broken/pages/9CHQX9V9dazRrd5n6par)
+{% content-ref url="https://app.gitbook.com/s/8rg9Xp0uGe5G6xs1sCAG/security-features" %}
+[Security Features](https://app.gitbook.com/s/8rg9Xp0uGe5G6xs1sCAG/security-features)
 {% endcontent-ref %}

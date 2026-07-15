@@ -101,32 +101,45 @@ createOidc({
     clientId: "DzXSmwQS7oSTQGLbafhrPXYLT0mOMyZD"
     extraQueryParams: {
        audience: "https://app.my-company.com/api"
-    }
+    },
+    // Auth0 puts DPoP behind a paywall. Explicitely disable it until you have 
+    // enabled it in the Auth0 dashboard.
+    disableDPoP: true,
     // (Optional) This must be kept in sync with the Idle Session Lifetime value 
     // configured in the Auth0 dashboard. To ensure correct autoLogout behavior.
     idleSessionLifetimeInSeconds: 1800,
+    
     // ...
 });
 ```
 {% endcode %}
+
+
 {% endtab %}
 
 {% tab title="React" %}
-{% code title="src/oidc.ts" %}
-```typescript
-bootstrapOidc({
+<pre class="language-typescript" data-title="src/oidc.ts"><code class="lang-typescript">bootstrapOidc({
     issuerUri: "auth.my-company.com",
     clientId: "DzXSmwQS7oSTQGLbafhrPXYLT0mOMyZD"
     extraQueryParams: {
        audience: "https://app.my-company.com/api"
-    }
+    },
+    // Auth0 puts DPoP behind a paywall. Explicitely disable it until you have 
+    // enabled it in the Auth0 dashboard.
+    disableDPoP: true,
     // (Optional) This must be kept in sync with the Idle Session Lifetime value 
     // configured in the Auth0 dashboard. To ensure correct autoLogout behavior.
     idleSessionLifetimeInSeconds: 1800,
     // ...
 });
-```
-{% endcode %}
+
+// In TanStack Start: 
+    .withAccessTokenValidation({
+        type: "RFC 9068: JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens",
+<strong>        expectedAudience: () => "https://app.my-company.com/api",
+</strong>        // ...
+    })
+</code></pre>
 {% endtab %}
 
 {% tab title="Angular" %}
@@ -137,7 +150,10 @@ Oidc.provide({
     clientId: "DzXSmwQS7oSTQGLbafhrPXYLT0mOMyZD"
     extraQueryParams: {
        audience: "https://app.my-company.com/api"
-    }
+    },
+    // Auth0 puts DPoP behind a paywall. Explicitely disable it until you have 
+    // enabled it in the Auth0 dashboard.
+    disableDPoP: true,
     // (Optional) This must be kept in sync with the Idle Session Lifetime value 
     // configured in the Auth0 dashboard. To ensure correct autoLogout behavior.
     idleSessionLifetimeInSeconds: 1800,
@@ -146,3 +162,11 @@ Oidc.provide({
 {% endcode %}
 {% endtab %}
 {% endtabs %}
+
+## Production vs Development
+
+When developing your app in localhost you may notice that your auth status is lost upon reloading the page and that Auth0 asks you to Accept Consent again and again.  \
+It's anoying but it only happens in development, not in production.   \
+See this note in Auth0 documentation: [https://auth0.com/docs/get-started/applications/third-party-applications/user-consent-and-third-party-applications?utm\_source=chatgpt.com#skip-consent-for-first-party-applications](https://auth0.com/docs/get-started/applications/third-party-applications/user-consent-and-third-party-applications?utm_source=chatgpt.com#skip-consent-for-first-party-applications)
+
+<figure><img src="../.gitbook/assets/image (21).png" alt="" width="375"><figcaption></figcaption></figure>
