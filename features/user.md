@@ -1,4 +1,4 @@
-# The User Abstraction
+# The User Object
 
 {% hint style="warning" %}
 **Coming in oidc-spa v10.3.** This feature has not been released yet.
@@ -10,9 +10,7 @@ Once configured, your custom user model is available wherever you write frontend
 
 {% tabs %}
 {% tab title="Framework agnostic" %}
-
 {% code title="src/greeting.ts" overflow="wrap" %}
-
 ```typescript
 import { prOidc } from "./oidc";
 
@@ -28,19 +26,13 @@ export async function getGreeting() {
     return `Hello ${user.displayName}!`;
 }
 ```
-
 {% endcode %}
-
 {% endtab %}
 
 {% tab title="React" %}
-
-The React API is shared by the React SPA and TanStack Start adapters.
-
 In a component where login is already enforced:
 
 {% code title="src/components/Greeting.tsx" overflow="wrap" %}
-
 ```tsx
 import { useOidc } from "../oidc";
 
@@ -50,13 +42,11 @@ export function Greeting() {
     return <p>Hello {user.displayName}!</p>;
 }
 ```
-
 {% endcode %}
 
 Outside a React component, in browser code:
 
 {% code title="src/greeting.ts" overflow="wrap" %}
-
 ```typescript
 import { getOidc } from "./oidc";
 
@@ -67,81 +57,72 @@ export async function getGreeting() {
     return `Hello ${user.displayName}!`;
 }
 ```
-
 {% endcode %}
-
 {% endtab %}
 
 {% tab title="Angular" %}
-
 {% hint style="info" %}
 The user abstraction is not available in the Angular adapter yet.
 {% endhint %}
-
 {% endtab %}
 {% endtabs %}
 
-The `user` object is your application's model of the signed-in person. Shape it around what the **frontend needs to render**, rather than mirroring a token or provider response. Prefer application-level fields such as `canSeeAdminNavigation` over provider-specific details such as `realm_access.roles`.
-
-{% hint style="warning" %}
-The `user` object is for UI decisions, not security. It can determine whether to show an admin link; your resource server must still validate the access token and authorize every request.
-{% endhint %}
+The `user` object is your application's model of the signed-in person. Shape it around what the **frontend needs to render**.
 
 ## Implement `createUser`
 
-`createUser` translates identity data into the app-specific `User` consumed by your UI. The decoded ID token is the natural starting point, but you can use another source when it does not contain everything the UI needs.
+To use the user abstaction you need to:
 
-Each tab below is a complete, focused alternative. Combine sources only when your model requires it; the different `User` shapes are intentional.
+1\) Define User type, you shape it. Define it to contains all the information needed by your UI to render the app.
+
+2\) Implement a function that construct that user, gathering identity information from different possible sources.&#x20;
+
+The user's informations can be retrieved from different sources, here are different focussed examples:&#x20;
 
 {% tabs %}
 {% tab title="ID token" %}
-
-Use the ID token when it already contains everything your UI needs.
+The payload of the ID token is the most natural way to get user informations.
 
 {% code title="src/oidc.user.ts" overflow="wrap" %}
-
 ```typescript
 import type { CreateUser } from "oidc-spa/core";
 import { z } from "zod";
 
 export type User = {
-    id: string;
     displayName: string;
     email: string | undefined;
     avatarUrl: string | undefined;
 };
 
-const DecodedIdToken = z.object({
-    sub: z.string(),
+// This is the expected shape of the decoded ID token.
+// This varies from provider to provider (Keycloak, Auth0, EntraID...)
+// Replace the schema with the claim shape guaranteed by your provider.
+// the amout of information present will depend of the scopes you have required.
+const DecodedIdTokenSchema = z.object({
     name: z.string(),
-    email: z.string().email().optional(),
-    picture: z.string().url().optional()
+    email: z.string().optional(),
+    picture: z.string().optional()
 });
 
-export const createUser: CreateUser<User> = ({ decodedIdToken: decodedIdToken_generic }) => {
-    const decodedIdToken = DecodedIdToken.parse(decodedIdToken_generic);
+export const createUser: CreateUser<User> = ({ 
+    decodedIdToken: decodedIdToken_generic 
+}) => {
+    const decodedIdToken = DecodedIdTokenSchema.parse(decodedIdToken_generic);
 
     return {
-        id: decodedIdToken.sub,
         displayName: decodedIdToken.name,
         email: decodedIdToken.email,
         avatarUrl: decodedIdToken.picture
     };
 };
 ```
-
 {% endcode %}
-
-The schema is the contract between your UI and your provider. Request the required scopes and configure the provider to include these claims; for example, email commonly requires the `email` scope.
-
 {% endtab %}
 
 {% tab title="Your API" %}
-
 A dedicated endpoint is often the best option when the model depends on your application's database.
 
 {% code title="src/oidc.user.ts" overflow="wrap" %}
-
 ```typescript
 import type { CreateUser } from "oidc-spa/core";
 import { z } from "zod";
@@ -155,12 +136,11 @@ const UserFromApi = z.object({
 
 export type User = z.infer<typeof UserFromApi>;
 
-export const createUser: CreateUser<User> = async ({ accessToken }) => {
-    const response = await fetch("/api/user", {
-        headers: {
-            Authorization: `Bearer ${accessToken}`
-        }
-    });
+export const createUser: CreateUser<User> = async () => {
+
+    const { fetchWithAuth } = await import("./oidc");
+    
+    const response = await fetchWithAuth("/api/user");
 
     if (!response.ok) {
         throw new Error(`GET /api/user failed with ${response.status}`);
@@ -169,15 +149,12 @@ export const createUser: CreateUser<User> = async ({ accessToken }) => {
     return UserFromApi.parse(await response.json());
 };
 ```
-
 {% endcode %}
 
 The backend can identify the caller from the validated access token, load the corresponding record, and return an application-specific object.
-
 {% endtab %}
 
 {% tab title="JWT access token" %}
-
 Some providers expose roles or groups only in a JWT access token. This Keycloak-shaped example turns those roles into UI-friendly fields.
 
 {% hint style="warning" %}
@@ -185,24 +162,22 @@ OAuth clients should normally treat access tokens as opaque. Use this pattern on
 {% endhint %}
 
 {% code title="src/oidc.user.ts" overflow="wrap" %}
-
 ```typescript
 import type { CreateUser } from "oidc-spa/core";
 import { decodeJwt } from "oidc-spa/decode-jwt";
 import { z } from "zod";
 
 export type User = {
-    id: string;
     displayName: string;
     roles: string[];
     canSeeAdminNavigation: boolean;
 };
 
 const DecodedIdToken = z.object({
-    sub: z.string(),
     name: z.string()
 });
 
+// Replace the schema with the claim shape guaranteed by your provider.
 const DecodedAccessToken = z.object({
     realm_access: z
         .object({
@@ -227,19 +202,13 @@ export const createUser: CreateUser<User> = ({
     };
 };
 ```
-
 {% endcode %}
-
-Replace the schema with the claim shape guaranteed by your provider.
-
 {% endtab %}
 
 {% tab title="UserInfo" %}
-
 `fetchUserInfo()` calls the standard OIDC UserInfo endpoint discovered from your provider's metadata and attaches the current access token.
 
 {% code title="src/oidc.user.ts" overflow="wrap" %}
-
 ```typescript
 import type { CreateUser } from "oidc-spa/core";
 import { z } from "zod";
@@ -269,51 +238,46 @@ export const createUser: CreateUser<User> = async ({ fetchUserInfo }) => {
     };
 };
 ```
-
 {% endcode %}
 
 No UserInfo request is made unless you call `fetchUserInfo()`. The available claims still depend on your requested scopes and provider configuration.
-
 {% endtab %}
 
 {% tab title="Keycloak profile" %}
-
 Provider-specific APIs can expose information that is not available through standard OIDC claims. For Keycloak, oidc-spa includes a typed helper for the account profile.
 
 {% code title="src/oidc.user.ts" overflow="wrap" %}
-
 ```typescript
 import type { CreateUser } from "oidc-spa/core";
 import { createKeycloakUtils, isKeycloak } from "oidc-spa/keycloak";
 
 export type User = {
-    id: string;
     username: string;
     displayName: string;
     email: string | undefined;
 };
 
-export const createUser: CreateUser<User> = async ({ decodedIdToken, accessToken, issuerUri }) => {
-    if (!isKeycloak({ issuerUri })) {
-        throw new Error("This user model requires Keycloak");
-    }
+export const createUser: CreateUser<User> = async ({ 
+    decodedIdToken, 
+    accessToken, 
+    issuerUri 
+}) => {
 
-    const profile = await createKeycloakUtils({ issuerUri }).fetchUserProfile({ accessToken });
-    const fullName = [profile.firstName, profile.lastName].filter(Boolean).join(" ");
+    const keycloakUtils = createKeycloakUtils({ issuerUri });
+
+    const profile = await keycloakUtils.fetchUserProfile({ accessToken });
+
 
     return {
-        id: profile.id,
         username: profile.username ?? decodedIdToken.sub,
-        displayName: fullName || profile.username || decodedIdToken.sub,
+        displayName: [profile.firstName, profile.lastName].join(" "),
         email: profile.email
     };
 };
 ```
-
 {% endcode %}
 
 The endpoint must be enabled and accessible to your client. Keep this provider-specific code inside `createUser` so the rest of the UI remains provider-agnostic.
-
 {% endtab %}
 {% endtabs %}
 
@@ -321,11 +285,11 @@ The endpoint must be enabled and accessible to your client. Keep this provider-s
 
 <summary>What else is available to <code>createUser</code>?</summary>
 
--   `decodedIdToken` is the raw decoded ID token payload. Validate the claims your UI depends on, even if you also configured `withExpectedDecodedIdTokenShape()`.
--   `accessToken` is the current access token. Use it to call a resource server, but do not store it in `User` because tokens rotate.
--   `fetchUserInfo` lazily calls the discovered standard UserInfo endpoint.
--   `issuerUri` lets you select provider-specific behavior.
--   `user_current` is `undefined` on the first build and contains the previous model during subsequent rebuilds.
+* `decodedIdToken` is the raw decoded ID token payload. Validate the claims your UI depends on, even if you also configured `withExpectedDecodedIdTokenShape()`.
+* `accessToken` is the current access token. Use it to call a resource server, but do not store it in `User` because tokens rotate.
+* `fetchUserInfo` lazily calls the discovered standard UserInfo endpoint.
+* `issuerUri` lets you select provider-specific behavior.
+* `user_current` is `undefined` on the first build and contains the previous model during subsequent rebuilds.
 
 `createUser` may return a `User` directly or a promise. Do not call `getUser()` directly or indirectly from inside it: `getUser()` is already waiting for `createUser()` to finish.
 
@@ -337,85 +301,53 @@ The endpoint must be enabled and accessible to your client. Keep this provider-s
 
 {% tabs %}
 {% tab title="Framework agnostic" %}
-
-{% code title="src/oidc.ts" overflow="wrap" %}
-
-```typescript
-import { createOidc } from "oidc-spa/core";
-import { createUser } from "./oidc.user";
-
+<pre class="language-typescript" data-title="src/oidc.ts" data-overflow="wrap"><code class="lang-typescript">import { createOidc } from "oidc-spa/core";
+<strong>import { createUser } from "./oidc.user";
+</strong>
 export const prOidc = createOidc({
     issuerUri: import.meta.env.VITE_OIDC_ISSUER_URI,
     clientId: import.meta.env.VITE_OIDC_CLIENT_ID,
-    createUser
-});
-```
-
-{% endcode %}
-
+<strong>    createUser
+</strong>});
+</code></pre>
 {% endtab %}
 
 {% tab title="React SPA" %}
+<pre class="language-typescript" data-title="src/oidc.ts" data-overflow="wrap"><code class="lang-typescript">import { oidcSpa } from "oidc-spa/react-spa";
+<strong>import { createUser, type User } from "./oidc.user";
+</strong>
+export const { useOidc, getOidc, /*...*/ } = oidcSpa
+<strong>    .withUser&#x3C;User>({ createUser })
+</strong>    .createUtils();
 
-{% code title="src/oidc.ts" overflow="wrap" %}
-
-```typescript
-import { oidcSpa } from "oidc-spa/react-spa";
-import { createUser, type User } from "./oidc.user";
-
-export const { bootstrapOidc, useOidc, getOidc, enforceLogin, OidcInitializationGate } = oidcSpa
-    .withUser<User>({ createUser })
-    .createUtils();
-
-bootstrapOidc({
-    implementation: "real",
-    issuerUri: import.meta.env.VITE_OIDC_ISSUER_URI,
-    clientId: import.meta.env.VITE_OIDC_CLIENT_ID
-});
-```
-
-{% endcode %}
-
+</code></pre>
 {% endtab %}
 
 {% tab title="TanStack Start" %}
+<pre class="language-typescript" data-title="src/oidc.ts" data-overflow="wrap"><code class="lang-typescript">import { oidcSpa } from "oidc-spa/react-tanstack-start";
+<strong>import { createUser, type User } from "./oidc.user";
+</strong>
+export const { useOidc, getOidc, /*...*/ } = oidcSpa
+<strong>    .withUser&#x3C;User>({ createUser })
+</strong>    .createUtils();
 
-{% code title="src/oidc.ts" overflow="wrap" %}
-
-```typescript
-import { oidcSpa } from "oidc-spa/react-tanstack-start";
-import { createUser, type User } from "./oidc.user";
-
-export const { bootstrapOidc, useOidc, getOidc, enforceLogin } = oidcSpa
-    .withUser<User>({ createUser })
-    .createUtils();
-
-bootstrapOidc(({ process }) => ({
-    implementation: "real",
-    issuerUri: process.env.OIDC_ISSUER_URI,
-    clientId: process.env.OIDC_CLIENT_ID
-}));
-```
-
-{% endcode %}
+</code></pre>
 
 {% hint style="info" %}
-In TanStack Start, frontend components and the resource server share a project but not a trust boundary. The app-level `user` is created in the browser for UI concerns. When backend token validation is configured, server functions and API handlers identify and authorize the caller from the validated `oidc.accessTokenClaims` supplied by `oidcFnMiddleware` or `oidcRequestMiddleware`. See [Backend Token Validation](/integration-guides/backend-token-validation).
+In TanStack Start, frontend components and the resource server share a project but not a trust boundary. The app-level `user` is created in the browser for UI concerns. When backend token validation is configured, server functions and API handlers identify and authorize the caller from the validated `oidc.accessTokenClaims` supplied by `oidcFnMiddleware` or `oidcRequestMiddleware`. See [Backend Token Validation](../integration-guides/backend-token-validation/).
 {% endhint %}
-
 {% endtab %}
 
 {% tab title="Angular" %}
-
 {% hint style="info" %}
 Angular support is not implemented yet, so there is currently no `createUser` registration API.
 {% endhint %}
-
 {% endtab %}
 {% endtabs %}
 
-{% hint style="info" %}
-oidc-spa calls `createUser()` again when relevant claims change in the decoded ID token or a decodable JWT access token. If data changes without a token-claim change—for example in `/api/user`, UserInfo, or a provider profile—call `refreshUser()` to force a rebuild. It is available from `useOidc()` in React and from `oidc.getUser()` in the framework-agnostic API.
-{% endhint %}
+## Updating the user
 
-For complete projects, see the [TanStack Router SPA example](https://github.com/keycloakify/oidc-spa/tree/main/examples/tanstack-router-file-router) and the [TanStack Start example](https://github.com/keycloakify/oidc-spa/tree/main/examples/tanstack-start).
+createUser will be called initially by oidc-spa and again every time, upon token rotation, where it detects that the id/access tokens have meaneagfully changed.\
+However if you are building the user object from external sources like your API endpoint, if you modify the user, you might need to manually trigger a refresh:  \
+\
+// TODO: Code block examples.
