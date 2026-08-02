@@ -4,39 +4,94 @@
 **Coming in oidc-spa v10.3.** This feature has not been released yet.
 {% endhint %}
 
-The `user` object is your application's model of the signed-in person. Shape it around what the **frontend needs to render**, rather than mirroring a token or a provider response.
+## Access the User in Your App
+
+Once configured, your custom user model is available wherever you write frontend code.
+
+{% tabs %}
+{% tab title="Framework agnostic" %}
+
+{% code title="src/greeting.ts" overflow="wrap" %}
 
 ```typescript
-export type User = {
-    displayName: string;
-    avatarUrl: string | undefined;
-    canSeeAdminNavigation: boolean;
-};
+import { prOidc } from "./oidc";
+
+export async function getGreeting() {
+    const oidc = await prOidc;
+
+    if (!oidc.isUserLoggedIn) {
+        return "Hello!";
+    }
+
+    const { user } = await oidc.getUser();
+
+    return `Hello ${user.displayName}!`;
+}
 ```
 
-Prefer application-level language such as `canSeeAdminNavigation` over provider-specific details such as `realm_access.roles`. This keeps the rest of your UI independent from your identity provider.
+{% endcode %}
+
+{% endtab %}
+
+{% tab title="React" %}
+
+The React API is shared by the React SPA and TanStack Start adapters.
+
+In a component where login is already enforced:
+
+{% code title="src/components/Greeting.tsx" overflow="wrap" %}
+
+```tsx
+import { useOidc } from "../oidc";
+
+export function Greeting() {
+    const { user } = useOidc({ assert: "user logged in" });
+
+    return <p>Hello {user.displayName}!</p>;
+}
+```
+
+{% endcode %}
+
+Outside a React component, in browser code:
+
+{% code title="src/greeting.ts" overflow="wrap" %}
+
+```typescript
+import { getOidc } from "./oidc";
+
+export async function getGreeting() {
+    const oidc = await getOidc({ assert: "user logged in" });
+    const { user } = await oidc.getUser();
+
+    return `Hello ${user.displayName}!`;
+}
+```
+
+{% endcode %}
+
+{% endtab %}
+
+{% tab title="Angular" %}
+
+{% hint style="info" %}
+The user abstraction is not available in the Angular adapter yet.
+{% endhint %}
+
+{% endtab %}
+{% endtabs %}
+
+The `user` object is your application's model of the signed-in person. Shape it around what the **frontend needs to render**, rather than mirroring a token or provider response. Prefer application-level fields such as `canSeeAdminNavigation` over provider-specific details such as `realm_access.roles`.
 
 {% hint style="warning" %}
 The `user` object is for UI decisions, not security. It can determine whether to show an admin link; your resource server must still validate the access token and authorize every request.
 {% endhint %}
 
-## Where User Data Comes From
-
-The decoded ID token is the natural starting point: its claims contain identity information the authorization server makes available to your application. In practice, the UI may need information that is stored elsewhere.
-
-| Source                        | Best suited for                                                       | Keep in mind                                            |
-| ----------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------- |
-| Decoded ID token              | Basic identity claims already returned at sign-in                     | Usually the simplest option                             |
-| Your `GET /api/user` endpoint | Application records, preferences, and entitlements from your database | The API must validate the access token                  |
-| JWT access token              | Roles or groups that the provider only places in the access token     | Provider-specific and suitable only for UI decisions    |
-| OIDC UserInfo endpoint        | Additional standard OIDC claims                                       | Requires a UserInfo endpoint and the appropriate scopes |
-| Provider-specific endpoint    | Rich provider data, such as the Keycloak account profile              | Couples the model to that provider                      |
-
-You can use one source or combine several. Fetch only data that the UI actually consumes: extra requests delay construction of the user model.
-
 ## Implement `createUser`
 
-Define the model and its constructor in a framework-independent file. Each tab below is a complete, focused alternative; the different `User` shapes are intentional.
+`createUser` translates identity data into the app-specific `User` consumed by your UI. The decoded ID token is the natural starting point, but you can use another source when it does not contain everything the UI needs.
+
+Each tab below is a complete, focused alternative. Combine sources only when your model requires it; the different `User` shapes are intentional.
 
 {% tabs %}
 {% tab title="ID token" %}
@@ -56,21 +111,21 @@ export type User = {
     avatarUrl: string | undefined;
 };
 
-const IdTokenClaims = z.object({
+const DecodedIdToken = z.object({
     sub: z.string(),
     name: z.string(),
     email: z.string().email().optional(),
     picture: z.string().url().optional()
 });
 
-export const createUser: CreateUser<User> = ({ decodedIdToken }) => {
-    const claims = IdTokenClaims.parse(decodedIdToken);
+export const createUser: CreateUser<User> = ({ decodedIdToken: decodedIdToken_generic }) => {
+    const decodedIdToken = DecodedIdToken.parse(decodedIdToken_generic);
 
     return {
-        id: claims.sub,
-        displayName: claims.name,
-        email: claims.email,
-        avatarUrl: claims.picture
+        id: decodedIdToken.sub,
+        displayName: decodedIdToken.name,
+        email: decodedIdToken.email,
+        avatarUrl: decodedIdToken.picture
     };
 };
 ```
@@ -143,12 +198,12 @@ export type User = {
     canSeeAdminNavigation: boolean;
 };
 
-const IdTokenClaims = z.object({
+const DecodedIdToken = z.object({
     sub: z.string(),
     name: z.string()
 });
 
-const AccessTokenClaims = z.object({
+const DecodedAccessToken = z.object({
     realm_access: z
         .object({
             roles: z.array(z.string())
@@ -156,14 +211,17 @@ const AccessTokenClaims = z.object({
         .optional()
 });
 
-export const createUser: CreateUser<User> = ({ decodedIdToken, accessToken }) => {
-    const identity = IdTokenClaims.parse(decodedIdToken);
-    const claims = AccessTokenClaims.parse(decodeJwt(accessToken));
-    const roles = claims.realm_access?.roles ?? [];
+export const createUser: CreateUser<User> = ({
+    decodedIdToken: decodedIdToken_generic,
+    accessToken
+}) => {
+    const decodedIdToken = DecodedIdToken.parse(decodedIdToken_generic);
+    const decodedAccessToken = DecodedAccessToken.parse(decodeJwt(accessToken));
+    const roles = decodedAccessToken.realm_access?.roles ?? [];
 
     return {
-        id: identity.sub,
-        displayName: identity.name,
+        id: decodedIdToken.sub,
+        displayName: decodedIdToken.name,
         roles,
         canSeeAdminNavigation: roles.includes("realm-admin")
     };
@@ -273,18 +331,12 @@ The endpoint must be enabled and accessible to your client. Keep this provider-s
 
 </details>
 
-## Use It With Your Adapter
+## Connect It to Your Adapter
 
-Connect your `createUser` implementation to the API used by your application, then read the resulting model from frontend code.
-
-{% hint style="info" %}
-The user abstraction is currently available with the framework-agnostic API, React SPA adapter, and TanStack Start adapter. Angular support is not implemented yet.
-{% endhint %}
+`createUser` is framework-independent. Register it once when configuring oidc-spa.
 
 {% tabs %}
 {% tab title="Framework agnostic" %}
-
-Register the constructor when creating the OIDC client:
 
 {% code title="src/oidc.ts" overflow="wrap" %}
 
@@ -301,35 +353,9 @@ export const prOidc = createOidc({
 
 {% endcode %}
 
-Then call `getUser()` after checking the authentication state:
-
-{% code title="src/greeting.ts" overflow="wrap" %}
-
-```typescript
-import { prOidc } from "./oidc";
-
-export async function getGreeting() {
-    const oidc = await prOidc;
-
-    if (!oidc.isUserLoggedIn) {
-        return "Hello!";
-    }
-
-    const { user } = await oidc.getUser();
-
-    return `Hello ${user.displayName}!`;
-}
-```
-
-{% endcode %}
-
 {% endtab %}
 
 {% tab title="React SPA" %}
-
-This includes React applications using TanStack Router as a client-side SPA.
-
-Register the constructor before bootstrapping the adapter:
 
 {% code title="src/oidc.ts" overflow="wrap" %}
 
@@ -350,57 +376,19 @@ bootstrapOidc({
 
 {% endcode %}
 
-In a component where login is already enforced, `user` is available synchronously:
-
-{% code title="src/components/Greeting.tsx" overflow="wrap" %}
-
-```tsx
-import { useOidc } from "../oidc";
-
-export function Greeting() {
-    const { user } = useOidc({ assert: "user logged in" });
-
-    return <p>Hello {user.displayName}!</p>;
-}
-```
-
-{% endcode %}
-
-Outside React, in browser code, use `getOidc({ assert: "user logged in" })`, then call `oidc.getUser()`.
-
 {% endtab %}
 
 {% tab title="TanStack Start" %}
-
-Register the constructor before bootstrapping the adapter:
 
 {% code title="src/oidc.ts" overflow="wrap" %}
 
 ```typescript
 import { oidcSpa } from "oidc-spa/react-tanstack-start";
-import { z } from "zod";
 import { createUser, type User } from "./oidc.user";
 
-export const { bootstrapOidc, useOidc, getOidc, enforceLogin, oidcFnMiddleware, oidcRequestMiddleware } =
-    oidcSpa
-        .withUser<User>({ createUser })
-        .withAccessTokenValidation({
-            type: "RFC 9068: JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens",
-            expectedAudience: ({ process }) => process.env.OIDC_AUDIENCE,
-            accessTokenClaimsSchema: z.object({
-                sub: z.string(),
-                realm_access: z
-                    .object({
-                        roles: z.array(z.string())
-                    })
-                    .optional()
-            }),
-            accessTokenClaims_mock: {
-                sub: "mock-user-id",
-                realm_access: { roles: ["realm-admin"] }
-            }
-        })
-        .createUtils();
+export const { bootstrapOidc, useOidc, getOidc, enforceLogin } = oidcSpa
+    .withUser<User>({ createUser })
+    .createUtils();
 
 bootstrapOidc(({ process }) => ({
     implementation: "real",
@@ -411,103 +399,23 @@ bootstrapOidc(({ process }) => ({
 
 {% endcode %}
 
-Authentication-aware UI is rendered on the client. In a component that may render on the server, first account for the not-ready state.
+{% hint style="info" %}
+In TanStack Start, frontend components and the resource server share a project but not a trust boundary. The app-level `user` is created in the browser for UI concerns. When backend token validation is configured, server functions and API handlers identify and authorize the caller from the validated `oidc.accessTokenClaims` supplied by `oidcFnMiddleware` or `oidcRequestMiddleware`. See [Backend Token Validation](/integration-guides/backend-token-validation).
+{% endhint %}
 
-{% code title="src/components/Greeting.tsx" overflow="wrap" %}
+{% endtab %}
 
-```tsx
-import { useOidc } from "../oidc";
+{% tab title="Angular" %}
 
-export function Greeting() {
-    const oidc = useOidc();
-
-    if (!oidc.isOidcReady || !oidc.isUserLoggedIn) {
-        return null;
-    }
-
-    return <p>Hello {oidc.user.displayName}!</p>;
-}
-```
-
-{% endcode %}
-
-On a route protected by `beforeLoad: enforceLogin`, you can instead use `useOidc({ assert: "user logged in" })`.
+{% hint style="info" %}
+Angular support is not implemented yet, so there is currently no `createUser` registration API.
+{% endhint %}
 
 {% endtab %}
 {% endtabs %}
 
 {% hint style="info" %}
-When the mock implementation signs a user in, provide `user_mock` to `withUser()` or override it in `bootstrapOidc()`. Mock mode returns that object directly and does not call `createUser`. With the framework-agnostic mock API, the equivalent option is named `mockedUser`.
+oidc-spa calls `createUser()` again when relevant claims change in the decoded ID token or a decodable JWT access token. If data changes without a token-claim change—for example in `/api/user`, UserInfo, or a provider profile—call `refreshUser()` to force a rebuild. It is available from `useOidc()` in React and from `oidc.getUser()` in the framework-agnostic API.
 {% endhint %}
-
-## TanStack Start: Frontend User vs. Backend Claims
-
-TanStack Start places frontend components and the resource server in one project, but they remain separate trust boundaries.
-
-| Where the code runs                        | Use                      | Purpose                                                            |
-| ------------------------------------------ | ------------------------ | ------------------------------------------------------------------ |
-| Browser components and client-only loaders | `user`                   | Render names and avatars, or hide controls the user cannot use     |
-| Server functions and API handlers          | `oidc.accessTokenClaims` | Identify the caller and enforce permissions from a validated token |
-
-{% hint style="danger" %}
-`user.canSeeAdminNavigation` is a convenience for the frontend. It does not grant access. Enforce the same permission on the server before returning protected data.
-{% endhint %}
-
-The TanStack Start adapter runs `createUser()` only in the browser, and `getOidc()` cannot be called on the server. Server functions and API handlers receive a separate OIDC context from middleware.
-
-The TanStack Start setup above validates access tokens and exposes `oidcFnMiddleware` for server functions and `oidcRequestMiddleware` for API handlers:
-
-{% code title="src/routes/admin-data.ts" overflow="wrap" %}
-
-```typescript
-import { createServerFn } from "@tanstack/react-start";
-import { oidcFnMiddleware } from "../oidc";
-
-export const getAdminData = createServerFn({ method: "GET" })
-    .middleware([
-        oidcFnMiddleware({
-            assert: "user logged in",
-            hasRequiredClaims: ({ accessTokenClaims }) =>
-                accessTokenClaims.realm_access?.roles.includes("realm-admin")
-        })
-    ])
-    .handler(async ({ context: { oidc } }) => {
-        const userId = oidc.accessTokenClaims.sub;
-
-        return { message: `Protected data for ${userId}` };
-    });
-```
-
-{% endcode %}
-
-Here, the middleware validates the access token and performs the permission check before the handler runs. See [Backend Token Validation](/integration-guides/backend-token-validation) for the complete setup.
-
-## Refresh User Data
-
-oidc-spa caches the constructed model and rebuilds it when its token-claim fingerprint changes. Lifecycle claims such as issued-at and expiry times do not trigger a rebuild. Changes that exist only in your database, UserInfo response, or provider profile cannot be detected automatically.
-
-Call `refreshUser()` after an action that changes remote user data. It renews the tokens, runs `createUser()` again, and returns the new model. For example, with either React adapter:
-
-{% code title="src/useUpdateProfile.ts" overflow="wrap" %}
-
-```typescript
-import { useOidc } from "./oidc";
-import { updateProfile } from "./api";
-
-export function useUpdateProfile() {
-    const { refreshUser } = useOidc({ assert: "user logged in" });
-
-    return async (formData: FormData) => {
-        await updateProfile(formData);
-        return refreshUser();
-    };
-}
-```
-
-{% endcode %}
-
-With the framework-agnostic API, get the same function from `await oidc.getUser()`.
-
-On rebuilds, `createUser()` receives the previous model as `user_current`. If a later rebuild fails, oidc-spa keeps the previous model. If the first build fails, no user model is produced; React adapters surface this as an initialization error.
 
 For complete projects, see the [TanStack Router SPA example](https://github.com/keycloakify/oidc-spa/tree/main/examples/tanstack-router-file-router) and the [TanStack Start example](https://github.com/keycloakify/oidc-spa/tree/main/examples/tanstack-start).
