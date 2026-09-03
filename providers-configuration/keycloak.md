@@ -13,7 +13,7 @@ oidc-spa with Keycloak
 {% endembed %}
 
 {% hint style="info" %}
-Looking for a managed Keycloak provider? [Check out PhaseTwo](https://phasetwo.io/), the project's main sponsor.
+Looking for a managed Keycloak provider? [Check out Phase Two](https://phasetwo.io/), the project's main sponsor.
 {% endhint %}
 
 ## Getting the `issuerUri` and `clientId`
