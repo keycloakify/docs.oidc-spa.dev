@@ -12,6 +12,10 @@ metaLinks:
 oidc-spa with Keycloak
 {% endembed %}
 
+{% hint style="info" %}
+Looking for a managed Keycloak provider? [Check out PhaseTwo](https://phasetwo.io/), the project's main sponsor.
+{% endhint %}
+
 ## Getting the `issuerUri` and `clientId`
 
 `oidc-spa` requires two parameters to connect to your Keycloak instance: `issuerUri` and `clientId`.
