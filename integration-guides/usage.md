@@ -64,11 +64,25 @@ This is just a suggestion. Feel free to adapt how you set things up.
 {% code title="src/oidc.ts" %}
 ```typescript
 import { createOidc } from "oidc-spa/core";
+import { z } from "zod";
 
 const prOidc = createOidc({
     // See: https://docs.oidc-spa.dev/v/v9/providers-configuration/provider-configuration
     issuerUri: "https://auth.your-domain.net/realms/myrealm",
     clientId: "myclient",
+
+    // Optional. Expected shape of the ID token payload.
+    // This is declarative. You describe what you will use and what
+    // info you expect to be present in the ID token.
+    // If you don't know what's in your ID token, open the console.
+    // If you have debugLogs set to true, you'll see it.
+    decodedIdTokenSchema: z.object({
+       preferred_username: z.string(),
+       name: z.string(),
+       email: z.string().optional(),
+       picture: z.string().optional(),
+       realm_access: z.object({ roles: z.array(z.string()) }).optional()
+    }),
 
     //scopes: ["profile", "email", "api://my-app/access_as_user"],
 
@@ -80,7 +94,7 @@ const prOidc = createOidc({
 
     debugLogs: true,
 
-    // See: https://docs.oidc-spa.dev/v/v9/features/auto-login
+    // See: https://docs.oidc-spa.dev/v/v10/features/auto-login
     // autoLogin: true
 
 });
@@ -136,9 +150,6 @@ import { getOidc } from "~/oidc"; // The file you created in the previous step
         // { redirectTo: "specific URL", url: "/bye" }
         oidc.logout({ redirectTo: "home" });
 
-        // NOTE: We recomend implementing the user abstraction
-        // over reading directly the ID token.
-        // See: https://docs.oidc-spa.dev/v/v9/features/user
         const decodedIdToken = oidc.getDecodedIdToken();
 
         console.log(`Hello ${decodedIdToken.preferred_username}`);
@@ -196,8 +207,12 @@ This approach is useful when building an app where user authentication is a feat
 
 <pre class="language-typescript"><code class="lang-typescript">import { createOidc } from "oidc-spa/core";
 <strong>import { createMockOidc } from "oidc-spa/core-mock";
-</strong>// Optional, see: https://docs.oidc-spa.dev/v/v9/features/user
-import { createUser, user_mock } from "./oidc.user";
+</strong>import { z } from "zod";
+
+const decodedIdTokenSchema = z.object({
+    sub: z.string(),
+    preferred_username: z.string()
+});
 
 const autoLogin = false;
 
@@ -210,13 +225,20 @@ const prOidc = !import.meta.env.VITE_OIDC_ISSUER
 </strong><strong>              issuerUri: "https://auth.my-company.com/realms/myrealm",
 </strong><strong>              clientId: "myclient"
 </strong><strong>          },
-</strong><strong>          mockedUser: user_mock,
+</strong><strong>          mockedTokens: {
+</strong><strong>              decodedIdToken: {
+</strong><strong>                  sub: "123",
+</strong><strong>                  preferred_username: "john doe"
+</strong><strong>              } satisfies z.infer&#x3C;typeof decodedIdTokenSchema>,
+</strong><strong>              // accessToken: "mocked access token",
+</strong><strong>              // ...
+</strong><strong>          },
 </strong><strong>          autoLogin
 </strong><strong>      })
 </strong>    : createOidc({
           issuerUri: import.meta.env.VITE_OIDC_ISSUER,
           clientId: import.meta.env.VITE_OIDC_CLIENT_ID,
-          createUser,
+          decodedIdTokenSchema,
           autoLogin
       });
 </code></pre>
