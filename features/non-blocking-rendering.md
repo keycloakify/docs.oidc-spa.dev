@@ -98,16 +98,7 @@ export function Header() {
 <strong>            &#x3C;OidcInitializationGate fallback={&#x3C;Spinner />}>
 </strong>                &#x3C;AuthButtons />
 <strong>            &#x3C;/OidcInitializationGate>
-</strong>
-<strong>            {/* OR */}
-</strong>
-<strong>            {/*
-</strong>            &#x3C;Suspense fallback={&#x3C;Spinner />}>
-                &#x3C;AuthButtons />
-            &#x3C;/Suspense>
-<strong>            */}
-</strong>
-        &#x3C;/header>
+</strong>        &#x3C;/header>
     );
 }
 
