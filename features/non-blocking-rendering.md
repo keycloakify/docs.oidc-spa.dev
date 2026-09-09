@@ -126,30 +126,28 @@ function AuthButtons() {
 
 ### Using React’s built-in Suspense
 
-You can use React’s built-in `<Suspense />` instead of `<OidcInitializationGate />`.\
+**If your app is a pure SPA (no SSR)**, you can use React’s built-in `<Suspense />` interchangably with `<OidcInitializationGate />`.\
 This is often even better, as it lets you define a unified fallback for all your app’s asynchronous operations.
-
-When called before the auth state is ready, `useOidc()` throws a Promise, which React will catch using the nearest Suspense boundary.
-
-This means you **must** wrap any component that calls `useOidc()` in either `<OidcInitializationGate />` or `<Suspense />`.\
-If you don’t, your entire app will suspend.
 
 ***
 
-### Only if you are using `withLoginEnforced()`
+### `withLoginEnforced()`&#x20;
 
-Consider this:
+Components wrapped in `withLoginEnforced()` behave like a component that calls `useOidc()`. That's all you need to know. \
+\
+**Pro tip:** In a pure SPA (no SSR), you can use `<Suspense />` instead of `<OidcInitializationGate />` to wrap your routes and have a single `<Spinner />` both for the page lazy loading and as fallback while the oidc is initializing.
 
-<pre class="language-tsx" data-title="src/pages/Protected.tsx"><code class="lang-tsx">import { withLoginEnforced } from "~/oidc";
+{% code title="src/pages/Protected.tsx" %}
+```tsx
+import { withLoginEnforced } from "~/oidc";
 
-<strong>// This component can suspend when rendered (like a lazy component would)
-</strong><strong>// You must define a suspense boundary around it (or use OidcInitializationGate).
-</strong>const Protected = withLoginEnforced(() => {
-    return &#x3C;div>{/* ... */}&#x3C;/div>;
+const Protected = withLoginEnforced(() => {
+    return <div>{/* ... */}</div>;
 });
 
 export default Protected;
-</code></pre>
+```
+{% endcode %}
 
 Example:
 
@@ -158,6 +156,7 @@ import { Navigate, Route, Routes } from "react-router";
 import { AutoLogoutWarningOverlay } from "./components/AutoLogoutWarningOverlay";
 import { Header } from "./components/Header";
 import { Home } from "./pages/Home";
+import { OidcInitializationGate } from "~/oidc";
 const Protected = lazy(() => import("./pages/Protected"));
 const AdminOnly = lazy(() => import("./pages/AdminOnly"));
 
@@ -175,15 +174,13 @@ export function App() {
                     &#x3C;/Routes>
 <strong>                &#x3C;/Suspense>
 </strong>            &#x3C;/main>
-            &#x3C;Suspense>
+            &#x3C;OidcInitializationGate>
                 &#x3C;AutoLogoutWarningOverlay />
-            &#x3C;/Suspense>
+            &#x3C;/OidcInitializationGate>
         &#x3C;/>
     );
 }
 </code></pre>
-
-With route components like:
 
 ***
 
