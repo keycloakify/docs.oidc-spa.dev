@@ -39,27 +39,35 @@ npm run dev
 
 {% tabs %}
 {% tab title="npm" %}
+
 ```bash
 npm install oidc-spa zod
 ```
+
 {% endtab %}
 
 {% tab title="yarn" %}
+
 ```bash
 yarn add oidc-spa zod
 ```
+
 {% endtab %}
 
 {% tab title="pnpm" %}
+
 ```bash
 pnpm add oidc-spa zod
 ```
+
 {% endtab %}
 
 {% tab title="bun" %}
+
 ```bash
 bun add oidc-spa zod
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -74,6 +82,7 @@ bun add oidc-spa zod
 Use `instrumentation-client.ts` to run `oidcEarlyInit()` as early as possible.
 
 {% code title="instrumentation-client.ts" %}
+
 ```ts
 import { oidcEarlyInit } from "oidc-spa/entrypoint";
 
@@ -81,6 +90,7 @@ oidcEarlyInit({
     BASE_URL: process.env.__NEXT_ROUTER_BASEPATH || "/"
 });
 ```
+
 {% endcode %}
 
 ### Wrap the app
@@ -89,13 +99,9 @@ Wrap the whole app in `OidcInitializationGate`.
 
 In the example, this happens in [`app/layout.tsx`](https://github.com/keycloakify/oidc-spa/blob/main/examples/next/app/layout.tsx).
 
-### Add Next-specific adapters
+### Configure oidc-spa
 
-The `OidcInitializationGate` and `withLoginEnforced` utils exported by oidc-spa cannot be used directly in Next.js as-is.
-
-They need Next-specific adapters.
-
-In the example, that adaptation lives in [`lib/oidc.tsx`](https://github.com/keycloakify/oidc-spa/blob/main/examples/next/lib/oidc.tsx).
+Configure `oidc-spa` and export its utilities as shown in [`lib/oidc.tsx`](https://github.com/keycloakify/oidc-spa/blob/main/examples/next/lib/oidc.tsx).
 
 ### Keep oidc-spa on the client
 
@@ -113,8 +119,8 @@ You should treat this setup as a SPA architecture running inside Next.js.
 
 ## Routes in the example
 
-* `/` public landing page with login and logout controls
-* `/protected` guarded page using the custom Next-compatible `withLoginEnforced`
-* `/admin-only` guarded page with a simple role check
+-   `/` public landing page with login and logout controls
+-   `/protected` guarded page using `withLoginEnforced` from `oidc-spa/react-nextjs`
+-   `/admin-only` guarded page with a simple role check
 
 {% include "../.gitbook/includes/creating-an-api-server.md" %}
