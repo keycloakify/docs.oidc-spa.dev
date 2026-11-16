@@ -7,7 +7,7 @@ metaLinks:
 
 # CSP Configuration
 
-In this page we will see how to relax your Content-Security-Policy just enough so session restoration using iframe is possible. &#x20;
+In this page we will see how to relax your Content-Security-Policy just enough so session restoration using iframe is possible.
 
 ## CSP rules that break session restoration via iframe
 
@@ -16,7 +16,7 @@ Silent session restoration via iframe is **optional**, oidc-spa can restore user
 _If that is so, why does oidc-spa even attemt to use iframe?_
 
 * For performance: iframe based session resoration is a little faster than full page redirect (not much but still noticable).
-* For security **if and only if** [your app talks to more than one resource server](../features/talking-to-multiple-apis-with-different-access-tokens.md) (which is **not** the case in most apps), because "multiple oidc-client" + "no iframe SSO" = "oidc-spa needs to persist tokens in session storage". &#x20;
+* For security **if and only if** [your app talks to more than one resource server](../features/talking-to-multiple-apis-with-different-access-tokens.md) (which is **not** the case in most apps), because "multiple oidc-client" + "no iframe SSO" = "oidc-spa needs to persist tokens in session storage".
 
 ***
 
@@ -57,7 +57,7 @@ Example:
 
 ```
 Content-Security-Policy:
-  frame-src https://auth.my-domain.com;
+  frame-src 'self' https://auth.my-domain.com;
   frame-ancestors 'self';
   ...other CSP directives...
 ```
@@ -71,9 +71,9 @@ The Nginx configuration below demonstrates this pattern.
 
 ## Canonical Nginx configuration
 
-This is a portable, production-grade Ngnix config for an SPA with "as strict as can be" CSPs that still enable oidc-spa to use iframe for performing session restoration. &#x20;
+This is a portable, production-grade Ngnix config for an SPA with "as strict as can be" CSPs that still enable oidc-spa to use iframe for performing session restoration.
 
-Of course you can relax thoses CSP to meet the specific need of your app. This is just an example of what you would use if you use no service/web workers and don't have any inline script. &#x20;
+Of course you can relax thoses CSP to meet the specific need of your app. This is just an example of what you would use if you use no service/web workers and don't have any inline script.
 
 <pre class="language-nginx" data-title="ngnix.conf"><code class="lang-nginx"># Assuming nginxinc/nginx-unprivileged
 
